@@ -1,0 +1,121 @@
+/**
+@author: Fredric Retzko
+@email: rick@mfrholdings.com
+@orig: 22-February-2021
+ */
+
+html,body{
+    height: 100%;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, .88);
+}
+
+a{
+    color: whitesmoke;
+}
+
+.content{
+    flex:1 0 auto;
+}
+
+.footer{
+    flex-shrink: 0;
+}
+
+#guest-nav{
+    display: flex;
+    flex-direction: row;
+    font-size: .66rem;
+    justify-content: space-between;
+    left: 0px;
+    padding: 0 1rem;
+    position: absolute;
+    top: 40px;
+    width: 100vw;
+}
+
+    #guest-modules{
+
+    }
+
+    #login-register{
+        margin-left: 2rem;
+    }
+
+#site-footer{
+    color: white;
+    display: flex;
+    font-size: .66rem;
+    justify-content: space-between;
+    padding: 0 .5rem;
+    position:absolute;
+    top: 90vh;
+    width: 100%;
+}
+
+#site-header{
+    display: flex;
+}
+
+    #site-header h1
+    {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        width: 100%;
+        padding-top: 1rem;
+        text-align: center;
+        color: yellow;
+        font-size: 1rem;
+    }
+
+    #site-header h1 a
+    {
+        color: yellow;
+    }
+
+    #site-header #logo {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+    }
+
+    #site-header #logo img{
+        height: 25px;
+        width: 25px;
+    }
+
+@media (min-width:640px) {
+    #site-header h1 {
+        font-size: 2rem;
+        top: 1rem;
+    }
+
+    #site-header #logo img {
+        height: 80px;
+        width: 80px;
+    }
+
+    #guest-nav{
+        font-size: 1rem;
+        padding: 0 2rem;
+        top: 60px;
+    }
+
+    #welcome-footer{
+        margin: auto;
+        width: 80%;
+    }
+}
+
+@media (min-width:1024px)
+{
+    body{background-position-y: 0%;}
+
+    #guest-nav{padding-right: 4rem;}
+}
+
