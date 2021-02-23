@@ -53,7 +53,7 @@ return [
     |
     */
 
-    'asset_url' => env('APP_URL', 'http://localhost/dev/tdr/public'),
+    'asset_url' => null,
 
     /*
     |--------------------------------------------------------------------------
