@@ -1,6 +1,6 @@
 <div id="site-header">
 
-    <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+    <div class=" mx-auto sm:px-6 lg:px-8">
 
         <!-- LOGO -->
         <a id="logo" href="{{ route('welcome') }}" title="Return to Welcome page">
