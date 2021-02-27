@@ -11,6 +11,13 @@
                 @livewire('profile.update-profile-information-form')
 
                 <x-jet-section-border />
+
+                <!-- FJR 25-Feb-21 START-->
+                @livewire('profile.person')
+                <x-jet-section-border />
+
+                <!-- FJR 25-Feb-21 END -->
+
             @endif
 
             @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))

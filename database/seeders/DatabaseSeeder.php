@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Person;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-         User::factory(10)->create();
+         User::factory(100)->create();
+         Person::factory(20)->create();
+         $this->call(HonorificsSeeder::class);
+         $this->call(PronounsSeeder::class);
     }
 }

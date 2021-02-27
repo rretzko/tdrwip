@@ -28,6 +28,11 @@
     </x-slot>
 
     <x-slot name="actions">
+
+        @if(session('success'))
+            <x-success-message :success='session("success")' />
+        @endif
+
         <x-jet-action-message class="mr-3" on="saved">
             {{ __('Saved.') }}
         </x-jet-action-message>

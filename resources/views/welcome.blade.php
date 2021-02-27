@@ -162,8 +162,6 @@
                 font-size: .66rem;
                 justify-content: space-between;
                 padding: 0 .5rem;
-                position:absolute;
-                top: 90vh;
                 width: 100%;
             }
 
@@ -184,8 +182,11 @@
                     top: 60px;
                 }
 
-                #welcome-footer{
-                    margin: auto;
+                #welcome-footer
+                {
+                    position: absolute;
+                    top: 90vh;
+                    left: 10vw;
                     width: 80%;
                 }
             }

@@ -5,7 +5,7 @@
  */
 
 /**
-COLOR PALLETTE
+COLOR PALETTE
 - active links on dark background #2E9CCA (blue-ish)
  */
 
@@ -46,7 +46,7 @@ a{
     flex-direction: row;
     font-size: .66rem;
     justify-content: space-between;
-    left: 0px;
+    left: 0;
     padding: 0 1rem;
     position: absolute;
     top: 40px;
@@ -61,6 +61,11 @@ a{
         margin-left: 2rem;
     }
 
+main
+{
+    min-height: 80vh;
+}
+
 nav{
 
 }
@@ -70,10 +75,9 @@ nav{
     display: flex;
     font-size: .66rem;
     justify-content: space-between;
-    padding: 0 .5rem;
-    position:absolute;
-    top: 90vh;
-    width: 100%;
+    margin: auto;
+    padding: 1rem .5rem;
+    width: 96%;
 }
 
 #site-header
@@ -88,7 +92,6 @@ nav{
         text-align: center;
         color: yellow;
         font-size: 1rem;
-        width: 100vw;
     }
 
     #site-header h1 a
@@ -133,7 +136,7 @@ nav{
 
 @media (min-width:1024px)
 {
-    body{background-position-y: 0%;}
+    body{background-position-y: 0;}
 
     #guest-nav{padding-right: 4rem;}
 }
