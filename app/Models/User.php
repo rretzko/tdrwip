@@ -24,8 +24,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
-        'email',
+        'username',
         'password',
     ];
 
@@ -62,5 +61,12 @@ class User extends Authenticatable
     public function person()
     {
         return $this->hasOne(Person::class);
+    }
+
+    public function searchables()
+    {
+        return $this->belongsToMany(Searchable::class)
+            ->withTimestamps()
+            ->withPivot('searchtype_id');
     }
 }

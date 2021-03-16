@@ -17,6 +17,13 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->group(function() {
+
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    Route::get('/schools', [App\Http\Controllers\Schools\SchoolController::class, 'show'])->name('schools');
+    Route::get('/studios/{studio}', [App\Http\Controllers\Studios\StudioController::class, 'show'])->name('studio.show');
+});
+

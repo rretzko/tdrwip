@@ -1,4 +1,6 @@
 <nav class="display:block md:hidden  flex flex-row justify-center mx-4 px-4 text-white py-1">
+
+    <!-- DASHBOARD -->
     <a href="{{ route('dashboard') }}"
        class="border border-gray-500 rounded px-2 py-1 ml-0.5
             {{ (strpos(Route::currentRouteName(), 'dashboard')) === 0 ? 'active' : ''  }} "
@@ -7,12 +9,14 @@
         <!-- heroicon clipboard-check -->
         <svg xmlns="http://www.w3.org/2000/svg"
              width="20px" height="20px"
-             fill="none" viewBox="0 0 24 24" stroke="currentColor">
+             fill="none" viewBox="0 0 24 24" stroke="currentColor" >
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
         </svg>
     </a>
-    <a href="#"
+
+    <!-- SCHOOLS -->
+    <a href="{{ route('schools') }}"
        class="border border-gray-500 rounded px-2 py-1 ml-0.5
         {{ (strpos(Route::currentRouteName(), 'schools')) === 0 ? 'active' : ''  }} "
        title="Schools"
@@ -25,6 +29,8 @@
                   d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/>
         </svg>
     </a>
+
+    <!-- STUDENTS -->
     <a href="#"
        class="border border-gray-500 rounded px-2 py-1 ml-0.5
         {{ (strpos(Route::currentRouteName(), 'students')) === 0 ? 'active' : ''  }} "
@@ -97,12 +103,16 @@
 
 <!-- Medium screen word menu -->
 <nav class="hidden md:flex lg:hidden flex-row justify-center text-white">
+
+    <!-- DASHBOARD: Medium -->
     <a href="{{ route('dashboard') }}"
        class="border border-gray-500 rounded px-2 py-1 ml-0.5
         {{ (strpos(Route::currentRouteName(), 'dashboard')) === 0 ? 'active' : ''  }}">
         Dashboard
     </a>
-    <a href="#"
+
+    <!-- SCHOOLS: Medium -->
+    <a href="{{ route('schools') }}"
        class="border border-gray-500 rounded px-2 py-1 ml-0.5
         {{ (strpos(Route::currentRouteName(), 'schools')) === 0 ? 'active' : ''  }}">
         Schools
@@ -136,6 +146,8 @@
 
 <!-- Large icon + screen word menu -->
 <nav class="hidden lg:flex flex-row justify-center text-white">
+
+    <!-- DASHBOARD: Large -->
     <a href="{{ route('dashboard') }}"
        class="flex flex-row border border-gray-500 rounded px-2 py-1 ml-0.5
         {{ (strpos(Route::currentRouteName(), 'dashboard')) === 0 ? 'active' : ''  }}">
@@ -150,7 +162,8 @@
         <div class="ml-1">Dashboard</div>
     </a>
 
-    <a href="#"
+    <!-- SCHOOLS: Large -->
+    <a href="{{ route('schools') }}"
        class="flex flex-row border border-gray-500 rounded px-2 py-1 ml-0.5
         {{ (strpos(Route::currentRouteName(), 'schools')) === 0 ? 'active' : ''  }}">
         <!-- heroicon library building-->

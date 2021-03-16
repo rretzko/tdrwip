@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSearchablesTable extends Migration
+class CreateGeostatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateSearchablesTable extends Migration
      */
     public function up()
     {
-        Schema::create('searchables', function (Blueprint $table) {
+        Schema::create('geostates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->string('hash',255)->unique();
+            $table->string('country_abbr');
+            $table->string('descr');
+            $table->string('abbr');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateSearchablesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('searchables');
+        Schema::dropIfExists('geostates');
     }
 }

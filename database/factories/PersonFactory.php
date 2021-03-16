@@ -24,9 +24,9 @@ class PersonFactory extends Factory
         static $sequence = 0;
         return [
             'user_id' => ++$sequence,
-            'first_name' => $this->faker->firstName(),
-            'middle_name' => $this->faker->firstName(),
-            'last_name' => $this->faker->lastName(),
+            'first' => $this->faker->firstName(),
+            'middle' => $this->faker->firstName(),
+            'last' => $this->faker->lastName(),
             'pronoun_id' => rand(1,9),
             'honorific_id' => rand(1,6),
         ];

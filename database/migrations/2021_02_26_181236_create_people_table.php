@@ -15,11 +15,11 @@ class CreatePeopleTable extends Migration
     {
         Schema::create('people', function (Blueprint $table) {
             $table->foreignId('user_id')->primary();
-            $table->string('first_name',255);
-            $table->string('middle_name', 255)->nullable();
-            $table->string('last_name', 255);
-            $table->foreignId('pronoun_id');
-            $table->foreignId('honorific_id');
+            $table->string('first',255);
+            $table->string('middle', 255)->nullable();
+            $table->string('last', 255);
+            $table->foreignId('pronoun_id')->default(1);
+            $table->foreignId('honorific_id')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });

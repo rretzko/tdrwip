@@ -13,10 +13,19 @@
                 <x-jet-section-border />
 
                 <!-- FJR 25-Feb-21 START-->
-                @livewire('profile.person')
-                <x-jet-section-border />
-
+                    @livewire('profile.person')
+                    <x-jet-section-border />
                 <!-- FJR 25-Feb-21 END -->
+
+                <!-- FJR 10-Mar-21 START-->
+                    @livewire('profile.subscriberemail')
+                    <x-jet-section-border />
+                <!-- FJR 12-Mar-21 END -->
+
+                <!-- FJR 12-Mar-21 START-->
+                    @livewire('profile.phone')
+                    <x-jet-section-border />
+                <!-- FJR 12-Mar-21 END -->
 
             @endif
 

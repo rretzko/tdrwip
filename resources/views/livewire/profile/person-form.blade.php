@@ -14,28 +14,29 @@
 
             <!-- TITLE -->
             <x-jet-label for="honorific_id" value="{{ __('Title') }}" />
-            <select wire:model.defer="honorific_id" class="mt-1 block w-full">
-                @foreach($honorifics AS $item)
-                    <option
-                        value="{{ $item->id }}"
-                        @if($honorific_id == $item->id) SELECTED @endif
-                    >
-                        {{ $item->descr.' ('.$item->abbr.')' }}
-                    </option>
-                @endforeach
-            </select>
+                <select wire:model.defer="honorific_id" class="mt-1 block w-full" >
+                    @foreach($honorifics AS $item)
+                        <option
+                            value="{{ $item->id }}"
+                            @if($honorific_id == $item->id) SELECTED @endif
+                        >
+                            {{ $item->descr.' ('.$item->abbr.')' }}
+                        </option>
+                    @endforeach
+                </select>
 
             <!-- NAME -->
-            <x-jet-label for="first_name" value="{{ __('Names') }}" />
-            <x-jet-input wire:model.defer="first_name" id="first_name" type="text" class="mt-1 block w-full"
+            <x-jet-label for="first" value="{{ __('Names') }}" />
+            <x-jet-input wire:model.defer="first" id="first" type="text" class="mt-1 block w-full"
                          placeholder="First"
             />
-            <x-jet-input-error for="first_name" class="mt-2" />
-            <x-jet-input wire:model.defer="middle_name" id="middle_name" type="text" class="mt-1 block w-full"
+            <x-jet-input-error for="first" class="mt-2" />
+
+            <x-jet-input wire:model.defer="middle" id="middle" type="text" class="mt-1 block w-full"
                          placeholder="Middle"
             />
-            <x-jet-input-error for="last_name" class="mt-2" />
-            <x-jet-input wire:model.defer="last_name" id="last_name" type="text" class="mt-1 block w-full"
+
+            <x-jet-input wire:model.defer="last" id="last" type="text" class="mt-1 block w-full"
                          placeholder="Last"
             />
             <x-jet-input-error for="last_name" class="mt-2" />

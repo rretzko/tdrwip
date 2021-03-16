@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Person;
+use App\Models\Subscriberemail;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -15,9 +16,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-         User::factory(100)->create();
-         Person::factory(20)->create();
          $this->call(HonorificsSeeder::class);
          $this->call(PronounsSeeder::class);
+         $this->call(SearchtypeSeeder::class);
+         $this->call(EmailtypeSeeder::class);
+         $this->call(PhonetypeSeeder::class);
+         $this->call(GeostateSeeder::class);
+         $this->call(RoletypeSeeder::class);
+         $this->call(GradetypeSeeder::class);
+         User::factory(100)->create();
+         Person::factory(20)->create();
+         Subscriberemail::factory(20)->create();
     }
 }
