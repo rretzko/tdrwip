@@ -1,5 +1,5 @@
 <div>
-    <x-table-form-section submit="updateProfileInformation">
+    <x-table-with-modal-form >
 
         <x-slot name="title">
             {{ __('School and Studio Information') }}
@@ -25,7 +25,7 @@
                             <thead class="bg-gray-50">
                                 <tr>
                                     @foreach($table_headers AS $header)
-                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                 {{ $header }}
                                             </th>
                                     @endforeach
@@ -43,8 +43,14 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                                             {{ $studio->years }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium ">
-                                            <a href="{{ route('studio.show',['studio' => $studio]) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium flex flex-row justify-around">
+                                            <a href="#"
+                                               wire:click.defer="edit(false,{{ $studio->id }})"
+                                               class="border border-blue-500 rounded px-2 bg-blue-400 text-white">Edit
+                                            </a>
+                                            <x-buttons.button-delete />
+
+
                                         </td>
                                     </tr>
                                 @endforeach
@@ -61,7 +67,9 @@
                                              $school->years
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium ">
-                                            <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                            <x-jet-button wire:click="toggleModal({{ $school->id }})">
+                                                {{ __('Edit') }}
+                                            </x-jet-button>
                                         </td>
                                     </tr>
                                 @empty
@@ -76,26 +84,46 @@
                 </div>
             </div>
 
-        </x-slot>
+            <!-- Modal -->
+            <x-modals.dialog wire:model="showEditModal" >
 
-        <x-slot name="form">
-            <h5 class="text-red-400">form goes here</h5>
+                <x-slot name="title">{{ $entity_type }}</x-slot>
+
+                <x-slot name="content">
+                    {{-- LOCATION --}}
+                    <x-inputs.text wire:model="name" label="{{ strtolower($entity_type) }} name" for="name" name="name" id="name" />
+                    <x-inputs.text wire:model="address01" label="address" for="address01" name="address01" id="address01" />
+                    <x-inputs.text wire:model="address02" label="" for="address02" name="address02" id="address02" />
+                    <x-inputs.text wire:model="city" label="city" for="city" name="city" id="city" />
+                    <x-inputs.select wire:select="geostate_id" :options="$options" selected="{{ $geostate_id }}" label="state" for="geostate_id" name="geostate_id" id="geostate_id" />
+                    <x-inputs.text wire:model="postalcode" label="postalcode" for="postalcode" name="postalcode" id="postalcode" />
+
+                    {{-- START/END YEARS --}}
+                    <section class="mt-4">
+                        <div class="section_descr text-sm bg-gray-200 p-2 border border-gray-400 rounded">
+                            <p>
+                                Please describe your tenure at {{ $name }}. <br />
+                                Leave 'End Year' blank if still working there.
+                            </p>
+                        </div>
+                        <x-inputs.select wire:select="startyear" :options="$startyears" selected="{{ $startyear }}" label="start year" for="startyear" name="startyear" id="startyear" />
+                        <x-inputs.select wire:select="endyear" :options="$endyears" selected="{{ $endyear }}" label="end year" for="endyear" name="endyear" id="endyear" />
+                    </section>
+
+                </x-slot>
+
+                <x-slot name="footer">
+                    <x-buttons.secondary>Cancel</x-buttons.secondary>
+                    <x-buttons.button wire:click="save" >Save</x-buttons.button>
+                </x-slot>
+            </x-modals.dialog>
+
         </x-slot>
 
         <x-slot name="actions">
 
-            @if(session('success'))
-                <x-success-message :success='session("success")' />
-            @endif
 
-            <x-jet-action-message class="mr-3" on="saved">
-                {{ __('Saved.') }}
-            </x-jet-action-message>
-
-            <x-jet-button wire:loading.attr="disabled" wire:target="photo">
-                {{ __('Save') }}
-            </x-jet-button>
         </x-slot>
 
-    </x-table-form-section>
+    </x-table-with-modal-form>
 </div>

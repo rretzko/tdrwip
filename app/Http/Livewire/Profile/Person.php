@@ -19,10 +19,10 @@ class Person extends Component
     public $honorific_id;
     public $honorifics;
     public $last;
+    public $message = 'Your personal information has been updated!';
     public $middle;
     public $pronoun_id;
     public $pronouns;
-    public $success;
 
     protected $rules= [
         'first' => ['required','string'],
@@ -43,8 +43,6 @@ class Person extends Component
 
         $this->pronouns = Pronoun::orderBy('order_by')->get();
         $this->pronoun_id = auth()->user()->person->pronoun_id;
-
-        $this->success = false;
     }
 
     public function render()
@@ -71,6 +69,7 @@ class Person extends Component
             $this->first.$this->middle.$this->last
             );
 
-        $this->success = 'Your personal information has been updated! ';
+        //emit $this->message
+        $this->emit('saved');
     }
 }

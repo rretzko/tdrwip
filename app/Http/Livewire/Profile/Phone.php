@@ -13,7 +13,7 @@ class Phone extends Component
     public $phone_mobile;
     public $phone_home;
     public $phone_work;
-    public $success;
+    public $message = 'Your phone records have been updated!';
     public $user;
 
     protected $rules= [
@@ -27,7 +27,6 @@ class Phone extends Component
         $this->phone_mobile = $this->phone('mobile');
         $this->phone_home = $this->phone('home');
         $this->phone_work = $this->phone('work');
-        $this->success = false;
     }
 
     public function render()
@@ -69,7 +68,8 @@ class Phone extends Component
             }
         }
 
-        $this->success = 'Your phone records have been updated! ';
+        //emit $this->message
+        $this->emit('saved');
     }
 
     public function updatedPhoneMobile()

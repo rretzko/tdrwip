@@ -12,8 +12,8 @@ class Subscriberemail extends Component
     public $email_other;
     public $email_personal;
     public $email_work;
-    public $success;
     public $user;
+    public $message = 'Your email records have been updated!';
 
     protected $rules= [
         'email_other' => ['email', 'min:1', 'max:255','different:email_personal','different:email_work'],
@@ -26,7 +26,6 @@ class Subscriberemail extends Component
         $this->email_other = $this->email('other');
         $this->email_personal = $this->email('personal');
         $this->email_work = $this->email('work');
-        $this->success = false;
     }
 
 
@@ -78,7 +77,8 @@ class Subscriberemail extends Component
             }
         }
 
-        $this->success = 'Your email records have been updated! ';
+        //emit $this->message
+        $this->emit('saved');
     }
 
     private function email($descr) : string

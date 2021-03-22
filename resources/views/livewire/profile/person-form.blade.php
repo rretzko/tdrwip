@@ -61,9 +61,7 @@
             {{ __('Saved.') }}
         </x-jet-action-message>
 
-        @if($success)
-            <x-success-message :success='$success' />
-        @endif
+        <x-green-success-message :message="$message" />
 
         <x-jet-button wire:loading.attr="disabled" wire:target="save">
             {{ __('Save') }}
