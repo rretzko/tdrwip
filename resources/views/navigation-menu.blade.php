@@ -1,6 +1,6 @@
-<nav class="display:block md:hidden  flex flex-row justify-center mx-4 px-4 text-white py-1">
+<nav class="display:block md:hidden  flex flex-row justify-center mx-4 mb-2 px-4 text-white py-1">
 
-    <!-- DASHBOARD -->
+    <!-- DASHBOARD: mobile -->
     <a href="{{ route('dashboard') }}"
        class="border border-gray-500 rounded px-2 py-1 ml-0.5
             {{ (strpos(Route::currentRouteName(), 'dashboard')) === 0 ? 'active' : ''  }} "
@@ -15,7 +15,7 @@
         </svg>
     </a>
 
-    <!-- SCHOOLS -->
+    <!-- SCHOOLS:mobile -->
     <a href="{{ route('schools') }}"
        class="border border-gray-500 rounded px-2 py-1 ml-0.5
         {{ (strpos(Route::currentRouteName(), 'schools')) === 0 ? 'active' : ''  }} "
@@ -30,8 +30,8 @@
         </svg>
     </a>
 
-    <!-- STUDENTS -->
-    <a href="#"
+    <!-- STUDENTS: mobile -->
+    <a href="{{ route('students') }}"
        class="border border-gray-500 rounded px-2 py-1 ml-0.5
         {{ (strpos(Route::currentRouteName(), 'students')) === 0 ? 'active' : ''  }} "
        title="Students"
@@ -102,7 +102,7 @@
 </nav>
 
 <!-- Medium screen word menu -->
-<nav class="hidden md:flex lg:hidden flex-row justify-center text-white">
+<nav class="hidden md:flex lg:hidden flex-row justify-center text-white mb-4">
 
     <!-- DASHBOARD: Medium -->
     <a href="{{ route('dashboard') }}"
@@ -117,7 +117,9 @@
         {{ (strpos(Route::currentRouteName(), 'schools')) === 0 ? 'active' : ''  }}">
         Schools
     </a>
-    <a href="#"
+
+    <!-- STUDENTS: Medium -->
+    <a href="{{ route('students') }}"
        class="border border-gray-500 rounded px-2 py-1 ml-0.5
         {{ (strpos(Route::currentRouteName(), 'students')) === 0 ? 'active' : ''  }}">
         Students
@@ -145,7 +147,7 @@
 </nav>
 
 <!-- Large icon + screen word menu -->
-<nav class="hidden lg:flex flex-row justify-center text-white">
+<nav class="hidden lg:flex flex-row justify-center text-white mb-4">
 
     <!-- DASHBOARD: Large -->
     <a href="{{ route('dashboard') }}"
@@ -175,7 +177,9 @@
         </svg>
         <div class="ml-1">Schools</div>
     </a>
-    <a href="#"
+
+    <!-- STUDENTS: Large -->
+    <a href="{{ route('students') }}"
        class="flex flex-row border border-gray-500 rounded px-2 py-1 ml-0.5
         {{ (strpos(Route::currentRouteName(), 'students')) === 0 ? 'active' : ''  }}">
         <!-- heroicon academic-cap -->

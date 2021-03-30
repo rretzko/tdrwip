@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStudiodetailsTable extends Migration
+class CreateTenuresTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateStudiodetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('studiodetails', function (Blueprint $table) {
+        Schema::create('tenures', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('studio_id')->constrained();
-            $table->date('opened')->nullable();
-            $table->date('closed')->nullable();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('school_id')->constrained();
+            $table->unsignedSmallInteger('startyear')->default(1960);
+            $table->unsignedSmallInteger('endyear')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateStudiodetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('studiodetails');
+        Schema::dropIfExists('tenures');
     }
 }

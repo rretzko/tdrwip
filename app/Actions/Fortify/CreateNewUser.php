@@ -6,10 +6,12 @@ use App\Models\Emailtype;
 use App\Models\Geostate;
 use App\Models\Person;
 use App\Models\Role;
+use App\Models\School;
 use App\Models\Searchable;
 use App\Models\Studio;
 use App\Models\Subscriberemail;
 use App\Models\Teacher;
+use App\Models\Tenure;
 use App\Models\User;
 use App\Models\Username;
 use App\Rules\FirstnameLastnameRule;
@@ -140,13 +142,28 @@ class CreateNewUser implements CreatesNewUsers
         $s->add($user, 'name', sprintf("%s%s%s", $person->first, $person->middle, $person->last));
     }
 
+    /**
+     * NOTE: Studio is a school
+     * @param User $user
+     */
     private function createStudio(User $user)
     {
-        Studio::create(
+        $school = School::create(
             [
-                'user_id' => $user->id,
                 'name' => 'Studio '.$user->person->last,
                 'geostate_id' => Geostate::where('abbr', 'NJ')->first()->id,
+            ]
+        );
+
+        $school->refresh();
+
+        $user->schools()->attach($school);
+
+        Tenure::create(
+            [
+                'user_id' => $user->id,
+                'school_id' => $school->id,
+                'startyear' > date('Y'),
             ]
         );
     }

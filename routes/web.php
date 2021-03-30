@@ -23,7 +23,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
         return view('dashboard');
     })->name('dashboard');
 
+    Route::get('/students', [App\Http\Controllers\Students\StudentController::class, 'show'])->name('students');
     Route::get('/schools', [App\Http\Controllers\Schools\SchoolController::class, 'show'])->name('schools');
-    Route::get('/studios/{studio}', [App\Http\Controllers\Studios\StudioController::class, 'show'])->name('studio.show');
 });
 
