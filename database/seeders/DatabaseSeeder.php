@@ -24,8 +24,9 @@ class DatabaseSeeder extends Seeder
          $this->call(GeostateSeeder::class);
          $this->call(RoletypeSeeder::class);
          $this->call(GradetypeSeeder::class);
-         User::factory(100)->create();
-         Person::factory(20)->create();
-         Subscriberemail::factory(20)->create();
+         $this->call(StudenttypeSeeder::class);
+         //User::factory(100)->create();
+         //Person::factory(20)->create();
+         //Subscriberemail::factory(20)->create();
     }
 }

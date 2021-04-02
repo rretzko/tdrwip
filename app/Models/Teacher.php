@@ -35,11 +35,6 @@ class Teacher extends Model
             : $this->GradetypeRemove($school, $gradetype_id);
     }
 
-    public function schools()
-    {
-        return $this->belongsToMany(School::class,'user_id', 'user_id');
-    }
-
     public function tenureYearsAtSchool($school_id)
     {
         $years = 0;

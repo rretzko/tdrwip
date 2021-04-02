@@ -33,7 +33,7 @@
     </div> <!-- END OF PAGE DEFINITION -->
 
     <!-- PAGE TABLE -->
-    <x-studentroster.multi-column-directory />
+    <x-studentroster.multi-column-directory  countstudents={{$countstudents}} :schools='$schools' :temp='$temp' />
 
 </div>
 

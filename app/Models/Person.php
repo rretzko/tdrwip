@@ -15,8 +15,6 @@ class Person extends Model
 
     protected $primaryKey = 'user_id';
 
-
-
     public function honorific()
     {
         return $this->hasOne(Honorific::class);

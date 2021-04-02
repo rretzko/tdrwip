@@ -1,11 +1,24 @@
-<div class=" "><!-- flex bg-green-200 -->
+@props([
+    'countstudents',
+    'temp',
+    'schools',
+])
+<div class="mx-4"><!-- flex bg-green-200 -->
     <div class="bg-white "><!-- flex flex-col order-first flex flex-col flex-shrink-0 border-r border-gray-200 -->
 
         <div class="px-2 space-y-2"><!-- mx-4 px-4 pt-2 pb-2 bg-yellow-200  -->
-            <h2 class="text-lg font-medium text-gray-900 ">Directory</h2>
+            <div class="text-lg font-medium text-gray-900 ">
+                Directory for:
+                <select name="school_id">
+                    @foreach($schools AS $key => $value)
+                        <option value="{{$key}}">{{$value}}</option>
+                    @endforeach
+                </select>
+            </div>
+
             <!-- text-lg font-medium text-gray-900 -ml-6  -->
             <p class="mt-1 text-sm text-gray-600 ">
-                Search directory of 3,018 employees
+                Search directory of {{ $countstudents }} student{{ ($countstudents > 1) ? 's' : '' }}
             </p>
 
             <form class="mt-6 flex" action="#">
