@@ -28,11 +28,39 @@ class Teacher extends Model
         return $this->belongsTo(Person::class, 'user_id', 'user_id');
     }
 
+    /**
+     * Return the School object for the currently selected school
+     */
+    public function school()
+    {
+        return School::find(Userconfig::getValue('school_id', auth()->id()));
+    }
+
     public function saveGradetype(School $school, $gradetype_id, bool $value)
     {
         ($value)
             ? $this->GradetypeAdd($school, $gradetype_id)
             : $this->GradetypeRemove($school, $gradetype_id);
+    }
+
+    public function students()
+    {
+        $a = [];
+        $user_ids = DB::table('student_teacher')
+            ->where('teacher_user_id', '=', auth()->id())
+            ->get('student_user_id');
+        $school = $this->school();
+
+        foreach($user_ids AS $stdclass){
+            $s = Student::find($stdclass->student_user_id);
+            $s->student_user_id = $stdclass->student_user_id;
+            $s->teacher_user_id = auth()->id();
+            $s->school_id = $school->id;
+
+            $a[] = $s;
+        }
+
+        return collect($a);
     }
 
     public function tenureYearsAtSchool($school_id)

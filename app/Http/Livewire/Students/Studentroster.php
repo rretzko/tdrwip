@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Students;
 
+use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -11,17 +12,20 @@ class Studentroster extends Component
     public $countstudents;
     public $display_hide = true; //i.e. display
     public $schools;
-    public $temp = [];
+    public $students = NULL;
 
     protected $rules = [
+
 
     ];
 
     public function mount()
     {
-        $this->countstudents = $this->countStudents();
+
         $this->schools = $this->schools();
-        $this->temp = [0 => '23456'];
+        $this->students = $this->students();
+        $this->countstudents = $this->students->count();
+
     }
 
     public function render()
@@ -30,13 +34,6 @@ class Studentroster extends Component
     }
 
 /** END OF PUBLIC FUNCTIONS **************************************************/
-
-    private function countStudents()
-    {
-        return DB::table('student_teacher')
-            ->where('teacher_user_id', '=', auth()->id())
-            ->count('student_user_id');
-    }
 
     private function schools()
     {
@@ -52,5 +49,13 @@ class Studentroster extends Component
 
         return $a;
     }
+
+    private function students()
+    {
+        $teacher = Teacher::find(auth()->id());
+        return $teacher->students();
+    }
+
+
 
 }

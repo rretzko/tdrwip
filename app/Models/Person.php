@@ -15,6 +15,24 @@ class Person extends Model
 
     protected $primaryKey = 'user_id';
 
+    public function getFullNameAttribute()
+    {
+        $str = $this->first;
+        $str .= (strlen($this->middle)) ? ' '.$this->middle : '';
+        $str .= ' '.$this->last;
+
+        return $str;
+    }
+
+    public function getFullNameAlphaAttribute()
+    {
+        $str = $this->last;
+        $str .= ', '.$this->first;
+        $str .= (strlen($this->middle)) ? ' '.$this->middle : '';
+
+        return $str;
+    }
+
     public function honorific()
     {
         return $this->hasOne(Honorific::class);
@@ -28,6 +46,11 @@ class Person extends Model
     public function pronoun()
     {
         return $this->hasOne(Pronoun::class);
+    }
+
+    public function student()
+    {
+        return $this->hasOne(Student::class,'user_id', 'user_id');
     }
 
     public function subscriberemails()
