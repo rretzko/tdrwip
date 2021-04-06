@@ -13,9 +13,18 @@ class Userconfig extends Model
 
     static public function getValue($descr, $user_id)
     {
-        return (self::exists($descr,$user_id))
-            ? self::get($descr,$user_id)
-            : self::default($descr,$user_id);
+        return (self::exists($descr,$user_id)) //if the $descr exists for $user_id
+            ? self::get($descr,$user_id) //return that value, otherwise
+            : self::default($descr,$user_id); //create the $descr row from known data and then return that value
+    }
+
+    static public function setValue($descr, $user_id, $value)
+    {
+        if(! self::exists($descr,$user_id)){
+            self::defaultSave($descr, $user_id, $value);
+        }else{
+            self::defaultUpdate($descr, $user_id, $value);
+        }
     }
 
 /** END OF PUBLIC FUNCTIONS **************************************************/
@@ -62,5 +71,15 @@ class Userconfig extends Model
             ->where('user_id', '=', $user_id)
             ->where('descr', '=', $descr)
             ->value('value');
+    }
+
+    private static function defaultUpdate($descr, $user_id, $value)
+    {
+        DB::table('userconfigs')
+            ->update([
+               'user_id' => $user_id,
+               'descr' => $descr,
+               'value' => $value,
+            ]);
     }
 }

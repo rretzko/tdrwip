@@ -43,14 +43,22 @@ class Teacher extends Model
             : $this->GradetypeRemove($school, $gradetype_id);
     }
 
-    public function students()
+    public function students($search='')
     {
         $a = [];
-        $user_ids = DB::table('student_teacher')
-            ->where('teacher_user_id', '=', auth()->id())
-            ->get('student_user_id');
-        $school = $this->school();
 
+        $user_ids = DB::table('student_teacher')
+            ->join('people','student_teacher.student_user_id', '=','people.user_id')
+            ->join('school_user', function($join) {
+                $join->on('student_teacher.student_user_id', '=', 'school_user.user_id')
+                    ->where('school_user.school_id', '=', Userconfig::getValue('school_id', $this->user_id));
+                })
+            ->where('student_teacher.teacher_user_id', '=', auth()->id())
+            ->where('people.last', 'LIKE', '%'.$search.'%')
+            ->get('student_teacher.student_user_id');
+
+        $school = $this->school();
+//dd($school);
         foreach($user_ids AS $stdclass){
             $s = Student::find($stdclass->student_user_id);
             $s->student_user_id = $stdclass->student_user_id;

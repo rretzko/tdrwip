@@ -1,24 +1,15 @@
 @props([
     'countstudents',
     'temp',
-    'schools',
-
+    'search',
 ])
 <div class="mx-4"><!-- flex bg-green-200 -->
     <div class="bg-white "><!-- flex flex-col order-first flex flex-col flex-shrink-0 border-r border-gray-200 -->
 
         <div class="px-2 space-y-2"><!-- mx-4 px-4 pt-2 pb-2 bg-yellow-200  -->
-            <div class="text-lg font-medium text-gray-900 ">
-                Directory for:
-                <select name="school_id">
-                    @foreach($schools AS $key => $value)
-                        <option value="{{$key}}">{{$value}}</option>
-                    @endforeach
-                </select>
-            </div>
 
             <!-- text-lg font-medium text-gray-900 -ml-6  -->
-            <p class="mt-1 text-sm text-gray-600 ">
+            <p class=" text-sm text-gray-600 pt-2">
                 Search directory of {{ $countstudents }} student{{ ($countstudents > 1) ? 's' : '' }}
             </p>
 
@@ -28,7 +19,7 @@
                     <div class="relative rounded-md shadow-sm">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
 
-                            <!-- Heroicon name: solid/search -->
+                            <!-- Heroicon name: magnifying glass solid/search -->
                             <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                  fill="currentColor" aria-hidden="true">
                                 <path fill-rule="evenodd"
@@ -36,10 +27,11 @@
                                       clip-rule="evenodd"/>
                             </svg>
                         </div>
-                        <input type="search" name="search" id="search"
-                               class="focus:ring-pink-500 focus:border-pink-500 block w-11/12 pl-10 sm:text-sm border-gray-300 rounded-md"
-                               placeholder="Search">
+                        <input wire:model="search" type="search" name="search" id="search"
+                               class="focus:ring-pink-500 focus:border-pink-500 block w-3/12 pl-10 sm:text-sm border-gray-300 rounded-md"
+                               placeholder="Search Students">
                     </div>
+
                 </div>
                 <button type="submit"
                         class="inline-flex  px-3.5 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">

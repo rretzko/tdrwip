@@ -33,7 +33,8 @@
     </div> <!-- END OF PAGE DEFINITION -->
 
     <!-- PAGE TABLE -->
-    <x-studentroster.multi-column-directory  countstudents={{$countstudents}} :schools='$schools' />
+    <x-studentroster.school-selector :schools="$schools" schoolid={{$schoolid}}/>
+    <x-studentroster.multi-column-directory  countstudents={{$countstudents}} :schools='$schools' :search='$search' />
 
     <div class="flex flex-col px-4">
         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -60,8 +61,9 @@
                         </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
+
                         @forelse($students AS $student)
-                            <tr>
+                            <tr class="{{ ($loop->iteration % 2) ? 'bg-yellow-50' : '' }} ">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0 h-10 w-10">
@@ -69,7 +71,7 @@
                                         </div>
                                         <div class="ml-4">
                                             <div class="text-sm font-medium text-gray-900">
-                                                {{$student->person->fullNameAlpha}}
+                                                {{$student->person->fullNameAlpha ?? 'null_object'}}
                                             </div>
                                             <div class="text-sm text-gray-500">
                                                 jane.cooper@example.com
@@ -94,7 +96,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr><td colspan="5">No students found</td></tr>
+                            <tr><td colspan="5" class="text-center text-gray-500">No students found {{$students->count()}}</td></tr>
                         @endforelse
 
                         <!-- More items... -->
