@@ -38,6 +38,12 @@ class Userconfig extends Model
         return self::get($descr, $user_id);
     }
 
+    private static function defaultFilter_studentroster($descr, $user_id)
+    {
+        $user = User::find($user_id);
+        self::defaultSave($descr, $user_id, 'all');
+    }
+
     private static function defaultSave($descr, $user_id, $value)
     {
         DB::table('userconfigs')
@@ -57,6 +63,17 @@ class Userconfig extends Model
         self::defaultSave($descr, $user_id, $school->id);
     }
 
+    private static function defaultUpdate($descr, $user_id, $value)
+    {
+        DB::table('userconfigs')
+                ->where('user_id', $user_id)
+                ->where('descr',$descr)
+                ->update([
+                    'value' => $value,
+                    'updated_at' => Carbon::now(),
+                ]);
+    }
+
     private static function exists($descr, $user_id)
     {
         return DB::table('userconfigs')
@@ -73,13 +90,5 @@ class Userconfig extends Model
             ->value('value');
     }
 
-    private static function defaultUpdate($descr, $user_id, $value)
-    {
-        DB::table('userconfigs')
-            ->update([
-               'user_id' => $user_id,
-               'descr' => $descr,
-               'value' => $value,
-            ]);
-    }
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use \App\Traits\SenioryearTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class Teacher extends Model
 {
-    use HasFactory;
+    use HasFactory, SenioryearTrait;
 
     protected $fillable = ['user_id'];
     protected $primaryKey = 'user_id';
@@ -47,23 +48,34 @@ class Teacher extends Model
     {
         $a = [];
 
+        //filter students by all, alum or current status
+        $filter = Userconfig::getValue('filter_studentroster', $this->user_id);
+
+        //define the current senior year
+        $sr_year = $this->senioryear();
+
+        $operator = ($filter === 'alum') ? '<' : '>';
+        $value = ($filter === 'all') ? 0 : (($filter === 'alum') ? $sr_year : ($sr_year - 1));//(filter === current)
+
+        //returns array
         $user_ids = DB::table('student_teacher')
             ->join('people','student_teacher.student_user_id', '=','people.user_id')
             ->join('school_user', function($join) {
                 $join->on('student_teacher.student_user_id', '=', 'school_user.user_id')
                     ->where('school_user.school_id', '=', Userconfig::getValue('school_id', $this->user_id));
                 })
+            ->join('students', function($join) use ($operator, $value) {
+                $join->on('student_teacher.student_user_id', '=', 'students.user_id')
+                    ->where('students.classof', $operator, $value);
+            })
             ->where('student_teacher.teacher_user_id', '=', auth()->id())
             ->where('people.last', 'LIKE', '%'.$search.'%')
-            ->get('student_teacher.student_user_id');
+            ->pluck('student_teacher.student_user_id');
 
-        $school = $this->school();
-//dd($school);
-        foreach($user_ids AS $stdclass){
-            $s = Student::find($stdclass->student_user_id);
-            $s->student_user_id = $stdclass->student_user_id;
+        foreach(Student::with(['person', 'shirtsize'])->findMany($user_ids) AS $s){
+            $s->student_user_id = $s->user_id;
             $s->teacher_user_id = auth()->id();
-            $s->school_id = $school->id;
+            $s->school_id = $this->school()->id;
 
             $a[] = $s;
         }

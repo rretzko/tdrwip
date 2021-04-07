@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
          $this->call(RoletypeSeeder::class);
          $this->call(GradetypeSeeder::class);
          $this->call(StudenttypeSeeder::class);
+         $this->call(ShirtsizeSeeder::class);
          //User::factory(100)->create();
          //Person::factory(20)->create();
          //Subscriberemail::factory(20)->create();

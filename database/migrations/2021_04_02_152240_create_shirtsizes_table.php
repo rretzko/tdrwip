@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserconfigsTable extends Migration
+class CreateShirtsizesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateUserconfigsTable extends Migration
      */
     public function up()
     {
-        Schema::create('userconfigs', function (Blueprint $table) {
+        Schema::create('shirtsizes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->string('descr', 60);
-            $table->string('value');
+            $table->string('descr',24);
+            $table->string('abbr', 8);
+            $table->integer('orderby');
             $table->timestamps();
-            $table->unique(['user_id','descr']);
         });
     }
 
@@ -30,6 +29,6 @@ class CreateUserconfigsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('userconfigs');
+        Schema::dropIfExists('shirtsizes');
     }
 }

@@ -33,6 +33,11 @@ class Person extends Model
         return $str;
     }
 
+    public function getHonorificDescrAttribute()
+    {
+        return Honorific::find($this->honorific_id)->abbr;
+    }
+
     public function honorific()
     {
         return $this->hasOne(Honorific::class);
