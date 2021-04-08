@@ -37,7 +37,7 @@
     <x-studentroster.multi-column-directory  countstudents={{$countstudents}} :schools='$schools' :search='$search' :filter='$filter'/>
     <div class="{{$displayform ? 'flex' : ''}} w-12/12">
         <x-studentroster.table :students='$students' :displayform='$displayform' />
-        <x-studentroster.form :displayform="$displayform" :student="$student" :pronouns="$pronouns" />
+        <x-studentroster.form :displayform="$displayform" :pronouns="$pronouns" :heights="$heights" :shirtsizes="$shirtsizes" :student="$student"  />
     </div>
 
 </div>

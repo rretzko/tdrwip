@@ -17,7 +17,7 @@ class CreateShirtsizesTable extends Migration
             $table->id();
             $table->string('descr',24);
             $table->string('abbr', 8);
-            $table->integer('orderby');
+            $table->integer('order_by');
             $table->timestamps();
         });
     }
