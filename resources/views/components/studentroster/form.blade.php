@@ -2,11 +2,13 @@
 'displayform',
 'footinches',
 'heights',
+'photo',
 'pronouns',
 'shirtsizes',
 'student' => false,
 ])
-<div class="{{$displayform ? 'w-8/12 -ml-4 bg-blue-50 text-black border border border-black border-l-3 border-t-0 border-r-0' : 'hidden'}}" >
+<div
+    class="{{$displayform ? 'w-8/12 -ml-4 bg-blue-50 text-black border border border-black border-l-3 border-t-0 border-r-0' : 'hidden'}}">
     @if($student)
         <div>
             {{-- SECTION I  --}}
@@ -23,20 +25,16 @@
                     <form wire:submit.prevent="biography">
                         <div class="shadow sm:rounded-md sm:overflow-hidden">
                             <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+
+                                {{--  SYS.ID --}}
+                                <div class="grid grid-cols-3 gap-6">
+                                    Sys.Id. {{$student->user_id}}
+                                </div>
+
                                 {{-- USERNAME --}}
                                 <div class="grid grid-cols-3 gap-6">
                                     <div class="col-span-3 sm:col-span-2">
-                                        <label for="company_website" class="block text-sm font-medium text-gray-700">
-                                            Username
-                                            <span class="text-small text-red-600">
-                                                    (Make sure you tell the student if you are changing their username!)
-                                                </span>
-                                        </label>
-                                        <div class="mt-1 flex rounded-md shadow-sm">
-                                            <input wire:model="username" type="text" name="username" id="username"
-                                                   class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
-                                                   placeholder="username">
-                                        </div>
+                                        <x-inputs.text label="Username" for="username"/>
                                     </div>
                                 </div>
 
@@ -47,11 +45,15 @@
                                     </label>
                                     <div class="mt-1 flex items-center">
                                         <span class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
-                                          <svg class="h-full w-full text-gray-300" fill="currentColor"
-                                               viewBox="0 0 24 24">
-                                            <path
-                                                d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"/>
-                                          </svg>
+                                            @if($student->person->user->profile_photo_path)
+                                                <img  class="rounded rounded-2xl h-20 w-20" src="/storage/{{ $student->person->user->profile_photo_path }}" />
+                                            @else
+                                              <svg class="h-full w-full text-gray-300" fill="currentColor"
+                                                   viewBox="0 0 24 24">
+                                                <path
+                                                    d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"/>
+                                              </svg>
+                                            @endif
                                         </span>
                                         <button type="button"
                                                 class="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -60,9 +62,30 @@
                                     </div>
                                 </div>
 
+                                {{-- PHOTO  --}}
+                                <div>
+                                    <form wire:submit.prevent="savePhoto">
+
+                                        <input type="file" wire:model="photo">
+
+                                        @error('photo')<div class="error text-red-600">{{ $message }}</div> @enderror
+
+                                        <button type="submit">Save Photo</button>
+
+                                        @if($photo)
+                                            <div>
+                                                <label>Photo Preview: </label>
+                                                <img  class="rounded rounded-2xl h-20 w-20" src="{{ $photo->temporaryUrl() }}" />
+                                            </div>
+                                        @endif
+
+                                    </form>
+                                </div>
+
+                                {{-- ORIGINAL PHOTO --}}
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700">
-                                        Cover photo
+                                        Profile photo
                                     </label>
                                     <div
                                         class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
@@ -89,9 +112,9 @@
                                     </div>
                                 </div>
 
-                                <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                                    <x-buttons.button-save />
-                                </div>
+                                {{-- SAVE --}}
+                                <x-saves.save-button-with-message message="Biography information saved!"
+                                                                  trigger="saved-biography"/>
 
                             </div>
                         </div>
@@ -120,57 +143,51 @@
                                     <div class="px-4 py-5 sm:p-6">
                                         <div class="grid grid-cols-6 gap-6">
                                             <div class="col-span-2 sm:col-span-2">
-                                                <label for="first" class="block text-sm font-medium text-gray-700">First
-                                                    name</label>
-                                                <input wire:model="first" type="text" name="first" id="first" autocomplete="given-name"
-                                                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                                <x-inputs.text label="First name" for="first"/>
                                             </div>
 
                                             <div class="col-span-2 sm:col-span-2">
-                                                <label for="last" class="block text-sm font-medium text-gray-700">Middle
-                                                    name</label>
-                                                <input wire:model="middle" type="text" name="middle" id="middle"
-                                                       autocomplete="family-name"
-                                                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                                <x-inputs.text label="Middle name" for="middle"/>
                                             </div>
 
                                             <div class="col-span-2 sm:col-span-2">
-                                                <label for="last" class="block text-sm font-medium text-gray-700">Last
-                                                    name</label>
-                                                <input wire:model="last" type="text" name="last" id="last" autocomplete="family-name"
-                                                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                                <x-inputs.text label="Last name" for="last"/>
                                             </div>
 
                                             {{-- PROUNOUN --}}
                                             <div class="col-span-6 sm:col-span-4">
-                                                <x-inputs.select wire:select.defer="pronoun_id" :options="$pronouns"
-                                                                 label="preferred pronoun" for="pronoun_id" name="pronoun_id"
+                                                <x-inputs.select :options="$pronouns"
+                                                                 label="preferred pronoun" for="pronoun_id"
+                                                                 name="pronoun_id"
                                                                  id="pronoun_id"/>
                                             </div>
 
                                             {{-- HEIGHT --}}
                                             <div class="col-span-6 sm:col-span-4">
-                                                <x-inputs.select wire:select.defer="height" :options="$heights" label="Height in inches"
+                                                <x-inputs.select :options="$heights" label="Height in inches"
                                                                  for="height" name="height" id="height"/>
                                             </div>
 
                                             {{-- SHIRTSIZE --}}
                                             <div class="col-span-6 sm:col-span-4">
-                                                <x-inputs.select wire:select.defer="shirtsize_id" :options="$shirtsizes"
-                                                                 label="shirt size" for="shirtsize_id" name="shirtsize_id"
+                                                <x-inputs.select :options="$shirtsizes"
+                                                                 label="shirt size" for="shirtsize_id"
+                                                                 name="shirtsize_id"
                                                                  id="shirtsize_id"/>
                                             </div>
 
                                             {{-- BIRTHDAY --}}
                                             <div class="col-span-6 sm:col-span-4">
-                                                <x-inputs.date wire:select.defer="birthday" label="birthday" for="birthday"
+                                                <x-inputs.date wire:select.defer="birthday" label="birthday"
+                                                               for="birthday"
                                                                name="birthday" id="birthday"/>
                                             </div>
 
                                         </div>
-                                        <div class="px-4 py-3 bg-gray-50 text-right sm:px-6 mt-4">
-                                            <x-buttons.button-save />
-                                        </div>
+
+                                        {{-- SAVE --}}
+                                        <x-saves.save-button-with-message message="Personal information saved!"
+                                                                          trigger="saved-personal"/>
 
                                     </div>
                                 </div>

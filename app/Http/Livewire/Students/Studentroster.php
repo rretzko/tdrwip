@@ -9,18 +9,23 @@ use App\Models\Teacher;
 use App\Models\User;
 use App\Models\Userconfig;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
+use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class Studentroster extends Component
 {
+    use WithFileUploads,WithPagination;
+
     public $countstudents=0;
     public $displayform = false;
     public $display_hide = true; //show the (def.) value
     public $filter;
     public $heights;
+    public $photo = NULL;
+    public $photo_stored = NULL;
     public $pronouns;
-    public $saved_biography = false;
-    public $saved_personal = false;
     public $schoolid;
     public $schools;
     public $search = '';
@@ -28,23 +33,20 @@ class Studentroster extends Component
     public $student = NULL;
     public $students = NULL;
 
-    //student values
+    //student validated values
     public $birthday;
     public $first;
     public $height;
     public $last;
     public $middle;
     public $pronoun_id;
+    public $shirtsize_id;
     public $username;
 
-    protected $rules = [
-        'birthday' => ['date', 'nullable'],
-        'first' => ['string', 'required', 'min:2','max:60',],
-        'height' => ['integer', 'required', 'min:30','max:72'],
-        'middle' => ['string', 'nullable', 'max:60',],
-        'pronoun_id' => ['required', 'integer'],
-        'last' => ['string', 'required', 'min:2', 'max:60',],
-        'username' => ['string', 'required'],
+    protected $validationAttributes = [
+        'first' => 'first name',
+        'last' => 'last name',
+        'middle' => 'middle name'
     ];
 
     public function mount()
@@ -65,12 +67,39 @@ class Studentroster extends Component
         return view('livewire.students.studentroster');
     }
 
+    public function rules()
+    {
+        return [
+            'birthday' => ['date', 'nullable'],
+            'first' => ['string', 'required', 'min:2','max:60',],
+            'height' => ['integer', 'required', 'min:30','max:72'],
+            'middle' => ['string', 'nullable', 'max:60',],
+            'pronoun_id' => ['required', 'integer'],
+            'last' => ['string', 'required', 'min:2', 'max:60',],
+            'shirtsize_id' => ['required', 'integer'],
+            'username' => ['string', 'required', 'min:3','max:61',Rule::unique('users')->ignore($this->student->user_id)],
+        ];
+    }
+
     /**
      * User is submitting the Biography form
      */
     public function biography()
     {
-        $this->saved_biography = true;
+        $this->validate();
+
+        $user = $this->student->person->user;
+        $user->username = $this->username;
+        if($this->photo){
+            $user->profile_photo_path = $this->photo->store('profile-photos');
+        }
+        //$user->profile_photo_path = $this->photo['filename'];
+
+        $user->save();
+
+        $user->refresh();
+
+        $this->emit('saved-biography');
     }
 
     /**
@@ -78,8 +107,35 @@ class Studentroster extends Component
      */
     public function personal()
     {
-        $this->saved_personal = true;
+        $this->validate();
+
+        $person = $this->student->person;
+        $person->first = $this->first;
+        $person->middle = $this->middle;
+        $person->last = $this->last;
+        $person->pronoun_id = $this->pronoun_id;
+        $person->save();
+
+        $this->student->height = $this->height;
+        $this->student->birthday = $this->birthday;
+        $this->student->shirtsize_id = $this->shirtsize_id;
+        $this->student->save();
+
+        $this->student->refresh();
+
+        $this->emit('saved-personal');
     }
+
+    public function savePhoto()
+    {dd(__LINE__);
+        $this->validate([
+            'photo' => ['image', 'max:1024',],
+        ]);
+dd($this->photo);
+        $this->photo->store('test-photos');
+
+    }
+
     public function studentForm($user_id)
     {
         //display the form
@@ -92,12 +148,20 @@ class Studentroster extends Component
         $this->last = $this->student->person->last;
         $this->middle = $this->student->person->middle;
         $this->pronoun_id = $this->student->person->pronoun_id;
+        $this->shirtsize_id = $this->student->shirtsize_id;
         $this->username = $this->student->person->user->username;
     }
 
     public function updatedFilter()
     {
         Userconfig::setValue('filter_studentroster', auth()->id(), $this->filter);
+    }
+
+    public function updatedPhoto()
+    {
+        $this->validate([
+            'photo' => ['image', 'max:1024',],
+        ]);
     }
 
     public function updatedSchoolid()
