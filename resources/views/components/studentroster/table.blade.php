@@ -33,8 +33,18 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-10 w-10">
-                                        <img class="h-10 w-10 rounded-full"
-                                             src="@if($student->person->user->profile_photo_path) {{ '/storage/'.$student->person->user->profile_photo_path }} @else https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixqx=tD9sDKeYHB&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60 @endif" alt="">
+                                        @if($student->person->user->profile_photo_path)
+                                            <img class="h-10 w-10 rounded-full"
+                                                 src="{{ '/storage/'.substr($student->person->user->profile_photo_path,7) }}"
+                                                 alt="Profile image">
+                                        @else
+                                            <svg class='h-full w-full text-gray-300 rounded-full' fill='currentColor'
+                                                 viewBox='0 0 24 24'>
+                                                <path
+                                                    d='M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z'/>
+                                            </svg>
+                                        @endif
+
                                     </div>
                                     <div class="ml-4">
                                         <div class="text-sm font-medium text-gray-900">
@@ -67,8 +77,8 @@
                                 <div class="text-sm text-gray-500">{{$student->phoneHome->phone}} @if($student->phoneHome->phone)(h) @endif</div>
                             </td>
                             <td class="{{$displayform ? 'hidden' : 'px-6 py-4 whitespace-nowrap'}}">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                  Active
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $student->status === 'alum' ? 'bg-indigo-100 text-indigo-800' : 'bg-green-100 text-green-800' }}">
+                                  {{ $student->status }}
                                 </span>
                             </td>
                             <td class="{{$displayform ? 'hidden' : 'px-6 py-4 whitespace-nowrap text-sm text-gray-500'}}">

@@ -91,15 +91,24 @@ class Studentroster extends Component
         $user = $this->student->person->user;
         $user->username = $this->username;
         if($this->photo){
-            $user->profile_photo_path = $this->photo->store('profile-photos');
+            $user->profile_photo_path = $this->photo->store('public');
+            //store('profile-photos') stores the file into storage/app/profile-photos directory.
         }
-        //$user->profile_photo_path = $this->photo['filename'];
 
         $user->save();
 
         $user->refresh();
 
         $this->emit('saved-biography');
+    }
+
+    public function delete($id)
+    {
+        if($id === 'photo'){
+
+            $this->student->person->user->profile_photo_path = NULL;
+            $this->student->person->user->save();
+        }
     }
 
     /**
@@ -127,17 +136,19 @@ class Studentroster extends Component
     }
 
     public function savePhoto()
-    {dd(__LINE__);
+    {
         $this->validate([
             'photo' => ['image', 'max:1024',],
         ]);
-dd($this->photo);
-        $this->photo->store('test-photos');
 
+        $this->photo->store('test-photos');
     }
 
     public function studentForm($user_id)
     {
+        //re-initialize to prevent display when next-student is edited
+        $this->photo = NULL;
+
         //display the form
         $this->displayform = true;
 

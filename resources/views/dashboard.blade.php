@@ -1,18 +1,30 @@
-<x-app-layout >
+<x-app-layout>
 
-    <!-- {{--
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <x-jet-welcome />
+    <div class="relative bg-indigo-600">
+        <div class="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
+            <div class="pr-16 sm:text-center text-white sm:px-16 space-x-3">
+                <form method="POST" action="{{ route('impersonation.show') }}">
+                    @csrf
+                    <label for="user_id">Impersonate Director</label>
+                    <select name="user_id" class="text-black">
+                        @foreach($teachers AS $teacher)
+                            <option value="{{ $teacher->user_id }}">{{ $teacher->person->fullNameAlpha }}</option>
+                        @endforeach
+                    </select>
+                    <x-buttons.button-save />
+                </form>
+            </div>
+            <div class="@if(session()->has('impersonating')) block @else hidden @endif pr-16 sm:text-center sm:px-16">
+                <p class="font-medium text-white space-x-3">
+                    <span class="hidden md:inline">
+                      You are impersonating: {{ auth()->user()->username }}
+                    </span>
+                    <span class="">
+                        <a href="#" class="text-yellow-300">Leave Impersonation</a>
+                    </span>
+                </p>
             </div>
         </div>
     </div>
---}} -->
+
 </x-app-layout>

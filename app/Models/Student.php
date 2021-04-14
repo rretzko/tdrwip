@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use \App\Traits\SenioryearTrait;
+use App\Traits\SenioryearTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -73,6 +73,15 @@ class Student extends Model
         return Phone::where('user_id',$this->user_id)
                 ->where('phonetype_id', Phonetype::where('descr', 'phone_student_mobile')->first()->id)
                 ->first() ?? new Phone;
+    }
+
+    public function getStatusAttribute()
+    {
+        if($this->senioryear() > $this->classof){
+            return 'alum';
+        }
+
+        return 'current';
     }
 
     public function person()

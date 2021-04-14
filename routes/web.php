@@ -19,10 +19,15 @@ Route::get('/', function () {
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function() {
 
-    Route::get('/dashboard', function () {
+    /*Route::get('/dashboard', function () {
         return view('dashboard');
-    })->name('dashboard');
+    })->name('dashboard');*/
+    Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'show'])->name('dashboard');
 
+    /** SUPERUSER */
+    Route::post('dashboard/impersonation', [App\Http\Controllers\ImpersonationController::class, 'show'])->name('impersonation.show');
+
+    /** AUTHENTICATED USER */
     Route::get('/students', [App\Http\Controllers\Students\StudentController::class, 'show'])->name('students');
     Route::get('/schools', [App\Http\Controllers\Schools\SchoolController::class, 'show'])->name('schools');
 });

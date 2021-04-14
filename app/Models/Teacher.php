@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use \App\Traits\SenioryearTrait;
+use App\Traits\SenioryearTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -72,7 +72,7 @@ class Teacher extends Model
             ->where('people.last', 'LIKE', '%'.$search.'%')
             ->pluck('student_teacher.student_user_id');
 
-        foreach(Student::with(['person', 'shirtsize'])->findMany($user_ids) AS $s){
+        foreach(Student::with(['person', 'shirtsize',])->findMany($user_ids) AS $s){
             $s->student_user_id = $s->user_id;
             $s->teacher_user_id = auth()->id();
             $s->school_id = $this->school()->id;
