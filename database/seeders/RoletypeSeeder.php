@@ -29,6 +29,8 @@ class RoletypeSeeder extends Seeder
             ['descr' => 'guest'],
             ['descr' => 'other'],
             ['descr' => 'persona_non_grata'],
+            ['descr' => 'teacher'],
+            ['descr' => 'domainowner'],
         ]);
     }
 }

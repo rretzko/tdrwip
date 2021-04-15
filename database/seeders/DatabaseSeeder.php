@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Person;
 use App\Models\Subscriberemail;
 use App\Models\User;
+use Database\Factories\PersonFactory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -26,8 +27,12 @@ class DatabaseSeeder extends Seeder
          $this->call(GradetypeSeeder::class);
          $this->call(StudenttypeSeeder::class);
          $this->call(ShirtsizeSeeder::class);
-         //User::factory(100)->create();
-         //Person::factory(20)->create();
-         //Subscriberemail::factory(20)->create();
+         $this->call(SchoolSeeder::class);
+         $this->call(UserSeeder::class);
+         $this->call(TeacherSeeder::class);
+         $this->call(SubscriberEmailSeeder::class);
+         $this->call(PhoneSeeder::class);
+         $this->call(StudentSeeder::class);
+         $this->call(NonsubscriberEmailSeeder::class);
     }
 }

@@ -14,7 +14,7 @@ class ShirtsizeSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('gradetypes')->insert([
+        DB::table('shirtsizes')->insert([
                 ['descr' => 'medium', 'abbr' => 'M', 'order_by' => 4],
                 ['descr' => 'double extra small', 'abbr' => 'XXS', 'order_by' => 1],
                 ['descr' => 'extra small', 'abbr' => 'XS', 'order_by' => 2],
