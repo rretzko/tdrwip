@@ -34,5 +34,8 @@ class DatabaseSeeder extends Seeder
          $this->call(PhoneSeeder::class);
          $this->call(StudentSeeder::class);
          $this->call(NonsubscriberEmailSeeder::class);
+         $this->call(InstrumentationbranchSeeder::class);
+         $this->call(InstrumentationSeeder::class);
+         $this->call(InstrumentationUserSeeder::class);
     }
 }

@@ -1,4 +1,5 @@
 @props([
+'classofs',
 'displayform',
 'footinches',
 'heights',
@@ -91,7 +92,6 @@
                 </div>
             </div>
 
-
             {{-- SECTION II --}}
             <div class="md:grid md:grid-cols-3 md:gap-6 bg-blue-100">
                 <div class="md:col-span-1 px-2 py-2">
@@ -123,7 +123,15 @@
                                                 <x-inputs.text label="Last name" for="last"/>
                                             </div>
 
-                                            {{-- PROUNOUN --}}
+                                            {{-- CLASSOFS --}}
+                                            <div class="col-span-6 sm:col-span-4">
+                                                <x-inputs.select :options="$classofs"
+                                                                 label="Grade/Class of" for="classof"
+                                                                 name="classof"
+                                                                 id="classof"/>
+                                            </div>
+
+                                            {{-- PRONOUN --}}
                                             <div class="col-span-6 sm:col-span-4">
                                                 <x-inputs.select :options="$pronouns"
                                                                  label="preferred pronoun" for="pronoun_id"
@@ -165,6 +173,16 @@
                     </form>
                 </div>
             </div>
+
+            {{-- SECTION III --}}
+            <div>Contacts</div>
+
+            {{-- SECTION IV --}}
+            <div>Instrumentations</div>
+
+            {{-- SECTION V --}}
+            <div>Guardians</div>
+
         </div>
 </div>
 

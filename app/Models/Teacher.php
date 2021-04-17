@@ -37,6 +37,11 @@ class Teacher extends Model
         return School::find(Userconfig::getValue('school_id', auth()->id()));
     }
 
+    public function tenures()
+    {
+        return $this->hasMany(Tenure::class, 'user_id', 'user_id');
+    }
+
     public function saveGradetype(School $school, $gradetype_id, bool $value)
     {
         ($value)

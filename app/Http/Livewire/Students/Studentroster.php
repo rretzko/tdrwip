@@ -3,11 +3,13 @@
 namespace App\Http\Livewire\Students;
 
 use App\Models\Pronoun;
+use App\Models\School;
 use App\Models\Shirtsize;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\User;
 use App\Models\Userconfig;
+use App\Traits\SenioryearTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -16,8 +18,9 @@ use Livewire\WithPagination;
 
 class Studentroster extends Component
 {
-    use WithFileUploads,WithPagination;
+    use WithFileUploads,WithPagination,SenioryearTrait;
 
+    public $classofs;
     public $countstudents=0;
     public $displayform = false;
     public $display_hide = true; //show the (def.) value
@@ -35,6 +38,7 @@ class Studentroster extends Component
 
     //student validated values
     public $birthday;
+    public $classof;
     public $first;
     public $height;
     public $last;
@@ -52,6 +56,7 @@ class Studentroster extends Component
     public function mount()
     {
         $this->filter = Userconfig::getValue('filter_studentroster', auth()->id());
+        $this->classofs = $this->classofs();
         $this->heights = $this->heights();
         $this->pronouns = $this->pronouns();
         $this->schoolid = $this->getSchoolId();
@@ -71,6 +76,7 @@ class Studentroster extends Component
     {
         return [
             'birthday' => ['date', 'nullable'],
+            'classof' => ['numeric', 'required','min:1960','max:'.(date('Y') + 12)],
             'first' => ['string', 'required', 'min:2','max:60',],
             'height' => ['integer', 'required', 'min:30','max:72'],
             'middle' => ['string', 'nullable', 'max:60',],
@@ -125,6 +131,7 @@ class Studentroster extends Component
         $person->pronoun_id = $this->pronoun_id;
         $person->save();
 
+        $this->student->classof = $this->classof;
         $this->student->height = $this->height;
         $this->student->birthday = $this->birthday;
         $this->student->shirtsize_id = $this->shirtsize_id;
@@ -154,6 +161,7 @@ class Studentroster extends Component
 
         $this->student = Student::with('person')->find($user_id);
         $this->birthday = $this->student->birthday;
+        $this->classof = $this->student->classof;
         $this->first = $this->student->person->first;
         $this->height = $this->student->height;
         $this->last = $this->student->person->last;
@@ -182,6 +190,64 @@ class Studentroster extends Component
 
 
 /** END OF PUBLIC FUNCTIONS **************************************************/
+
+    /**
+     * @todo test with primary or middle school teacher
+     * @todo redefine algorithm with collegiate/adult grades
+     *
+     * Return an array [classof => grade||classof]
+     * array key=>value pairs consist of
+     * - all grades taught by auth()->id() at the current school
+     * AND
+     * - all classofs since auth()->id() has been teaching at the current school
+     * ex.
+     * [
+     *  2024 => 9,
+     *  2023 => 10,
+     *  2022 => 11,
+     *  2021 => 12,
+     *  2020 => 2020,
+     *  2019 => 2019,
+     *  2018 => 2018,
+     * ]
+     * @return array
+     */
+    private function classofs() : array
+    {
+        //what is the current senior year
+        $senioryear = $this->senioryear();
+
+        //what school is being targeted
+        $school = School::find(Userconfig::getValue('school_id', auth()->id()));
+
+        //what grades are taught at the school for this teacher
+        $grades = $school->currentUserGrades;
+
+        $a = [];
+
+        //register the current grades
+        foreach($grades AS $grade){
+            $classof = ($senioryear + (12 - $grade));
+            $a[$classof] = $grade;
+        }
+
+        //how long as this teacher been teaching at the targeted school
+        $teacher = Teacher::find(auth()->id());
+        $tenures = $teacher->tenures->where('school_id', $school->id);
+
+        //register the alum grades
+        foreach($tenures AS $tenure){
+            for($i=$tenure->startyear; $i<=$tenure->endyear; $i++){
+                if(! array_key_exists($i, $a)){
+                    $a[$i] = $i;
+                }
+            }
+        }
+        //sort from high-to-low classofs keys (ex.2024,2023,2022,2021,etc)
+        krsort($a);
+
+        return $a;
+    }
 
     public function footInches($inches)
     {

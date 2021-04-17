@@ -2,12 +2,19 @@
 
 namespace App\Models;
 
+use App\Traits\Encryptable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Person extends Model
 {
-    use HasFactory;
+    use Encryptable,HasFactory;
+
+    protected $encryptable = [ //encryptable fields
+        'first',
+        'middle',
+        'last'
+    ];
 
     protected $fillable = [
         'first', 'middle', 'last', 'honorific_id', 'pronoun_id','user_id',
