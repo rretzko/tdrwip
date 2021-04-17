@@ -2,10 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\Encryptable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Nonsubscriberemail extends Model
 {
-    use HasFactory;
+    use Encryptable,HasFactory;
+
+    protected $encryptable = ['email'];
+
+    protected $fillable = ['user_id', 'emailtype_id', 'email'];
 }

@@ -2,6 +2,10 @@
 
 namespace App\Http\Livewire\Students;
 
+use App\Models\Emailtype;
+use App\Models\Nonsubscriberemail;
+use App\Models\Phone;
+use App\Models\Phonetype;
 use App\Models\Pronoun;
 use App\Models\School;
 use App\Models\Shirtsize;
@@ -10,6 +14,7 @@ use App\Models\Teacher;
 use App\Models\User;
 use App\Models\Userconfig;
 use App\Traits\SenioryearTrait;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -39,10 +44,14 @@ class Studentroster extends Component
     //student validated values
     public $birthday;
     public $classof;
+    public $emailpersonal;
+    public $emailschool;
     public $first;
     public $height;
     public $last;
     public $middle;
+    public $phonehome;
+    public $phonemobile;
     public $pronoun_id;
     public $shirtsize_id;
     public $username;
@@ -77,9 +86,13 @@ class Studentroster extends Component
         return [
             'birthday' => ['date', 'nullable'],
             'classof' => ['numeric', 'required','min:1960','max:'.(date('Y') + 12)],
+            'emailpersonal' => ['email', 'nullable'],
+            'emailschool' => ['email', 'nullable'],
             'first' => ['string', 'required', 'min:2','max:60',],
             'height' => ['integer', 'required', 'min:30','max:72'],
             'middle' => ['string', 'nullable', 'max:60',],
+            'phonehome' => ['string', 'nullable'],
+            'phonemobile' => ['string', 'nullable'],
             'pronoun_id' => ['required', 'integer'],
             'last' => ['string', 'required', 'min:2', 'max:60',],
             'shirtsize_id' => ['required', 'integer'],
@@ -108,6 +121,23 @@ class Studentroster extends Component
         $this->emit('saved-biography');
     }
 
+    public function contacts()
+    {
+        $this->validate();
+
+        $this->contactsEmails();
+
+        $this->contactsPhones();
+
+        $this->student->refresh();
+
+        $this->emit('saved-contacts');
+    }
+
+    /**
+     * Delete photo
+     * @param $id
+     */
     public function delete($id)
     {
         if($id === 'photo'){
@@ -115,6 +145,11 @@ class Studentroster extends Component
             $this->student->person->user->profile_photo_path = NULL;
             $this->student->person->user->save();
         }
+    }
+
+    public function footInches($inches)
+    {
+        return floor($inches / 12)."' ".($inches % 12).'"';
     }
 
     /**
@@ -162,10 +197,14 @@ class Studentroster extends Component
         $this->student = Student::with('person')->find($user_id);
         $this->birthday = $this->student->birthday;
         $this->classof = $this->student->classof;
+        $this->emailpersonal = $this->student->emailPersonal->id ? $this->student->emailPersonal->email : '';
+        $this->emailschool = $this->student->emailSchool->id ? $this->student->emailSchool->email : '';
         $this->first = $this->student->person->first;
         $this->height = $this->student->height;
         $this->last = $this->student->person->last;
         $this->middle = $this->student->person->middle;
+        $this->phonehome = $this->student->phoneHome->id ? $this->student->phoneHome->phone : '';
+        $this->phonemobile = $this->student->phoneMobile->id ? $this->student->phoneMobile->phone : '';
         $this->pronoun_id = $this->student->person->pronoun_id;
         $this->shirtsize_id = $this->student->shirtsize_id;
         $this->username = $this->student->person->user->username;
@@ -249,9 +288,58 @@ class Studentroster extends Component
         return $a;
     }
 
-    public function footInches($inches)
+    private function contactsEmails()
     {
-        return floor($inches / 12)."' ".($inches % 12).'"';
+        $emails = [
+            'personal' => ['obj' => NULL, 'emailtype_descr' => 'email_student_personal', 'current' => $this->emailpersonal,],
+            'school' => ['obj' => NULL, 'emailtype_descr' => 'email_student_school', 'current' => $this->emailschool,],
+        ];
+
+        foreach($emails AS $email) {
+            $email['obj'] = Nonsubscriberemail::firstOrCreate(
+                [
+                    'user_id' => $this->student->user_id,
+                    'emailtype_id' => Emailtype::where('descr', $email['emailtype_descr'])->first()->id,
+                ],
+                [
+                    'email' => $email['current'],
+                ]
+            );
+
+            //update object if user's input differs from current record
+            if ($email['current'] !== $email['obj']->email) {
+
+                $email['obj']->email = $email['current'];
+                $email['obj']->save();
+            }
+        }
+    }
+
+    private function contactsPhones()
+    {
+        $phones = [
+            'home' => ['obj' => NULL, 'phonetype_descr' => 'phone_student_home', 'current' => $this->phonehome,],
+            'mobile' => ['obj' => NULL, 'phonetype_descr' => 'phone_student_mobile', 'current' => $this->phonemobile,],
+        ];
+
+        foreach($phones AS $phone) {
+            $phone['obj'] = Phone::firstOrCreate(
+                [
+                    'user_id' => $this->student->user_id,
+                    'phonetype_id' => Phonetype::where('descr', $phone['phonetype_descr'])->first()->id,
+                ],
+                [
+                    'phone' => $phone['current'],
+                ]
+            );
+
+            //update object if user's input differs from current record
+            if ($phone['current'] !== $phone['obj']->phone) {
+
+                $phone['obj']->phone = $phone['current'];
+                $phone['obj']->save();
+            }
+        }
     }
 
     private function getSchoolId()

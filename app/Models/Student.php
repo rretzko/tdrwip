@@ -23,18 +23,22 @@ class Student extends Model
     }
 
     public function getEmailPersonalAttribute()
-    {
+    {//dd(Nonsubscriberemail::where('user_id',$this->user_id)
+     //   ->where('emailtype_id', Emailtype::where('descr', 'email_student_personal')->first()->id)
+      //  ->first() ?? new Nonsubscriberemail);
         //dd(Emailtype::where('descr', 'email_student_personal')->first()->id);
         return Nonsubscriberemail::where('user_id',$this->user_id)
             ->where('emailtype_id', Emailtype::where('descr', 'email_student_personal')->first()->id)
-            ->first() ?? new Nonsubscriberemail;
+            ->first()
+            ?? new Nonsubscriberemail;
     }
 
     public function getEmailSchoolAttribute()
     {
         return Nonsubscriberemail::where('user_id',$this->user_id)
                 ->where('emailtype_id', Emailtype::where('descr', 'email_student_school')->first()->id)
-                ->first() ?? new Nonsubscriberemail;
+                ->first()
+                ?? new Nonsubscriberemail;
     }
 
     /**

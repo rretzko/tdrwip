@@ -75,6 +75,7 @@ class Teacher extends Model
             })
             ->where('student_teacher.teacher_user_id', '=', auth()->id())
             ->where('people.last', 'LIKE', '%'.$search.'%')
+            //->limit(1)
             ->pluck('student_teacher.student_user_id');
 
         foreach(Student::with(['person', 'shirtsize',])->findMany($user_ids) AS $s){

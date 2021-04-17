@@ -57,15 +57,16 @@
                                 </div>
                             </td>
                             <td class="{{$displayform ? 'hidden' : ' px-6 py-4 whitespace-nowrap'}}">
-                                <div class="text-sm text-gray-900">
-                                    <a
-                                        class=text-blue-700"
-                                        href="mailto:{{$student->emailPersonal->email}}?subject=From {{auth()->user()->person->honorificDescr}} {{auth()->user()->person->last}}&body=Hi, {{$student->person->first}}"
-                                    >
-                                        {{$student->emailPersonal->email}}
-                                    </a>
-                                </div>
-                                <div class="text-sm text-gray-500">
+                                @if($student->emailPersonal->id)
+                                    <div class="text-sm">
+                                        <a class="text-blue-700"
+                                           href="mailto:{{$student->emailPersonal->email}}?subject=From {{auth()->user()->person->honorificDescr}} {{auth()->user()->person->last}}&body=Hi, {{$student->person->first}}"
+                                        >
+                                            {{$student->emailPersonal->email}}</a>
+                                    </div>
+                                @endif
+
+                                <div class="text-sm">
                                     <a
                                         class="text-blue-700"
                                         href="mailto:{{$student->emailSchool->email}}?subject=From {{auth()->user()->person->honorificDescr}} {{auth()->user()->person->last}}&body=Hi, {{$student->person->first}}"
@@ -73,6 +74,7 @@
                                         {{$student->emailSchool->email}}
                                     </a>
                                 </div>
+
                                 <div class="text-sm text-gray-500">{{$student->phoneMobile->phone}} @if($student->phoneMobile->phone)(c) @endif</div>
                                 <div class="text-sm text-gray-500">{{$student->phoneHome->phone}} @if($student->phoneHome->phone)(h) @endif</div>
                             </td>

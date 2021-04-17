@@ -17,7 +17,7 @@ class CreateNonsubscriberemailsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('emailtype_id')->constrained();
-            $table->string('email', 255); //nonsubscriberemail cannot be unique
+            $table->longText('email'); //nonsubscriberemail cannot be unique
             $table->timestamps();
             $table->unique(['user_id','emailtype_id']);
         });
