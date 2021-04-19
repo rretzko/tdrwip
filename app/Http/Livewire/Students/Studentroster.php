@@ -13,6 +13,7 @@ use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\User;
 use App\Models\Userconfig;
+use App\Traits\FormatPhoneTrait;
 use App\Traits\SenioryearTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +24,7 @@ use Livewire\WithPagination;
 
 class Studentroster extends Component
 {
-    use WithFileUploads,WithPagination,SenioryearTrait;
+    use FormatPhoneTrait,WithFileUploads,WithPagination,SenioryearTrait;
 
     public $classofs;
     public $countstudents=0;
@@ -91,8 +92,8 @@ class Studentroster extends Component
             'first' => ['string', 'required', 'min:2','max:60',],
             'height' => ['integer', 'required', 'min:30','max:72'],
             'middle' => ['string', 'nullable', 'max:60',],
-            'phonehome' => ['string', 'nullable'],
-            'phonemobile' => ['string', 'nullable'],
+            'phonehome' => ['string', 'nullable',],
+            'phonemobile' => ['string', 'nullable','min:10'],
             'pronoun_id' => ['required', 'integer'],
             'last' => ['string', 'required', 'min:2', 'max:60',],
             'shirtsize_id' => ['required', 'integer'],
@@ -227,6 +228,15 @@ class Studentroster extends Component
         $this->getSchoolId();
     }
 
+    public function updatedPhonehome()
+    {
+        $this->phonehome = (strlen($this->phonehome)) ? $this->formatPhone($this->phonehome) : '';
+    }
+
+    public function updatedPhonemobile()
+    {
+        $this->phonemobile = (strlen($this->phonemobile)) ? $this->formatPhone($this->phonemobile) : '';
+    }
 
 /** END OF PUBLIC FUNCTIONS **************************************************/
 
