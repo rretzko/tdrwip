@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\Students;
 
 use App\Models\Emailtype;
+use App\Models\Instrumentation;
+use App\Models\Instrumentationbranch;
 use App\Models\Nonsubscriberemail;
 use App\Models\Phone;
 use App\Models\Phonetype;
@@ -32,8 +34,11 @@ class Studentroster extends Component
     public $display_hide = true; //show the (def.) value
     public $filter;
     public $heights;
+    public $instrumentationbranches;
+    public $instrumentations;
     public $photo = NULL;
     public $photo_stored = NULL;
+    public $newinstrumentations;
     public $pronouns;
     public $schoolid;
     public $schools;
@@ -68,6 +73,8 @@ class Studentroster extends Component
         $this->filter = Userconfig::getValue('filter_studentroster', auth()->id());
         $this->classofs = $this->classofs();
         $this->heights = $this->heights();
+        $this->instrumentationbranches = Instrumentationbranch::all();
+        $this->newinstrumentations = $this->newInstrumentations();
         $this->pronouns = $this->pronouns();
         $this->schoolid = $this->getSchoolId();
         $this->schools = $this->schools();
@@ -97,7 +104,7 @@ class Studentroster extends Component
             'pronoun_id' => ['required', 'integer'],
             'last' => ['string', 'required', 'min:2', 'max:60',],
             'shirtsize_id' => ['required', 'integer'],
-            'username' => ['string', 'required', 'min:3','max:61',Rule::unique('users')->ignore($this->student->user_id)],
+            'username' => ['string', 'required', 'min:3','max:61',Rule::unique('users')->ignore($this->student->user_id ?? 0)],
         ];
     }
 
@@ -146,11 +153,27 @@ class Studentroster extends Component
             $this->student->person->user->profile_photo_path = NULL;
             $this->student->person->user->save();
         }
+
+        if($id === 'instrumentation'){
+            //do nothing
+        }
+    }
+
+    public function deleteInstrumentation($id)
+    {
+        dd($id);
     }
 
     public function footInches($inches)
     {
         return floor($inches / 12)."' ".($inches % 12).'"';
+    }
+
+    public function instrumentations()
+    {
+        $this->validate();
+
+        $this->emit('saved-instrumentations');
     }
 
     /**
@@ -379,6 +402,22 @@ class Studentroster extends Component
         }
 
         return $a;
+    }
+
+    public function newInstrumentations()
+    {
+        $instruments = Instrumentation::where('instrumentationbranch_id', 1)->get();
+
+        $str = '<select name="instrumentation_id">';
+
+        foreach($instruments AS $instrument){
+
+            $str .= '<option value="'.$instrument->id.'">'.$instrument->descr.'</option>';
+        }
+
+        $str .= '</select>';
+
+        return $str;
     }
 
     private function pronouns()

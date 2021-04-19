@@ -75,8 +75,8 @@
                                     </a>
                                 </div>
 
-                                <div class="text-sm text-gray-500">{{$student->phoneMobile->phone}} @if($student->phoneMobile->phone)(c) @endif</div>
-                                <div class="text-sm text-gray-500">{{$student->phoneHome->phone}} @if($student->phoneHome->phone)(h) @endif</div>
+                                <div class="text-sm text-gray-500">{{$student->phoneMobile->id ? $student->phoneMobile->phone : '' }} @if($student->phoneMobile->id)(c) @endif</div>
+                                <div class="text-sm text-gray-500">{{$student->phoneHome->id ? $student->phoneHome->phone : '' }} @if($student->phoneHome->id)(h) @endif</div>
                             </td>
                             <td class="{{$displayform ? 'hidden' : 'px-6 py-4 whitespace-nowrap'}}">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $student->status === 'alum' ? 'bg-indigo-100 text-indigo-800' : 'bg-green-100 text-green-800' }}">

@@ -3,6 +3,7 @@
 'displayform',
 'footinches',
 'heights',
+'newinstrumentations',
 'photo',
 'pronouns',
 'shirtsizes',
@@ -178,6 +179,79 @@
             <div class="md:grid md:grid-cols-3 md:gap-6">
                 <div class="md:col-span-1 px-2 py-2">
                     <div class="px-4 sm:px-0">
+                        <h3 class="text-lg font-medium leading-6 text-gray-900">Instrumentation</h3>
+                        <p class="mt-1 text-sm text-gray-600">
+                            Voice parts and instruments for <b>{{ $student->person->fullName }}</b>
+                        </p>
+                    </div>
+                </div>
+                <div class="mt-5 md:mt-0 md:col-span-2">
+                    <form wire:submit.prevent="instrumentations">
+                        <div class="shadow sm:rounded-md sm:overflow-hidden">
+                            <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+
+                                <div class="shadow overflow-hidden sm:rounded-md">
+                                    {{-- CHORAL VOICE PARTS --}}
+                                    <div class="px-4 pt-5 sm:p-6">
+                                        @if($this->student->person->user->instrumentations->where('instrumentationbranch_id', 1)->count())
+                                            <label>Voice Parts</label>
+                                            <ul class="ml-3 flex ">
+                                                @foreach($this->student->person->user->instrumentations->where('instrumentationbranch_id', 1) AS $instrumentation)
+                                                    <li class="flex w-4/5 justify-between">
+                                                        <div>{{ strtoupper($instrumentation->descr) }}</div>
+                                                        <div><a class="text-red-700 text-sm" wire:click="deleteInstrumentation({{ $instrumentation->id }})" href="#">Delete</a></div>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                        @if($this->student->person->user->instrumentations->where('instrumentationbranch_id', 2)->count())
+                                            <ul class="bg-yellow-400">
+                                                <label>Instruments:</label>
+                                                @foreach($this->student->person->user->instrumentations->where('instrumentationbranch_id', 2) AS $instrumentation)
+                                                    <li class="flex justify-between">
+                                                        <div>{{ strtoupper($instrumentation->descr) }}</div>
+                                                        <div><a href="#">Delete</a></div>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    </div>
+                                    {{-- ADD NEW --}}
+                                    <div class="px-4 sm:p-6">
+                                        <div class="col-span-4 sm:col-span-4">
+                                            <label>Add New</label>
+                                            <div>
+                                                <span><input type="radio" name="instrumentations"
+                                                          id="instrumentation_1" value="1" SELECTED> Choral
+                                                </span>
+                                                <span><input type="radio" name="instrumentations"
+                                                             id="instrumentation_2" value="2"> Instrumental
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <select name="instrumentation_id">
+                                                    <option value="0">Instrumentation</option>
+                                                </select>
+                                                NewInstrumentations: {!! $newinstrumentations !!}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- SAVE --}}
+                                <x-saves.save-button-with-message message="Instrumentation saved!"
+                                                                  trigger="saved-instrumentations"/>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {{-- SECTION IV --}}
+            <div class="md:grid md:grid-cols-3 md:gap-6 bg-blue-100">
+                <div class="md:col-span-1 px-2 py-2">
+                    <div class="px-4 sm:px-0">
                         <h3 class="text-lg font-medium leading-6 text-gray-900">Contacts</h3>
                         <p class="mt-1 text-sm text-gray-600">
                             Email and phone contact information for <b>{{ $student->person->fullName }}</b>
@@ -187,7 +261,7 @@
                 <div class="mt-5 md:mt-0 md:col-span-2">
                     <form wire:submit.prevent="contacts">
                         <div class="shadow sm:rounded-md sm:overflow-hidden">
-                            <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+                            <div class="px-4 py-5 bg-yellow-50 space-y-6 sm:p-6">
 
                                 {{-- EMAILS --}}
                                 <div class="shadow overflow-hidden sm:rounded-md">
@@ -231,10 +305,10 @@
                 </div>
             </div>
 
-            {{-- SECTION IV --}}
-            <div>Instrumentations</div>
-
             {{-- SECTION V --}}
+            <div>Home Address</div>
+
+            {{-- SECTION VI --}}
             <div>Guardians</div>
 
         </div>
