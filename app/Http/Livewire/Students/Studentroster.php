@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Students;
 
+use App\Models\Address;
 use App\Models\Emailtype;
+use App\Models\Geostate;
 use App\Models\Instrumentation;
 use App\Models\Instrumentationbranch;
 use App\Models\Nonsubscriberemail;
@@ -34,8 +36,11 @@ class Studentroster extends Component
     public $displayform = false;
     public $display_hide = true; //show the (def.) value
     public $filter;
+    public $geostates;
+    public $guardians;
     public $heights;
     public $instrumentalinstrumentation;
+    public $instrumentationbranch_id = 0;
     public $instrumentationbranches;
     public $instrumentationbranch;
     public $instrumentations;
@@ -48,22 +53,28 @@ class Studentroster extends Component
     public $schools;
     public $search = '';
     public $shirtsizes;
+    public $showmodal = false;
     public $student = NULL;
     public $students = NULL;
     public $teacher = NULL;
     public $addinstrument = false;
 
     //student validated values
+    public $address01;
+    public $address02;
     public $birthday;
+    public $city;
     public $classof;
     public $emailpersonal;
     public $emailschool;
     public $first;
+    public $geostate_id;
     public $height;
     public $last;
     public $middle;
     public $phonehome;
     public $phonemobile;
+    public $postalcode;
     public $pronoun_id;
     public $shirtsize_id;
     public $username;
@@ -81,6 +92,8 @@ class Studentroster extends Component
 
         $this->choralinstrumentation = $this->choralInstrumentation();
         $this->classofs = $this->classofs();
+        $this->guardians = $this->guardians();
+        $this->geostates = $this->geostates();
         $this->heights = $this->heights();
         $this->instrumentalinstrumentation = $this->instrumentalInstrumentation();
         $this->instrumentationbranches = Instrumentationbranch::where('id', '<', 3)->get();
@@ -103,25 +116,39 @@ class Studentroster extends Component
     public function rules()
     {
         return [
+            'address01' => ['string', 'nullable'],
+            'address02' => ['string', 'nullable'],
             'birthday' => ['date', 'nullable'],
+            'city' => ['string', 'nullable'],
             'classof' => ['numeric', 'required','min:1960','max:'.(date('Y') + 12)],
             'emailpersonal' => ['email', 'nullable'],
             'emailschool' => ['email', 'nullable'],
             'first' => ['string', 'required', 'min:2','max:60',],
+            'geostate_id' => ['integer', 'nullable','exists:geostates,id','min:1'],
             'height' => ['integer', 'required', 'min:30','max:72'],
+            'instrumentation_id' => ['numeric', 'min:1'],
+            'instrumentationbranch_id' => ['numeric', 'min:1'],
             'middle' => ['string', 'nullable', 'max:60',],
             'phonehome' => ['string', 'nullable',],
             'phonemobile' => ['string', 'nullable','min:10'],
-            'pronoun_id' => ['required', 'integer'],
+            'postalcode' => ['string', 'nullable','min:5'],
+            'pronoun_id' => ['required', 'integer', 'min:1'],
             'last' => ['string', 'required', 'min:2', 'max:60',],
-            'shirtsize_id' => ['required', 'integer'],
+            'shirtsize_id' => ['required', 'integer', 'min:1'],
             'username' => ['string', 'required', 'min:3','max:61',Rule::unique('users')->ignore($this->student->user_id ?? 0)],
         ];
     }
 
-    public function addInstrumentation()
+    public function closeModal()
     {
-        return true;
+        $this->showmodal = false;
+    }
+
+    public function createInstrumentation()
+    {
+        $this->showmodal = true;
+        $this->instrumentation_id = null;
+        $this->instrumentationbranch_id = null;
     }
 
     /**
@@ -187,6 +214,38 @@ class Studentroster extends Component
         return floor($inches / 12)."' ".($inches % 12).'"';
     }
 
+    public function guardian()
+    {
+        $this->emit('saved-guardian');
+    }
+
+    public function homeAddress()
+    {
+        $this->validate([
+            'address01' => ['string', 'nullable'],
+            'address02' => ['string', 'nullable'],
+            'city' => ['string', 'nullable'],
+            'geostate_id' => ['integer', 'nullable','exists:geostates,id','min:1'],
+            'postalcode' => ['string', 'nullable','min:5'],
+        ]);
+
+        $model = Address::updateOrCreate([
+                'user_id' => $this->student->user_id
+            ],
+            [
+                'address01' => $this->address01,
+                'address02' => $this->address02,
+                'city' => $this->city,
+                'geostate_id' => $this->geostate_id,
+                'postalcode' => $this->postalcode,
+            ]
+        );
+
+        $this->student->person->user->address->refresh();
+
+        $this->emit('saved-homeaddress');
+    }
+
     public function instrumentations()
     {
         $this->validate();
@@ -233,6 +292,19 @@ class Studentroster extends Component
         $this->photo->store('test-photos');
     }
 
+    public function storeInstrumentation()
+    {
+        $this->validate();
+
+        $this->student->person->user->instrumentations()->attach($this->instrumentation_id, ['order_by' => 1]);
+
+        $this->student->refresh();
+        $this->choralInstrumentation();
+        $this->instrumentalInstrumentation();
+
+        $this->closeModal();
+    }
+
     public function studentForm($user_id)
     {
         //re-initialize to prevent display when next-student is edited
@@ -242,18 +314,25 @@ class Studentroster extends Component
         $this->displayform = true;
 
         $this->student = Student::with('person')->find($user_id);
+
+        $this->address01 = $this->student->person->user->address->address01;
+        $this->address02 = $this->student->person->user->address->address02;
         $this->birthday = $this->student->birthday;
         $this->choralinstrumentation = $this->choralInstrumentation();
+        $this->city = $this->student->person->user->address->city;
         $this->classof = $this->student->classof;
         $this->emailpersonal = $this->student->emailPersonal->id ? $this->student->emailPersonal->email : '';
         $this->emailschool = $this->student->emailSchool->id ? $this->student->emailSchool->email : '';
         $this->first = $this->student->person->first;
+        $this->geostate_id = $this->student->person->user->address->geostate_id;
+        $this->guardians = $this->guardians();
         $this->height = $this->student->height;
         $this->instrumentalinstrumentation = $this->instrumentalInstrumentation();
         $this->last = $this->student->person->last;
         $this->middle = $this->student->person->middle;
         $this->phonehome = $this->student->phoneHome->id ? $this->student->phoneHome->phone : '';
         $this->phonemobile = $this->student->phoneMobile->id ? $this->student->phoneMobile->phone : '';
+        $this->postalcode = $this->student->person->user->address->postalcode;
         $this->pronoun_id = $this->student->person->pronoun_id;
         $this->shirtsize_id = $this->student->shirtsize_id;
         $this->username = $this->student->person->user->username;
@@ -267,6 +346,7 @@ class Studentroster extends Component
     public function updatedInstrumentationbranch($value)
     {
         $this->newinstrumentations = $this->newInstrumentations();
+        $this->instrumentationbranch_id = $value;
     }
 
     public function updatedPhoto()
@@ -413,6 +493,18 @@ class Studentroster extends Component
         }
     }
 
+    private function geostates()
+    {
+        $a = [];
+
+        foreach(Geostate::all() AS $geostate){
+
+            $a[$geostate->id] = $geostate->abbr;
+        }
+
+        return $a;
+    }
+
     private function getSchoolId()
     {
         //fetch the value from the current value from the database
@@ -429,6 +521,11 @@ class Studentroster extends Component
 
         //return the newly stored value (recursive function)
         self::getSchoolId();
+    }
+
+    private function guardians()
+    {
+        return collect();
     }
 
     private function heights()

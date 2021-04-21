@@ -58,6 +58,11 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    public function address()
+    {
+        return $this->hasOne(Address::class);
+    }
+
     public function instrumentations()
     {
         return $this->belongsToMany(Instrumentation::class);
