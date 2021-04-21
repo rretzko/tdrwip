@@ -1,16 +1,22 @@
 @props([
+'addinstrument',
+'choralinstrumentation',
 'classofs',
 'displayform',
 'footinches',
 'heights',
+'instrumentalinstrumentation',
+'instrumentationbranches',
 'newinstrumentations',
 'photo',
 'pronouns',
 'shirtsizes',
 'student' => false,
 ])
+
 <div
     class="{{$displayform ? 'w-8/12 -ml-4 bg-blue-50 text-black border border border-black border-l-3 border-t-0 border-r-0' : 'hidden'}}">
+
     @if($student)
         <div>
             {{-- SECTION I  --}}
@@ -191,50 +197,109 @@
                             <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
 
                                 <div class="shadow overflow-hidden sm:rounded-md">
-                                    {{-- CHORAL VOICE PARTS --}}
-                                    <div class="px-4 pt-5 sm:p-6">
-                                        @if($this->student->person->user->instrumentations->where('instrumentationbranch_id', 1)->count())
-                                            <label>Voice Parts</label>
-                                            <ul class="ml-3 flex ">
-                                                @foreach($this->student->person->user->instrumentations->where('instrumentationbranch_id', 1) AS $instrumentation)
-                                                    <li class="flex w-4/5 justify-between">
-                                                        <div>{{ strtoupper($instrumentation->descr) }}</div>
-                                                        <div><a class="text-red-700 text-sm" wire:click="deleteInstrumentation({{ $instrumentation->id }})" href="#">Delete</a></div>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        @endif
-                                        @if($this->student->person->user->instrumentations->where('instrumentationbranch_id', 2)->count())
-                                            <ul class="bg-yellow-400">
-                                                <label>Instruments:</label>
-                                                @foreach($this->student->person->user->instrumentations->where('instrumentationbranch_id', 2) AS $instrumentation)
-                                                    <li class="flex justify-between">
-                                                        <div>{{ strtoupper($instrumentation->descr) }}</div>
-                                                        <div><a href="#">Delete</a></div>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        @endif
+                                    {{-- INSTRUMENTATIONS: CHORAL TABLE --}}
+                                    <div>
+                                        <table class="ml-6 mt-4 w-10/12">
+                                            @if($choralinstrumentation->count())
+                                                <thead>
+                                                    <tr class="border border-black bg-gray-100 ">
+                                                        <th class="pl-2 text-left w-10/12">Voice Part{{ ($choralinstrumentation->count() > 1) ? 's' : '' }}</th>
+                                                        <td class="w-2/12">
+                                                            <a
+                                                                class="text-green-500 text-sm" wire:click="addInstrumentation"
+                                                                href="#">
+                                                                Add
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($choralinstrumentation AS $instrument)
+                                                        <tr class="border border-black">
+                                                            <td class="pl-3 w-10/12">{{ strtoupper($instrument->descr) }}</td>
+                                                            <td class="w-2/12">
+                                                                <a
+                                                                    class="text-red-700 text-sm" wire:click="deleteInstrumentation({{ $instrument->id }})"
+                                                                    href="#">
+                                                                    Delete
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            @endif
+
+                                        </table>
                                     </div>
+
+                                    {{-- INSTRUMENTATIONS: INSTRUMENTAL TABLE --}}
+                                    <div>
+                                        <table class="ml-6 mt-4 w-10/12">
+                                            @if($instrumentalinstrumentation->count())
+                                                <thead>
+                                                <tr class="border border-black bg-gray-100 ">
+                                                    <th class="pl-2 text-left" colspan="2">Instrument{{ ($instrumentalinstrumentation->count() > 1) ? 's' : '' }}</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($instrumentalinstrumentation AS $instrument)
+                                                    <tr class="border border-black">
+                                                        <td class="w-10/12">{{ strtoupper($instrument->descr) }}</td>
+                                                        <td class="w-2/12">
+                                                            <a
+                                                                class="text-red-700 text-sm" wire:click="deleteInstrumentation({{ $instrument->id }})"
+                                                                href="#">
+                                                                Delete
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            @endif
+
+                                        </table>
+                                    </div>
+
                                     {{-- ADD NEW --}}
                                     <div class="px-4 sm:p-6">
                                         <div class="col-span-4 sm:col-span-4">
-                                            <label>Add New</label>
-                                            <div>
-                                                <span><input type="radio" name="instrumentations"
-                                                          id="instrumentation_1" value="1" SELECTED> Choral
-                                                </span>
-                                                <span><input type="radio" name="instrumentations"
-                                                             id="instrumentation_2" value="2"> Instrumental
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <select name="instrumentation_id">
-                                                    <option value="0">Instrumentation</option>
-                                                </select>
-                                                NewInstrumentations: {!! $newinstrumentations !!}
-                                            </div>
+{{-- LIVEWIRE KIT CODE BEGIN --}}
+                                            <label for="instrumentationbranch_id">Add new Voice part or Instrument</label>
+                                            <select wire:model="instrumentationbranch" name="instrumentationbranch_id"
+                                                class="mt-2 text-sm sm-text-base pl-2 pr-4 round-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
+                                                required
+                                            >
+                                                <option value="0">-- choose branch --</option>
+                                                @foreach($instrumentationbranches AS $instrumentationbranch)
+                                                    <option value="{{ $instrumentationbranch->id }}">{{ ucwords($instrumentationbranch->descr) }}</option>
+                                                @endforeach
+
+                                            </select>
                                         </div>
+
+                                        <div class="mt-4">
+                                            <label class="block font-medium text-sm text-gray700" for="instrumentation_id">
+                                                Instrument
+                                            </label>
+
+                                            <select wire:model="instrumentation_id" name="instrumentation_id"
+                                                    class="mt-2 text-sm sm:text-base pl-2 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400" required
+                                            >
+                                                @if($newinstrumentations->count() == 0)
+                                                    <option value="">-- choose branch first --</option>
+                                                @else
+                                                    <option value="0">-- choose instrument --</option>
+                                                @endif
+
+                                                @foreach($newinstrumentations AS $instrument)
+                                                    <option value="{{ $instrument->id }}">{{ ucwords($instrument->descr) }}</option>
+                                                @endforeach
+
+
+                                            </select>
+                                        </div>
+{{-- LIVEWIRE KIT CODE END --}}
+
                                     </div>
                                 </div>
 

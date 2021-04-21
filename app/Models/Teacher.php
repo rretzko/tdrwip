@@ -62,6 +62,9 @@ class Teacher extends Model
         $operator = ($filter === 'alum') ? '<' : '>';
         $value = ($filter === 'all') ? 0 : (($filter === 'alum') ? $sr_year : ($sr_year - 1));//(filter === current)
 
+        //id of current school
+        $school_id = $this->school()->id;
+
         //returns array
         $user_ids = DB::table('student_teacher')
             ->join('people','student_teacher.student_user_id', '=','people.user_id')
@@ -78,10 +81,13 @@ class Teacher extends Model
             //->limit(1)
             ->pluck('student_teacher.student_user_id');
 
-        foreach(Student::with(['person', 'shirtsize',])->findMany($user_ids) AS $s){
+        foreach(Student::with([
+                    'person', 'person.user','shirtsize', 'nonsubscriberemails','nonsubscriberemails.emailtype','phones','phones.phonetype'
+                ])
+                ->findMany($user_ids) AS $s){
             $s->student_user_id = $s->user_id;
             $s->teacher_user_id = auth()->id();
-            $s->school_id = $this->school()->id;
+            $s->school_id = $school_id;
 
             $a[] = $s;
         }

@@ -13,4 +13,9 @@ class Nonsubscriberemail extends Model
     protected $encryptable = ['email'];
 
     protected $fillable = ['user_id', 'emailtype_id', 'email'];
+
+    public function emailtype()
+    {
+        return $this->belongsTo(Emailtype::class);
+    }
 }

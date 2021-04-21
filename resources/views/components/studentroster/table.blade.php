@@ -1,6 +1,7 @@
 @props([
     'displayform',
-    'students'
+    'students',
+    'teacher',
 ])
 <div class="{{$displayform ? 'w-4/12' : 'flex flex-col'}} px-4">
     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -57,26 +58,36 @@
                                 </div>
                             </td>
                             <td class="{{$displayform ? 'hidden' : ' px-6 py-4 whitespace-nowrap'}}">
-                                @if($student->emailPersonal->id)
+                                {{-- EMAILS --}}
+                                @forelse($student->nonsubscriberemails AS $email)
                                     <div class="text-sm">
                                         <a class="text-blue-700"
-                                           href="mailto:{{$student->emailPersonal->email}}?subject=From {{auth()->user()->person->honorificDescr}} {{auth()->user()->person->last}}&body=Hi, {{$student->person->first}}"
+                                           href="mailto:{{$email->email}}?subject=From {{ $teacher->person->honorific->abbr }} {{$teacher->person->last}}&body=Hi, {{$student->person->first}}"
                                         >
-                                            {{$student->emailPersonal->email}}</a>
+                                            {{$email->email}}</a>
                                     </div>
-                                @endif
 
-                                <div class="text-sm">
-                                    <a
-                                        class="text-blue-700"
-                                        href="mailto:{{$student->emailSchool->email}}?subject=From {{auth()->user()->person->honorificDescr}} {{auth()->user()->person->last}}&body=Hi, {{$student->person->first}}"
-                                    >
-                                        {{$student->emailSchool->email}}
-                                    </a>
-                                </div>
+                                @empty
 
-                                <div class="text-sm text-gray-500">{{$student->phoneMobile->id ? $student->phoneMobile->phone : '' }} @if($student->phoneMobile->id)(c) @endif</div>
-                                <div class="text-sm text-gray-500">{{$student->phoneHome->id ? $student->phoneHome->phone : '' }} @if($student->phoneHome->id)(h) @endif</div>
+                                    <div class="text-sm">
+                                        No emails found
+                                    </div>
+
+                                @endforelse
+
+                                {{-- PHONES --}}
+                                @forelse($student->phones AS $phone)
+                                    <div class="text-sm">
+                                        <div class="text-sm text-gray-500">{{ $phone->phone }} ({{ (strpos($phone->phonetype->descr,'home')) ? 'h' : 'c' }})</div>
+                                    </div>
+
+                                @empty
+                                        <div class="text-sm">
+                                            <div class="text-sm text-gray-500">No phones found</div>
+                                        </div>
+
+                                @endforelse
+
                             </td>
                             <td class="{{$displayform ? 'hidden' : 'px-6 py-4 whitespace-nowrap'}}">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $student->status === 'alum' ? 'bg-indigo-100 text-indigo-800' : 'bg-green-100 text-green-800' }}">

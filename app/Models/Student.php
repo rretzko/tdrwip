@@ -88,9 +88,19 @@ class Student extends Model
         return 'current';
     }
 
+    public function nonsubscriberemails()
+    {
+        return $this->hasMany(Nonsubscriberemail::class, 'user_id', 'user_id');
+    }
+
     public function person()
     {
         return $this->belongsTo(Person::class, 'user_id', 'user_id');
+    }
+
+    public function phones()
+    {
+        return $this->hasMany(Phone::class, 'user_id', 'user_id');
     }
 
     public function shirtsize()

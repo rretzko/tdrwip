@@ -36,8 +36,9 @@
     <x-studentroster.school-selector :schools="$schools" schoolid={{$schoolid}}/>
     <x-studentroster.multi-column-directory  countstudents={{$countstudents}} :schools='$schools' :search='$search' :filter='$filter'/>
     <div class="{{$displayform ? 'flex' : ''}} w-12/12">
-        <x-studentroster.table :students='$students' :displayform='$displayform' />
-        <x-studentroster.form :displayform="$displayform" :newinstrumentations="$newinstrumentations" :classofs="$classofs" :pronouns="$pronouns" :heights="$heights" :photo='$photo' :shirtsizes="$shirtsizes" :student="$student"  />
+        <x-studentroster.table :students="$students" :displayform="$displayform" :teacher="$teacher" />
+      <x-studentroster.form :addinstrument="$addinstrument" :choralinstrumentation="$choralinstrumentation" :displayform="$displayform" :instrumentalinstrumentation="$instrumentalinstrumentation" :instrumentationbranches="$instrumentationbranches" :newinstrumentations="$newinstrumentations" :classofs="$classofs" :pronouns="$pronouns" :heights="$heights" :photo='$photo' :shirtsizes="$shirtsizes" :student="$student"  />
+
     </div>
 
 </div>

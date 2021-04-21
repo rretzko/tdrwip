@@ -47,7 +47,7 @@ class Person extends Model
 
     public function honorific()
     {
-        return $this->hasOne(Honorific::class);
+        return $this->belongsTo(Honorific::class);
     }
 
     public function phones()

@@ -28,14 +28,18 @@ class Studentroster extends Component
 {
     use FormatPhoneTrait,WithFileUploads,WithPagination,SenioryearTrait;
 
+    public $choralinstrumentation;
     public $classofs;
     public $countstudents=0;
     public $displayform = false;
     public $display_hide = true; //show the (def.) value
     public $filter;
     public $heights;
+    public $instrumentalinstrumentation;
     public $instrumentationbranches;
+    public $instrumentationbranch;
     public $instrumentations;
+    public $instrumentation_id = 0;
     public $photo = NULL;
     public $photo_stored = NULL;
     public $newinstrumentations;
@@ -46,6 +50,8 @@ class Studentroster extends Component
     public $shirtsizes;
     public $student = NULL;
     public $students = NULL;
+    public $teacher = NULL;
+    public $addinstrument = false;
 
     //student validated values
     public $birthday;
@@ -70,11 +76,15 @@ class Studentroster extends Component
 
     public function mount()
     {
+        //ex. all,alum,current
         $this->filter = Userconfig::getValue('filter_studentroster', auth()->id());
+
+        $this->choralinstrumentation = $this->choralInstrumentation();
         $this->classofs = $this->classofs();
         $this->heights = $this->heights();
-        $this->instrumentationbranches = Instrumentationbranch::all();
-        $this->newinstrumentations = $this->newInstrumentations();
+        $this->instrumentalinstrumentation = $this->instrumentalInstrumentation();
+        $this->instrumentationbranches = Instrumentationbranch::where('id', '<', 3)->get();
+        $this->newinstrumentations = collect(); //$this->newInstrumentations();
         $this->pronouns = $this->pronouns();
         $this->schoolid = $this->getSchoolId();
         $this->schools = $this->schools();
@@ -85,8 +95,9 @@ class Studentroster extends Component
     {
         $this->students = $this->search();
         $this->countstudents = $this->students->count();
+        $this->teacher = Teacher::with(['person', 'person.user','person.honorific', ])->find(auth()->id());
 
-        return view('livewire.students.studentroster');
+        return view('livewire.students.studentroster',[]);
     }
 
     public function rules()
@@ -106,6 +117,11 @@ class Studentroster extends Component
             'shirtsize_id' => ['required', 'integer'],
             'username' => ['string', 'required', 'min:3','max:61',Rule::unique('users')->ignore($this->student->user_id ?? 0)],
         ];
+    }
+
+    public function addInstrumentation()
+    {
+        return true;
     }
 
     /**
@@ -161,7 +177,9 @@ class Studentroster extends Component
 
     public function deleteInstrumentation($id)
     {
-        dd($id);
+        $this->student->person->user->instrumentations()->detach($id);
+
+        $this->student->refresh();
     }
 
     public function footInches($inches)
@@ -172,6 +190,11 @@ class Studentroster extends Component
     public function instrumentations()
     {
         $this->validate();
+
+        $this->student->person->user->instrumentations()->attach($this->instrumentation_id, ['order_by' => 1]);
+
+        $this->choralInstrumentation();
+        $this->instrumentalInstrumentation();
 
         $this->emit('saved-instrumentations');
     }
@@ -220,11 +243,13 @@ class Studentroster extends Component
 
         $this->student = Student::with('person')->find($user_id);
         $this->birthday = $this->student->birthday;
+        $this->choralinstrumentation = $this->choralInstrumentation();
         $this->classof = $this->student->classof;
         $this->emailpersonal = $this->student->emailPersonal->id ? $this->student->emailPersonal->email : '';
         $this->emailschool = $this->student->emailSchool->id ? $this->student->emailSchool->email : '';
         $this->first = $this->student->person->first;
         $this->height = $this->student->height;
+        $this->instrumentalinstrumentation = $this->instrumentalInstrumentation();
         $this->last = $this->student->person->last;
         $this->middle = $this->student->person->middle;
         $this->phonehome = $this->student->phoneHome->id ? $this->student->phoneHome->phone : '';
@@ -237,6 +262,11 @@ class Studentroster extends Component
     public function updatedFilter()
     {
         Userconfig::setValue('filter_studentroster', auth()->id(), $this->filter);
+    }
+
+    public function updatedInstrumentationbranch($value)
+    {
+        $this->newinstrumentations = $this->newInstrumentations();
     }
 
     public function updatedPhoto()
@@ -262,6 +292,14 @@ class Studentroster extends Component
     }
 
 /** END OF PUBLIC FUNCTIONS **************************************************/
+
+    private function choralInstrumentation()
+    {
+        //early exist
+        if(! $this->student){ return collect();}
+
+        return $this->student->person->user->instrumentations()->where('instrumentationbranch_id', Instrumentationbranch::where('descr', 'choral')->first()->id)->get();
+    }
 
     /**
      * @todo test with primary or middle school teacher
@@ -404,20 +442,17 @@ class Studentroster extends Component
         return $a;
     }
 
+    private function instrumentalInstrumentation()
+    {
+        //early exist
+        if(! $this->student){ return collect();}
+
+        return $this->student->person->user->instrumentations()->where('instrumentationbranch_id',Instrumentationbranch::where('descr','instrumental')->first()->id)->get();
+    }
+
     public function newInstrumentations()
     {
-        $instruments = Instrumentation::where('instrumentationbranch_id', 1)->get();
-
-        $str = '<select name="instrumentation_id">';
-
-        foreach($instruments AS $instrument){
-
-            $str .= '<option value="'.$instrument->id.'">'.$instrument->descr.'</option>';
-        }
-
-        $str .= '</select>';
-
-        return $str;
+        return Instrumentation::where('instrumentationbranch_id', $this->instrumentationbranch)->get()->sortBy('descr');
     }
 
     private function pronouns()

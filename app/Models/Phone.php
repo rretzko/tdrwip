@@ -18,4 +18,9 @@ class Phone extends Model
     {
         return $this->hasOne(User::class);
     }
+
+    public function phonetype()
+    {
+        return $this->belongsTo(Phonetype::class);
+    }
 }

@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Emailtype extends Model
 {
     use HasFactory;
+
+    public function nonsubscriberemails()
+    {
+        return $this->hasMany(Nonsubscriberemail::class);
+    }
 }
