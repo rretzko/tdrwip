@@ -88,6 +88,12 @@ class Student extends Model
         return 'current';
     }
 
+    public function guardians()
+    {
+        return $this->belongsToMany(Guardian::class, 'guardian_student', 'student_user_id', 'guardian_user_id')
+            ->withPivot('guardiantype_id');
+    }
+
     public function nonsubscriberemails()
     {
         return $this->hasMany(Nonsubscriberemail::class, 'user_id', 'user_id');

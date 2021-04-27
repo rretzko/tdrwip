@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
          $this->call(GeostateSeeder::class);
          $this->call(RoletypeSeeder::class);
          $this->call(GradetypeSeeder::class);
+         $this->call(GuardiantypeSeeder::class);
          $this->call(StudenttypeSeeder::class);
          $this->call(ShirtsizeSeeder::class);
          $this->call(SchoolSeeder::class);
@@ -38,5 +39,6 @@ class DatabaseSeeder extends Seeder
          $this->call(InstrumentationSeeder::class);
          $this->call(InstrumentationUserSeeder::class);
          $this->call(AddressSeeder::class);
+         $this->call(GuardianSeeder::class);
     }
 }

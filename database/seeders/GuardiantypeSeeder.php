@@ -2,15 +2,17 @@
 
 namespace Database\Seeders;
 
+use App\Models\Guardiantype;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 
-class GuardiantypesSeeder extends Seeder
+class GuardiantypeSeeder extends Seeder
 {
     private $seeds;
 
     public function __construct()
     {
-        //instantiate $this->seeds with teacher data
+        //instantiate $this->seeds with guardiantype data
         $this->seeds = $this->buildSeeds();
     }
 
@@ -21,7 +23,17 @@ class GuardiantypesSeeder extends Seeder
      */
     public function run()
     {
-        //
+        foreach($this->seeds AS $seed){
+
+            $model = new Guardiantype;
+
+            $model->id = $seed[0];
+            $model->descr = $seed[1];
+            $model->pronoun_id = $seed[2];
+            $model->order_by = $seed[3];
+
+            $model->save();
+        }
     }
 
     private function buildSeeds()
@@ -42,5 +54,4 @@ class GuardiantypesSeeder extends Seeder
         ];
 
     }
-
 }

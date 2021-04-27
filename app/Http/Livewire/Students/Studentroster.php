@@ -5,6 +5,8 @@ namespace App\Http\Livewire\Students;
 use App\Models\Address;
 use App\Models\Emailtype;
 use App\Models\Geostate;
+use App\Models\Guardian;
+use App\Models\Guardiantype;
 use App\Models\Instrumentation;
 use App\Models\Instrumentationbranch;
 use App\Models\Nonsubscriberemail;
@@ -19,8 +21,10 @@ use App\Models\User;
 use App\Models\Userconfig;
 use App\Traits\FormatPhoneTrait;
 use App\Traits\SenioryearTrait;
+use App\Traits\UsernameTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -28,7 +32,7 @@ use Livewire\WithPagination;
 
 class Studentroster extends Component
 {
-    use FormatPhoneTrait,WithFileUploads,WithPagination,SenioryearTrait;
+    use FormatPhoneTrait,WithFileUploads,WithPagination,SenioryearTrait,UsernameTrait;
 
     public $choralinstrumentation;
     public $classofs;
@@ -38,6 +42,7 @@ class Studentroster extends Component
     public $filter;
     public $geostates;
     public $guardians;
+    public $guardiantypes;
     public $heights;
     public $instrumentalinstrumentation;
     public $instrumentationbranch_id = 0;
@@ -54,6 +59,7 @@ class Studentroster extends Component
     public $search = '';
     public $shirtsizes;
     public $showmodal = false;
+    public $showmodalguardian = false;
     public $student = NULL;
     public $students = NULL;
     public $teacher = NULL;
@@ -79,8 +85,32 @@ class Studentroster extends Component
     public $shirtsize_id;
     public $username;
 
+    //guardian validated values
+    public $guardian = NULL;
+    public $emailguardianalternate = '';
+    public $emailguardianprimary = '';
+    public $guardianfirst = '';
+    public $guardianhonorific_id = 1;
+    public $guardianlast = '';
+    public $guardianmiddle = '';
+    public $guardianpronoun_id = 1;
+    public $guardiantype_id = 1;
+    public $phoneguardianhome = '';
+    public $phoneguardianmobile = '';
+    public $phoneguardianwork = '';
+
     protected $validationAttributes = [
         'first' => 'first name',
+        'guardianemailalternate' => 'alternate email',
+        'guardianemailprimary' => 'primary email',
+        'guardianfirst' => 'first name',
+        'guardianlast' => 'last name',
+        'guardianmiddle' => 'middle name',
+        'guardianphonehome' => 'home phone',
+        'guardianphonemobile' => 'cell phone',
+        'guardianphonework' => 'work phone',
+        'guardianpronoun_id' => 'pronoun',
+        'guardianhonorific_id' => 'title',
         'last' => 'last name',
         'middle' => 'middle name'
     ];
@@ -93,6 +123,7 @@ class Studentroster extends Component
         $this->choralinstrumentation = $this->choralInstrumentation();
         $this->classofs = $this->classofs();
         $this->guardians = $this->guardians();
+        $this->guardiantypes = $this->guardianTypes();
         $this->geostates = $this->geostates();
         $this->heights = $this->heights();
         $this->instrumentalinstrumentation = $this->instrumentalInstrumentation();
@@ -110,7 +141,9 @@ class Studentroster extends Component
         $this->countstudents = $this->students->count();
         $this->teacher = Teacher::with(['person', 'person.user','person.honorific', ])->find(auth()->id());
 
-        return view('livewire.students.studentroster',[]);
+        return view('livewire.students.studentroster',[
+            'guardian_list' => $this->guardians(),
+        ]);
     }
 
     public function rules()
@@ -139,9 +172,27 @@ class Studentroster extends Component
         ];
     }
 
+    /** Close ALL modals */
     public function closeModal()
     {
         $this->showmodal = false;
+        $this->showmodalguardian = false;
+    }
+
+    public function createGuardian()
+    {
+        $this->showmodalguardian = true;
+        $this->guardian = new Guardian;
+
+        $this->guardianlast = '';
+        $this->guardianmiddle = '';
+        $this->guardianfirst = '';
+        $this->emailguardianprimary = '';
+        $this->emailguardianalternate = '';
+        $this->phoneguardianhome = '';
+        $this->phoneguardianmobile = '';
+        $this->phoneguardianwork = '';
+        $this->guardiantype_id = 1;
     }
 
     public function createInstrumentation()
@@ -207,6 +258,31 @@ class Studentroster extends Component
         $this->student->person->user->instrumentations()->detach($id);
 
         $this->student->refresh();
+    }
+
+    public function editGuardian($user_id)
+    {
+        $this->showmodalguardian = true;
+        $this->guardian = Guardian::with('person')->find($user_id);
+
+        $this->emailguardianalternate = $this->guardian->emailAlternate->id ? $this->guardian->emailAlternate->email : '';
+        $this->emailguardianprimary = $this->guardian->emailPrimary->id ? $this->guardian->emailPrimary->email : '';
+
+        $this->guardianfirst = $this->guardian->person->first;
+        $this->guardianlast = $this->guardian->person->last;
+        $this->guaridanmiddle = $this->guardian->person->middle;
+        $this->guardianhonorific_id = $this->guardian->person->honorific_id;
+        $this->guardianpronoun_id = $this->guardian->person->pronoun_id;
+
+         $this->guardiantype_id = $this->guardian->students()
+             ->where('student_user_id', $this->student->user_id)
+             ->first()
+             ->pivot->guardiantype_id;
+
+        $this->phoneguardianhome = $this->guardian->phoneHome->id ? $this->guardian->phoneHome->phone : '';
+        $this->phoneguardianmobile = $this->guardian->phoneMobile->id ? $this->guardian->phoneMobile->phone : '';
+        $this->phoneguardianwork = $this->guardian->phoneWork->id ? $this->guardian->phoneWork->phone : '';
+
     }
 
     public function footInches($inches)
@@ -292,6 +368,46 @@ class Studentroster extends Component
         $this->photo->store('test-photos');
     }
 
+    public function storeGuardian()
+    {
+        //create user
+        $username = $this->username($this->guardianfirst, $this->guardianlast);
+
+        $user = User::create([
+            'username' => $username,
+            'password' => Hash::make($username),
+        ]);
+
+        //create person
+        $person = Person::create([
+            'user_id' => $user->id,
+            'first' => $this->guardianfirst,
+            'middle' => $this->guardianmiddle,
+            'last' => $this->guardianlast,
+            'pronoun_id' => $this->guardianpronoun_id,
+            'honorific_id' => $this->honorific_id,
+        ]);
+
+        //create guardian
+        $guardian = Guardian::create([
+            'user_id' => $user->id,
+        ]);
+
+        //attach guardian to $this->student
+        $this->student->guardians()->attach($user->id, ['guardiantype_id' => $this->guardiantype_id]);
+
+
+
+        //refresh guardian
+        //update guardians
+        //update table
+        //emit message
+
+        $this->showmodalguardian = false;
+
+        $this->emit('saved-guardian');
+    }
+
     public function storeInstrumentation()
     {
         $this->validate();
@@ -336,6 +452,25 @@ class Studentroster extends Component
         $this->pronoun_id = $this->student->person->pronoun_id;
         $this->shirtsize_id = $this->student->shirtsize_id;
         $this->username = $this->student->person->user->username;
+    }
+
+    public function updateGuardian()
+    {
+        $this->guardian->students()->updateExistingPivot($this->student->user_id, [
+            'guardiantype_id' => $this->guardiantype_id,
+        ]);
+
+        $this->updateGuardianNames();
+
+        $this->updateGuardianEmails();
+
+        $this->updateGuardianPhones();
+
+        $this->guardian->person->refresh();
+
+        $this->showmodalguardian = false;
+
+        $this->emit('saved-guardian');
     }
 
     public function updatedFilter()
@@ -525,7 +660,21 @@ class Studentroster extends Component
 
     private function guardians()
     {
-        return collect();
+        return $this->student
+            ? $this->student->guardians
+            : collect();
+    }
+
+    private function guardianTypes()
+    {
+        $a = [];
+
+        foreach(Guardiantype::all() AS $guardiantype){
+
+            $a[$guardiantype->id] = $guardiantype->descr;
+        }
+
+        return $a;
     }
 
     private function heights()
@@ -595,6 +744,65 @@ class Studentroster extends Component
         return $a;
     }
 
+    private function updateGuardianEmails()
+    {
+        Nonsubscriberemail::updateOrCreate(
+            [
+                'user_id' => $this->guardian->user_id,
+                'emailtype_id' => Emailtype::where('descr', 'email_guardian_primary')->first()->id,
+            ],
+            [
+                'email' => $this->emailguardianprimary,
+            ]);
 
+        Nonsubscriberemail::updateOrCreate(
+            [
+                'user_id' => $this->guardian->user_id,
+                'emailtype_id' => Emailtype::where('descr', 'email_guardian_alternate')->first()->id,
+            ],
+            [
+                'email' => $this->emailguardianalternate,
+            ]);
+    }
+
+    private function updateGuardianNames()
+    {
+        $this->guardian->person->first = $this->guardianfirst;
+        $this->guardian->person->middle = $this->guardianmiddle;
+        $this->guardian->person->last = $this->guardianlast;
+        $this->guardian->person->save();
+    }
+
+    private function updateGuardianPhones()
+    {
+        Phone::updateOrCreate(
+            [
+                'user_id' => $this->guardian->user_id,
+                'phonetype_id' => Phonetype::where('descr', 'phone_guardian_home')->first()->id,
+            ],
+            [
+                'phone' => $this->formatPhone($this->phoneguardianhome),
+            ]);
+
+        Phone::updateOrCreate(
+            [
+                'user_id' => $this->guardian->user_id,
+                'phonetype_id' => Phonetype::where('descr', 'phone_guardian_mobile')->first()->id,
+            ],
+            [
+                'phone' => $this->formatPhone($this->phoneguardianmobile),
+            ]);
+
+        Phone::updateOrCreate(
+            [
+                'user_id' => $this->guardian->user_id,
+                'phonetype_id' => Phonetype::where('descr', 'phone_guardian_work')->first()->id,
+            ],
+            [
+                'phone' => $this->formatPhone($this->phoneguardianwork),
+            ]);
+
+
+    }
 
 }

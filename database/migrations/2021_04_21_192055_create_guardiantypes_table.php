@@ -18,6 +18,7 @@ class CreateGuardiantypesTable extends Migration
             $table->string('descr', 24);
             $table->foreignId('pronoun_id')->constrained();
             $table->integer('order_by');
+            $table->timestamps();
         });
     }
 

@@ -107,6 +107,7 @@ class StudentSeeder extends Seeder
             $this->seedRolesTable($seed);
         }
     }
+
     private function seedRolesTable($seed)
     {
         static $roletype_id;
@@ -123,7 +124,6 @@ class StudentSeeder extends Seeder
 
         $model->save();
     }
-
 
 /** SEED ARRAYS **************************************************************/
     private function buildPeopleSeeds()

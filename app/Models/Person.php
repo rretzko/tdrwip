@@ -45,6 +45,11 @@ class Person extends Model
         return Honorific::find($this->honorific_id)->abbr;
     }
 
+    public function guardian()
+    {
+        return $this->hasOne(Guardian::class,'user_id', 'user_id');
+    }
+
     public function honorific()
     {
         return $this->belongsTo(Honorific::class);

@@ -16,6 +16,8 @@ trait FormatPhoneTrait
         //break string into integer value
         $ints = $this->stripNonnumericValues($str);
 
+        if(! strlen($ints)){ return '';}
+
         //format into }(###) ###-#### [x####]" string
         if(strlen($ints) < 10){ return 'Err: Please include area code!';}
 

@@ -557,6 +557,11 @@ class TeacherSeeder extends Seeder
             [10,7526,7228],
             [11,7526,7228],
             [12,7526,7228],
+            //joe cantaffa @ howell hs
+            [9,2958,177],
+            [10,2958,177],
+            [11,2958,177],
+            [12,2958,177],
         ];
     }
 
@@ -1625,6 +1630,8 @@ class TeacherSeeder extends Seeder
             [8537,227],
             [8538,331],
             [8539,120],
+            //joe cantaffa @ howell hs
+            [2958,177],
         ];
     }
 

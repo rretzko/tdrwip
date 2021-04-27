@@ -400,7 +400,7 @@
                                         <table class="ml-6 mt-4 mb-3 w-10/12">
                                             <thead>
                                             <tr class="border border-black bg-gray-100 ">
-                                                <th class="pl-2 text-left w-10/12">Parent/Guardian{{ ($guardians->count() > 1) ? 's' : '' }}</th>
+                                                <th class="pl-2 text-left w-10/12">Parent/Guardian{{ ($student->guardians()->count() > 1) ? 's' : '' }}</th>
                                                 <td class="w-2/12">
                                                     <a
                                                         class="text-green-500 text-sm" wire:click.prevent="createGuardian"
@@ -409,26 +409,38 @@
                                                     </a>
                                                 </td>
                                             </tr>
-                                            </thead>
-                                            @if($guardians->count())
 
-                                                <tbody>
-                                                @foreach($choralinstrumentation AS $instrument)
-                                                    <tr class="border border-black">
-                                                        <td class="pl-3 w-10/12">{{ strtoupper($instrument->descr) }}</td>
+                                                @forelse($student->guardians AS $guardian)
+                                                    <tr class="border border-black bg-white">
+                                                        <td class="pl-2 text-left w-10/12">{{ $guardian->person->fullName }} ({{ $guardian->guardiantype()->descr }})</td>
                                                         <td class="w-2/12">
                                                             <a
-                                                                class="text-red-700 text-sm" wire:click="deleteInstrumentation({{ $instrument->id }})"
+                                                                class="text-blue-500 text-sm" wire:click.prevent="editGuardian({{ $guardian->user_id }})"
                                                                 href="#">
-                                                                Delete
+                                                                Edit
                                                             </a>
                                                         </td>
                                                     </tr>
-                                                @endforeach
-                                                </tbody>
-                                            @endif
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="2" class="text-center">No parent/guardian found
+                                                        </td>
+                                                    </tr>
+                                                @endforelse
 
                                         </table>
+
+                                        {{-- SAVED message --}}
+                                        <div class="font-italic bg-green-200 p-2"
+                                             x-data="{show: false}"
+                                             x-show.transition.duration.500ms="show"
+                                             x-init="@this.on('saved-guardian',() => {
+                                                setTimeout(() => { show = false; }, 2500 );
+                                                show = true;
+                                            })"
+                                        >
+                                            Parent/Guardian saved!
+                                        </div>
                                     </div>
                                 </div>
 

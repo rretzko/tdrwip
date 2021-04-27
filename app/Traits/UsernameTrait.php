@@ -3,23 +3,27 @@
 namespace App\Traits;
 
 use App\Models\Searchable;
+use App\Models\User;
 
 trait UsernameTrait
 {
     /**
-     * @since 2021.03.03
+     * @since 2021.04.27
      *
-     * Trait for creating/updating username
+     * Trait for creating unique username
 
      * @return string
      */
-    public function username($str) : string
+    public function username($first,$last) : string
     {
-        $parts = explode(' ',$str);
+        $root = strtolower(substr($first,0,1).$last);
+        $username = $root;
 
+        while(User::where('username', $username)->first()){
 
-        $searchable = new Searchable();
+            $username = $root.rand(100,999);
+        }
 
-        $searchable->add($user_id, $descr, $raw);
+        return $username;
     }
 }

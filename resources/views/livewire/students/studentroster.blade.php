@@ -120,6 +120,10 @@
             </form>
         </div>
     </div>
+
+    {{-- GUARDIAN MODAL --}}
+    <x-studentroster.forms.modals.guardian :guardian="$guardian" :guardiantypes="$guardiantypes" :showmodal="$showmodalguardian" />
+
 {{-- LIVEWIRE KIT MODAL END --}}
 </div>
 

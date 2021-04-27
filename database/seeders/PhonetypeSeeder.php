@@ -20,9 +20,9 @@ class PhonetypeSeeder extends Seeder
             ['descr' => 'home',],
             ['descr' => 'phone_student_mobile'],
             ['descr' => 'phone_student_home'],
-            ['descr' => 'phone_parent_mobile'],
-            ['descr' => 'phone_parent_work'],
-            ['descr' => 'phone_parent_home'],
+            ['descr' => 'phone_guardian_mobile'],
+            ['descr' => 'phone_guardian_work'],
+            ['descr' => 'phone_guardian_home'],
         ]);
     }
 }

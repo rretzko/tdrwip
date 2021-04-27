@@ -8,7 +8,7 @@
     <div class="mt-1 relative rounded-md shadow-sm">
         <input wire:model.lazy="{{ $for }}" type="text" name="{{ $for }}" id="{{ $for }}"
                class="block w-full pr-10 @if($errors->first($for)) border-red-300 text-red-900 placeholder-red-300 @endif focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
-               aria-invalid="true" aria-describedby="email-error">
+               aria-invalid="true" aria-describedby="email-error" @if($initialfocus) autofocus @endif >
     </div>
     @error($for)
         <p class="mt-2 text-sm text-red-600" id="{{ $for }}-error">

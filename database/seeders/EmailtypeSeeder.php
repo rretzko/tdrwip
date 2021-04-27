@@ -20,8 +20,8 @@ class EmailtypeSeeder extends Seeder
             ['descr' => 'other',],
             ['descr' => 'email_student_school'],
             ['descr' => 'email_student_personal'],
-            ['descr' => 'email_parent_work'],
-            ['descr' => 'email_parent_personal'],
+            ['descr' => 'email_guardian_alternate'],
+            ['descr' => 'email_guardian_primary'],
         ]);
     }
 }
