@@ -18,6 +18,7 @@ class CreateInstrumentationUserTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->tinyInteger('order_by');
             $table->timestamps();
+            $table->primary(['instrumentation_id', 'user_id']);
         });
     }
 

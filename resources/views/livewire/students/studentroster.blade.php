@@ -32,12 +32,18 @@
         </div>
     </div> <!-- END OF PAGE DEFINITION -->
 
-    <!-- PAGE TABLE -->
+    <!-- PAGE HEADER -->
     <x-studentroster.school-selector :schools="$schools" schoolid={{$schoolid}}/>
+
     <x-studentroster.multi-column-directory  countstudents={{$countstudents}} :schools='$schools' :search='$search' :filter='$filter'/>
+
+    <!-- PAGE TABLE AND [STUDENT DATA FORM] -->
     <div class="{{$displayform ? 'flex' : ''}} w-12/12">
+        {{-- COLLAPSING TABLE --}}
         <x-studentroster.table :students="$students" :displayform="$displayform" :teacher="$teacher" />
-      <x-studentroster.form
+
+        {{-- DISPLAY STUDENT DATA TABLE ON 'Edit' CLICK --}}
+        <x-studentroster.form
           :addinstrument="$addinstrument"
           :choralinstrumentation="$choralinstrumentation"
           :classofs="$classofs"
@@ -52,6 +58,7 @@
           :photo='$photo'
           :pronouns="$pronouns"
           :shirtsizes="$shirtsizes"
+          :showmodalremoveguardian="$showmodalremoveguardian"
           :student="$student"
       />
     </div>
@@ -122,7 +129,15 @@
     </div>
 
     {{-- GUARDIAN MODAL --}}
-    <x-studentroster.forms.modals.guardian :guardian="$guardian" :guardiantypes="$guardiantypes" :showmodal="$showmodalguardian" />
+    <x-studentroster.forms.modals.guardian
+        :guardian="$guardian"
+        guardianfullname="{{ $guardian ? $guardian->person->fullName : '' }}"
+        :guardiantypes="$guardiantypes"
+        :honorifics="$honorifics"
+        :pronouns="$pronouns"
+        :showmodal="$showmodalguardian"
+        :showmodalremoveguardian="$showmodalremoveguardian"
+    />
 
 {{-- LIVEWIRE KIT MODAL END --}}
 </div>

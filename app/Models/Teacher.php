@@ -89,10 +89,15 @@ class Teacher extends Model
             $s->teacher_user_id = auth()->id();
             $s->school_id = $school_id;
 
-            $a[] = $s;
+            $a[] = [
+                'sortorder' => $s->person->fullNameAlpha,
+                'obj' => $s
+                ];
         }
 
-        return collect($a);
+        sort($a);
+
+        return collect(array_column($a,'obj'));
     }
 
     public function tenureYearsAtSchool($school_id)

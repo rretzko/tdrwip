@@ -7,9 +7,11 @@ use App\Models\Emailtype;
 use App\Models\Geostate;
 use App\Models\Guardian;
 use App\Models\Guardiantype;
+use App\Models\Honorific;
 use App\Models\Instrumentation;
 use App\Models\Instrumentationbranch;
 use App\Models\Nonsubscriberemail;
+use App\Models\Person;
 use App\Models\Phone;
 use App\Models\Phonetype;
 use App\Models\Pronoun;
@@ -44,6 +46,7 @@ class Studentroster extends Component
     public $guardians;
     public $guardiantypes;
     public $heights;
+    public $honorifics;
     public $instrumentalinstrumentation;
     public $instrumentationbranch_id = 0;
     public $instrumentationbranches;
@@ -54,12 +57,14 @@ class Studentroster extends Component
     public $photo_stored = NULL;
     public $newinstrumentations;
     public $pronouns;
+    public $removeguardianchickentest = 0;
     public $schoolid;
     public $schools;
     public $search = '';
     public $shirtsizes;
     public $showmodal = false;
     public $showmodalguardian = false;
+    public $showmodalremoveguardian = false;
     public $student = NULL;
     public $students = NULL;
     public $teacher = NULL;
@@ -90,6 +95,7 @@ class Studentroster extends Component
     public $emailguardianalternate = '';
     public $emailguardianprimary = '';
     public $guardianfirst = '';
+    public $guardianfullname = '';
     public $guardianhonorific_id = 1;
     public $guardianlast = '';
     public $guardianmiddle = '';
@@ -120,13 +126,14 @@ class Studentroster extends Component
         //ex. all,alum,current
         $this->filter = Userconfig::getValue('filter_studentroster', auth()->id());
 
-        $this->choralinstrumentation = $this->choralInstrumentation();
+        $this->choralinstrumentation = $this->instrumentationChoral();
         $this->classofs = $this->classofs();
         $this->guardians = $this->guardians();
         $this->guardiantypes = $this->guardianTypes();
         $this->geostates = $this->geostates();
         $this->heights = $this->heights();
-        $this->instrumentalinstrumentation = $this->instrumentalInstrumentation();
+        $this->honorifics = $this->honorifics();
+        $this->instrumentalinstrumentation = $this->instrumentationInstrumental();
         $this->instrumentationbranches = Instrumentationbranch::where('id', '<', 3)->get();
         $this->newinstrumentations = collect(); //$this->newInstrumentations();
         $this->pronouns = $this->pronouns();
@@ -172,6 +179,27 @@ class Studentroster extends Component
         ];
     }
 
+    /**
+     * User is submitting the Biography form
+     */
+    public function biography()
+    {info(__CLASS__.': '.__LINE__);
+        $this->validate();
+
+        $user = $this->student->person->user;
+        $user->username = $this->username;
+        if($this->photo){
+            $user->profile_photo_path = $this->photo->store('public');
+            //store('profile-photos') stores the file into storage/app/profile-photos directory.
+        }
+
+        $user->save();
+
+        $user->refresh();
+
+        $this->emit('saved-biography');
+    }
+
     /** Close ALL modals */
     public function closeModal()
     {
@@ -197,30 +225,9 @@ class Studentroster extends Component
 
     public function createInstrumentation()
     {
+        $this->instrumentation_id = 0;
+        $this->instrumentationbranch_id = 0;
         $this->showmodal = true;
-        $this->instrumentation_id = null;
-        $this->instrumentationbranch_id = null;
-    }
-
-    /**
-     * User is submitting the Biography form
-     */
-    public function biography()
-    {
-        $this->validate();
-
-        $user = $this->student->person->user;
-        $user->username = $this->username;
-        if($this->photo){
-            $user->profile_photo_path = $this->photo->store('public');
-            //store('profile-photos') stores the file into storage/app/profile-photos directory.
-        }
-
-        $user->save();
-
-        $user->refresh();
-
-        $this->emit('saved-biography');
     }
 
     public function contacts()
@@ -257,13 +264,22 @@ class Studentroster extends Component
     {
         $this->student->person->user->instrumentations()->detach($id);
 
-        $this->student->refresh();
+        $this->instrumentation_id = 0;
+        $this->instrumentationbranch_id = 0;
+
+        $this->choralinstrumentation = $this->instrumentationChoral();
+        $this->instrumentalinstrumentation = $this->instrumentationInstrumental();
+
+        $this->emit('removed-instrumentation');
     }
 
     public function editGuardian($user_id)
     {
         $this->showmodalguardian = true;
+        $this->showmodalremoveguardian = false;
+
         $this->guardian = Guardian::with('person')->find($user_id);
+        $this->guardianfullname = $this->guardian->person->fullName;
 
         $this->emailguardianalternate = $this->guardian->emailAlternate->id ? $this->guardian->emailAlternate->email : '';
         $this->emailguardianprimary = $this->guardian->emailPrimary->id ? $this->guardian->emailPrimary->email : '';
@@ -328,8 +344,8 @@ class Studentroster extends Component
 
         $this->student->person->user->instrumentations()->attach($this->instrumentation_id, ['order_by' => 1]);
 
-        $this->choralInstrumentation();
-        $this->instrumentalInstrumentation();
+        $this->instrumentationChoral();
+        $this->instrumentationInstrumental();
 
         $this->emit('saved-instrumentations');
     }
@@ -359,6 +375,38 @@ class Studentroster extends Component
         $this->emit('saved-personal');
     }
 
+    public function removeGuardian($user_id)
+    {
+        //set $this->guardian
+        $this->guardian = Guardian::find($user_id);
+
+        $this->guardianfullname = $this->guardian->person->fullName;
+
+        //display chickentest
+        $this->showmodalremoveguardian = true;
+
+        //$this->student->guardians()->detach($user_id);
+
+        //$this->showmodalguardian = false;
+
+        //$this->emit('removed-guardian');
+    }
+
+    public function removeGuardianChickenTest()
+    {
+        if($this->removeguardianchickentest){
+
+            $this->student->guardians()->detach($this->guardian->user_id);
+
+            $this->student->refresh();
+
+            $this->emit('removed-guardian');
+        }
+
+        //reinitialize to hide modal
+        $this->showmodalremoveguardian = false;
+    }
+
     public function savePhoto()
     {
         $this->validate([
@@ -378,30 +426,29 @@ class Studentroster extends Component
             'password' => Hash::make($username),
         ]);
 
-        //create person
-        $person = Person::create([
+        //create guardian
+         Guardian::create([
             'user_id' => $user->id,
-            'first' => $this->guardianfirst,
-            'middle' => $this->guardianmiddle,
-            'last' => $this->guardianlast,
-            'pronoun_id' => $this->guardianpronoun_id,
-            'honorific_id' => $this->honorific_id,
         ]);
 
-        //create guardian
-        $guardian = Guardian::create([
-            'user_id' => $user->id,
-        ]);
+        $this->guardian = Guardian::find($user->id);
+
+        //create person
+        $this->updateGuardianPerson();
 
         //attach guardian to $this->student
         $this->student->guardians()->attach($user->id, ['guardiantype_id' => $this->guardiantype_id]);
 
+        //create emails
+        $this->updateGuardianEmails();
 
+        //create phone
+        $this->updateGuardianPhones();
 
-        //refresh guardian
         //update guardians
+        $this->guardians();
+
         //update table
-        //emit message
 
         $this->showmodalguardian = false;
 
@@ -414,11 +461,17 @@ class Studentroster extends Component
 
         $this->student->person->user->instrumentations()->attach($this->instrumentation_id, ['order_by' => 1]);
 
-        $this->student->refresh();
-        $this->choralInstrumentation();
-        $this->instrumentalInstrumentation();
+        //refresh $this->student instrumentation collections
+        $this->choralinstrumentation = $this->instrumentationChoral();
+        $this->instrumentalinstrumentation = $this->instrumentationInstrumental();
+
+        //reinitialize select values
+        $this->instrumentationbranch_id = 0;
+        $this->instrumentation_id = 0;
 
         $this->closeModal();
+
+        $this->emit('saved-instrumentation');
     }
 
     public function studentForm($user_id)
@@ -434,7 +487,7 @@ class Studentroster extends Component
         $this->address01 = $this->student->person->user->address->address01;
         $this->address02 = $this->student->person->user->address->address02;
         $this->birthday = $this->student->birthday;
-        $this->choralinstrumentation = $this->choralInstrumentation();
+        $this->choralinstrumentation = $this->instrumentationChoral();
         $this->city = $this->student->person->user->address->city;
         $this->classof = $this->student->classof;
         $this->emailpersonal = $this->student->emailPersonal->id ? $this->student->emailPersonal->email : '';
@@ -443,7 +496,7 @@ class Studentroster extends Component
         $this->geostate_id = $this->student->person->user->address->geostate_id;
         $this->guardians = $this->guardians();
         $this->height = $this->student->height;
-        $this->instrumentalinstrumentation = $this->instrumentalInstrumentation();
+        $this->instrumentalinstrumentation = $this->instrumentationInstrumental();
         $this->last = $this->student->person->last;
         $this->middle = $this->student->person->middle;
         $this->phonehome = $this->student->phoneHome->id ? $this->student->phoneHome->phone : '';
@@ -455,18 +508,20 @@ class Studentroster extends Component
     }
 
     public function updateGuardian()
-    {
+    {info(__CLASS__.':'.__LINE__);
         $this->guardian->students()->updateExistingPivot($this->student->user_id, [
             'guardiantype_id' => $this->guardiantype_id,
         ]);
 
-        $this->updateGuardianNames();
+        $this->updateGuardianPerson();
 
         $this->updateGuardianEmails();
 
         $this->updateGuardianPhones();
 
-        $this->guardian->person->refresh();
+        $this->guardian->refresh();
+
+        $this->student->refresh();
 
         $this->showmodalguardian = false;
 
@@ -507,14 +562,6 @@ class Studentroster extends Component
     }
 
 /** END OF PUBLIC FUNCTIONS **************************************************/
-
-    private function choralInstrumentation()
-    {
-        //early exist
-        if(! $this->student){ return collect();}
-
-        return $this->student->person->user->instrumentations()->where('instrumentationbranch_id', Instrumentationbranch::where('descr', 'choral')->first()->id)->get();
-    }
 
     /**
      * @todo test with primary or middle school teacher
@@ -688,12 +735,39 @@ class Studentroster extends Component
         return $a;
     }
 
-    private function instrumentalInstrumentation()
+    private function honorifics()
+    {
+        $a = [];
+
+        foreach(Honorific::orderBy('order_by')->get() AS $honorific){
+            $a[$honorific->id] = $honorific->descr;
+        }
+
+        return $a;
+    }
+
+    private function instrumentationChoral()
     {
         //early exist
         if(! $this->student){ return collect();}
 
-        return $this->student->person->user->instrumentations()->where('instrumentationbranch_id',Instrumentationbranch::where('descr','instrumental')->first()->id)->get();
+        $this->student->person->user->refresh();
+
+        return $this->student->person->user->instrumentations()
+            ->where('instrumentationbranch_id', Instrumentationbranch::where('descr', 'choral')->first()->id)
+            ->get()
+            ->sortBy('descr');
+    }
+
+    private function instrumentationInstrumental()
+    {
+        //early exist
+        if(! $this->student){ return collect();}
+
+        return $this->student->person->user->instrumentations()
+            ->where('instrumentationbranch_id',Instrumentationbranch::where('descr','instrumental')->first()->id)
+            ->get()
+            ->sortBy('descr');
     }
 
     public function newInstrumentations()
@@ -765,12 +839,21 @@ class Studentroster extends Component
             ]);
     }
 
-    private function updateGuardianNames()
+    private function updateGuardianPerson()
     {
-        $this->guardian->person->first = $this->guardianfirst;
-        $this->guardian->person->middle = $this->guardianmiddle;
-        $this->guardian->person->last = $this->guardianlast;
-        $this->guardian->person->save();
+        Person::updateOrCreate(
+            [
+                'user_id' => $this->guardian->user_id
+            ],
+            [
+                'first' => $this->guardianfirst,
+                'middle' => $this->guardianmiddle,
+                'last' => $this->guardianlast,
+                'honorific_id' => $this->guardianhonorific_id,
+                'pronoun_id' => $this->guardianpronoun_id,
+            ]
+        );
+
     }
 
     private function updateGuardianPhones()

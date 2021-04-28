@@ -5,6 +5,8 @@
 'displayform',
 'footinches',
 'geostates',
+'guardian',
+'guardianfullname',
 'guardians',
 'heights',
 'instrumentalinstrumentation',
@@ -14,6 +16,7 @@
 'photo',
 'pronouns',
 'shirtsizes',
+'showmodalremoveguardian' => false,
 'student' => false,
 ])
 
@@ -22,7 +25,7 @@
 
     @if($student)
         <div>
-            {{-- SECTION I  --}}
+            {{-- SECTION I:BIOGRAPHY  --}}
             <div class="md:grid md:grid-cols-3 md:gap-6 ">
                 <div class="md:col-span-1 px-2 py-2">
                     <div class="px-4 sm:px-0">
@@ -33,7 +36,7 @@
                     </div>
                 </div>
                 <div class="mt-5 md:mt-0 md:col-span-2">
-                    <x-buttons.button-delete id="photo" />
+
                     <form wire:submit.prevent="biography">
                         <div class="shadow sm:rounded-md sm:overflow-hidden">
                             <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
@@ -102,7 +105,7 @@
                 </div>
             </div>
 
-            {{-- SECTION II --}}
+            {{-- SECTION II:PERSONAL --}}
             <div class="md:grid md:grid-cols-3 md:gap-6 bg-blue-100">
                 <div class="md:col-span-1 px-2 py-2">
                     <div class="px-4 sm:px-0">
@@ -184,7 +187,7 @@
                 </div>
             </div>
 
-            {{-- SECTION III --}}
+            {{-- SECTION III:INSTRUMENTATION --}}
             <div class="md:grid md:grid-cols-3 md:gap-6">
                 <div class="md:col-span-1 px-2 py-2">
                     <div class="px-4 sm:px-0">
@@ -269,6 +272,30 @@
 
                                         </table>
                                     </div>
+
+                                    {{-- SAVED message --}}
+                                    <div class="font-italic bg-green-200 p-2"
+                                         x-data="{show: false}"
+                                         x-show.transition.duration.500ms="show"
+                                         x-init="@this.on('saved-instrumentation',() => {
+                                                setTimeout(() => { show = false; }, 2500 );
+                                                show = true;
+                                            })"
+                                    >
+                                        Instrumentation saved!
+                                    </div>
+
+                                    {{--  REMOVED message --}}
+                                    <div class="font-italic bg-red-200 p-2"
+                                         x-data="{show: false}"
+                                         x-show.transition.duration.500ms="show"
+                                         x-init="@this.on('removed-instrumentation',() => {
+                                                setTimeout(() => { show = false; }, 2500 );
+                                                show = true;
+                                            })"
+                                    >
+                                        Instrumentation removed.
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -276,7 +303,7 @@
                </div>
             </div>
 
-            {{-- SECTION IV --}}
+            {{-- SECTION IV:CONTACTS (EMAILS & PHONES) --}}
             <div class="md:grid md:grid-cols-3 md:gap-6 bg-blue-100">
                 <div class="md:col-span-1 px-2 py-2">
                     <div class="px-4 sm:px-0">
@@ -333,7 +360,7 @@
                 </div>
             </div>
 
-            {{-- SECTION V --}}
+            {{-- SECTION V:HOME ADDRESS --}}
             <div class="md:grid md:grid-cols-3 md:gap-6">
                 <div class="md:col-span-1 px-2 py-2">
                     <div class="px-4 sm:px-0">
@@ -379,7 +406,7 @@
                 </div>
             </div>
 
-            {{-- SECTION VI --}}
+            {{-- SECTION VI:PARENT/GUARDIAN --}}
             <div class="md:grid md:grid-cols-3 md:gap-6 bg-blue-100">
                 <div class="md:col-span-1 px-2 py-2">
                     <div class="px-4 sm:px-0">
@@ -399,25 +426,34 @@
                                     <div>
                                         <table class="ml-6 mt-4 mb-3 w-10/12">
                                             <thead>
-                                            <tr class="border border-black bg-gray-100 ">
-                                                <th class="pl-2 text-left w-10/12">Parent/Guardian{{ ($student->guardians()->count() > 1) ? 's' : '' }}</th>
-                                                <td class="w-2/12">
-                                                    <a
-                                                        class="text-green-500 text-sm" wire:click.prevent="createGuardian"
-                                                        href="#">
-                                                        Add
-                                                    </a>
-                                                </td>
-                                            </tr>
+                                                <tr class="border border-black bg-gray-100 ">
+                                                    <th class="pl-2 text-left w-10/12">Parent/Guardian{{ ($student->guardians()->count() > 1) ? 's' : '' }}</th>
+                                                    <td colspan="2" class="w-2/12 text-right">
+                                                        <a
+                                                            class="text-green-500 text-sm pr-1" wire:click.prevent="createGuardian"
+                                                            href="#">
+                                                            Add
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </thead>
 
+                                            <tbody>
                                                 @forelse($student->guardians AS $guardian)
                                                     <tr class="border border-black bg-white">
                                                         <td class="pl-2 text-left w-10/12">{{ $guardian->person->fullName }} ({{ $guardian->guardiantype()->descr }})</td>
-                                                        <td class="w-2/12">
+                                                        <td class="w-1/12">
                                                             <a
-                                                                class="text-blue-500 text-sm" wire:click.prevent="editGuardian({{ $guardian->user_id }})"
+                                                                class="text-blue-500 text-xs" wire:click.prevent="editGuardian({{ $guardian->user_id }})"
                                                                 href="#">
                                                                 Edit
+                                                            </a>
+                                                        </td>
+                                                        <td class="w-1/12">
+                                                            <a
+                                                                class="text-red-800 text-xs pr-1" wire:click.prevent="removeGuardian({{ $guardian->user_id }})"
+                                                                href="#">
+                                                                Remove
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -427,7 +463,7 @@
                                                         </td>
                                                     </tr>
                                                 @endforelse
-
+                                            </tbody>
                                         </table>
 
                                         {{-- SAVED message --}}
@@ -441,6 +477,18 @@
                                         >
                                             Parent/Guardian saved!
                                         </div>
+
+                                        {{--  REMOVED message --}}
+                                        <div class="font-italic bg-red-200 p-2"
+                                             x-data="{show: false}"
+                                             x-show.transition.duration.500ms="show"
+                                             x-init="@this.on('removed-guardian',() => {
+                                                setTimeout(() => { show = false; }, 2500 );
+                                                show = true;
+                                            })"
+                                        >
+                                            Parent/Guardian removed.
+                                        </div>
                                     </div>
                                 </div>
 
@@ -448,5 +496,15 @@
                         </div>
                     </form>
                 </div>
+            </div>
+        </div>
+
+        {{-- CHICKEN TEST FOR GUARDIAN REMOVAL --}}
+        <x-studentroster.forms.modals.chickenTestRemoveGuardian
+            :showmodalremoveguardian="$showmodalremoveguardian"
+            guardianfullname="{{ $guardian ? $guardian->person->fullName : '' }}"
+            studentfullname="{{ $student->person->fullName }}"
+        />
+
     @endif
 </div>

@@ -1,14 +1,17 @@
 @props([
-'showmodal' => false,
 'guardian' => false,
 'guardiantypes' => [],
+'honorifics' => [],
+'pronouns' => [],
+'showmodal' => false,
+'showmodalremoveguardian' => false,
 ])
 
 <section
     class="@if (! $showmodal) hidden @endif flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-90">
     <div class="bg-white rounded-lg w-1/2">
 
-        <form wire:submit.prevent="{{ $guardian && $guardian->user_id ? 'updateGuardian' : 'storeGuardian' }}" class="w-full">
+        <form wire:submit.prevent="" class="w-full">
             <div class="flex flex-col items-start p-4">
                 <div class="flex items-center w-full border-b pb-4">
                     <div class="text-gray-900 font-medium text-lg">{{ $guardian && $guardian->user_id ? 'Edit' : 'Add' }} Parent/Guardian</div>
@@ -22,9 +25,11 @@
 
                 {{-- NAMES --}}
                 <div class="my-4 w-full">
+                    <x-inputs.select class="mt-3" label="title" for="guardianhonorific_id" :options="$honorifics"  />
                     <x-inputs.text  for="guardianfirst" label="first name" initialfocus="1" />
                     <x-inputs.text  for="guardianmiddle" label="middle name" initialfocus="0" />
                     <x-inputs.text  for="guardianlast" label="last name" initialfocus="0" />
+                    <x-inputs.select class="mt-3" label="preferred pronoun" for="guardianpronoun_id" :options="$pronouns"  />
                 </div>
 
                 {{-- PARENT/GUARDIAN TYPE  --}}
@@ -58,4 +63,5 @@
             </div>
         </form>
     </div>
+
 </section>
