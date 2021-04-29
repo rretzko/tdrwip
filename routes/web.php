@@ -28,7 +28,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::post('dashboard/impersonation', [App\Http\Controllers\ImpersonationController::class, 'show'])->name('impersonation.show');
 
     /** AUTHENTICATED USER */
-    Route::get('/students', [App\Http\Controllers\Students\StudentController::class, 'show'])->name('students');
+    //Route::get('/students', [App\Http\Controllers\Students\StudentController::class, 'show'])->name('students');
+    Route::get('/students', [App\Http\Controllers\Students\StudentTabbedController::class, 'show'])->name('students');
     Route::get('/schools', [App\Http\Controllers\Schools\SchoolController::class, 'show'])->name('schools');
 });
 

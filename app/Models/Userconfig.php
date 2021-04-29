@@ -38,10 +38,20 @@ class Userconfig extends Model
         return self::get($descr, $user_id);
     }
 
+    private static function defaultStudentform($descr, $user_id)
+    {
+        self::defaultSave($descr, $user_id, 'biography');
+    }
+
     private static function defaultFilter_studentroster($descr, $user_id)
     {
         $user = User::find($user_id);
         self::defaultSave($descr, $user_id, 'all');
+    }
+
+    private static function defaultPagedef_students($descr, $user_id)
+    {
+        self::defaultSave($descr, $user_id, 1); //display
     }
 
     private static function defaultSave($descr, $user_id, $value)
