@@ -14,23 +14,24 @@
 
         {{-- STUDENT DETAILED INFORMATION TABBED --}}
         <x-studentroster.forms.tabbed
-            :student="$student"
+            :classofs="$classofs"
             :displayform="$displayform"
+            :heights="$heights"
+            :student="$student"
+            :photo="$photo"
+            :pronouns="$pronouns"
+            :shirtsizes="$shirtsizes"
+            :tabcontent="$tabcontent"
         />
 
         <!-- :addinstrument="$addinstrument"
         :choralinstrumentation="$choralinstrumentation"
-        :classofs="$classofs"
         :geostates="$geostates"
         :guardians="$guardians"
-        :heights="$heights"
         :instrumentationbranch_id="$instrumentationbranch_id"
         :instrumentalinstrumentation="$instrumentalinstrumentation"
         :instrumentationbranches="$instrumentationbranches"
         :newinstrumentations="$newinstrumentations"
-        :photo='$photo'
-        :pronouns="$pronouns"
-        :shirtsizes="$shirtsizes"
         :showmodalremoveguardian="$showmodalremoveguardian"
         -->
 

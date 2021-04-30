@@ -1,19 +1,6 @@
-<!--
-  This example requires Tailwind CSS v2.0+
-
-  This example requires some changes to your config:
-
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ]
-  }
-  ```
--->
+@props([
+'tabcontent',
+])
 <div>
     <div class="sm:hidden pt-2">
         <label for="tabs" class="sr-only">Select a tab</label>
@@ -33,13 +20,16 @@
     </div>
     <style>
         .tab{
-            border-radius: 1rem;
+            border-top-right-radius: .75rem;
+            border-top-left-radius: .75rem;
+            margin-right: .1rem;
         }
     </style>
     <div class="hidden sm:block pt-2">
-        <nav class="relative z-0 rounded-lg shadow flex divide-x divide-gray-200 mx-auto" style="max-width:90%;" aria-label="Tabs">
+        <nav class="relative z-0  border-b-2 border-gray-200 flex divide-x divide-gray-200 mx-auto" style="max-width:90%;" aria-label="Tabs">
 
             <a href="#"
+                wire:click="tabContent('biography')"
                 class="tab text-gray-900 group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-4 text-sm font-medium text-center hover:bg-gray-50 focus:z-10" aria-current="page"
                 title="Biography"
             >
@@ -50,10 +40,13 @@
                     </svg>
                     <span class="sm:hidden lg:block ml-1 pt-0.5">Biography</span>
                 </div>
-                <span aria-hidden="true" class="bg-indigo-500 absolute inset-x-0 bottom-0 h-0.5"></span>
+                <span aria-hidden="true"
+                      class="@if($tabcontent === 'biography') bg-yellow-400 absolute inset-x-0 bottom-0 h-0.5 @else bg-transparent absolute inset-x-0 bottom-0 h-0.5 @endif ">
+                </span>
             </a>
 
             <a href="#"
+                wire:click="tabContent('profile')"
                 class="tab text-gray-500 hover:text-gray-700 group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-4 text-sm font-medium text-center hover:bg-gray-50 focus:z-10"
                 title="Profile"
             >
@@ -63,7 +56,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
                     </svg>
                     <span class="sm:hidden lg:block ml-1 pt-0.5">Profile</span>
-                    <span aria-hidden="true" class="bg-transparent absolute inset-x-0 bottom-0 h-0.5"></span>
+                    <span aria-hidden="true"
+                          class="@if($tabcontent === 'profile') bg-yellow-400 absolute inset-x-0 bottom-0 h-0.5 @else bg-transparent absolute inset-x-0 bottom-0 h-0.5 @endif ">
+                    </span>
                 </div>
             </a>
 

@@ -62,7 +62,7 @@ class Person extends Model
 
     public function pronoun()
     {
-        return $this->hasOne(Pronoun::class);
+        return $this->belongsTo(Pronoun::class);
     }
 
     public function student()

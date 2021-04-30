@@ -73,6 +73,11 @@ class Userconfig extends Model
         self::defaultSave($descr, $user_id, $school->id);
     }
 
+    private static function defaultStudentform_tab($descr, $user_id)
+    {
+        self::defaultSave($descr, $user_id, 'biography'); //display
+    }
+
     private static function defaultUpdate($descr, $user_id, $value)
     {
         DB::table('userconfigs')
