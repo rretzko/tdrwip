@@ -16,7 +16,7 @@
     </div>
 
     <div class="mt-5 md:mt-0 md:col-span-2">
-        <form wire:submit.prevent="profile">
+        <form wire:submit.prevent="updateProfile">
             <div class="shadow sm:rounded-md sm:overflow-hidden">
                 <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
 

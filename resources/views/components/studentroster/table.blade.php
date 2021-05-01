@@ -23,7 +23,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="">
                                             <div class="text-sm font-medium text-gray-900">
-                                                <a href="#" wire:click="studentForm({{$student->user_id}})" class="text-indigo-600 hover:text-indigo-900">
+                                                <a href="#" wire:click="editStudentForm({{$student->user_id}})" class="text-indigo-600 hover:text-indigo-900">
                                                     {{$student->person->fullNameAlpha ?? 'null_object'}}
                                                 </a>
                                             </div>
@@ -134,7 +134,7 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="#" wire:click="studentForm({{$student->user_id}})" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                    <a href="#" wire:click="editStudentForm({{$student->user_id}})" class="text-indigo-600 hover:text-indigo-900">Edit</a>
                                 </td>
                             </tr>
                         @empty

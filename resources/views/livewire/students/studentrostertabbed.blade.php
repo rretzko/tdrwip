@@ -22,6 +22,7 @@
             :pronouns="$pronouns"
             :shirtsizes="$shirtsizes"
             :tabcontent="$tabcontent"
+            :tab="$tab"
         />
 
         <!-- :addinstrument="$addinstrument"

@@ -20,7 +20,6 @@ class Studentrostertabbed extends Component
 {
     use FormatPhoneTrait,SenioryearTrait,WithFileUploads;
 
-    public $activetab;
     public $birthday;
     public $classof;
     public $classofs;
@@ -42,13 +41,13 @@ class Studentrostertabbed extends Component
     public $shirtsize_id;
     public $student = NULL;
     public $students;
+    public $tab;
     public $tabcontent;
     public $teacher;
     public $username;
 
     public function mount()
     {
-        $this->activetab = Userconfig::getValue('studentform_tab', auth()->id());
         $this->classofs = $this->classofs();
         $this->displayhide = Userconfig::getValue('pagedef_students', auth()->id());
         $this->filter = Userconfig::getValue('filter_studentroster', auth()->id());
@@ -56,7 +55,7 @@ class Studentrostertabbed extends Component
         $this->pronouns = $this->pronouns();
         $this->schools = $this->schools();
         $this->shirtsizes = $this->shirtsizes();
-        $this->tabcontent = $this->tabContent($this->activetab);
+        $this->tab = Userconfig::getValue('studentform_tab', auth()->id());
         /*
         $this->choralinstrumentation = $this->instrumentationChoral();
         $this->guardians = $this->guardians();
@@ -106,10 +105,43 @@ class Studentrostertabbed extends Component
         ];
     }
 
+    public function editStudentForm($user_id)
+    {
+        $this->student = Student::find($user_id);
+
+        $this->username = $this->student->person->user->username;
+
+        $this->classof = $this->student->classof;
+        $this->first = $this->student->person->first;
+        $this->height = $this->student->height;
+        $this->last = $this->student->person->last;
+        $this->middle = $this->student->person->middle;
+        $this->pronoun_id = $this->student->person->pronoun_id;
+
+        $this->birthday = $this->student->birthday;
+        $this->shirtsize_id = $this->student->shirtsize_id;
+
+        //final action
+        $this->displayform = true;
+    }
+
+    public function footInches($inches)
+    {
+        return floor($inches / 12)."' ".($inches % 12).'"';
+    }
+
+    public function updatedTab()
+    {
+        //persist user's selection
+        Userconfig::setValue('studentform_tab', auth()->id(), $this->tab);
+
+        $this->tabcontent = Userconfig::getValue('studentform_tab', auth()->id());
+    }
+
     /**
      * User is submitting the Biography form
      */
-    public function biography()
+    public function updateBiography()
     {
         $this->validate([
             'username' => ['string', 'required', 'min:3','max:61',Rule::unique('users')->ignore($this->student->user_id ?? 0)],
@@ -132,15 +164,10 @@ class Studentrostertabbed extends Component
         $this->emit('saved-biography');
     }
 
-    public function footInches($inches)
-    {
-        return floor($inches / 12)."' ".($inches % 12).'"';
-    }
-
     /**
      * User is submitting the Profile form
      */
-    public function profile()
+    public function updateProfile()
     {
         $this->validate([
             'birthday' => ['date', 'nullable'],
@@ -171,36 +198,8 @@ class Studentrostertabbed extends Component
         $this->emit('saved-personal');
     }
 
-    public function studentForm($user_id)
-    {
-        $this->student = Student::find($user_id);
-        $this->tabContent(Userconfig::getValue('studentform_tab', auth()->id()));
 
-        $this->username = $this->student->person->user->username;
-
-        $this->classof = $this->student->classof;
-        $this->first = $this->student->person->first;
-        $this->height = $this->student->height;
-        $this->last = $this->student->person->last;
-        $this->middle = $this->student->person->middle;
-        $this->pronoun_id = $this->student->person->pronoun_id;
-
-        $this->birthday = $this->student->birthday;
-        $this->shirtsize_id = $this->student->shirtsize_id;
-
-        //final action
-        $this->displayform = true;
-    }
-
-    public function tabContent($content)
-    {
-        Userconfig::setValue('studentform_tab', auth()->id(), ($content !== 'default') ? $content : 'biography');
-
-        $this->tabcontent = Userconfig::getValue('studentform_tab', auth()->id());
-
-    }
-
-/** END OF PUBLIC FUNCTIONS **************************************************/
+    /** END OF PUBLIC FUNCTIONS **************************************************/
 
     /**
      * @todo test with primary or middle school teacher
