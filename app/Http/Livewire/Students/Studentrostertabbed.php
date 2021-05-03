@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Students;
 
+use App\Models\Instrumentation;
 use App\Models\Instrumentationbranch;
 use App\Models\Pronoun;
 use App\Models\School;
@@ -21,24 +22,34 @@ class Studentrostertabbed extends Component
     use FormatPhoneTrait,SenioryearTrait,WithFileUploads;
 
     public $birthday;
+    public $choralinstrumentation;
     public $classof;
     public $classofs;
+    public $countstudents;
     public $displayform = false;
     public $displayhide;
-    public $countstudents;
     public $filter;
     public $first;
     public $height;
     public $heights;
+    public $instrumentalinstrumentation;
+    public $instrumentationbranch_id = 0;
+    public $instrumentationbranches;
+    public $instrumentationbranch;
+    public $instrumentations;
+    public $instrumentation_id = 0;
     public $last;
     public $middle;
+    public $newinstrumentations;
     public $photo = NULL;
     public $pronouns;
     public $pronoun_id;
+    public $school_id;
     public $schools;
     public $search;
     public $shirtsizes;
     public $shirtsize_id;
+    public $showmodalinstrumentation = false;
     public $student = NULL;
     public $students;
     public $tab;
@@ -48,25 +59,24 @@ class Studentrostertabbed extends Component
 
     public function mount()
     {
+        $this->choralinstrumentation = $this->instrumentationChoral();
         $this->classofs = $this->classofs();
         $this->displayhide = Userconfig::getValue('pagedef_students', auth()->id());
         $this->filter = Userconfig::getValue('filter_studentroster', auth()->id());
         $this->heights = $this->heights();
+        $this->instrumentalinstrumentation = $this->instrumentationInstrumental();
+        $this->instrumentationbranches = Instrumentationbranch::where('id', '<', 3)->get();
+        $this->newinstrumentations = collect(); //$this->newInstrumentations();
         $this->pronouns = $this->pronouns();
+        $this->school_id = $this->getSchoolId();
         $this->schools = $this->schools();
         $this->shirtsizes = $this->shirtsizes();
         $this->tab = Userconfig::getValue('studentform_tab', auth()->id());
         /*
-        $this->choralinstrumentation = $this->instrumentationChoral();
         $this->guardians = $this->guardians();
         $this->guardiantypes = $this->guardianTypes();
         $this->geostates = $this->geostates();
         $this->honorifics = $this->honorifics();
-        $this->instrumentalinstrumentation = $this->instrumentationInstrumental();
-        $this->instrumentationbranches = Instrumentationbranch::where('id', '<', 3)->get();
-        $this->newinstrumentations = collect(); //$this->newInstrumentations();
-        $this->schoolid = $this->getSchoolId();
-        $this->schools = $this->schools();
         */
     }
 
@@ -105,6 +115,33 @@ class Studentrostertabbed extends Component
         ];
     }
 
+    /** Close ALL modals */
+    public function closeModal()
+    {
+        $this->showmodalinstrumentation = false;
+        $this->showmodalguardian = false;
+    }
+
+    public function createInstrumentation()
+    {
+        $this->instrumentation_id = 0;
+        $this->instrumentationbranch_id = 0;
+        $this->showmodalinstrumentation = true;
+    }
+
+    public function deleteInstrumentation($id)
+    {
+        $this->student->person->user->instrumentations()->detach($id);
+
+        $this->instrumentation_id = 0;
+        $this->instrumentationbranch_id = 0;
+
+        $this->choralinstrumentation = $this->instrumentationChoral();
+        $this->instrumentalinstrumentation = $this->instrumentationInstrumental();
+
+        $this->emit('removed-instrumentation');
+    }
+
     public function editStudentForm($user_id)
     {
         $this->student = Student::find($user_id);
@@ -121,6 +158,9 @@ class Studentrostertabbed extends Component
         $this->birthday = $this->student->birthday;
         $this->shirtsize_id = $this->student->shirtsize_id;
 
+        $this->choralinstrumentation = $this->instrumentationChoral();
+        $this->instrumentalinstrumentation = $this->instrumentationInstrumental();
+
         //final action
         $this->displayform = true;
     }
@@ -130,12 +170,85 @@ class Studentrostertabbed extends Component
         return floor($inches / 12)."' ".($inches % 12).'"';
     }
 
-    public function updatedTab()
+    private function getSchoolId()
     {
-        //persist user's selection
-        Userconfig::setValue('studentform_tab', auth()->id(), $this->tab);
+        //fetch the value from the current value from the database
+        $stored = Userconfig::getValue('school_id', auth()->id());
 
-        $this->tabcontent = Userconfig::getValue('studentform_tab', auth()->id());
+        //initialize $this->>school_id
+        if(! $this->school_id){ $this->school_id = $stored;}
+
+        //early exit
+        if($stored === $this->school_id){ return $stored;} //return the stored value
+
+        //$this->schoolid has been changed; register and return the new value
+        Userconfig::setValue('school_id', auth()->id(), $this->school_id);
+
+        //return the newly stored value (recursive function)
+        self::getSchoolId();
+    }
+
+    private function instrumentationChoral()
+    {
+        //early exist
+        if(! $this->student){ return collect();}
+
+        $this->student->person->user->refresh();
+
+        return $this->student->person->user->instrumentations()
+            ->where('instrumentationbranch_id', Instrumentationbranch::where('descr', 'choral')->first()->id)
+            ->get()
+            ->sortBy('descr');
+    }
+
+    private function instrumentationInstrumental()
+    {
+        //early exist
+        if(! $this->student){ return collect();}
+
+        return $this->student->person->user->instrumentations()
+            ->where('instrumentationbranch_id',Instrumentationbranch::where('descr','instrumental')->first()->id)
+            ->get()
+            ->sortBy('descr');
+    }
+
+    public function instrumentations()
+    {
+        $this->validate();
+
+        $this->student->person->user->instrumentations()->attach($this->instrumentation_id, ['order_by' => 1]);
+
+        $this->instrumentationChoral();
+        $this->instrumentationInstrumental();
+
+        $this->emit('saved-instrumentations');
+    }
+
+    public function newInstrumentations()
+    {
+        return Instrumentation::where('instrumentationbranch_id', $this->instrumentationbranch)->get()->sortBy('descr');
+    }
+
+    public function storeInstrumentation()
+    {
+        $this->validate([
+            'instrumentationbranch_id' => ['required', 'numeric', 'exists:instrumentationbranches,id'],
+            'instrumentation_id' => ['required','numeric', 'exists:instrumentations,id'],
+        ]);
+
+        $this->student->person->user->instrumentations()->attach($this->instrumentation_id, ['order_by' => 1]);
+
+        //refresh $this->student instrumentation collections
+        $this->choralinstrumentation = $this->instrumentationChoral();
+        $this->instrumentalinstrumentation = $this->instrumentationInstrumental();
+
+        //reinitialize select values
+        $this->instrumentationbranch_id = 0;
+        $this->instrumentation_id = 0;
+
+        $this->closeModal();
+
+        $this->emit('saved-instrumentation');
     }
 
     /**
@@ -198,6 +311,19 @@ class Studentrostertabbed extends Component
         $this->emit('saved-personal');
     }
 
+    public function updatedInstrumentationbranch($value)
+    {
+        $this->newinstrumentations = $this->newInstrumentations();
+        $this->instrumentationbranch_id = $value;
+    }
+
+    public function updatedTab()
+    {
+        //persist user's selection
+        Userconfig::setValue('studentform_tab', auth()->id(), $this->tab);
+
+        $this->tabcontent = Userconfig::getValue('studentform_tab', auth()->id());
+    }
 
     /** END OF PUBLIC FUNCTIONS **************************************************/
 

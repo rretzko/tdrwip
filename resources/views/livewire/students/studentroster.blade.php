@@ -58,6 +58,7 @@
           :photo='$photo'
           :pronouns="$pronouns"
           :shirtsizes="$shirtsizes"
+          :showmodalinstrumentation="$showmodalinstrumentation"
           :showmodalremoveguardian="$showmodalremoveguardian"
           :student="$student"
       />

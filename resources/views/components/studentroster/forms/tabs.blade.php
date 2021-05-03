@@ -72,7 +72,7 @@
             </a>
 
             <a href="#"
-                wire:click="$set('tab','instruments')"
+                wire:click="$set('tab','instrumentation')"
                 class="tab text-gray-500 hover:text-gray-700 group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-4 text-sm font-medium text-center hover:bg-gray-50 focus:z-10"
                 title="Voice & Instrument"
             >
@@ -82,7 +82,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
                     </svg>
                     <span class="sm:hidden lg:block ml-1 pt-0.5">Voice & Instrument</span>
-                    <span aria-hidden="true" class="tabsettings @if($tab === 'instruments') tabon @endif"></span>
+                    <span aria-hidden="true" class="tabsettings @if($tab === 'instrumentation') tabon @endif"></span>
                 </div>
             </a>
 
