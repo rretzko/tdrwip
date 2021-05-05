@@ -5,10 +5,11 @@
     </div>
 
     <!-- TABLE SECTION HEADERS -->
-    <x-studentroster.multi-column-directory  countstudents={{$countstudents}} :schools='$schools' :search='$search' :filter='$filter'/>
+    <x-studentroster.students-header  countstudents={{$countstudents}} :schools='$schools' :search='$search' :filter='$filter'/>
 
     <!-- PAGE TABLE AND [STUDENT DATA FORM] -->
     <div class="{{$displayform ? 'flex' : ''}} w-12/12">
+
         {{-- COLLAPSING TABLE --}}
         <x-studentroster.table :students="$students" :displayform="$displayform" :teacher="$teacher" />
 
@@ -17,6 +18,7 @@
             :choralinstrumentation="$choralinstrumentation"
             :classofs="$classofs"
             :displayform="$displayform"
+            :geostates="$geostates"
             :heights="$heights"
             :instrumentationbranch_id="$instrumentationbranch_id"
             :instrumentalinstrumentation="$instrumentalinstrumentation"
@@ -30,11 +32,7 @@
             :tab="$tab"
         />
 
-        <!-- :addinstrument="$addinstrument"
-        :geostates="$geostates"
-        :guardians="$guardians"
-        :showmodalremoveguardian="$showmodalremoveguardian"
-        -->
+        {{-- MODALS --}}
 
         {{-- INSTRUMENTATION MODAL --}}
         <div
@@ -101,6 +99,26 @@
                 </form>
             </div>
         </div>
+
+        @if($showmodalguardian && $guardian)
+            <x-studentroster.forms.modals.guardian
+                :guardian="$guardian"
+                :guardiantypes="$guardiantypes"
+                :honorifics="$honorifics"
+                :pronouns="$pronouns"
+                :showmodalguardian="$showmodalguardian"
+                :showmodalremoveguardian="$showmodalremoveguardian"
+            />
+        @endif
+
+        {{-- CHICKEN TEST FOR GUARDIAN REMOVAL --}}
+        @if($guardian && $guardian->user_id)
+            <x-studentroster.forms.modals.chickenTestRemoveGuardian
+                :showmodalremoveguardian="$showmodalremoveguardian"
+                guardianfullname="{{ $guardian ? $guardian->person->fullName : '' }}"
+                studentfullname="{{ $student->person->fullName }}"
+            />
+        @endif
 
     </div>
 

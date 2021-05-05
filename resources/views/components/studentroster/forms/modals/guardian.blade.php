@@ -3,12 +3,11 @@
 'guardiantypes' => [],
 'honorifics' => [],
 'pronouns' => [],
-'showmodal' => false,
+'showmodalguardian' => false,
 'showmodalremoveguardian' => false,
 ])
-
 <section
-    class="@if (! $showmodal) hidden @endif flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-90">
+    class="@if (! $showmodalguardian) hidden @endif flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-90 overflow-y-auto">
     <div class="bg-white rounded-lg w-1/2">
 
         <form wire:submit.prevent="" class="w-full">

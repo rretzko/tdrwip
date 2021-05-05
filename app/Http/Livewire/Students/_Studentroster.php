@@ -508,7 +508,7 @@ class Studentroster extends Component
     }
 
     public function updateGuardian()
-    {info(__CLASS__.':'.__LINE__);
+    {
         $this->guardian->students()->updateExistingPivot($this->student->user_id, [
             'guardiantype_id' => $this->guardiantype_id,
         ]);

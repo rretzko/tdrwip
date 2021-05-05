@@ -8,7 +8,7 @@
         <div class="px-4 sm:px-0">
             <h3 class="text-lg font-medium leading-6 text-gray-900">Biography</h3>
             <p class="mt-1 text-sm text-gray-600">
-                Basic biographical information about: <br /><b>{{ $student->person->fullName }}</b>
+                Basic biographical information about: <br /><b>{{ $student->person ? $student->person->fullName : 'new student'}}</b>
             </p>
         </div>
     </div>
@@ -27,7 +27,7 @@
                     <div class="grid grid-cols-3 gap-6">
                         <div class="col-span-3 sm:col-span-2">
                             <x-inputs.text label="Username" for="username"/>
-                            <div class=" text-xs text-red-800 mt-1 px-2">If you change {{ $student->person->first }}'s username, make sure you tell {{ $student->person->pronoun->object }}.</div>
+                            <div class=" text-xs text-red-800 mt-1 px-2">If you change {{ $student->person ? $student->person->first : 'the new student'}}'s username, make sure you tell {{ $student->person ? $student->person->pronoun->object : 'them'}}.</div>
                         </div>
                     </div>
 
@@ -39,7 +39,7 @@
                         <div class="mt-1 flex items-center">
 
                             <div class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
-                                @if($student->person->user->profile_photo_path)
+                                @if($student->person ? $student->person->user->profile_photo_path : false)
                                     <div>
                                         <img  class="rounded rounded-2xl h-20 w-20" src="{{ '/storage/'.substr($student->person->user->profile_photo_path,7) }}" />
                                     </div>

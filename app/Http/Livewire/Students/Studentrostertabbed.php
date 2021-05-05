@@ -2,8 +2,18 @@
 
 namespace App\Http\Livewire\Students;
 
+use App\Models\Address;
+use App\Models\Emailtype;
+use App\Models\Geostate;
+use App\Models\Guardian;
+use App\Models\Guardiantype;
+use App\Models\Honorific;
 use App\Models\Instrumentation;
 use App\Models\Instrumentationbranch;
+use App\Models\Nonsubscriberemail;
+use App\Models\Person;
+use App\Models\Phone;
+use App\Models\Phonetype;
 use App\Models\Pronoun;
 use App\Models\School;
 use App\Models\Shirtsize;
@@ -13,25 +23,49 @@ use App\Models\Teacher;
 use App\Models\User;
 use App\Models\Userconfig;
 use App\Traits\FormatPhoneTrait;
+use App\Traits\UsernameTrait;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
 class Studentrostertabbed extends Component
 {
-    use FormatPhoneTrait,SenioryearTrait,WithFileUploads;
+    use FormatPhoneTrait,SenioryearTrait,UsernameTrait,WithFileUploads;
 
+    public $address01;
+    public $address02;
     public $birthday;
     public $choralinstrumentation;
+    public $city;
     public $classof;
     public $classofs;
     public $countstudents;
     public $displayform = false;
     public $displayhide;
+    public $emailguardianalternate;
+    public $emailguardianprimary;
+    public $emailpersonal;
+    public $emailschool;
     public $filter;
     public $first;
+    public $geostates;
+    public $geostate_id;
+    public $guardian = NULL;
+    public $guardians;
+    public $guardianfirst;
+    public $guardianfullname;
+    public $guardianhonorific_id;
+    public $guardianlast;
+    public $guardianmiddle;
+    public $guardianpronoun_id;
+    public $guardiantype_id;
+    public $guardiantypes;
+    public $guardian_id;
     public $height;
     public $heights;
+    public $honorifics;
     public $instrumentalinstrumentation;
     public $instrumentationbranch_id = 0;
     public $instrumentationbranches;
@@ -41,14 +75,23 @@ class Studentrostertabbed extends Component
     public $last;
     public $middle;
     public $newinstrumentations;
+    public $phoneguardianhome;
+    public $phoneguardianmobile;
+    public $phoneguardianwork;
+    public $phonehome;
+    public $phonemobile;
     public $photo = NULL;
+    public $postalcode;
     public $pronouns;
     public $pronoun_id;
+    public $removeguardianchickentest = 0;
     public $school_id;
     public $schools;
     public $search;
     public $shirtsizes;
     public $shirtsize_id;
+    public $showmodalguardian = false;
+    public $showmodalremoveguardian = false;
     public $showmodalinstrumentation = false;
     public $student = NULL;
     public $students;
@@ -63,7 +106,11 @@ class Studentrostertabbed extends Component
         $this->classofs = $this->classofs();
         $this->displayhide = Userconfig::getValue('pagedef_students', auth()->id());
         $this->filter = Userconfig::getValue('filter_studentroster', auth()->id());
+        $this->geostates = $this->geostates();
+        $this->guardians = $this->guardians();
+        $this->guardiantypes = $this->guardiantypes();
         $this->heights = $this->heights();
+        $this->honorifics = $this->honorifics();
         $this->instrumentalinstrumentation = $this->instrumentationInstrumental();
         $this->instrumentationbranches = Instrumentationbranch::where('id', '<', 3)->get();
         $this->newinstrumentations = collect(); //$this->newInstrumentations();
@@ -74,9 +121,6 @@ class Studentrostertabbed extends Component
         $this->tab = Userconfig::getValue('studentform_tab', auth()->id());
         /*
         $this->guardians = $this->guardians();
-        $this->guardiantypes = $this->guardianTypes();
-        $this->geostates = $this->geostates();
-        $this->honorifics = $this->honorifics();
         */
     }
 
@@ -92,12 +136,12 @@ class Studentrostertabbed extends Component
     public function rules()
     {
         return [
-            'address01' => ['string', 'nullable'],
-            'address02' => ['string', 'nullable'],
-            'city' => ['string', 'nullable'],
-            'emailpersonal' => ['email', 'nullable'],
-            'emailschool' => ['email', 'nullable'],
-            'geostate_id' => ['integer', 'nullable','exists:geostates,id','min:1'],
+            //'address01' => ['string', 'nullable'],
+            //'address02' => ['string', 'nullable'],
+            //'city' => ['string', 'nullable'],
+            //'emailpersonal' => ['email', 'nullable'],
+            //'emailschool' => ['email', 'nullable'],
+            //'geostate_id' => ['integer', 'nullable','exists:geostates,id','min:1'],
             //'birthday' => ['date', 'nullable'],
             //'classof' => ['numeric', 'required','min:1960','max:'.(date('Y') + 12)],
             //'first' => ['string', 'required', 'min:2','max:60',],
@@ -108,9 +152,9 @@ class Studentrostertabbed extends Component
             //'shirtsize_id' => ['required', 'integer', 'min:1'],
             'instrumentation_id' => ['numeric', 'min:1'],
             'instrumentationbranch_id' => ['numeric', 'min:1'],
-            'phonehome' => ['string', 'nullable',],
-            'phonemobile' => ['string', 'nullable','min:10'],
-            'postalcode' => ['string', 'nullable','min:5'],
+            //'phonehome' => ['string', 'nullable',],
+            //'phonemobile' => ['string', 'nullable','min:10'],
+            //'postalcode' => ['string', 'nullable','min:5'],
             // 'username' => ['string', 'required', 'min:3','max:61',Rule::unique('users')->ignore($this->student->user_id ?? 0)],
         ];
     }
@@ -122,11 +166,63 @@ class Studentrostertabbed extends Component
         $this->showmodalguardian = false;
     }
 
+    public function createGuardian()
+    {
+        $this->showmodalguardian = true;
+        $this->guardian = new Guardian;
+
+        $this->guardianlast = '';
+        $this->guardianmiddle = '';
+        $this->guardianfirst = '';
+        $this->emailguardianprimary = '';
+        $this->emailguardianalternate = '';
+        $this->phoneguardianhome = '';
+        $this->phoneguardianmobile = '';
+        $this->phoneguardianwork = '';
+        $this->guardiantype_id = 1;
+    }
+
     public function createInstrumentation()
     {
         $this->instrumentation_id = 0;
         $this->instrumentationbranch_id = 0;
         $this->showmodalinstrumentation = true;
+    }
+
+    public function createStudent()
+    {
+        $this->student = new Student;
+
+        $this->username = '';
+
+        $this->classof = date('Y');
+        $this->first = '';
+        $this->height = 30;
+        $this->last = '';
+        $this->middle = '';
+        $this->pronoun_id = 1;
+
+        $this->birthday = date('Y-n-d');
+        $this->shirtsize_id = 1;
+
+        $this->choralinstrumentation = [];
+        $this->instrumentalinstrumentation = [];
+
+        $this->emailpersonal = '';
+        $this->emailschool = '';
+        $this->phonehome = '';
+        $this->phonemobile = '';
+
+        $this->address01 = '';
+        $this->address02 = '';
+        $this->city = '';
+        $this->geostate_id = '37';
+        $this->postalcode = '';
+
+        //final actions
+        Userconfig::setValue('studentform_tab', auth()->id(), 'profile');
+        $this->filter = 'profile';
+        $this->displayform = true;
     }
 
     public function deleteInstrumentation($id)
@@ -140,6 +236,33 @@ class Studentrostertabbed extends Component
         $this->instrumentalinstrumentation = $this->instrumentationInstrumental();
 
         $this->emit('removed-instrumentation');
+    }
+
+    public function editGuardian($user_id)
+    {
+        $this->showmodalguardian = true;
+        $this->showmodalremoveguardian = false;
+
+        $this->guardian = Guardian::with('person')->find($user_id);
+        $this->guardianfullname = $this->guardian->person->fullName;
+
+        $this->emailguardianalternate = $this->guardian->emailAlternate->id ? $this->guardian->emailAlternate->email : '';
+        $this->emailguardianprimary = $this->guardian->emailPrimary->id ? $this->guardian->emailPrimary->email : '';
+
+        $this->guardianfirst = $this->guardian->person->first;
+        $this->guardianlast = $this->guardian->person->last;
+        $this->guardianmiddle = $this->guardian->person->middle;
+        $this->guardianhonorific_id = $this->guardian->person->honorific_id;
+        $this->guardianpronoun_id = $this->guardian->person->pronoun_id;
+
+        $this->guardiantype_id = $this->guardian->students()
+            ->where('student_user_id', $this->student->user_id)
+            ->first()
+            ->pivot->guardiantype_id;
+
+        $this->phoneguardianhome = $this->guardian->phoneHome->id ? $this->guardian->phoneHome->phone : '';
+        $this->phoneguardianmobile = $this->guardian->phoneMobile->id ? $this->guardian->phoneMobile->phone : '';
+        $this->phoneguardianwork = $this->guardian->phoneWork->id ? $this->guardian->phoneWork->phone : '';
     }
 
     public function editStudentForm($user_id)
@@ -160,6 +283,17 @@ class Studentrostertabbed extends Component
 
         $this->choralinstrumentation = $this->instrumentationChoral();
         $this->instrumentalinstrumentation = $this->instrumentationInstrumental();
+
+        $this->emailpersonal = $this->student->emailPersonal->id ? $this->student->emailPersonal->email : '';
+        $this->emailschool = $this->student->emailSchool->id ? $this->student->emailSchool->email : '';
+        $this->phonehome = $this->student->phoneHome->id ? $this->student->phoneHome->phone : '';
+        $this->phonemobile = $this->student->phoneMobile->id ? $this->student->phoneMobile->phone : '';
+
+        $this->address01 = $this->student->person->user->address ? $this->student->person->user->address->address01 : '';
+        $this->address02 = $this->student->person->user->address ? $this->student->person->user->address->address02 : '';
+        $this->city = $this->student->person->user->address ? $this->student->person->user->address->city : '';
+        $this->geostate_id = $this->student->person->user->address ? $this->student->person->user->address->geostate_id : '37';
+        $this->postalcode = $this->student->person->user->address ? $this->student->person->user->address->postalcode : '';
 
         //final action
         $this->displayform = true;
@@ -186,6 +320,13 @@ class Studentrostertabbed extends Component
 
         //return the newly stored value (recursive function)
         self::getSchoolId();
+    }
+
+    private function guardians()
+    {
+        return $this->student
+            ? $this->student->guardians
+            : collect();
     }
 
     private function instrumentationChoral()
@@ -221,12 +362,107 @@ class Studentrostertabbed extends Component
         $this->instrumentationChoral();
         $this->instrumentationInstrumental();
 
-        $this->emit('saved-instrumentations');
+        //$this->emit('saved-instrumentations');
     }
 
     public function newInstrumentations()
     {
         return Instrumentation::where('instrumentationbranch_id', $this->instrumentationbranch)->get()->sortBy('descr');
+    }
+
+    public function removeGuardian($user_id)
+    {
+        //set $this->guardian
+        $this->guardian = Guardian::find($user_id);
+
+        $this->guardianfullname = $this->guardian->person->fullName;
+
+        //display chickentest
+        $this->showmodalremoveguardian = true;
+    }
+
+    public function removeGuardianChickenTest()
+    {info('student_id: '.$this->student->user_id.', guardian_id: '.$this->guardian->user_id);
+        if($this->removeguardianchickentest){
+
+            $this->student->guardians()->detach($this->guardian->user_id);
+
+            $this->student->refresh();
+
+            $this->emit('removed-guardian');
+        }
+
+        //reinitialize to hide modal
+        $this->showmodalremoveguardian = false;
+    }
+
+    public function storeGuardian()
+    {
+        $this->validate(
+            [
+                'emailguardianprimary' => ['email','nullable','max:120'],
+                'emailguardianalternate' => ['email','nullable','max:120'],
+                'guardianfirst' => ['string','required','min:2','max:60'],
+                'guardianlast' => ['string','required','min:2','max:60'],
+                'guardianmiddle' => ['string','nullable','min:1','max:60'],
+                'guardianpronoun_id' => ['required','numeric','exists:pronouns,id'],
+                'phoneguardianhome' => ['string','nullable'],
+                'phoneguardianmobile' => ['string','nullable'],
+                'phoneguardianwork' => ['string','nullable'],
+            ],
+            [
+                'emailguardianalternate:email' => 'The :attribute must be correctly formed.',
+                'emailguardianprimary:email' => 'The :attribute must be correctly formed.',
+                'guardianfirst:required' => 'The :attribute cannot be empty.',
+                'guardianlast:required' => 'The :attribute cannot be empty.',
+            ],
+            [
+                'emailguardianalternate' => 'alternate email',
+                'emailguardianprimary' => 'primary email',
+                'guardianfirst' => 'first name',
+                'guardianlast' => 'last name',
+                'guardianmiddle' => 'middle name',
+                'phoneguardianhome' => 'home phone',
+                'phoneguardianmobile' => 'mobile phone',
+                'phoneguardianwork' => 'work phone',
+            ],
+        );
+
+        //create user
+        $username = $this->username($this->guardianfirst, $this->guardianlast);
+
+        $user = User::create([
+            'username' => $username,
+            'password' => Hash::make($username),
+        ]);
+
+        //create guardian
+        Guardian::create([
+            'user_id' => $user->id,
+        ]);
+
+        $this->guardian = Guardian::find($user->id);
+
+        //create person
+        $this->updateGuardianPerson();
+
+        //attach guardian to $this->student
+        $this->student->guardians()->attach($user->id, ['guardiantype_id' => $this->guardiantype_id]);
+
+        //create emails
+        $this->updateGuardianEmails();
+
+        //create phone
+        $this->updateGuardianPhones();
+
+        //update guardians
+        $this->guardians();
+
+        //update table
+
+        $this->showmodalguardian = false;
+
+        $this->emit('saved-guardian');
     }
 
     public function storeInstrumentation()
@@ -275,6 +511,116 @@ class Studentrostertabbed extends Component
         $user->refresh();
 
         $this->emit('saved-biography');
+    }
+
+    public function updateCommunication()
+    {
+        $this->validate(
+            [
+                'emailpersonal' => ['email', 'nullable'],
+                'emailschool' => ['email', 'nullable'],
+                'phonehome' => ['string', 'nullable','min:10'],
+                'phonemobile' => ['string', 'nullable','min:10'],
+            ],
+            [
+                'emailpersonal:email' => 'The :attribute must be correctly formed.',
+                'emailschool:email' => 'The :attribute must be correctly formed.',
+                'phonehome:min' => 'The :attribute must include the area code.',
+                'phonemobile:min' => 'The :attribute must include the area code.',
+        ],
+            [
+                'emailpersonal' => 'personal email',
+                'emailschool' => 'school email',
+                'phonehome' => 'home phone',
+                'phonemobile' => 'mobile phone',
+            ],
+        );
+
+        $this->updateCommunicationEmails();
+
+        $this->updateCommunicationPhones();
+
+        $this->student->refresh();
+
+        $this->emit('saved-communication');
+    }
+
+    public function updateGuardian()
+    {
+        $this->validate(
+            [
+                'emailguardianprimary' => ['email','nullable','max:120'],
+                'emailguardianalternate' => ['email','nullable','max:120'],
+                'guardianfirst' => ['string','required','min:2','max:60'],
+                'guardianlast' => ['string','required','min:2','max:60'],
+                'guardianmiddle' => ['string','nullable','min:1','max:60'],
+                'guardianpronoun_id' => ['required','numeric','exists:pronouns,id'],
+                'phoneguardianhome' => ['string','nullable'],
+                'phoneguardianmobile' => ['string','nullable'],
+                'phoneguardianwork' => ['string','nullable'],
+            ],
+            [
+                'emailguardianalternate:email' => 'The :attribute must be correctly formed.',
+                'emailguardianprimary:email' => 'The :attribute must be correctly formed.',
+                'guardianfirst:required' => 'The :attribute cannot be empty.',
+                'guardianlast:required' => 'The :attribute cannot be empty.',
+            ],
+            [
+                'emailguardianalternate' => 'alternate email',
+                'emailguardianprimary' => 'primary email',
+                'guardianfirst' => 'first name',
+                'guardianlast' => 'last name',
+                'guardianmiddle' => 'middle name',
+                'phoneguardianhome' => 'home phone',
+                'phoneguardianmobile' => 'mobile phone',
+                'phoneguardianwork' => 'work phone',
+            ],
+        );
+
+        $this->guardian->students()->updateExistingPivot($this->student->user_id, [
+            'guardiantype_id' => $this->guardiantype_id,
+        ]);
+
+        $this->updateGuardianPerson();
+
+        $this->updateGuardianEmails();
+
+        $this->updateGuardianPhones();
+
+        $this->guardian->refresh();
+
+        $this->student->refresh();
+
+        $this->showmodalguardian = false;
+
+        $this->emit('saved-guardian');
+    }
+
+    public function updateHomeaddress()
+    {
+        $this->validate([
+            'address01' => ['string', 'nullable'],
+            'address02' => ['string', 'nullable'],
+            'city' => ['string', 'nullable'],
+            'geostate_id' => ['integer', 'nullable','exists:geostates,id','min:1'],
+            'postalcode' => ['string', 'nullable','min:5'],
+        ]);
+
+        Address::updateOrCreate([
+            'user_id' => $this->student->user_id
+        ],
+            [
+                'address01' => $this->address01,
+                'address02' => $this->address02,
+                'city' => $this->city,
+                'geostate_id' => $this->geostate_id,
+                'postalcode' => $this->postalcode,
+            ]
+        );
+
+        $this->student->refresh();
+
+        $this->emit('saved-homeaddress');
     }
 
     /**
@@ -385,12 +731,46 @@ class Studentrostertabbed extends Component
         return $a;
     }
 
+    private function geostates()
+    {
+        $a = [];
+
+        foreach(Geostate::all() AS $geostate){
+
+            $a[$geostate->id] = $geostate->abbr;
+        }
+
+        return $a;
+    }
+
+    private function guardiantypes()
+    {
+        $a = [];
+
+        foreach(Guardiantype::all() AS $guardiantype){
+
+            $a[$guardiantype->id] = $guardiantype->descr;
+        }
+
+        return $a;
+    }
     private function heights()
     {
         $a = [];
 
         for($i=30; $i < 94; $i++){
             $a[$i] = $i.' ('.$this->footInches($i).')';
+        }
+
+        return $a;
+    }
+
+    private function honorifics()
+    {
+        $a = [];
+
+        foreach(Honorific::orderBy('order_by')->get() AS $honorific){
+            $a[$honorific->id] = $honorific->descr;
         }
 
         return $a;
@@ -439,6 +819,60 @@ class Studentrostertabbed extends Component
         return $a;
     }
 
+    private function updateCommunicationEmails()
+    {
+        $emails = [
+            'personal' => ['obj' => NULL, 'emailtype_descr' => 'email_student_personal', 'current' => $this->emailpersonal,],
+            'school' => ['obj' => NULL, 'emailtype_descr' => 'email_student_school', 'current' => $this->emailschool,],
+        ];
+
+        foreach($emails AS $email) {
+            $email['obj'] = Nonsubscriberemail::firstOrCreate(
+                [
+                    'user_id' => $this->student->user_id,
+                    'emailtype_id' => Emailtype::where('descr', $email['emailtype_descr'])->first()->id,
+                ],
+                [
+                    'email' => $email['current'],
+                ]
+            );
+
+            //update object if user's input differs from current record
+            if ($email['current'] !== $email['obj']->email) {
+
+                $email['obj']->email = $email['current'];
+                $email['obj']->save();
+            }
+        }
+    }
+
+    private function updateCommunicationPhones()
+    {
+        $phones = [
+            'home' => ['obj' => NULL, 'phonetype_descr' => 'phone_student_home', 'current' => $this->phonehome,],
+            'mobile' => ['obj' => NULL, 'phonetype_descr' => 'phone_student_mobile', 'current' => $this->phonemobile,],
+        ];
+
+        foreach($phones AS $phone) {
+            $phone['obj'] = Phone::firstOrCreate(
+                [
+                    'user_id' => $this->student->user_id,
+                    'phonetype_id' => Phonetype::where('descr', $phone['phonetype_descr'])->first()->id,
+                ],
+                [
+                    'phone' => $phone['current'],
+                ]
+            );
+
+            //update object if user's input differs from current record
+            if ($phone['current'] !== $phone['obj']->phone) {
+
+                $phone['obj']->phone = $phone['current'];
+                $phone['obj']->save();
+            }
+        }
+    }
+
     public function updatedDisplayhide()
     {
         Userconfig::setValue('pagedef_students', auth()->id(), $this->displayhide);
@@ -449,4 +883,71 @@ class Studentrostertabbed extends Component
         Userconfig::setValue('filter_studentroster', auth()->id(), $this->filter);
     }
 
+    private function updateGuardianEmails()
+    {
+        Nonsubscriberemail::updateOrCreate(
+            [
+                'user_id' => $this->guardian->user_id,
+                'emailtype_id' => Emailtype::where('descr', 'email_guardian_primary')->first()->id,
+            ],
+            [
+                'email' => $this->emailguardianprimary,
+            ]);
+
+        Nonsubscriberemail::updateOrCreate(
+            [
+                'user_id' => $this->guardian->user_id,
+                'emailtype_id' => Emailtype::where('descr', 'email_guardian_alternate')->first()->id,
+            ],
+            [
+                'email' => $this->emailguardianalternate,
+            ]);
+    }
+
+    private function updateGuardianPerson()
+    {
+        Person::updateOrCreate(
+            [
+                'user_id' => $this->guardian->user_id
+            ],
+            [
+                'first' => $this->guardianfirst,
+                'middle' => $this->guardianmiddle,
+                'last' => $this->guardianlast,
+                'honorific_id' => $this->guardianhonorific_id,
+                'pronoun_id' => $this->guardianpronoun_id,
+            ]
+        );
+
+    }
+
+    private function updateGuardianPhones()
+    {
+        Phone::updateOrCreate(
+            [
+                'user_id' => $this->guardian->user_id,
+                'phonetype_id' => Phonetype::where('descr', 'phone_guardian_home')->first()->id,
+            ],
+            [
+                'phone' => $this->formatPhone($this->phoneguardianhome),
+            ]);
+
+        Phone::updateOrCreate(
+            [
+                'user_id' => $this->guardian->user_id,
+                'phonetype_id' => Phonetype::where('descr', 'phone_guardian_mobile')->first()->id,
+            ],
+            [
+                'phone' => $this->formatPhone($this->phoneguardianmobile),
+            ]);
+
+        Phone::updateOrCreate(
+            [
+                'user_id' => $this->guardian->user_id,
+                'phonetype_id' => Phonetype::where('descr', 'phone_guardian_work')->first()->id,
+            ],
+            [
+                'phone' => $this->formatPhone($this->phoneguardianwork),
+            ]);
+    }
 }
