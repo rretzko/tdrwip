@@ -1,6 +1,6 @@
 @props([
-'message' => 'Saved',
-'trigger' => 'saved-biography',
+'message',
+'trigger',
 ])
 <div class="font-italic bg-green-200 p-2"
      x-data="{show: false}"

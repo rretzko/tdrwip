@@ -1,5 +1,5 @@
 @props([
-'newstudent',
+'student',
 'tab',
 'tabcontent',
 ])
@@ -42,7 +42,7 @@
     <div class="hidden sm:block pt-2">
         <nav class="relative z-0  border-b-2 border-gray-200 flex divide-x divide-gray-200 mx-auto" style="max-width:90%;" aria-label="Tabs">
 
-            @if($newstudent)
+            @if(is_a($student, 'App\Models\Student') && (! $student->user_id))
                 <a href="#"
                    wire:click="$set('tab','profile')"
                    class="tab text-gray-500 hover:text-gray-700 group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-4 text-sm font-medium text-center hover:bg-gray-50 focus:z-10"

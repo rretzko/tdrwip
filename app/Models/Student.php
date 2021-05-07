@@ -11,6 +11,8 @@ class Student extends Model
 {
     use HasFactory, SenioryearTrait;
 
+    protected $fillable = ['user_id'];
+
     protected $primaryKey = 'user_id';
 
     public $school_id;
@@ -112,6 +114,12 @@ class Student extends Model
     public function shirtsize()
     {
         return $this->belongsTo(Shirtsize::class);
+    }
+
+    public function teachers()
+    {
+        return $this->belongsToMany(Teacher::class,'student_teacher','student_user_id', 'teacher_user_id')
+            ->withPivot('studenttype_id');
     }
 
     public function user()

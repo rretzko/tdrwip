@@ -16,15 +16,16 @@
 'tabcontent' => false,
 ])
 <div
-    class="{{$displayform ? 'w-8/12 -ml-4 bg-blue-50 text-black border border border-black border-l-3 border-t-0 border-r-0 px-3' : 'hidden'}}">
+    class="{{$displayform ? 'w-full md:w-6/12 lg:w-8/12 bg-blue-50 text-black border border border-black border-l-3 border-t-0 border-r-0 px-3' : 'hidden'}}"
+>
+    <div class="flex justify-end text-xs pt-2 pr-3 ">
+        <a href="#" wire:click="$set('displayform',0)" class="text-blue-700">Return to Students table</a>
+    </div>
 
-    @if($student && $student->user_id)
-        <div class="flex justify-end text-xs pt-2 pr-3 ">
-            <a href="#" wire:click="$set('displayform',0)" class="text-blue-700">Return to Students table</a>
-        </div>
+    @if((! is_null($student)) && $student->user_id)
 
         {{-- NAVIGATION TABS --}}
-        <x-studentroster.forms.tabs :tab="$tab" :newstudent="0" />
+        <x-studentroster.forms.tabs :tab="$tab" :student="$student" />
 
         {{-- FORMS DISPLAY LOGIC --}}
         @if($tab === 'biography')
@@ -60,22 +61,18 @@
             Some other tab: {{$tab}} section here...
         @endif
     @else {{-- NEW STUDENT --}}
-        @if($student)
-            <div class="flex justify-end text-xs pt-2 pr-3 ">
-                <a href="#" wire:click="$set('displayform',0)" class="text-blue-700">Return to Students table</a>
-            </div>
-            <x-studentroster.forms.tabs :tab="$tab" />
-        @elseif($tab === 'profile')
-                <x-studentroster.forms.sections.profile
-                    :classofs="$classofs"
-                    :heights="$heights"
-                    :pronouns="$pronouns"
-                    :shirtsizes="$shirtsizes"
-                    :student="$student"
-                />
-        @else
-            Some other tab: {{$tab}} section here...
-        @endif
+
+        {{-- NAVIGATION TABS --}}
+        <x-studentroster.forms.tabs :tab="$tab" :student="$student" />
+
+        <x-studentroster.forms.sections.profile
+            :classofs="$classofs"
+            :heights="$heights"
+            :pronouns="$pronouns"
+            :shirtsizes="$shirtsizes"
+            :student="$student"
+        />
+
     @endif
 </div>
 

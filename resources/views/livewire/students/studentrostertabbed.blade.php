@@ -8,10 +8,8 @@
     <x-studentroster.students-header  countstudents={{$countstudents}} :schools='$schools' :search='$search' :filter='$filter'/>
 
     <!-- PAGE TABLE AND [STUDENT DATA FORM] -->
-    <div class="{{$displayform ? 'flex' : ''}} w-12/12">
-
-        {{-- COLLAPSING TABLE --}}
-        <x-studentroster.table :students="$students" :displayform="$displayform" :teacher="$teacher" />
+    <!-- {{-- <div class=" {{$displayform ? 'flex-row-reverse md:flex-row' : ''}} w-12/12"> --}} -->
+    <div class="flex flex-row md:flex-row-reverse w-full px-3 mt-1">
 
         {{-- STUDENT DETAILED INFORMATION TABBED --}}
         <x-studentroster.forms.tabbed
@@ -31,6 +29,9 @@
             :tabcontent="$tabcontent"
             :tab="$tab"
         />
+
+        {{-- COLLAPSING TABLE --}}
+        <x-studentroster.table :students="$students" :displayform="$displayform" :teacher="$teacher" />
 
         {{-- MODALS --}}
 
@@ -115,7 +116,7 @@
         @if($guardian && $guardian->user_id)
             <x-studentroster.forms.modals.chickenTestRemoveGuardian
                 :showmodalremoveguardian="$showmodalremoveguardian"
-                guardianfullname="{{ $guardian ? $guardian->person->fullName : '' }}"
+                guardianfullname="{{ $guardian && $guardian->person ? $guardian->person->fullName : '' }}"
                 studentfullname="{{ $student->person->fullName }}"
             />
         @endif

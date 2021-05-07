@@ -17,6 +17,7 @@ use App\Models\Phonetype;
 use App\Models\Pronoun;
 use App\Models\School;
 use App\Models\Shirtsize;
+use App\Models\Studenttype;
 use App\Traits\SenioryearTrait;
 use App\Models\Student;
 use App\Models\Teacher;
@@ -51,16 +52,16 @@ class Studentrostertabbed extends Component
     public $filter;
     public $first;
     public $geostates;
-    public $geostate_id;
+    public $geostate_id=37;
     public $guardian = NULL;
     public $guardians;
     public $guardianfirst;
     public $guardianfullname;
-    public $guardianhonorific_id;
+    public $guardianhonorific_id=1;
     public $guardianlast;
     public $guardianmiddle;
-    public $guardianpronoun_id;
-    public $guardiantype_id;
+    public $guardianpronoun_id=1;
+    public $guardiantype_id=1;
     public $guardiantypes;
     public $guardian_id;
     public $height;
@@ -83,13 +84,13 @@ class Studentrostertabbed extends Component
     public $photo = NULL;
     public $postalcode;
     public $pronouns;
-    public $pronoun_id;
+    public $pronoun_id=1;
     public $removeguardianchickentest = 0;
     public $school_id;
     public $schools;
     public $search;
     public $shirtsizes;
-    public $shirtsize_id;
+    public $shirtsize_id=1;
     public $showmodalguardian = false;
     public $showmodalremoveguardian = false;
     public $showmodalinstrumentation = false;
@@ -119,9 +120,6 @@ class Studentrostertabbed extends Component
         $this->schools = $this->schools();
         $this->shirtsizes = $this->shirtsizes();
         $this->tab = Userconfig::getValue('studentform_tab', auth()->id());
-        /*
-        $this->guardians = $this->guardians();
-        */
     }
 
     public function render()
@@ -136,26 +134,8 @@ class Studentrostertabbed extends Component
     public function rules()
     {
         return [
-            //'address01' => ['string', 'nullable'],
-            //'address02' => ['string', 'nullable'],
-            //'city' => ['string', 'nullable'],
-            //'emailpersonal' => ['email', 'nullable'],
-            //'emailschool' => ['email', 'nullable'],
-            //'geostate_id' => ['integer', 'nullable','exists:geostates,id','min:1'],
-            //'birthday' => ['date', 'nullable'],
-            //'classof' => ['numeric', 'required','min:1960','max:'.(date('Y') + 12)],
-            //'first' => ['string', 'required', 'min:2','max:60',],
-            //'height' => ['integer', 'required', 'min:30','max:72'],
-            //'middle' => ['string', 'nullable', 'max:60',],
-            //'pronoun_id' => ['required', 'integer', 'min:1'],
-            //'last' => ['string', 'required', 'min:2', 'max:60',],
-            //'shirtsize_id' => ['required', 'integer', 'min:1'],
-            'instrumentation_id' => ['numeric', 'min:1'],
-            'instrumentationbranch_id' => ['numeric', 'min:1'],
-            //'phonehome' => ['string', 'nullable',],
-            //'phonemobile' => ['string', 'nullable','min:10'],
-            //'postalcode' => ['string', 'nullable','min:5'],
-            // 'username' => ['string', 'required', 'min:3','max:61',Rule::unique('users')->ignore($this->student->user_id ?? 0)],
+            //'instrumentation_id' => ['numeric', 'min:1'],
+            //'instrumentationbranch_id' => ['numeric', 'min:1'],
         ];
     }
 
@@ -220,8 +200,7 @@ class Studentrostertabbed extends Component
         $this->postalcode = '';
 
         //final actions
-        Userconfig::setValue('studentform_tab', auth()->id(), 'profile');
-        $this->filter = 'profile';
+        $this->tab = 'profile';
         $this->displayform = true;
     }
 
@@ -324,45 +303,11 @@ class Studentrostertabbed extends Component
 
     private function guardians()
     {
+        if($this->student){$this->student->refresh();}
+
         return $this->student
             ? $this->student->guardians
             : collect();
-    }
-
-    private function instrumentationChoral()
-    {
-        //early exist
-        if(! $this->student){ return collect();}
-
-        $this->student->person->user->refresh();
-
-        return $this->student->person->user->instrumentations()
-            ->where('instrumentationbranch_id', Instrumentationbranch::where('descr', 'choral')->first()->id)
-            ->get()
-            ->sortBy('descr');
-    }
-
-    private function instrumentationInstrumental()
-    {
-        //early exist
-        if(! $this->student){ return collect();}
-
-        return $this->student->person->user->instrumentations()
-            ->where('instrumentationbranch_id',Instrumentationbranch::where('descr','instrumental')->first()->id)
-            ->get()
-            ->sortBy('descr');
-    }
-
-    public function instrumentations()
-    {
-        $this->validate();
-
-        $this->student->person->user->instrumentations()->attach($this->instrumentation_id, ['order_by' => 1]);
-
-        $this->instrumentationChoral();
-        $this->instrumentationInstrumental();
-
-        //$this->emit('saved-instrumentations');
     }
 
     public function newInstrumentations()
@@ -382,7 +327,7 @@ class Studentrostertabbed extends Component
     }
 
     public function removeGuardianChickenTest()
-    {info('student_id: '.$this->student->user_id.', guardian_id: '.$this->guardian->user_id);
+    {
         if($this->removeguardianchickentest){
 
             $this->student->guardians()->detach($this->guardian->user_id);
@@ -639,6 +584,11 @@ class Studentrostertabbed extends Component
             'shirtsize_id' => ['required', 'integer', 'min:1'],
         ]);
 
+        if(!$this->student->user_id){
+
+            $this->storeStudent();
+        }
+
         $person = $this->student->person;
         $person->first = $this->first;
         $person->middle = $this->middle;
@@ -776,6 +726,30 @@ class Studentrostertabbed extends Component
         return $a;
     }
 
+    private function instrumentationChoral()
+    {
+        //early exist
+        if(! $this->student){ return collect();}
+
+        return $this->student->person->user->instrumentations()
+                ->where('instrumentationbranch_id', Instrumentationbranch::where('descr', 'choral')->first()->id)
+                ->get()
+                ->sortBy('descr')
+            ?? collect();
+    }
+
+    private function instrumentationInstrumental()
+    {
+        //early exist
+        if(! $this->student){ return collect();}
+
+        return $this->student->person->user->instrumentations()
+                ->where('instrumentationbranch_id',Instrumentationbranch::where('descr','instrumental')->first()->id)
+                ->get()
+                ->sortBy('descr')
+            ?? collect();
+    }
+
     private function pronouns()
     {
         $a = [];
@@ -817,6 +791,54 @@ class Studentrostertabbed extends Component
         }
 
         return $a;
+    }
+
+    private function storeStudent()
+    {
+        $this->validate([
+            'birthday' => ['date', 'nullable'],
+            'classof' => ['numeric', 'required','min:1960','max:'.(date('Y') + 12)],
+            'first' => ['string', 'required', 'min:2','max:60',],
+            'height' => ['integer', 'required', 'min:30','max:72'],
+            'middle' => ['string', 'nullable', 'max:60',],
+            'pronoun_id' => ['required', 'integer', 'min:1'],
+            'last' => ['string', 'required', 'min:2', 'max:60',],
+            'shirtsize_id' => ['required', 'integer', 'min:1'],
+        ]);
+
+        $username = $this->username($this->first, $this->last);
+
+        $user = User::create([
+            'username' => $username,
+            'password' => Hash::make($username),
+        ]);
+
+        Person::create([
+            'user_id' => $user->id,
+            'first' => $this->first,
+            'middle' => $this->middle,
+            'last' => $this->last,
+            'pronoun_id' => $this->pronoun_id,
+        ]);
+
+        Student::create([
+            'user_id' => $user->id,
+            'classof' => $this->classof,
+            'height'=> $this->height,
+            'birthday' => $this->birthday,
+            'shirtsize_id' => $this->shirtsize_id,
+        ]);
+
+        $this->student = Student::find($user->id);
+
+        //attachments
+        $this->student->person->user->schools()->attach(Userconfig::getValue('school_id', auth()->id()));
+        $this->student->teachers()->attach(auth()->id(), ['studenttype_id' => Studenttype::where('descr', 'teacher_added')->first()->id]);
+
+        //reset tab
+        $this->tab = 'profile';
+
+        $this->emit('saved-personal');
     }
 
     private function updateCommunicationEmails()
@@ -880,7 +902,11 @@ class Studentrostertabbed extends Component
 
     public function updatedFilter()
     {
-        Userconfig::setValue('filter_studentroster', auth()->id(), $this->filter);
+        $filters = ['all','current','alum'];
+
+        if(in_array($this->filter, $filters)) {
+            Userconfig::setValue('filter_studentroster', auth()->id(), $this->filter);
+        }
     }
 
     private function updateGuardianEmails()
