@@ -91,6 +91,7 @@ class Studentrostertabbed extends Component
     public $search;
     public $shirtsizes;
     public $shirtsize_id=1;
+    public $showimportexport = false;
     public $showmodalguardian = false;
     public $showmodalremoveguardian = false;
     public $showmodalinstrumentation = false;
@@ -430,6 +431,11 @@ class Studentrostertabbed extends Component
         $this->closeModal();
 
         $this->emit('saved-instrumentation');
+    }
+
+    public function toolsMenu()
+    {
+        $this->showimportexport = true;
     }
 
     /**
@@ -906,6 +912,14 @@ class Studentrostertabbed extends Component
 
         if(in_array($this->filter, $filters)) {
             Userconfig::setValue('filter_studentroster', auth()->id(), $this->filter);
+
+        }elseif($this->filter === 'new'){
+
+            $this->createStudent();
+
+        }else{
+
+            $this->toolsMenu();
         }
     }
 

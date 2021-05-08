@@ -6,20 +6,21 @@
 <div>
     <div class="sm:hidden pt-2">
         <label for="tabs" class="sr-only">Select a tab</label>
-        <select id="tabs" name="tabs" class="block w-full focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
-            <option selected>Biography</option>
+        <select wire:model="tab" id="tabs" name="tabs" class="block w-full focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
+            <option value="biography">Biography</option>
 
-            <option>Profile</option>
+            <option value="profile">Profile</option>
 
-            <option>Voice & Instrument</option>
+            <option value="instrumentation">Voice & Instrument</option>
 
-            <option>Email & Phone</option>
+            <option value="communication">Email & Phone</option>
 
-            <option>Home Address</option>
+            <option value="homeaddress">Home Address</option>
 
-            <option>Parent & Guardian</option>
+            <option value="guardian">Parent & Guardian</option>
         </select>
     </div>
+
     <style>
         .tab{
             border-top-right-radius: .75rem;

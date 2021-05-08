@@ -1,15 +1,20 @@
-<div class="m-auto" style="max-width: 1024px;">
+<div class="m-auto md:w-full" style="max-width: 1024px;">
     <div class="w-10/12 mx-auto border rounded p-2 mb-2 bg-yellow-50" >
         <!-- PAGE DEFINITION DETAIL -->
         <x-studentroster.pagedef displayhide="{{$displayhide}}" />
     </div>
 
     <!-- TABLE SECTION HEADERS -->
-    <x-studentroster.students-header  countstudents={{$countstudents}} :schools='$schools' :search='$search' :filter='$filter'/>
+    <x-studentroster.students-header
+        countstudents={{$countstudents}}
+        :filter='$filter'
+        :schools='$schools'
+        :search='$search'
+        showimportexport={{$showimportexport}}
+    />
 
     <!-- PAGE TABLE AND [STUDENT DATA FORM] -->
-    <!-- {{-- <div class=" {{$displayform ? 'flex-row-reverse md:flex-row' : ''}} w-12/12"> --}} -->
-    <div class="flex flex-row md:flex-row-reverse w-full px-3 mt-1">
+    <div class="flex {{$displayform ? 'flex-col md:flex-row-reverse' : ''}}  w-full">
 
         {{-- STUDENT DETAILED INFORMATION TABBED --}}
         <x-studentroster.forms.tabbed
@@ -37,8 +42,8 @@
 
         {{-- INSTRUMENTATION MODAL --}}
         <div
-            class="@if (! $showmodalinstrumentation) hidden @endif flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-90">
-            <div class="bg-white rounded-lg w-1/2">
+            class="@if (! $showmodalinstrumentation) hidden @endif flex w-full items-center justify-center fixed left-0 bottom-0  bg-gray-800 bg-opacity-90">
+            <div class="bg-white rounded-lg ">
                 <form wire:submit.prevent="storeInstrumentation" class="w-full">
                     <div class="flex flex-col items-start p-4">
                         <div class="flex items-center w-full border-b pb-4">

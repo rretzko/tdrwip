@@ -7,8 +7,8 @@
 'showmodalremoveguardian' => false,
 ])
 <section
-    class="@if (! $showmodalguardian) hidden @endif flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-90 overflow-y-auto">
-    <div class="bg-white rounded-lg w-1/2">
+    class="@if (! $showmodalguardian) hidden @endif flex w-full h-full overflow-y-scroll items-center justify-center fixed left-0 bottom-0 bg-gray-800 bg-opacity-90 overflow-y-auto">
+    <div class="bg-white rounded-lg ">
 
         <form wire:submit.prevent="" class="w-full">
             <div class="flex flex-col items-start p-4">
@@ -49,7 +49,7 @@
 
                 <div class="ml-auto">
                     <button wire:click="{{ $guardian && $guardian->user_id ? 'updateGuardian' : 'storeGuardian'}}"
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold mb-2 py-2 px-4 rounded"
                             type="submit">
                             {{ $guardian && $guardian->user_id ? 'Update' : 'Add' }} Parent/Guardian
                     </button>

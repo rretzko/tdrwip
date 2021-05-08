@@ -16,7 +16,7 @@
 'tabcontent' => false,
 ])
 <div
-    class="{{$displayform ? 'w-full md:w-6/12 lg:w-8/12 bg-blue-50 text-black border border border-black border-l-3 border-t-0 border-r-0 px-3' : 'hidden'}}"
+    class="{{$displayform ? 'w-full md:w-8/12 lg:w-8/12 mt-2 bg-blue-50 text-black border border border-black border-l-3 border-t-0 border-r-0 px-3' : 'hidden'}}"
 >
     <div class="flex justify-end text-xs pt-2 pr-3 ">
         <a href="#" wire:click="$set('displayform',0)" class="text-blue-700">Return to Students table</a>

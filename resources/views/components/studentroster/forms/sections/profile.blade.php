@@ -22,7 +22,7 @@
                 <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
 
                     {{-- NAMES --}}
-                    <div class="grid grid-cols-6 gap-6">
+                    <div class="flex flex-col md:grid md:grid-cols-6 md:gap-6">
                         <div class="col-span-2 sm:col-span-2">
                             <x-inputs.text label="First name" for="first"/>
                         </div>

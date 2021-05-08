@@ -3,9 +3,9 @@
     'students',
     'teacher',
 ])
-<div class="{{$displayform ? 'w-full md:w-4/12' : 'flex flex-col'}} mt-1">
-    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+<div class="w-full {{$displayform ? 'md:w-4/12' : ''}} ">
+    <div class=" overflow-x-auto ">
+        <div class="py-2 inline-block min-w-full">
             <div class="shadow overflow-hidden border-b border-gray-200 ">
                 {{-- SIMPLE TABLE OF STUDENT NAMES WITH STUDENT FORM DISPLAYED --}}
                 @if($displayform )
