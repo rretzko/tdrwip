@@ -94,9 +94,9 @@
                                             <div class="text-sm font-medium text-gray-900">
                                                 {{$student->person->fullNameAlpha ?? 'null_object'}}
                                             </div>
-                                            <!-- {{-- <div class="{{$displayform ? 'hidden' : 'hidden md:block text-sm text-gray-500'}}"> --}} -->
+
                                             <div class="hidden md:table-cell text-sm text-gray-500">
-                                                {{$student->classof}} ({{$student->grade}}) | {{$student->fbirthday}} |  {{$student->heightFootInch}} | {{$student->shirtsize->descr}}
+                                                {{$student->classof}} ({{$student->grade}}) | {{$student->fbirthday}} |  {{$student->heightFootInch}} | {{$student->shirtsize->abbr}}
                                             </div>
                                         </div>
                                     </div>

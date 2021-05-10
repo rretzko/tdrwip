@@ -44,7 +44,7 @@ class Studentrostertabbed extends Component
     public $classofs;
     public $countstudents;
     public $displayform = false;
-    public $displayhide;
+    public $displayhide = false; //for (def.) section
     public $emailguardianalternate;
     public $emailguardianprimary;
     public $emailpersonal;

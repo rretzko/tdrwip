@@ -49,7 +49,7 @@ class Student extends Model
      */
     public function getFbirthdayAttribute()
     {
-        return Carbon::parse($this->birthday)->format('F d, Y');
+        return Carbon::parse($this->birthday)->format('M d, Y');
     }
 
     public function getGradeAttribute()

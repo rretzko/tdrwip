@@ -42,7 +42,7 @@
 
         {{-- INSTRUMENTATION MODAL --}}
         <div
-            class="@if (! $showmodalinstrumentation) hidden @endif flex w-full items-center justify-center fixed left-0 bottom-0  bg-gray-800 bg-opacity-90">
+            class="@if (! $showmodalinstrumentation) hidden @endif flex w-full h-full items-center justify-center fixed left-0 bottom-0  bg-gray-800 bg-opacity-90">
             <div class="bg-white rounded-lg ">
                 <form wire:submit.prevent="storeInstrumentation" class="w-full">
                     <div class="flex flex-col items-start p-4">

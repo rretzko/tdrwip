@@ -1,5 +1,5 @@
 @props([
-'displayhide' => true,
+'displayhide',
 ])
 <div class="">
     <!-- PAGE DEFINITION HEADER -->

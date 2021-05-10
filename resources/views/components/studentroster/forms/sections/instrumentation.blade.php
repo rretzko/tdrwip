@@ -22,7 +22,7 @@
                     <div class="shadow overflow-hidden sm:rounded-md">
 
                         {{-- NEW STUDENT WITHOUT INSTRUMENTATION --}}
-                        @if((! $choralinstrumentation) && (! $instrumentalinstrumentation))
+                        @if((! $choralinstrumentation->count()) && (! $instrumentalinstrumentation->count()))
                             <div class="mb-2">
                                 <table class="ml-6 mt-4 w-10/12">
                                     <thead>
@@ -120,7 +120,8 @@
                         @endif
                         {{-- SAVED message --}}
                         <x-saves.save-message-without-button message="Instrumentation saved!"
-                                                             trigger="saved-instrumentation"/>
+                             trigger="saved-instrumentation"
+                        />
 
                         {{--  REMOVED message --}}
                         <div class="font-italic bg-red-200 p-2"

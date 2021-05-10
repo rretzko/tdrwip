@@ -12,7 +12,6 @@
                 <button type="button" wire:click="$toggle('display_hide')" class="text-gray-500 text-sm "><!-- relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 -->
                     {{ $display_hide ? 'Display' : 'Hide' }}
                 </button>
-                <div>Test display_hide: {{ $display_hide }}</div>
             </div>
         </div>
 
