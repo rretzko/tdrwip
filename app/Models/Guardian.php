@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\UpdateSearchablesTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class Guardian extends Model
 {
-    use HasFactory;
+    use HasFactory, UpdateSearchablesTrait;
 
     protected $fillable = ['user_id'];
     protected $primaryKey = 'user_id';
@@ -41,6 +42,18 @@ class Guardian extends Model
     public function guardiantype()
     {
         return Guardiantype::find($this->pivot->guardiantype_id);
+    }
+
+    public function setSearchables()
+    {
+        $user = $this->person->user;
+
+        $this->updateSearchables($user, 'name', $this->person->first.$this->person->middle.$this->person->last);
+        $this->updateSearchables($user, 'email_guardian_alternate', $this->emailAlternate->email);
+        $this->updateSearchables($user, 'email_guardian_primary', $this->emailPrimary->email);
+        $this->updateSearchables($user, 'phone_guardian_home', $this->phoneHome);
+        $this->updateSearchables($user, 'phone_guardian_mobile', $this->phoneMobile);
+        $this->updateSearchables($user, 'phone_guardian_work', $this->phoneWork);
     }
 
     public function students()

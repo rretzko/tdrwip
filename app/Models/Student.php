@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Traits\SenioryearTrait;
+use App\Traits\UpdateSearchablesTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    use HasFactory, SenioryearTrait;
+    use HasFactory, SenioryearTrait, UpdateSearchablesTrait;
 
     protected $fillable = ['user_id'];
 
@@ -109,6 +110,26 @@ class Student extends Model
     public function phones()
     {
         return $this->hasMany(Phone::class, 'user_id', 'user_id');
+    }
+
+    public function searchName($str="bla")
+    {
+        $items = Person::all()->filter(function($record) use($str) {
+            if(($record->first) == $searchValue) {
+                return $record;
+            }
+        });
+    }
+
+    public function setSearchables()
+    {
+        $user = $this->person->user;
+
+        $this->updateSearchables($user, 'name', $this->person->first.$this->person->middle.$this->person->last);
+        $this->updateSearchables($user, 'email_student_personal', $this->emailPersonal->email);
+        $this->updateSearchables($user, 'email_student_school', $this->emailSchool->email);
+        $this->updateSearchables($user, 'phone_student_home', $this->phoneHome);
+        $this->updateSearchables($user, 'phone_student_mobile', $this->phoneMobile);
     }
 
     public function shirtsize()

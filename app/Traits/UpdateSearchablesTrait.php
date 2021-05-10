@@ -17,6 +17,10 @@ trait UpdateSearchablesTrait
     {
         $searchable = new Searchable();
 
-        $searchable->add($user_id, $descr, $raw);
+        if(strlen($raw)) {
+            $searchable->add($user_id, $descr, $raw);
+        }else{
+            $searchable->remove($user_id, $descr);
+        }
     }
 }

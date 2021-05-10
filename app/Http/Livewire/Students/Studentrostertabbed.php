@@ -89,6 +89,7 @@ class Studentrostertabbed extends Component
     public $school_id;
     public $schools;
     public $search;
+    public $searchstring = '';
     public $shirtsizes;
     public $shirtsize_id=1;
     public $showimportexport = false;
@@ -493,6 +494,8 @@ class Studentrostertabbed extends Component
 
         $this->student->refresh();
 
+        $this->student->setSearchables();
+
         $this->emit('saved-communication');
     }
 
@@ -539,6 +542,8 @@ class Studentrostertabbed extends Component
         $this->updateGuardianPhones();
 
         $this->guardian->refresh();
+
+        $this->guardian->setSearchables();
 
         $this->student->refresh();
 
@@ -602,6 +607,8 @@ class Studentrostertabbed extends Component
         $person->pronoun_id = $this->pronoun_id;
         $person->save();
 
+
+
         $this->student->classof = $this->classof;
         $this->student->height = $this->height;
         $this->student->birthday = $this->birthday;
@@ -609,6 +616,8 @@ class Studentrostertabbed extends Component
         $this->student->save();
 
         $this->student->refresh();
+
+        $this->student->setSearchables();
 
         $this->emit('saved-personal');
     }
@@ -785,7 +794,7 @@ class Studentrostertabbed extends Component
     private function search()
     {
         $teacher = Teacher::find(auth()->id());
-        return $teacher->students($this->search);
+        return $teacher->students($this->searchstring);
     }
 
     private function shirtsizes()
@@ -904,6 +913,11 @@ class Studentrostertabbed extends Component
     public function updatedDisplayhide()
     {
         Userconfig::setValue('pagedef_students', auth()->id(), $this->displayhide);
+    }
+
+    public function updatedSearchstring()
+    {
+        $this->search();
     }
 
     public function updatedFilter()

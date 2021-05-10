@@ -11,9 +11,9 @@ class Person extends Model
     use Encryptable,HasFactory;
 
     protected $encryptable = [ //encryptable fields
-        'first',
-        'middle',
-        'last'
+      //  'first',
+      //  'middle',
+      //  'last'
     ];
 
     protected $fillable = [
@@ -63,6 +63,13 @@ class Person extends Model
     public function pronoun()
     {
         return $this->belongsTo(Pronoun::class);
+    }
+
+    public function setSearchable()
+    {
+        $s = new Searchable;
+
+        $s->add($this->user, 'name', $this->first.$this->middle.$this->last);
     }
 
     public function student()

@@ -77,7 +77,11 @@ class Teacher extends Model
                     ->where('students.classof', $operator, $value);
             })
             ->where('student_teacher.teacher_user_id', '=', auth()->id())
-            ->where('people.last', 'LIKE', '%'.$search.'%')
+               ->where(function($query) use($search){
+                   $query->where('people.last', 'LIKE', '%'.$search.'%')
+                       ->orWhere('people.first', 'LIKE', '%'.$search.'%')
+                       ->orWhere('people.middle', 'LIKE', '%'.$search.'%');
+            })
             //->limit(1)
             ->pluck('student_teacher.student_user_id');
 

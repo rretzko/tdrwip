@@ -14,7 +14,6 @@ class Searchable extends Model
     private $hashed = '';
     private $searchable;
     private $searchtype = NULL;
-    private $searchtype_id = 0;
 
     protected $fillable = ['hash'];
 
@@ -30,17 +29,16 @@ class Searchable extends Model
     public function add(User $user, $descr, $raw)
     {
         $this->searchtype = Searchtype::where('descr', $descr)->first();
-        $this->searchtype_id = $this->searchtype->id;
 
         //transform $raw values into lowercase for consistency
         $lc_raw = strtolower($raw);
-        $this->hashed = hash_hmac('sha256', $lc_raw, config('hashing.hashkey'));
+        $this->hashed = $lc_raw; //hash_hmac('sha256', $lc_raw, config('hashing.hashkey'));
         $this->searchable = Searchable::firstOrCreate(['hash' => $this->hashed]);
 
         $this->user = $user;
 
         //ex. 'name' is a unique searchtype but 'phone*' is NOT unique
-        ($this->searchtype->unique) ? $this->handleUnique() : $this->handleUnique(); //$this->>handleMultiple();
+        ($this->searchtype->unique) ? $this->handleUnique() : $this->handleMultiple();
     }
 
     /**
@@ -54,8 +52,7 @@ class Searchable extends Model
     public function remove(User $user, $descr)
     {
         $this->searchtype = Searchtype::where('descr', $descr)->first();
-        $this->searchtype_id = $this->searchtype->id;
-        $this->hashed = '';//hash_hmac('sha256', $raw, config('hashing.hashkey'));
+
         $this->user = $user;
         $this->deleteSearchableUserRow();
     }
@@ -76,14 +73,21 @@ class Searchable extends Model
     private function deleteSearchableUserRow()
     {
         //$this->searchable may/may not be instantiated
-        $operand = ($this->searchable) ? '=' : '>';
-        $searchable_id = ($this->searchable) ? $this->searchable->id : 0;
+        //$operand = ($this->searchable) ? '=' : '>';
+        //$searchable_id = ($this->searchable) ? $this->searchable->id : 0;
 
-        DB::table('searchable_user')
-            ->where('searchable_id', $operand, $searchable_id)
+        if(DB::table('searchable_user') //record exists
+            ->select('user_id')
             ->where('user_id', '=', $this->user->id)
-            ->where('searchtype_id', '=', $this->searchtype_id)
-            ->delete();
+            ->where('searchtype_id', '=', $this->searchtype->id)
+            ->value('user_id') ?? 0)
+        {
+            DB::table('searchable_user') //delete record
+                ->where('user_id', '=', $this->user->id)
+                ->where('searchtype_id', '=', $this->searchtype->id)
+                ->delete();
+        }
+
     }
 
     /**
@@ -92,11 +96,45 @@ class Searchable extends Model
      */
     private function handleMultiple()
     {
-        //stub
+        $current = DB::table('searchable_user')
+            ->select('searchable_id')
+            ->where('user_id', '=', $this->user->id)
+            ->where('searchtype_id', '=', $this->searchtype->id)
+            ->value('searchable_id')
+            ?? 0;
+
+        if((! $current) || ($current !== $this->searchable->id)){
+
+            if( ! $current){ //no current value
+                DB::table('searchable_user')
+                    ->insert([
+                        'searchable_id' => $this->searchable->id,
+                        'user_id' => $this->user->id,
+                        'searchtype_id' => $this->searchtype->id,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+            }elseif($current !== $this->searchable_id){ //different current value
+                DB::table('searchable_user')
+                    ->update(
+                        [
+                            'searchable_id' => $this->searchable->id
+                        ],
+                        [
+                            'user_id' => $this->user->id,
+                            'searchtype_id' => $this->searchtype->id,
+                            'updated_at' => now(),
+                        ],
+                    );
+            }else{ //same current value
+
+                $fresh = $current;
+            }
+        }
     }
 
     /**
-     * @todo this maybe better handled with ->toggle()
+     * @todo this may be better handled with ->toggle()
      * Do nothing if current input matches database row,
      * else updateOrCreate
      */

@@ -29,7 +29,7 @@
                                       clip-rule="evenodd"/>
                             </svg>
                         </div>
-                        <input wire:model="search" type="search" name="search" id="search"
+                        <input wire:model="searchstring" type="search" name="search" id="search"
                                class="focus:ring-blue-500 focus:border-blue-500 block w-3/12 pl-10 sm:text-sm border-gray-300 rounded-md w-10/12"
                                placeholder="Search Student Names">
                     </div>
