@@ -228,6 +228,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        //FJR 11-May-21
+        'Excel' => 'Maatwebsite\Excel\Facades\Excel',
 
     ],
 

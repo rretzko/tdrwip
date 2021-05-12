@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Students;
 
+use App\Exports\StudentsExport;
 use App\Models\Address;
 use App\Models\Emailtype;
 use App\Models\Geostate;
@@ -30,6 +31,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\Response;
 
 class Studentrostertabbed extends Component
 {
@@ -204,6 +207,13 @@ class Studentrostertabbed extends Component
         //final actions
         $this->tab = 'profile';
         $this->displayform = true;
+    }
+
+    public function export($ext)
+    {
+        abort_if(!in_array($ext, ['csv', 'xlsx', 'pdf']), Response::HTTP_NOT_FOUND);
+
+        return Excel::download(new StudentsExport($this->students), 'students.' . $ext);
     }
 
     public function deleteInstrumentation($id)
@@ -927,9 +937,13 @@ class Studentrostertabbed extends Component
         if(in_array($this->filter, $filters)) {
             Userconfig::setValue('filter_studentroster', auth()->id(), $this->filter);
 
-        }elseif($this->filter === 'new'){
+        }elseif($this->filter === 'new') {
 
             $this->createStudent();
+
+        }elseif($this->filter === 'csv'){
+
+            return $this->export($this->filter);
 
         }else{
 
