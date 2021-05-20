@@ -200,6 +200,10 @@ class School extends Component
 /** END OF PUBLIC FUNCTIONS  *************************************************/
 
 
+    /**
+     * @todo After school is added, make sure that the user is a teacher and is added to teachers table
+     * @todo NOTE: The check on the teacher status should possibly occur when the registration happens?
+     */
     private function addNewSchool()
     {
         $this->validate();

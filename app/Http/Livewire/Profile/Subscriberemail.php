@@ -4,11 +4,15 @@ namespace App\Http\Livewire\Profile;
 
 use App\Models\Emailtype;
 use App\Models\Searchable;
+use App\Models\User;
+use App\Traits\UpdateSearchablesTrait;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 class Subscriberemail extends Component
 {
+    use UpdateSearchablesTrait;
+
     public $email_other;
     public $email_personal;
     public $email_work;
@@ -34,6 +38,12 @@ class Subscriberemail extends Component
         return view('livewire.profile.subscriberemail-form');
     }
 
+    /**
+     * @todo Moving an email between emailtypes fails on uniqueness
+     * Integrity constraint violation: 1062 Duplicate entry 'jason@roasted.dev' for key 'subscriberemails_email_unique'
+     * (SQL: insert into `subscriberemails` (`user_id`, `emailtype_id`, `email`, `updated_at`, `created_at`) values
+     * (8446, 2, jason@roasted.dev, 2021-05-20 15:54:18, 2021-05-20 15:54:18))
+     */
     public function save()
     {
         $this->validate([
@@ -67,14 +77,20 @@ class Subscriberemail extends Component
                 );
 
                 //add hashed value to searchables table
-                $s = new Searchable;
-                $s->add(auth()->user(),$label, $this->$label);
+        //        $s = new Searchable;
+        //        $s->add(auth()->user(),$label, $this->$label);
 
-            }else{ //delete table row if it exists
-                $s = new Searchable;
-                $s->remove(auth()->user(), $label);
-                \App\Models\Subscriberemail::where($attributes)->delete();
+        //    }else{ //delete table row if it exists
+        //        $s = new Searchable
+        //        $s->remove(auth()->user(), $label);
+        //        \App\Models\Subscriberemail::where($attributes)->delete();
             }
+
+            $this->updateSearchables(
+                User::find(auth()->id()),
+                $label,
+                $descrs[$i]
+            );
         }
 
         //emit $this->message

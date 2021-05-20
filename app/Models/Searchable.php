@@ -27,9 +27,9 @@ class Searchable extends Model
      * @param $raw
      */
     public function add(User $user, $descr, $raw)
-    {
+    {//echo $descr.'<br />';
         $this->searchtype = Searchtype::where('descr', $descr)->first();
-
+//echo($descr.': '.$this->searchtype.'<br />');
         //transform $raw values into lowercase for consistency
         $lc_raw = strtolower($raw);
         $this->hashed = $lc_raw; //hash_hmac('sha256', $lc_raw, config('hashing.hashkey'));
@@ -142,8 +142,8 @@ class Searchable extends Model
     {
         //remove the current row
         $this->deleteSearchableUserRow();
-
+//info($this->searchtype->id);
         //attach new row
-        $this->searchable->users()->attach($this->user->id, ['searchtype_id' => $this->searchtype_id]);
+        $this->searchable->users()->attach($this->user->id, ['searchtype_id' => $this->searchtype->id]);
     }
 }

@@ -26,10 +26,7 @@ class Student extends Model
     }
 
     public function getEmailPersonalAttribute()
-    {//dd(Nonsubscriberemail::where('user_id',$this->user_id)
-     //   ->where('emailtype_id', Emailtype::where('descr', 'email_student_personal')->first()->id)
-      //  ->first() ?? new Nonsubscriberemail);
-        //dd(Emailtype::where('descr', 'email_student_personal')->first()->id);
+    {
         return Nonsubscriberemail::where('user_id',$this->user_id)
             ->where('emailtype_id', Emailtype::where('descr', 'email_student_personal')->first()->id)
             ->first()
@@ -126,10 +123,12 @@ class Student extends Model
         $user = $this->person->user;
 
         $this->updateSearchables($user, 'name', $this->person->first.$this->person->middle.$this->person->last);
-        $this->updateSearchables($user, 'email_student_personal', $this->emailPersonal->email);
-        $this->updateSearchables($user, 'email_student_school', $this->emailSchool->email);
-        $this->updateSearchables($user, 'phone_student_home', $this->phoneHome);
-        $this->updateSearchables($user, 'phone_student_mobile', $this->phoneMobile);
+
+        $this->updateSearchables($user, 'email_student_personal', ($this->emailPersonal->id ? $this->emailPersonal->email : ''));
+        $this->updateSearchables($user, 'email_student_school', ($this->emailSchool->id ? $this->emailSchool->email : ''));
+        $this->updateSearchables($user, 'phone_student_home', ($this->phoneHome->id ? $this->phoneHome->phone : ''));
+        $this->updateSearchables($user, 'phone_student_mobile', ($this->phoneMobile->id ? $this->phoneHome->phone : ''));
+
     }
 
     public function shirtsize()

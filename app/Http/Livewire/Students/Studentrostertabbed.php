@@ -605,7 +605,8 @@ class Studentrostertabbed extends Component
             'shirtsize_id' => ['required', 'integer', 'min:1'],
         ]);
 
-        if(!$this->student->user_id){
+        //if adding a new student, create the student records first
+        if(! $this->student->user_id){
 
             $this->storeStudent();
         }
@@ -616,8 +617,6 @@ class Studentrostertabbed extends Component
         $person->last = $this->last;
         $person->pronoun_id = $this->pronoun_id;
         $person->save();
-
-
 
         $this->student->classof = $this->classof;
         $this->student->height = $this->height;
