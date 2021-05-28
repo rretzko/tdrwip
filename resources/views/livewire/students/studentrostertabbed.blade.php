@@ -14,8 +14,7 @@
     />
 
     <!-- PAGE TABLE AND [STUDENT DATA FORM] -->
-    <div class="flex {{$displayform ? 'flex-col md:flex-row-reverse' : ''}}  w-full">
-
+    <div class="flex flex-col md:flex-row-reverse w-full overflow-x-hidden">
         {{-- STUDENT DETAILED INFORMATION TABBED --}}
         <x-studentroster.forms.tabbed
             :choralinstrumentation="$choralinstrumentation"

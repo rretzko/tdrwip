@@ -63,7 +63,7 @@
                                         <div class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
                                             @if($student->person->user->profile_photo_path)
                                                 <div>
-                                                    <img  class="rounded rounded-2xl h-20 w-20" src="{{ '/storage/'.substr($student->person->user->profile_photo_path,7) }}" />
+                                                    <img  class="rounded h-20 w-20" src="{{ '/storage/'.$student->person->user->profile_photo_path }}" />
                                                 </div>
                                             @else
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor">
@@ -84,12 +84,11 @@
 
                                         @error('photo')<div class="error text-red-600">{{ $message }}</div> @enderror
 
-                                        @if($photo)
+                                        @if ($photo)
                                             <div>
                                                 <label>Photo Preview: </label>
                                                 <img  class="rounded rounded-full h-20 w-20" src="{{ $photo->temporaryUrl() }}" />
                                             </div>
-
                                         @endif
 
                                     </form>
