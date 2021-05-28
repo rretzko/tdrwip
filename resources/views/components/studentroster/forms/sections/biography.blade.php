@@ -36,12 +36,11 @@
                         <label class="block text-sm font-medium text-gray-700">
                             Photo
                         </label>
-                        <div class="mt-1 flex items-center">
-
-                            <div class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
+                        <div class="mt-1 flex items-center space-x-4">
+                            <div class="relative inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
                                 @if($student->person ? $student->person->user->profile_photo_path : false)
                                     <div>
-                                        <img  class="rounded rounded-2xl h-20 w-20" src="{{ '/storage/'.substr($student->person->user->profile_photo_path,7) }}" />
+                                        <img class="absolute w-full h-full inset-0 object-cover" src="{{ '/storage/'.$student->person->user->profile_photo_path }}" />
                                     </div>
                                 @else
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-12" viewBox="0 0 20 20" fill="currentColor">
@@ -50,6 +49,9 @@
                                 @endif
                             </div>
 
+                            @if($student->person && $student->person->user->profile_photo_path)
+                                <button class="text-sm px-3 py-2 bg-gray-200 text-gray-700 rounded" wire:click.prevent="deleteProfilePhoto">Delete Profile Photo</button>
+                            @endif
                         </div>
                     </div>
 
@@ -66,10 +68,11 @@
                                 @if($photo)
                                     {{-- PHOTO  PREVIEW --}}
                                     <div>
-                                        <label>Photo Preview: </label>
-                                        <img  class="rounded rounded-full h-20 w-20" src="{{ $photo->temporaryUrl() }}" />
+                                        <label class="mt-4 block text-sm font-medium text-gray-700">Photo Preview: </label>
+                                        <div class="relative block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="{{ $photo->temporaryUrl() }}" />
+                                        </div>
                                     </div>
-
                                 @endif
                             </div>
 
@@ -77,9 +80,13 @@
                     </div>
 
                     {{-- SAVE --}}
-                    <x-saves.save-button-with-message message="Biography information saved!"
-                                                      trigger="saved-biography"/>
-
+                    <div class="flex items-center justify-end">
+                        <span wire:loading wire:target="photo" class="mt-4 text-sm text-gray-500">
+                            Photo uploading...
+                        </span>
+                        <x-saves.save-button-with-message message="Biography information saved!"
+                                                        trigger="saved-biography"/>
+                    </div>
                 </div>
             </div>
         </form>

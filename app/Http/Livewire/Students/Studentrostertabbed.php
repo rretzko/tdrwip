@@ -2,36 +2,37 @@
 
 namespace App\Http\Livewire\Students;
 
-use App\Exports\StudentsExport;
-use App\Models\Address;
-use App\Models\Emailtype;
-use App\Models\Geostate;
-use App\Models\Guardian;
-use App\Models\Guardiantype;
-use App\Models\Honorific;
-use App\Models\Instrumentation;
-use App\Models\Instrumentationbranch;
-use App\Models\Nonsubscriberemail;
-use App\Models\Person;
+use App\Models\User;
 use App\Models\Phone;
-use App\Models\Phonetype;
-use App\Models\Pronoun;
+use App\Models\Person;
 use App\Models\School;
-use App\Models\Shirtsize;
-use App\Models\Studenttype;
-use App\Traits\SenioryearTrait;
+use App\Models\Address;
+use App\Models\Pronoun;
 use App\Models\Student;
 use App\Models\Teacher;
-use App\Models\User;
-use App\Models\Userconfig;
-use App\Traits\FormatPhoneTrait;
-use App\Traits\UsernameTrait;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
 use Livewire\Component;
+use App\Models\Geostate;
+use App\Models\Guardian;
+use App\Models\Emailtype;
+use App\Models\Honorific;
+use App\Models\Phonetype;
+use App\Models\Shirtsize;
+use App\Models\Userconfig;
+use App\Models\Studenttype;
+use App\Models\Guardiantype;
+use App\Traits\UsernameTrait;
 use Livewire\WithFileUploads;
+use App\Exports\StudentsExport;
+use App\Models\Instrumentation;
+use App\Traits\SenioryearTrait;
+use Illuminate\Validation\Rule;
+use App\Traits\FormatPhoneTrait;
+use App\Models\Nonsubscriberemail;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\Instrumentationbranch;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
 class Studentrostertabbed extends Component
@@ -56,7 +57,7 @@ class Studentrostertabbed extends Component
     public $first;
     public $geostates;
     public $geostate_id=37;
-    public $guardian = NULL;
+    public $guardian = null;
     public $guardians;
     public $guardianfirst;
     public $guardianfullname;
@@ -84,7 +85,7 @@ class Studentrostertabbed extends Component
     public $phoneguardianwork;
     public $phonehome;
     public $phonemobile;
-    public $photo = NULL;
+    public $photo = null;
     public $postalcode;
     public $pronouns;
     public $pronoun_id=1;
@@ -99,7 +100,7 @@ class Studentrostertabbed extends Component
     public $showmodalguardian = false;
     public $showmodalremoveguardian = false;
     public $showmodalinstrumentation = false;
-    public $student = NULL;
+    public $student = null;
     public $students;
     public $tab;
     public $tabcontent;
@@ -133,7 +134,7 @@ class Studentrostertabbed extends Component
         $this->countstudents = $this->students->count();
         $this->teacher = Teacher::with(['person', 'person.user','person.honorific', ])->find(auth()->id());
 
-        return view('livewire.students.studentrostertabbed',[]);
+        return view('livewire.students.studentrostertabbed', []);
     }
 
     public function rules()
@@ -301,10 +302,14 @@ class Studentrostertabbed extends Component
         $stored = Userconfig::getValue('school_id', auth()->id());
 
         //initialize $this->>school_id
-        if(! $this->school_id){ $this->school_id = $stored;}
+        if (! $this->school_id) {
+            $this->school_id = $stored;
+        }
 
         //early exit
-        if($stored === $this->school_id){ return $stored;} //return the stored value
+        if ($stored === $this->school_id) {
+            return $stored;
+        } //return the stored value
 
         //$this->schoolid has been changed; register and return the new value
         Userconfig::setValue('school_id', auth()->id(), $this->school_id);
@@ -315,7 +320,9 @@ class Studentrostertabbed extends Component
 
     private function guardians()
     {
-        if($this->student){$this->student->refresh();}
+        if ($this->student) {
+            $this->student->refresh();
+        }
 
         return $this->student
             ? $this->student->guardians
@@ -340,8 +347,7 @@ class Studentrostertabbed extends Component
 
     public function removeGuardianChickenTest()
     {
-        if($this->removeguardianchickentest){
-
+        if ($this->removeguardianchickentest) {
             $this->student->guardians()->detach($this->guardian->user_id);
 
             $this->student->refresh();
@@ -461,9 +467,8 @@ class Studentrostertabbed extends Component
         $user = $this->student->person->user;
         $user->username = $this->username;
 
-        if($this->photo){
-            $user->profile_photo_path = $this->photo->store('public');
-            //store('profile-photos') stores the file into storage/app/profile-photos directory.
+        if ($this->photo) {
+            $user->profile_photo_path = $this->photo->storeAs('profile-photo/' . $user->id, $this->photo->getClientOriginalName(), 'public');
         }
 
         $user->save();
@@ -471,6 +476,18 @@ class Studentrostertabbed extends Component
         $this->photo = '';
 
         $user->refresh();
+
+        $this->emit('saved-biography');
+    }
+
+    public function deleteProfilePhoto()
+    {
+        $user = $this->student->person->user;
+
+        if ($user->profile_photo_path) {
+            Storage::disk('public')->delete($user->profile_photo_path);
+            $user->update(['profile_photo_path' => null]);
+        }
 
         $this->emit('saved-biography');
     }
@@ -572,7 +589,8 @@ class Studentrostertabbed extends Component
             'postalcode' => ['string', 'nullable','min:5'],
         ]);
 
-        Address::updateOrCreate([
+        Address::updateOrCreate(
+            [
             'user_id' => $this->student->user_id
         ],
             [
@@ -606,8 +624,7 @@ class Studentrostertabbed extends Component
         ]);
 
         //if adding a new student, create the student records first
-        if(! $this->student->user_id){
-
+        if (! $this->student->user_id) {
             $this->storeStudent();
         }
 
@@ -682,7 +699,7 @@ class Studentrostertabbed extends Component
         $a = [];
 
         //register the current grades
-        foreach($grades AS $grade){
+        foreach ($grades as $grade) {
             $classof = ($senioryear + (12 - $grade));
             $a[$classof] = $grade;
         }
@@ -692,9 +709,9 @@ class Studentrostertabbed extends Component
         $tenures = $teacher->tenures->where('school_id', $school->id);
 
         //register the alum grades
-        foreach($tenures AS $tenure){
-            for($i=$tenure->startyear; $i<=$tenure->endyear; $i++){
-                if(! array_key_exists($i, $a)){
+        foreach ($tenures as $tenure) {
+            for ($i=$tenure->startyear; $i<=$tenure->endyear; $i++) {
+                if (! array_key_exists($i, $a)) {
                     $a[$i] = $i;
                 }
             }
@@ -709,8 +726,7 @@ class Studentrostertabbed extends Component
     {
         $a = [];
 
-        foreach(Geostate::all() AS $geostate){
-
+        foreach (Geostate::all() as $geostate) {
             $a[$geostate->id] = $geostate->abbr;
         }
 
@@ -721,8 +737,7 @@ class Studentrostertabbed extends Component
     {
         $a = [];
 
-        foreach(Guardiantype::all() AS $guardiantype){
-
+        foreach (Guardiantype::all() as $guardiantype) {
             $a[$guardiantype->id] = $guardiantype->descr;
         }
 
@@ -732,7 +747,7 @@ class Studentrostertabbed extends Component
     {
         $a = [];
 
-        for($i=30; $i < 94; $i++){
+        for ($i=30; $i < 94; $i++) {
             $a[$i] = $i.' ('.$this->footInches($i).')';
         }
 
@@ -743,7 +758,7 @@ class Studentrostertabbed extends Component
     {
         $a = [];
 
-        foreach(Honorific::orderBy('order_by')->get() AS $honorific){
+        foreach (Honorific::orderBy('order_by')->get() as $honorific) {
             $a[$honorific->id] = $honorific->descr;
         }
 
@@ -753,7 +768,9 @@ class Studentrostertabbed extends Component
     private function instrumentationChoral()
     {
         //early exist
-        if(! $this->student){ return collect();}
+        if (! $this->student) {
+            return collect();
+        }
 
         return $this->student->person->user->instrumentations()
                 ->where('instrumentationbranch_id', Instrumentationbranch::where('descr', 'choral')->first()->id)
@@ -765,10 +782,12 @@ class Studentrostertabbed extends Component
     private function instrumentationInstrumental()
     {
         //early exist
-        if(! $this->student){ return collect();}
+        if (! $this->student) {
+            return collect();
+        }
 
         return $this->student->person->user->instrumentations()
-                ->where('instrumentationbranch_id',Instrumentationbranch::where('descr','instrumental')->first()->id)
+                ->where('instrumentationbranch_id', Instrumentationbranch::where('descr', 'instrumental')->first()->id)
                 ->get()
                 ->sortBy('descr')
             ?? collect();
@@ -778,7 +797,7 @@ class Studentrostertabbed extends Component
     {
         $a = [];
 
-        foreach(Pronoun::orderBy('order_by')->get() AS $pronoun){
+        foreach (Pronoun::orderBy('order_by')->get() as $pronoun) {
             $a[$pronoun->id] = $pronoun->descr;
         }
 
@@ -790,8 +809,7 @@ class Studentrostertabbed extends Component
         $a = [];
         $user = User::find(auth()->id());
 
-        foreach($user->schools AS $school){
-
+        foreach ($user->schools as $school) {
             $a[$school->id] = $school->name;
         }
 
@@ -810,7 +828,7 @@ class Studentrostertabbed extends Component
     {
         $a = [];
 
-        foreach(Shirtsize::orderBy('order_by')->get() AS $shirtsize){
+        foreach (Shirtsize::orderBy('order_by')->get() as $shirtsize) {
             $a[$shirtsize->id] = $shirtsize->abbr.' ('.$shirtsize->descr.')';
         }
 
@@ -868,11 +886,11 @@ class Studentrostertabbed extends Component
     private function updateCommunicationEmails()
     {
         $emails = [
-            'personal' => ['obj' => NULL, 'emailtype_descr' => 'email_student_personal', 'current' => $this->emailpersonal,],
-            'school' => ['obj' => NULL, 'emailtype_descr' => 'email_student_school', 'current' => $this->emailschool,],
+            'personal' => ['obj' => null, 'emailtype_descr' => 'email_student_personal', 'current' => $this->emailpersonal,],
+            'school' => ['obj' => null, 'emailtype_descr' => 'email_student_school', 'current' => $this->emailschool,],
         ];
 
-        foreach($emails AS $email) {
+        foreach ($emails as $email) {
             $email['obj'] = Nonsubscriberemail::firstOrCreate(
                 [
                     'user_id' => $this->student->user_id,
@@ -885,7 +903,6 @@ class Studentrostertabbed extends Component
 
             //update object if user's input differs from current record
             if ($email['current'] !== $email['obj']->email) {
-
                 $email['obj']->email = $email['current'];
                 $email['obj']->save();
             }
@@ -895,11 +912,11 @@ class Studentrostertabbed extends Component
     private function updateCommunicationPhones()
     {
         $phones = [
-            'home' => ['obj' => NULL, 'phonetype_descr' => 'phone_student_home', 'current' => $this->phonehome,],
-            'mobile' => ['obj' => NULL, 'phonetype_descr' => 'phone_student_mobile', 'current' => $this->phonemobile,],
+            'home' => ['obj' => null, 'phonetype_descr' => 'phone_student_home', 'current' => $this->phonehome,],
+            'mobile' => ['obj' => null, 'phonetype_descr' => 'phone_student_mobile', 'current' => $this->phonemobile,],
         ];
 
-        foreach($phones AS $phone) {
+        foreach ($phones as $phone) {
             $phone['obj'] = Phone::firstOrCreate(
                 [
                     'user_id' => $this->student->user_id,
@@ -912,7 +929,6 @@ class Studentrostertabbed extends Component
 
             //update object if user's input differs from current record
             if ($phone['current'] !== $phone['obj']->phone) {
-
                 $phone['obj']->phone = $phone['current'];
                 $phone['obj']->save();
             }
@@ -933,19 +949,13 @@ class Studentrostertabbed extends Component
     {
         $filters = ['all','current','alum'];
 
-        if(in_array($this->filter, $filters)) {
+        if (in_array($this->filter, $filters)) {
             Userconfig::setValue('filter_studentroster', auth()->id(), $this->filter);
-
-        }elseif($this->filter === 'new') {
-
+        } elseif ($this->filter === 'new') {
             $this->createStudent();
-
-        }elseif($this->filter === 'csv'){
-
+        } elseif ($this->filter === 'csv') {
             return $this->export($this->filter);
-
-        }else{
-
+        } else {
             $this->toolsMenu();
         }
     }
@@ -959,7 +969,8 @@ class Studentrostertabbed extends Component
             ],
             [
                 'email' => $this->emailguardianprimary,
-            ]);
+            ]
+        );
 
         Nonsubscriberemail::updateOrCreate(
             [
@@ -968,7 +979,8 @@ class Studentrostertabbed extends Component
             ],
             [
                 'email' => $this->emailguardianalternate,
-            ]);
+            ]
+        );
     }
 
     private function updateGuardianPerson()
@@ -985,7 +997,6 @@ class Studentrostertabbed extends Component
                 'pronoun_id' => $this->guardianpronoun_id,
             ]
         );
-
     }
 
     private function updateGuardianPhones()
@@ -997,7 +1008,8 @@ class Studentrostertabbed extends Component
             ],
             [
                 'phone' => $this->formatPhone($this->phoneguardianhome),
-            ]);
+            ]
+        );
 
         Phone::updateOrCreate(
             [
@@ -1006,7 +1018,8 @@ class Studentrostertabbed extends Component
             ],
             [
                 'phone' => $this->formatPhone($this->phoneguardianmobile),
-            ]);
+            ]
+        );
 
         Phone::updateOrCreate(
             [
@@ -1015,6 +1028,7 @@ class Studentrostertabbed extends Component
             ],
             [
                 'phone' => $this->formatPhone($this->phoneguardianwork),
-            ]);
+            ]
+        );
     }
 }

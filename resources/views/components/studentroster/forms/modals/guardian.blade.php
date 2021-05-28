@@ -7,8 +7,8 @@
 'showmodalremoveguardian' => false,
 ])
 <section
-    class="@if (! $showmodalguardian) hidden @endif flex w-full h-full overflow-y-scroll items-center justify-center fixed left-0 bottom-0 bg-gray-800 bg-opacity-90 overflow-y-auto">
-    <div class="bg-white rounded-lg ">
+    class="@if (! $showmodalguardian) hidden @endif flex w-full h-full items-center justify-center fixed left-0 bottom-0 bg-gray-800 bg-opacity-90 overflow-y-auto">
+    <div class="overflow-y-scroll bg-white rounded-lg" style="max-height: 90vh">
 
         <form wire:submit.prevent="" class="w-full">
             <div class="flex flex-col items-start p-4">
