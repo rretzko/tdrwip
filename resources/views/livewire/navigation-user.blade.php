@@ -1,3 +1,4 @@
+
 <div wire:model="navigation-user" class="flex flex-row justify-end pr-8" >
 
     <div class="flex flex-col w-4/12 sm:w-2/12 lg:w-1/12">

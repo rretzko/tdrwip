@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\geostate;
 use App\Models\School;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,7 +23,13 @@ class SchoolFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->word.' High School',
+            'address0' => $this->faker->address,
+            'city' => $this->faker->city,
+            'geostate_id' => function(){
+                return Geostate::factory()->create()->id;
+            },
+            'postalcode' => $this->faker->postcode,
         ];
     }
 }

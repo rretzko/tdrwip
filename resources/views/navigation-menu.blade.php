@@ -151,7 +151,7 @@
 
     <!-- DASHBOARD: Large -->
     <a href="{{ route('dashboard') }}"
-       class="flex flex-row border border-gray-500 rounded px-2 py-1 ml-0.5
+       class="flex flex-row border border-blue-300 rounded px-2 py-1 ml-0.5
         {{ (strpos(Route::currentRouteName(), 'dashboard')) === 0 ? 'active' : ''  }}">
 
         <!-- heroicon clipboard-check -->
@@ -166,7 +166,7 @@
 
     <!-- SCHOOLS: Large -->
     <a href="{{ route('schools') }}"
-       class="flex flex-row border border-gray-500 rounded px-2 py-1 ml-0.5
+       class="flex flex-row border border-blue-300 rounded px-2 py-1 ml-0.5
         {{ (strpos(Route::currentRouteName(), 'schools')) === 0 ? 'active' : ''  }}">
         <!-- heroicon library building-->
         <svg xmlns="http://www.w3.org/2000/svg"
@@ -180,7 +180,7 @@
 
     <!-- STUDENTS: Large -->
     <a href="{{ route('students') }}"
-       class="flex flex-row border border-gray-500 rounded px-2 py-1 ml-0.5
+       class="flex flex-row border border-blue-300 rounded px-2 py-1 ml-0.5
         {{ (strpos(Route::currentRouteName(), 'students')) === 0 ? 'active' : ''  }}">
         <!-- heroicon academic-cap -->
         <svg xmlns="http://www.w3.org/2000/svg"
@@ -195,7 +195,7 @@
         <div class="ml-1">Students</div>
     </a>
     <a href="#"
-       class="flex flex-row border border-gray-500 rounded px-2 py-1 ml-0.5
+       class="flex flex-row border border-blue-300 rounded px-2 py-1 ml-0.5
         {{ (strpos(Route::currentRouteName(), 'ensembles')) === 0 ? 'active' : ''  }}">
         <!-- heroicon microphone -->
         <svg xmlns="http://www.w3.org/2000/svg"
@@ -207,7 +207,7 @@
         <div class="ml-1">Ensembles</div>
     </a>
     <a href="#"
-       class="flex flex-row border border-gray-500 rounded px-2 py-1 ml-0.5
+       class="flex flex-row border border-blue-300 rounded px-2 py-1 ml-0.5
         {{ (strpos(Route::currentRouteName(), 'library')) === 0 ? 'active' : ''  }}">
         <!-- heroicon book-open -->
         <svg xmlns="http://www.w3.org/2000/svg"
@@ -219,7 +219,7 @@
         <div class="ml-1">Library</div>
     </a>
     <a href="#"
-       class="flex flex-row border border-gray-500 rounded px-2 py-1 ml-0.5
+       class="flex flex-row border border-blue-300 rounded px-2 py-1 ml-0.5
         {{ (strpos(Route::currentRouteName(), 'organizations')) === 0 ? 'active' : ''  }}">
         <!-- heroicon briefcase -->
         <svg xmlns="http://www.w3.org/2000/svg"
@@ -231,7 +231,7 @@
         <div class="ml-1">Organizations</div>
     </a>
     <a href="#"
-       class="flex flex-row border border-gray-500 rounded px-2 py-1 ml-0.5
+       class="flex flex-row border border-blue-300 rounded px-2 py-1 ml-0.5
         {{ (strpos(Route::currentRouteName(), 'events')) === 0 ? 'active' : ''  }}">
         <!-- heroicon cake -->
         <svg xmlns="http://www.w3.org/2000/svg"

@@ -16,8 +16,8 @@ class CreateSchoolsTable extends Migration
         Schema::create('schools', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('address01')->nullable();
-            $table->string('address02')->nullable();
+            $table->string('address0')->nullable();
+            $table->string('address1')->nullable();
             $table->string('city')->nullable();
             $table->foreignId('geostate_id')->constrained();
             $table->string('postalcode')->nullable();

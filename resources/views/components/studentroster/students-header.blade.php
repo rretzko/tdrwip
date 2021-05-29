@@ -173,10 +173,10 @@
 
                         <a href="#"
                            wire:click="$set('filter','all')"
-                           class="inline-flex items-center py-4 px-1  font-medium text-sm {{($filter === 'all') ? 'border-indigo-500 text-indigo-600 border-b-2' : 'border-transparent text-gray-500 group hover:text-gray-700 hover:border-gray-300' }}"
+                           class="inline-flex items-center py-4 px-1 font-medium text-sm {{($filter === 'all') ? 'text-blue-400 border-blue-400 border-b-2' : 'border-transparent text-gray-500 group hover:text-gray-700 hover:border-gray-300' }}"
                            aria-current="page">
                             <!-- Heroicon name: solid/users -->
-                            <svg class="{{($filter === 'all') ? 'text-indigo-400 group-hover:text-indigo-500' : 'text-gray-400 group-hover:text-gray-500'}} -ml-0.5 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                            <svg class="{{($filter === 'all') ? 'text-blue-400 group-hover:text-indigo-500' : 'text-gray-600 group-hover:text-gray-500'}} -ml-0.5 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg"
                                  viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                 <path
                                     d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
@@ -205,7 +205,7 @@
                            class="inline-flex items-center py-4 px-1  font-medium text-sm {{($filter === 'tools') ? 'border-indigo-500 text-indigo-600 border-b-2' : 'border-transparent text-gray-500 group hover:text-gray-700 hover:border-gray-300' }}"
                            aria-current="page">
                             <!-- Heroicon name: cog -->
-                            <svg class="text-gray-400 group-hover:text-gray-400 h-5 w-5"
+                            <svg class="text-gray-400 group-hover:text-gray-500 h-5 w-5"
                                  xmlns="http://www.w3.org/2000/svg"
                                  fill="none"
                                  viewBox="0 0 20 20"

@@ -15,8 +15,8 @@ class CreateGeostatesTable extends Migration
     {
         Schema::create('geostates', function (Blueprint $table) {
             $table->id();
-            $table->string('country_abbr');
-            $table->string('descr');
+            $table->string('country_abbr')->default('US');
+            $table->string('name');
             $table->string('abbr');
             $table->timestamps();
         });

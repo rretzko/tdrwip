@@ -31,5 +31,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     //Route::get('/students', [App\Http\Controllers\Students\StudentController::class, 'show'])->name('students');
     Route::get('/students', [App\Http\Controllers\Students\StudentTabbedController::class, 'show'])->name('students');
     Route::get('/schools', [App\Http\Controllers\Schools\SchoolController::class, 'show'])->name('schools');
+    Route::get('/ensembles', [App\Http\Controllers\Ensembles::class,'index'])->name('ensembles.index');
 });
 
