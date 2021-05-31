@@ -47,6 +47,7 @@ class Studentrostertabbed extends Component
     public $classof;
     public $classofs;
     public $countstudents;
+    public $displayclassofserror = false;
     public $displayform = false;
     public $displayhide = false; //for (def.) section
     public $emailguardianalternate;
@@ -90,6 +91,7 @@ class Studentrostertabbed extends Component
     public $pronouns;
     public $pronoun_id=1;
     public $removeguardianchickentest = 0;
+    public $school;
     public $school_id;
     public $schools;
     public $search;
@@ -123,6 +125,7 @@ class Studentrostertabbed extends Component
         $this->newinstrumentations = collect(); //$this->newInstrumentations();
         $this->pronouns = $this->pronouns();
         $this->school_id = $this->getSchoolId();
+        $this->school = School::find($this->school_id);
         $this->schools = $this->schools();
         $this->shirtsizes = $this->shirtsizes();
         $this->tab = Userconfig::getValue('studentform_tab', auth()->id());
@@ -697,6 +700,8 @@ class Studentrostertabbed extends Component
         $grades = $school->currentUserGrades;
 
         $a = [];
+
+        if(! count($grades)){ $this->displayclassofserror = true; }
 
         //register the current grades
         foreach ($grades as $grade) {

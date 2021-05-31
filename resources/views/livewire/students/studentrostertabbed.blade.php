@@ -13,6 +13,14 @@
         showimportexport={{$showimportexport}}
     />
 
+    @if($displayclassofserror)
+        <div class="bg-white text-red-600 mt-2 px-2">
+            No grades were found for {{ $school->name }}.  Please update your grades and first-year values using the
+            <a href="{{ route('schools') }}" class="text-red-600 font-bold">Schools</a>
+            link...
+        </div>
+    @endif
+
     <!-- PAGE TABLE AND [STUDENT DATA FORM] -->
     <div class="flex flex-col md:flex-row-reverse w-full overflow-x-hidden">
         {{-- STUDENT DETAILED INFORMATION TABBED --}}
