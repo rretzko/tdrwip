@@ -63,6 +63,11 @@ class User extends Authenticatable
         return $this->hasOne(Address::class);
     }
 
+    public function ensembles()
+    {
+        return $this->hasMany(Ensemble::class);
+    }
+
     public function instrumentations()
     {
         return $this->belongsToMany(Instrumentation::class);

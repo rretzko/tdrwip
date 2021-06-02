@@ -19,9 +19,6 @@ Route::get('/', function () {
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function() {
 
-    /*Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');*/
     Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'show'])->name('dashboard');
 
     /** SUPERUSER */
@@ -31,6 +28,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     //Route::get('/students', [App\Http\Controllers\Students\StudentController::class, 'show'])->name('students');
     Route::get('/students', [App\Http\Controllers\Students\StudentTabbedController::class, 'show'])->name('students');
     Route::get('/schools', [App\Http\Controllers\Schools\SchoolController::class, 'show'])->name('schools');
-    Route::get('/ensembles', [App\Http\Controllers\Ensembles::class,'index'])->name('ensembles.index');
+
+    /** ENSEMBLES */
+    Route::get('/ensembles', [App\Http\Controllers\Ensembles\EnsembleController::class,'index'])->name('ensembles.index');
+    Route::get('/ensemble/new', [App\Http\Controllers\Ensembles\EnsembleController::class,'create'])->name('ensemble.create');
+    Route::get('/ensemble/{ensemble}', [App\Http\Controllers\Ensembles\EnsembleController::class,'edit'])->name('ensemble.edit');
+    Route::post('/ensemble', [App\Http\Controllers\Ensembles\EnsembleController::class,'store'])->name('ensemble.store');
+    Route::post('/ensemble/{ensemble}/update', [App\Http\Controllers\Ensembles\EnsembleController::class,'update'])->name('ensemble.update');
 });
 

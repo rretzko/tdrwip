@@ -194,9 +194,14 @@
         </svg>
         <div class="ml-1">Students</div>
     </a>
-    <a href="#"
+    <a href="{{ route('ensembles.index') }}"
        class="flex flex-row border border-blue-300 rounded px-2 py-1 ml-0.5
-        {{ (strpos(Route::currentRouteName(), 'ensembles')) === 0 ? 'active' : ''  }}">
+        {{ (
+            (strpos(Route::currentRouteName(), 'ensembles') === 0) ||
+            (strpos(Route::currentRouteName(), 'ensemble.create') === 0) ||
+            (strpos(Route::currentRouteName(), 'ensemble.edit') === 0)
+             )
+                ? 'active' : ''  }}">
         <!-- heroicon microphone -->
         <svg xmlns="http://www.w3.org/2000/svg"
              width="20px" height="20px"

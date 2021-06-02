@@ -81,6 +81,7 @@
                             <td class="pl-1 py-4 whitespace-nowrap align-top">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-10 w-9 ">
+
                                         @if($student->person->user->profile_photo_path)
                                             <img class="h-10 w-10 rounded-full"
                                                     src="{{ '/storage/'.$student->person->user->profile_photo_path }}"

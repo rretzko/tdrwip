@@ -31,7 +31,7 @@ class GeostateSeeder extends Seeder
             DB::table('geostates')->insert([
                 'id' => $seed['id'],
                 'country_abbr' => $seed['country_abbr'],
-                'descr' => $seed['descr'],
+                'name' => $seed['name'],
                 'abbr' => $seed['abbr'],
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -59,7 +59,7 @@ class GeostateSeeder extends Seeder
                     $this->seeds[] = [
                         'id' => $data[0],
                         'country_abbr' => $data[1],
-                        'descr' => $data[2],
+                        'name' => $data[2],
                         'abbr' => $data[3],
                     ];
                 }

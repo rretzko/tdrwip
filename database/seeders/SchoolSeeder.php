@@ -28,8 +28,8 @@ class SchoolSeeder extends Seeder
 
             $model->id = $seed[0];
             $model->name = $seed[1];
-            $model->address01 = $seed[2];
-            $model->address02 = $seed[3];
+            $model->address0 = $seed[2];
+            $model->address1 = $seed[3];
             $model->city = $seed[4];
             $model->geostate_id = $seed[5];
             $model->postalcode = $seed[6];

@@ -19,13 +19,13 @@
 
                     <div class="px-4 pt-5 sm:p-6 bg-white">
                         <div class="col-span-4 sm:col-span-4">
-                            <x-inputs.text label="Address" for="address01"/>
+                            <x-inputs.text label="address" for="address01"/>
                         </div>
                         <div class="col-span-4 sm:col-span-4">
                             <x-inputs.text label="" for="address02"/>
                         </div>
                         <div class="col-span-4 sm:col-span-4">
-                            <x-inputs.text label="City" for="city"/>
+                            <x-inputs.text label="city" for="city"/>
                         </div>
                         <div class="col-span-4 sm:col-span-4">
                             <x-inputs.select label="state" for="geostate_id" :options="$geostates" />

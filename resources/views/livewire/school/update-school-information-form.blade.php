@@ -52,7 +52,7 @@
                                         <td class="px-6 py-4 space-x-1 whitespace-nowrap text-center text-sm font-medium flex flex-row justify-around align-text-top">
                                             <a href="#"
                                                wire:click.defer="edit({{ $school->id }})"
-                                               class="border border-blue-500 rounded px-2 bg-blue-400 text-white">Edit
+                                               class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600">Edit
                                             </a>
                                             <x-buttons.button-delete id="{{ $school->id }}" />
 
