@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Userconfig;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreEnsembleRequest extends FormRequest
 {
@@ -28,7 +30,10 @@ class StoreEnsembleRequest extends FormRequest
             'descr' => 'nullable',
             'ensembletype_id' => ['numeric', 'required',],
             'gradetypes' => ['array', 'required', 'min:1'],
-            'name' => ['string', 'required','max:40',],
+            'name' => ['string', 'required','max:40',
+                Rule::unique('ensembles')
+                    ->where('user_id', auth()->id())
+                    ->where('school_id', Userconfig::getValue('school_id', auth()->id()))],
             'startyear' => ['nullable','numeric','min:1700',],
         ];
     }
@@ -40,6 +45,7 @@ class StoreEnsembleRequest extends FormRequest
             'gradetypes.required' => 'At least one grade must be checked.',
             'startyear.numeric' => 'The year of inception must be numeric.',
             'startyear.min' => 'The year of inception must be later than 1700.',
+            'name.unique' => "This ensemble name has already been used.  Please contact Support (support@thedirectorsroom.com) if you need it reinstated."
             ];
     }
 }

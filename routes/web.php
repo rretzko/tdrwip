@@ -33,7 +33,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::get('/ensembles', [App\Http\Controllers\Ensembles\EnsembleController::class,'index'])->name('ensembles.index');
     Route::get('/ensemble/new', [App\Http\Controllers\Ensembles\EnsembleController::class,'create'])->name('ensemble.create');
     Route::get('/ensemble/{ensemble}', [App\Http\Controllers\Ensembles\EnsembleController::class,'edit'])->name('ensemble.edit');
+    Route::get('/ensemble/{ensemble}/delete', [App\Http\Controllers\Ensembles\EnsembleController::class,'destroy'])->name('ensemble.destroy');
     Route::post('/ensemble', [App\Http\Controllers\Ensembles\EnsembleController::class,'store'])->name('ensemble.store');
     Route::post('/ensemble/{ensemble}/update', [App\Http\Controllers\Ensembles\EnsembleController::class,'update'])->name('ensemble.update');
+
+    /** ENSEMBLE MEMBERS */
+    Route::get('/ensemble/{ensemble}/members', [App\Http\Controllers\Ensembles\MembersController::class, 'index'])->name('ensemble.members.index');
+    Route::get('/ensemble/{ensemble}/{schoolyear}/members/new', [App\Http\Controllers\Ensembles\MembersController::class, 'create'])->name('ensemble.members.create');
+    Route::get('/ensemble/{member}', [App\Http\Controllers\Ensembles\MembersController::class, 'edit'])->name('ensemble.members.edit');
+    Route::get('/ensemble/{member}/delete', [App\Http\Controllers\Ensembles\MembersController::class, 'destroy'])->name('ensemble.members.destroy');
+    Route::post('/ensemble/store', [App\Http\Controllers\Ensembles\MembersController::class,'store'])->name('ensemble.members.store');
 });
 

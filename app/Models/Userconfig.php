@@ -73,6 +73,12 @@ class Userconfig extends Model
         self::defaultSave($descr, $user_id, $school->id);
     }
 
+    private static function defaultSchoolyear_id($descr, $user_id)
+    {
+        //initializes the schoolyear_id corresponding to the current YYYY
+        self::defaultSave($descr, $user_id, date('Y'));
+    }
+
     private static function defaultStudentform_tab($descr, $user_id)
     {
         self::defaultSave($descr, $user_id, 'biography'); //display

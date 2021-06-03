@@ -13,24 +13,15 @@ use Illuminate\Http\Response;
 
 class EnsembleController extends Controller
 {
-    private $ensembles;
-    private $types;
-    private $gradetypes;
 
-    public function __construct()
-    {
-        $this->types = Ensembletype::all();
-    }
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index()
     {
         return view('/ensembles/index', [
             'ensembles' => $this->ensembles(),
-            'types' => $this->types,
+            'types' => Ensembletype::all(),
             'gradetypes' => $this->gradetypes(),
             ]
         );
@@ -45,7 +36,7 @@ class EnsembleController extends Controller
     {
         return view('/ensembles/create', [
                 'ensembles' => $this->ensembles(),
-                'types' => $this->types,
+                'types' => Ensembletype::all(),
                 'gradetypes' => $this->gradetypes(),
             ]
         );
@@ -67,6 +58,8 @@ class EnsembleController extends Controller
         $ensemble = auth()->user()->ensembles()->create($validated);
 
         $ensemble->gradetypes()->sync($validated['gradetypes']);
+
+        Userconfig::setValue('ensemble_id', auth()->id(), $ensemble->id);
 
         return redirect('ensembles');
 
@@ -93,11 +86,13 @@ class EnsembleController extends Controller
      */
     public function edit(Ensemble $ensemble)
     {
+        Userconfig::setValue('ensemble_id', auth()->id(), $ensemble->id);
+
         return view('/ensembles/edit', [
                 'gradetypeidsarray' => $ensemble->gradetypeIdsArray(),
                 'ensemble' => $ensemble,
                 'ensembles' => $this->ensembles(),
-                'types' => $this->types,
+                'types' => Ensembletype::all(),
                 'gradetypes' => $this->gradetypes(),
             ]
         );
