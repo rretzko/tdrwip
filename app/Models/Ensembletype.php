@@ -9,10 +9,9 @@ class Ensembletype extends Model
 {
     protected $fillable = ['descr'];
 
-    protected $rows = [
-        ['id' => 1, 'descr' => 'SSAATTBB',],
-        ['id' => 2, 'descr' => 'SATB',],
-        ['id' => 3, 'descr' => 'SSAA'],
-        ['id' => 4, 'descr' => 'TTBB'],
-    ];
+    public function instrumentations()
+    {
+        return $this->belongsToMany(Instrumentation::class)
+            ->orderByPivot('order_by');
+    }
 }

@@ -42,6 +42,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::get('/ensemble/{ensemble}/{schoolyear}/members/new', [App\Http\Controllers\Ensembles\MembersController::class, 'create'])->name('ensemble.members.create');
     Route::get('/ensemble/member/{ensemblemember}', [App\Http\Controllers\Ensembles\MembersController::class, 'edit'])->name('ensemble.members.edit');
     Route::get('/ensemble/ensemblemember/delete', [App\Http\Controllers\Ensembles\MembersController::class, 'destroy'])->name('ensemble.members.destroy');
-    Route::post('/ensemble/store', [App\Http\Controllers\Ensembles\MembersController::class,'store'])->name('ensemble.members.store');
+    Route::post('/ensemble/member/store', [App\Http\Controllers\Ensembles\MembersController::class,'store'])->name('ensemble.members.store');
+    Route::post('/ensemble/member/{ensemblemember}/update', [App\Http\Controllers\Ensembles\MembersController::class,'update'])->name('ensemble.members.update');
 });
 

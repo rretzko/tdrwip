@@ -48,6 +48,13 @@ class Ensemble extends Model
             ->withTimestamps();
     }
 
+    public function instrumentations()
+    {
+        return Ensembletype::find($this->ensembletype_id)->instrumentations;
+
+
+    }
+
     public function members()
     {
         $ensemble_id = Userconfig::getValue('ensemble_id', auth()->id());

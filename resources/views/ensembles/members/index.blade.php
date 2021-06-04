@@ -83,7 +83,7 @@ Support
                         {{ $ensemblemember->person->fullName }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 align-text-top text-center">
-                        Voice Part
+                        {{ $ensemblemember->instrumentation->formattedDescr() }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 align-text-top text-center">
                         <a

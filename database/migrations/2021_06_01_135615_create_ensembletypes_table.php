@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Ensembletypes extends Migration
+class CreateEnsembletypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class Ensembletypes extends Migration
      */
     public function up()
     {
-        Schema::create('ensembles', function (Blueprint $table) {
+        Schema::create('ensembletypes', function (Blueprint $table) {
             $table->id();
             $table->string('descr', 40);
             $table->timestamps();

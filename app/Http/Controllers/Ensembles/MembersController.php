@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Ensemble;
 use App\Models\Ensemblemember;
 use App\Models\Schoolyear;
+use App\Models\Student;
 use App\Models\User;
 use App\Models\Userconfig;
 use Illuminate\Database\Eloquent\Model;
@@ -49,7 +50,17 @@ class MembersController extends Controller
      */
     public function edit(Ensemblemember $ensemblemember)
     {
-        dd($ensemblemember);
+        $ensemble = Ensemble::find($ensemblemember->ensemble_id);
+
+        return view('ensembles.members.edit',
+            [
+                'ensemble' => $ensemble,
+                'ensemblemember' => $ensemblemember,
+                'schoolyears' => Schoolyear::orderBy('descr', 'desc')->get(),
+                'schoolyear' => Schoolyear::find($ensemblemember->schoolyear_id),
+                'nonmembers' => $ensemble->nonmembers(),
+
+            ]);
     }
 
     public function store(Request $request)
@@ -84,8 +95,18 @@ class MembersController extends Controller
 
     private function findInstrumentationId($nonmember_id, $ensemble_id)
     {
-        $ensemble = Ensemble::find($ensemble_id);
-        $defaultinstrumentation = $ensemble->instrumentations->first()->id;
+        $ensemble = Ensemble::find($ensemble_id)->with('ensembletype')->first();
+        $ensembleinstrumentations = $ensemble->ensembletype->instrumentations;
+        $user = User::with('instrumentations')->find($nonmember_id);
+
+        foreach($user->instrumentations AS $instrumentation){
+            if($ensembleinstrumentations->contains($instrumentation)){
+
+                return $instrumentation->id;
+            }
+        }
+
+        return $ensembleinstrumentations->first()->id;
     }
 
 }
