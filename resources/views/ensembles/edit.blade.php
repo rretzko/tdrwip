@@ -100,6 +100,8 @@
         >
             @csrf
 
+            <input type="hidden" name="id" value="{{ $ensemble->id }}" >
+
             <h3 class="mb-3">Edit {{ $ensemble->name }}</h3>
 
             <x-inputs.select label="ensemble type" for="ensembletype_id" :options="$types" currentvalue="{{$ensemble->ensembletype_id}}" />

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Ensemble;
 use App\Models\Userconfig;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -33,7 +34,8 @@ class StoreEnsembleRequest extends FormRequest
             'name' => ['string', 'required','max:40',
                 Rule::unique('ensembles')
                     ->where('user_id', auth()->id())
-                    ->where('school_id', Userconfig::getValue('school_id', auth()->id()))],
+                    ->where('school_id', Userconfig::getValue('school_id', auth()->id()))
+                    ->ignore($this->id)],
             'startyear' => ['nullable','numeric','min:1700',],
         ];
     }

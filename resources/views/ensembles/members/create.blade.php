@@ -85,7 +85,7 @@ Support
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 align-text-top text-center">
                                     <a
-                                        href="{{ route('ensemble.member.edit', ['member' => $object]) }}"
+                                        href="{{ route('ensemble.members.edit', ['ensemblemember' => $object]) }}"
                                         class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
                                     >
                                         Edit

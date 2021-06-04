@@ -13,11 +13,6 @@ class Ensemble extends Model
 
     protected $fillable = ['abbr', 'descr', 'ensembletype_id', 'name', 'school_id', 'startyear', 'user_id',];
 
-    public function countMembers() : int
-    {
-        return 0;
-    }
-
     public function delete()
     {
         DB::table('ensemble_gradetype')
@@ -55,7 +50,15 @@ class Ensemble extends Model
 
     public function members()
     {
-        return collect();
+        $ensemble_id = Userconfig::getValue('ensemble_id', auth()->id());
+        $schoolyear_id = Userconfig::getValue('schoolyear_id', auth()->id());
+
+        $members = Ensemblemember::with('person')
+            ->where('ensemble_id', $ensemble_id)
+            ->where('schoolyear_id', $schoolyear_id)
+            ->get();
+
+        return $members;
     }
 
     public function nonmembers()

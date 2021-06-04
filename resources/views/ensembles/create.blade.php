@@ -100,6 +100,8 @@
         >
             @csrf
 
+            <input type="hidden" name="id" value="0" >
+
             <h3 class="mb-3">Add a new ensemble</h3>
 
             <x-inputs.select label="ensemble type" for="ensembletype_id" :options="$types" />

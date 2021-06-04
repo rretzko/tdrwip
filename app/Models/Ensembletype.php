@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ensembletype extends Model
 {
-    use \Sushi\Sushi;
+    protected $fillable = ['descr'];
 
     protected $rows = [
         ['id' => 1, 'descr' => 'SSAATTBB',],

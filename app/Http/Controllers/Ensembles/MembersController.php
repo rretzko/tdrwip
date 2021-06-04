@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Ensemble;
 use App\Models\Ensemblemember;
 use App\Models\Schoolyear;
+use App\Models\User;
 use App\Models\Userconfig;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class MembersController extends Controller
 {
@@ -22,7 +24,6 @@ class MembersController extends Controller
                 'schoolyear_id' => Userconfig::getValue('schoolyear_id', auth()->id()),
                 'schoolyears' => Schoolyear::orderBy('descr', 'desc')->get(),
                 'schoolyear' => Schoolyear::find(Userconfig::getValue('schoolyear_id', auth()->id())),
-
             ]);
     }
 
@@ -40,6 +41,17 @@ class MembersController extends Controller
             ]);
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param Ensemblemember $ensemblemember
+     * @return Response
+     */
+    public function edit(Ensemblemember $ensemblemember)
+    {
+        dd($ensemblemember);
+    }
+
     public function store(Request $request)
     {
         $ensemble_id = Userconfig::getValue('ensemble_id', auth()->id());
@@ -52,6 +64,7 @@ class MembersController extends Controller
                     'ensemble_id' => $ensemble_id,
                     'schoolyear_id' => $schoolyear_id,
                     'user_id' => $nonmember_id,
+                    'instrumentation_id' => $this->findInstrumentationId($nonmember_id, $ensemble_id),
                 ],
                 [
                     'teacher_user_id' => auth()->id()
@@ -67,6 +80,12 @@ class MembersController extends Controller
                 'schoolyear' => Schoolyear::find($schoolyear_id),
             ]);
 
+    }
+
+    private function findInstrumentationId($nonmember_id, $ensemble_id)
+    {
+        $ensemble = Ensemble::find($ensemble_id);
+        $defaultinstrumentation = $ensemble->instrumentations->first()->id;
     }
 
 }

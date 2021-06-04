@@ -91,7 +91,7 @@ Support
                            class="text-blue-600"
                            title="Add/Edit {{ $object->name }} members"
                         >
-                            {{ $object->countMembers() }}
+                            {{ $object->members()->count() }}
                         </a>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 align-text-top text-center">
@@ -103,13 +103,13 @@ Support
                         </a>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 align-text-top text-center">
-                        <a
+                        <!-- {{-- <a
                             href="{{ route('ensemble.destroy', ['ensemble' => $object]) }}"
                             class="border border-red-500 rounded px-2 bg-red-400 text-white hover:bg-red-600"
                             onclick="return chickenTest({{$object}});"
-                        >
+                        > --}} -->
                             Delete
-                        </a>
+                        <!-- </a> -->
                     </td>
                 </tr>
             @endforeach

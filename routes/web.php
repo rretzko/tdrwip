@@ -40,8 +40,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     /** ENSEMBLE MEMBERS */
     Route::get('/ensemble/{ensemble}/members', [App\Http\Controllers\Ensembles\MembersController::class, 'index'])->name('ensemble.members.index');
     Route::get('/ensemble/{ensemble}/{schoolyear}/members/new', [App\Http\Controllers\Ensembles\MembersController::class, 'create'])->name('ensemble.members.create');
-    Route::get('/ensemble/{member}', [App\Http\Controllers\Ensembles\MembersController::class, 'edit'])->name('ensemble.members.edit');
-    Route::get('/ensemble/{member}/delete', [App\Http\Controllers\Ensembles\MembersController::class, 'destroy'])->name('ensemble.members.destroy');
+    Route::get('/ensemble/member/{ensemblemember}', [App\Http\Controllers\Ensembles\MembersController::class, 'edit'])->name('ensemble.members.edit');
+    Route::get('/ensemble/ensemblemember/delete', [App\Http\Controllers\Ensembles\MembersController::class, 'destroy'])->name('ensemble.members.destroy');
     Route::post('/ensemble/store', [App\Http\Controllers\Ensembles\MembersController::class,'store'])->name('ensemble.members.store');
 });
 

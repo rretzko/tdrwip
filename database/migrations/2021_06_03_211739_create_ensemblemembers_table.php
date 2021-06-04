@@ -14,13 +14,15 @@ class CreateEnsemblemembersTable extends Migration
     public function up()
     {
         Schema::create('ensemblemembers', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('ensemble_id')->constrained();
             $table->foreignId('schoolyear_id')->constrained();
             $table->foreignId('user_id');
             $table->foreignId('teacher_user_id')->constrained('users');
+            $table->foreignId('instrumentation_id')->contrained();
             $table->timestamps();
             $table->softDeletes();
-            $table->primary(['ensemble_id','schoolyear_id','user_id']);
+            $table->unique(['ensemble_id','schoolyear_id','user_id']);
         });
     }
 
@@ -31,6 +33,6 @@ class CreateEnsemblemembersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ensemble_members');
+        Schema::dropIfExists('ensemblemembers');
     }
 }

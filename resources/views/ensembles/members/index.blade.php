@@ -76,17 +76,18 @@ Support
             </tr>
         </thead>
         <tbody>
-            @forelse($ensemble->members() AS $object)
+            @forelse($ensemble->members() AS $ensemblemember)
+
                 <tr class="@if($loop->iteration % 2) bg-yellow-100 @else bg-white @endif">
                     <td class="px-6 py-4 whitespace-normal text-sm font-medium text-gray-900 align-text-top">
-                        {{ $object->person->fullName }}
+                        {{ $ensemblemember->person->fullName }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 align-text-top text-center">
                         Voice Part
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 align-text-top text-center">
                         <a
-                            href="{{ route('ensemble.member.edit', ['member' => $object]) }}"
+                            href="{{ route('ensemble.members.edit',['ensemblemember' => $ensemblemember]) }}"
                             class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
                         >
                             Edit
@@ -94,9 +95,9 @@ Support
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 align-text-top text-center">
                         <a
-                            href="{{ route('ensemble.members.destroy', ['member' => $object]) }}"
+                            href="{{ route('ensemble.members.destroy') }}"
                             class="border border-red-500 rounded px-2 bg-red-400 text-white hover:bg-red-600"
-                            onclick="return chickenTest({{$object}});"
+                            onclick="return chickenTest({{$ensemblemember}});"
                         >
                             Delete
                         </a>
