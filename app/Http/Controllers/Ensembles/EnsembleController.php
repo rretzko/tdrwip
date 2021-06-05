@@ -131,9 +131,12 @@ class EnsembleController extends Controller
         return redirect('ensembles');
     }
 
+    /** END OF PUBLIC FUNCTIONS  *********************************************/
+
     private function ensembles()
     {
-        return Ensemble::where('user_id', auth()->id())
+        return Ensemble::with('ensembletype', 'ensembletype.instrumentations')
+            ->where('user_id', auth()->id())
             ->where('school_id', Userconfig::getValue('school_id', auth()->id()))
             ->orderBy('name')->get();
     }

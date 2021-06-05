@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -51,31 +53,42 @@ class Ensemble extends Model
     public function instrumentations()
     {
         return Ensembletype::find($this->ensembletype_id)->instrumentations;
-
-
     }
 
-    public function members()
+    /**
+     * Return Ensemblemembers for $schoolyear OR
+     * all Ensemblemembers for all years if $schoolyear === null
+     *
+     * @param Schoolyear|null $schoolyear
+     * @return Builder[]|Collection
+     */
+    public function members(Schoolyear $schoolyear = null)
     {
-        $ensemble_id = Userconfig::getValue('ensemble_id', auth()->id());
-        $schoolyear_id = Userconfig::getValue('schoolyear_id', auth()->id());
+        $operator = ($schoolyear) ? '=' : '>';
+        $schoolyear_id = ($schoolyear) ? $schoolyear->id : 0;
 
-        $members = Ensemblemember::with('person')
-            ->where('ensemble_id', $ensemble_id)
-            ->where('schoolyear_id', $schoolyear_id)
+        return Ensemblemember::with('person','instrumentation')
+            ->where('ensemble_id', $this->id)
+            ->where('schoolyear_id', $operator, $schoolyear_id)
             ->get();
-
-        return $members;
     }
 
     public function nonmembers()
     {
-        return Student::with('person')
+        //return Teacher::find(auth()->id())->myStudents()
+        //    ->whereNotIn('ensembles', $this);
+
+        return Teacher::find(auth()->id())->myStudents()->filter(function($student){
+
+            return (! $student->person->ensembles->contains($this));
+        });
+        /*return Student::with('person')
             ->whereHas('teachers', function($query){
                 return $query->where('user_id', '=', auth()->id());
             })
             ->get()
             ->sortBy('person.last');
+        */
     }
 
     public function user()

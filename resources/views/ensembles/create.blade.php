@@ -106,6 +106,11 @@
 
             <x-inputs.select label="ensemble type" for="ensembletype_id" :options="$types" />
             <x-inputs.checkboxes-in-row label="grades" for="gradetypes" :options="$gradetypes" />
+            @if(! $gradetypes->count())
+                <div class="text-red-600">
+                    No grades found. Please click 'Cancel' and update your grades using the 'Schools' menu item!
+                </div>
+            @endif
             <x-inputs.text label="name" for="name"/>
             <x-inputs.text label="abbreviation" for="abbr"/>
             <x-inputs.text label="since" for="startyear" placeholder="year of inception"/>

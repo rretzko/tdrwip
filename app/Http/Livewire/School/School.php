@@ -24,8 +24,8 @@ class School extends Component
     public $tenure = NULL;
 
     public $name = '';
-    public $address01 = '';
-    public $address02 = '';
+    public $address0 = '';
+    public $address1 = '';
     public $city = '';
     public $geostate_id = 0;
     public $postalcode = '';
@@ -46,8 +46,8 @@ class School extends Component
 
     protected $rules = [
         'name' => ['required', 'min:5', 'max:60'],
-        'address01' => ['string', 'nullable', 'max:120'],
-        'address02' => ['string', 'nullable', 'max:120'],
+        'address0' => ['string', 'nullable', 'max:120'],
+        'address1' => ['string', 'nullable', 'max:120'],
         'city' => ['string', 'nullable', 'max:60'],
         'geostate_id' => ['required', 'integer'],
         'postalcode' => ['string', 'nullable', 'max:15'],
@@ -134,8 +134,8 @@ class School extends Component
         $this->setGrades();
 
         $this->name = $this->school->name;
-        $this->address01 = $this->school->address01;
-        $this->address02 = $this->school->address02;
+        $this->address0 = $this->school->address0;
+        $this->address1 = $this->school->address1;
         $this->city = $this->school->city;
         $this->geostate_id = $this->school->geostate_id;
         $this->postalcode = $this->school->postalcode;
@@ -165,8 +165,8 @@ class School extends Component
         $this->validate();
 
         $this->school->name = $this->name;
-        $this->school->address01 = $this->address01;
-        $this->school->address02 = $this->address02;
+        $this->school->address0 = $this->address0;
+        $this->school->address1 = $this->address1;
         $this->school->city = $this->city;
         $this->school->geostate_id = $this->geostate_id;
         $this->school->postalcode = $this->postalcode;
@@ -210,8 +210,8 @@ class School extends Component
 
         $this->school = \App\Models\School::create([
             'name' => $this->name,
-            'address01' => $this->address01,
-            'address02' => $this->address02,
+            'address0' => $this->address0,
+            'address1' => $this->address1,
             'city' => $this->city,
             'geostate_id' => $this->geostate_id,
             'postalcode' => $this->postalcode,
@@ -261,8 +261,8 @@ class School extends Component
         $this->schoolid = 0;
         $this->school = NULL;
         $this->name = '';
-        $this->address01 = '';
-        $this->address02 = '';
+        $this->address0 = '';
+        $this->address1 = '';
         $this->city = '';
         $this->geostate_id = array_key_first($this->geostates);
         $this->postalcode = '';

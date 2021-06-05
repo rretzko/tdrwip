@@ -6,6 +6,7 @@ use App\Traits\SenioryearTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class Teacher extends Model
@@ -37,6 +38,19 @@ class Teacher extends Model
         return School::find(Userconfig::getValue('school_id', auth()->id()));
     }
 
+    /**
+     * @return Students of $this
+     */
+    public function myStudents()
+    {
+        return Student::with('person', 'person.user.instrumentations','person.ensembles')
+            ->whereHas('teachers', function($query){
+                return $query->where('user_id', '=', auth()->id());
+            })
+            ->get()
+            ->sortBy('person.last');
+    }
+
     public function tenures()
     {
         return $this->hasMany(Tenure::class, 'user_id', 'user_id');
@@ -49,6 +63,12 @@ class Teacher extends Model
             : $this->GradetypeRemove($school, $gradetype_id);
     }
 
+    /**
+     * Return collection of students of $this based on $search criteria
+     *
+     * @param string $search
+     * @return Collection
+     */
     public function students($search='')
     {
         $a = [];

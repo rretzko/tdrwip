@@ -82,8 +82,8 @@
                         </p>
                     </div>
                     <x-inputs.text wire:model.defer="name" label="School name" for="name" name="name" id="name" />
-                    <x-inputs.text wire:model.defer="address01" label="address" for="address01" name="address01" id="address01" />
-                    <x-inputs.text wire:model.defer="address02" label="" for="address02" name="address02" id="address02" />
+                    <x-inputs.text wire:model.defer="address0" label="address" for="address0" name="address0" id="address0" />
+                    <x-inputs.text wire:model.defer="address1" label="" for="address1" name="address1" id="address1" />
                     <x-inputs.text wire:model.defer="city" label="city" for="city" name="city" id="city" />
                     <x-inputs.select wire:select.defer="geostate_id" :options="$options" label="state" for="geostate_id" name="geostate_id" id="geostate_id" />
                     <x-inputs.text wire:model.defer="postalcode" label="postalcode" for="postalcode" name="postalcode" id="postalcode" />

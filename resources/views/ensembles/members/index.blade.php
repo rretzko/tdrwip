@@ -76,7 +76,7 @@ Support
             </tr>
         </thead>
         <tbody>
-            @forelse($ensemble->members() AS $ensemblemember)
+            @forelse($ensemble->members($schoolyear) AS $ensemblemember)
 
                 <tr class="@if($loop->iteration % 2) bg-yellow-100 @else bg-white @endif">
                     <td class="px-6 py-4 whitespace-normal text-sm font-medium text-gray-900 align-text-top">

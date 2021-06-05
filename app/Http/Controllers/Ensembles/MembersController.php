@@ -85,7 +85,7 @@ class MembersController extends Controller
 
         return view('ensembles.members.index',
             [
-                'ensemble' => Ensemble::find($ensemble_id),
+                'ensemble' => Ensemble::with('ensembletype')->find($ensemble_id),
                 'schoolyear_id' => $schoolyear_id,
                 'schoolyears' => Schoolyear::orderBy('descr', 'desc')->get(),
                 'schoolyear' => Schoolyear::find($schoolyear_id),
