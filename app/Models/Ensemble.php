@@ -15,6 +15,13 @@ class Ensemble extends Model
 
     protected $fillable = ['abbr', 'descr', 'ensembletype_id', 'name', 'school_id', 'startyear', 'user_id',];
 
+    public function assets()
+    {
+        return $this->belongsToMany(Asset::class)
+            ->withTimestamps()
+            ->orderBy('descr');
+    }
+
     public function delete()
     {
         DB::table('ensemble_gradetype')

@@ -5,22 +5,16 @@
             <x-table-with-modal-form >
 
                 <x-slot name="title" >
-                    {{ __('Ensemble Information') }}
+                    {{ __($ensemble->name.' Assets') }}
                 </x-slot>
 
                 <x-slot name="description" >
 
-{!! __('Add or edit your ensemble information here.<br />
-<ul class="ml-5 list-disc text-white text-sm" >
-<li>Click the number under the "Members" column to add/edit ensemble membership.</li>
-<li>Ensemble names are unique to you and your school.</li>
-<li>Please <span class="uppercase font-bold">do not delete</span> ensembles which have members assigned.</li>
-<li>If necessary, deleted Ensembles can be reinstated by contacting
-<a style="color: yellow" href="mailto:support@thedirectorsroom.com?subject=Ensemble reinstatement&body=Hi, I may need an ensemble name reinstated...">
-Support
-</a>.
-</li>
-</ul>') !!}
+                    {!! __('Add or edit your ensemble asset here.<br/>
+                    Ensemble assets are anything which you assign to an ensemble member.<br/>
+                    Click any checkbox to add an asset to <b>'.$ensemble->name.'</b> for
+                    <b>'.$schoolyear->descr.'</b>.<br/>
+                    Click the "Add" button to add a new asset.') !!}
 
 </x-slot>
 
@@ -32,7 +26,7 @@ Support
         class="bg-green-200 px-1 shadow-lg border border-green-600 rounded-md text-center cursor-pointer"
         style="max-width: 4rem;"
     >
-        <a href="{{ route('ensemble.create') }}"
+        <a href="{{ route('ensemble.assets.create', [$ensemble, $schoolyear]) }}"
             class="text-green-800">Add</a>
     </div>
 
@@ -80,7 +74,7 @@ Support
             </tr>
         </thead>
         <tbody>
-            @foreach($ensembles AS $object)
+  <!-- {{--          @foreach($ensembles AS $object)
                 <tr class="@if($loop->iteration % 2) bg-yellow-100 @else bg-white @endif">
                     <td class="px-6 py-4 whitespace-normal text-sm font-medium text-gray-900 align-text-top">
                         {{ $object->name }} ({{$object->abbr}})
@@ -120,12 +114,13 @@ Support
                             href="{{ route('ensemble.destroy', ['ensemble' => $object]) }}"
                             class="border border-red-500 rounded px-2 bg-red-400 text-white hover:bg-red-600"
                             onclick="return chickenTest({{$object}});"
-                        > --}} -->
+
                             Delete
                         <!-- </a> -->
                     </td>
                 </tr>
             @endforeach
+        --}} -->
         </tbody>
     </table>
     <script>

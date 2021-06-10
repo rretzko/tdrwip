@@ -7,6 +7,7 @@ use App\Http\Requests\StoreEnsembleRequest;
 use App\Models\Ensemble;
 use App\Models\Ensembletype;
 use App\Models\Gradetype;
+use App\Models\Schoolyear;
 use App\Models\Userconfig;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -21,6 +22,7 @@ class EnsembleController extends Controller
     {
         return view('/ensembles/index', [
             'ensembles' => $this->ensembles(),
+            'schoolyear' => Schoolyear::find(Userconfig::getValue('schoolyear_id', auth()->id())),
             'types' => Ensembletype::all(),
             'gradetypes' => $this->gradetypes(),
             ]
@@ -61,7 +63,7 @@ class EnsembleController extends Controller
 
         Userconfig::setValue('ensemble_id', auth()->id(), $ensemble->id);
 
-        return redirect('ensembles');
+        return redirect()->route('ensembles');
 
     }
 
