@@ -23,13 +23,15 @@ class AssetController extends Controller
     {
         $schoolyear = Schoolyear::find(Userconfig::getValue('schoolyear_id', auth()->id()));
 
+        Userconfig::setValue('ensemble_id', auth()->id(), $ensemble->id);
+
         return view('ensembles.assets.index',
             [
+                'assets' => Asset::orderBy('descr')->get(),
                 'ensemble' => $ensemble,
                 'schoolyear' => $schoolyear,
                 'schoolyears' => Schoolyear::orderBy('descr', 'desc')->get(),
                 'schoolyear_id' => $schoolyear->id,
-                'assets' => Asset::orderBy('descr')->get(),
             ]);
     }
 
@@ -60,6 +62,7 @@ class AssetController extends Controller
     public function store(StoreAssetRequest $request)
     {
         $asset = Asset::create([
+            'created_by' => auth()->id(),
             'descr' => $request['descr'],
         ]);
 

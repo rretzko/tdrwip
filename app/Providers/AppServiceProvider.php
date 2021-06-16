@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Livewire\Component;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,5 +34,15 @@ class AppServiceProvider extends ServiceProvider
          * edit includes adding: use Illuminate\Support\Facades\Schema;
          */
         Schema::defaultStringLength(191);
+
+        /**
+         * From caleb porzio
+         * macro to make search function easier
+         */
+        Builder::macro('search', function($field, $string){
+
+            return $string ? $this->where($field, 'like', '%'.$string.'%') : $this;
+        });
+
     }
 }

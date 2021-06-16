@@ -25,6 +25,7 @@
                     <div id="assetHeader">
                         <h3 class="font-bold">{{ $ensemble->name }} Asset Types</h3>
                     </div>
+                    <!-- {{--  INITIAL DETERMINATION IS THAT ASSETS ARE NOT DEPENDANT ON SCHOOLYEARS
                     <div id="schoolYear" class="flex">
                         <label for="schoolyear_id" class="h-8 pt-2">School Year: </label>
                         <select name="schoolyear_id" id="schoolyear_id" class="h-8 ml-2 text-sm">
@@ -33,6 +34,7 @@
                             @endforeach
                         </select>
                     </div>
+                    --}} -->
 
                 {{-- ADD button --}}
                 <div class="flex justify-end mb-2 pr-6">
@@ -43,12 +45,11 @@
                         <a href="{{ route('ensemble.assets.create', ['ensemble' => $ensemble, 'schoolyear' => $schoolyear]) }}"
                             class="text-green-800">Add</a>
                     </div>
-
                 </div>
 
                 <div class="overflow-x-auto">
 
-                    @livewire('ensembles.assets-table')
+                    @livewire('ensembles.assets-table' )
 
                 </div>
             </x-slot>

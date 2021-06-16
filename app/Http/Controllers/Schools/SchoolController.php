@@ -10,14 +10,14 @@ use Illuminate\View\View;
 class SchoolController extends Controller
 {
     /**
-     * Show the user profile screen.
+     * Display all Schools for auth()->user()
      *
      * @param Request $request
      * @return View
      */
-    public function show(Request $request)
+    public function index(Request $request)
     {
-        return view('schools.show', [
+        return view('schools.index', [
             'request' => $request,
             'user' => $request->user(),
         ]);

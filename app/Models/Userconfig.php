@@ -54,6 +54,11 @@ class Userconfig extends Model
         self::defaultSave($descr, $user_id, 1); //display
     }
 
+    private static function defaultPagination($descr, $user_id)
+    {
+        self::defaultSave($descr, $user_id, 4);
+    }
+
     private static function defaultSave($descr, $user_id, $value)
     {
         DB::table('userconfigs')

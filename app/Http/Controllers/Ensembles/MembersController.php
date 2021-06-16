@@ -22,8 +22,10 @@ class MembersController extends Controller
         return view('ensembles.members.index',
             [
                 'ensemble' => $ensemble,
-                'schoolyear_id' => Userconfig::getValue('schoolyear_id', auth()->id()),
-                'schoolyears' => Schoolyear::orderBy('descr', 'desc')->get(),
+                'countmembers' => Ensemblemember::with('person')
+                    ->where('ensemble_id', $ensemble->id)
+                    ->where('schoolyear_id', Userconfig::getValue('schoolyear_id', auth()->id()))
+                    ->count(),
                 'schoolyear' => Schoolyear::find(Userconfig::getValue('schoolyear_id', auth()->id())),
             ]);
     }

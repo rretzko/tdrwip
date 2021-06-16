@@ -3,7 +3,7 @@
     <div>
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
 
-           @livewire('school.school') <!-- calls app\http\livewire\school\School::render() -->
+           @livewire('school.schoolcomponent') <!-- calls app\http\livewire\school\School::render() -->
 
            <x-jet-section-border />
 

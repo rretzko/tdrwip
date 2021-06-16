@@ -18,53 +18,118 @@
         <x-slot name="table">
             {{-- Studio + Schools table --}}
             {{-- ADD button --}}
-            <div class="flex justify-end pr-6">
+            <div class="flex justify-end pr-6 space-x-2">
+                <x-inputs.dropdown label="Bulk Actions">
+                    @if(count($selected))
+                        <x-inputs.dropdownitem type="button" wire:click="exportSelected" class="flex items-center space-x-1">
+                            <x-icons.download class="text-gray-400" />
+                            <span>Export</span>
+                        </x-inputs.dropdownitem>
+
+                        <x-inputs.dropdownitem type="button" wire:click="$toggle('showDeleteModal')" class="flex items-center space-x-1">
+                            <x-icons.trash class="text-gray-400" />
+                            <span>Delete</span>
+                        </x-inputs.dropdownitem>
+                    @else
+                        <x-inputs.dropdownitem class="flex items-center space-x-1 cursor-text">
+                            <x-icons.download class="text-gray-400" />
+                            <span class="text-gray-400 ">Export (none selected)</span>
+                        </x-inputs.dropdownitem>
+
+                        <x-inputs.dropdownitem class="flex items-center space-x-1 cursor-text">
+                            <x-icons.trash class="text-gray-400" />
+                            <span class="text-gray-400">Delete (none selected)</span>
+                        </x-inputs.dropdownitem>
+                    @endif
+
+                </x-inputs.dropdown>
                 <x-buttons.button-add toggle="showAddModal" />
             </div>
+
 
             {{-- beginning of tailwindui table --}}
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 ">
                 <div class="py-2 align-middle inline-block min-w sm:px-6 lg:px-8">
-                    <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                        <table class="min-w-full divide-y divide-gray-200 divide-y">
-                            <thead class="bg-gray-50">
-                                <tr >
-                                    @foreach($table_headers AS $header)
-                                        <th scope="col" style="width: 25%;" class="@if(($header === 'Location') || ($header === 'Years')) hidden lg:table-cell @endif px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            {{ $header }}
-                                        </th>
-                                    @endforeach
-                                </tr>
-                            </thead>
-                            <tbody>
+                    <div class="space-y-4 overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                        <div class="w-1/3">
+                            <x-inputs.text wire:model="search" for="search" label="" placeholder="Search School name..."/>
+                        </div>
 
-                                @foreach($this->table_schools AS $school)
-                                    <tr class="@if($loop->iteration % 2) bg-yellow-100 @else bg-white @endif">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 align-text-top">
+                        <x-tables.surgetable class="w-full ">
+                                <x-slot name="head" >
+
+                                    <x-tables.heading >
+                                        <x-inputs.checkbox class="pr-0 w-4" for="selectpage" label=""/>
+                                    </x-tables.heading>
+                                    <x-tables.heading wire:click="sortField('name')" sortable direction="asc" :direction="$sortfield === 'name' ? $sortdirection : null" >Name</x-tables.heading>
+                                    <x-tables.heading wire:click="sortField('location')" sortable direction="asc" :direction="$sortfield === 'location' ? $sortdirection : null" >Location</x-tables.heading>
+                                    <x-tables.heading wire:click="sortField('tenure')" sortable direction="asc" :direction="$sortfield === 'tenure' ? $sortdirection : null" >Tenure</x-tables.heading>
+                                    <th><span class="sr-only">Edit</span></th>
+
+                                </x-slot>
+
+                            <x-slot name="body" >
+
+                                @if($selectpage)
+                                    <x-tables.row class="bg-gray-200" wire:key="row-message">
+                                        <x-tables.cell colspan="5">
+                                            @unless($selectall)
+                                                <div>You have selected <strong>{{ count($selected) }}</strong> schools, do
+                                                    you want to select all <strong>{{ $schools->total() }}</strong>?
+                                                    <x-buttons.button-link wire:click="selectAll"
+                                                                           class="ml-1 text-blue-600">Select All
+                                                    </x-buttons.button-link>
+                                                </div>
+                                            @else
+                                                <span>You have selected all <strong>{{ $schools->total() }}</strong>
+                                                    schools.</span>
+                                            @endunless
+                                        </x-tables.cell>
+                                    </x-tables.row>
+                                @endif
+
+                                @forelse($schools AS $school)
+                                    <x-tables.row wire:loading.class.delay="opacity-50" altcolor="{{$loop->iteration % 2}}" wire:key="row-{{ $school->id }}">
+                                        <x-tables.cell>
+                                            <x-inputs.checkbox value="{{ $school->id }}" class="" for="selected" label="" />
+                                        </x-tables.cell>
+                                        <x-tables.cell>
                                             {{ $school->name }}
-                                        </td>
-                                        <td class="hidden lg:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-500 align-text-top">
-                                            {!!  $school->mailingAddress !!}
-                                        </td>
-                                        <td class="hidden lg:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center align-text-top">
-                                            {{ auth()->user()->person->teacher->tenureYearsAtSchool($school->id) }} {{-- $school->years --}}
-                                        </td>
-                                        <td class="px-6 py-4 space-x-1 whitespace-nowrap text-center text-sm font-medium flex flex-row justify-around align-text-top">
+                                        </x-tables.cell>
+                                        <x-tables.cell>
+                                            {!! $school->mailingAddress !!}
+                                        </x-tables.cell>
+                                        <x-tables.cell>
+                                            {{ auth()->user()->person->teacher->tenureYearsAtSchool($school->id) }}
+                                        </x-tables.cell>
+                                        <x-tables.cell>
                                             <a href="#"
                                                wire:click.defer="edit({{ $school->id }})"
-                                               class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600">Edit
+                                               class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600">
+                                                Edit
                                             </a>
-                                            <x-buttons.button-delete id="{{ $school->id }}" />
-
+                                        </x-tables.cell>
+                                    </x-tables.row>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="text-gray-500 text-center">
+                                            No School found @if(strlen($this->search)) with search value: {{ $this->search }}@endif.
                                         </td>
                                     </tr>
-                                @endforeach
+                                @endforelse
+                            </x-slot>
 
-                            </tbody>
-                        </table>
+                        </x-tables.surgetable>
+                        {{$schools->count() ? $schools->links() : ''}}
                     </div>
                 </div>
             </div>
+            <script>
+                function chickenTest($school)
+                {
+                    return confirm('Do you really want to remove @if($school){{ $school->name }}  @endif from your list of schools?');
+                }
+            </script>
 
             <!-- Edit Modal -->
             <x-modals.dialog wire:model="showEditModal" >
@@ -216,6 +281,30 @@
                     <x-buttons.button wire:click="add" >Add New School</x-buttons.button>
                 </x-slot>
             </x-modals.dialog>
+
+            <!-- Delete Modal -->
+            <form wire:model.prevent="deleteSelected" >
+                <x-modals.confirmation wire:model="showDeleteModal">
+
+                    <x-slot name="title">Delete a School</x-slot>
+
+                    <x-slot name="content">
+
+                        @if(count($selected))
+                            Are you sure you want to delete @if(count($selected) > 1) these schools @else this school @endif ?
+                        @else
+                            No schools were selected to be deleted.
+                        @endif
+
+                    </x-slot>
+
+                    <x-slot name="footer">
+                        <x-buttons.secondary wire:click="$toggle('showDeleteModal', false)">Cancel</x-buttons.secondary>
+                        <x-buttons.button type="submit" wire:click="deleteSelected">Delete School</x-buttons.button>
+                    </x-slot>
+
+                </x-modals.confirmation>
+            </form>
 
         </x-slot>
 

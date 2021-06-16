@@ -11,7 +11,7 @@ class Asset extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['descr'];
+    protected $fillable = ['created_by','descr'];
 
     public function ensembles()
     {

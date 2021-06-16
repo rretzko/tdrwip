@@ -41,7 +41,10 @@ class DatabaseSeeder extends Seeder
          $this->call(AddressSeeder::class);
          $this->call(GuardianSeeder::class);
          $this->call(SchoolyearSeeder::class);
+         $this->call(EnsembleSeeder::class);
          $this->call(EnsembletypeSeeder::class);
          $this->call(EnsembletypeInstrumentationSeeder::class);
+         $this->call(AssetSeeder::class);
+         $this->call(EnsembleassetSeeder::class);
     }
 }

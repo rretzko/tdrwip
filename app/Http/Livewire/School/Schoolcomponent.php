@@ -2,24 +2,32 @@
 
 namespace App\Http\Livewire\School;
 
+use App\Exports\SchoolsExport;
+use App\Helpers\CollectionHelper;
 use App\Models\Geostate;
 use App\Models\Gradetype;
-use App\Models\Studio;
+use App\Models\School;
 use App\Models\Tenure;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use App\Models\Userconfig;
 use Livewire\Component;
+use Maatwebsite\Excel\Facades\Excel;
 
-class School extends Component
+class Schoolcomponent extends Component
 {
     public $message = 'Successful update!';
 
     public $school = NULL;
     public $schoolid = 0;
+    public $search = '';
     public $searchresults = [];
+    public $selectall = false;
+    public $selectpage = false;
+    public $selected = [];
     public $showAddModal = false;
+    public $showDeleteModal = false;
     public $showEditModal = false;
-    public $table_headers = ['Name', 'Location', 'Years', 'Actions'];
+    public $sortdirection = 'asc';
+    public $sortfield = 'location';
     public $table_schools = NULL;
     public $tenure = NULL;
 
@@ -44,6 +52,8 @@ class School extends Component
     public $options = [];
     public $startyears = [];
 
+    protected $queryString = ['sortfield', 'sortdirection'];
+
     protected $rules = [
         'name' => ['required', 'min:5', 'max:60'],
         'address0' => ['string', 'nullable', 'max:120'],
@@ -55,27 +65,9 @@ class School extends Component
         'endyear' => ['integer', 'nullable'], //before:startyear if not null
         'schoolid' => ['nullable'],
         'searchresults' => ['nullable'],
+        'selectpage' => ['nullable'],
         'grades_found' => ['nullable'],
     ];
-
-    public function mount()
-    {
-        $this->searchresults = [];
-        $this->table_schools = auth()->user()->schools;
-        $this->geostates = $this->buildSimpleArrayFromCollection(Geostate::all(), 'id', 'abbr');
-        $this->gradetypes = $this->buildSimpleArrayFromCollection(Gradetype::orderBy('orderby')->get(), 'id', 'descr');
-        $this->options = $this->geostates;
-        $this->startyears = $this->years();
-        $this->endyears = $this->years(true);
-        $this->setGrades();
-        //initialize select values
-        $this->geostate_id = array_key_first($this->geostates);
-    }
-
-    public function render()
-    {
-        return view('livewire.school.update-school-information-form');
-    }
 
     public function add()
     {
@@ -113,21 +105,38 @@ class School extends Component
         $this->showAddModal = false;
     }
 
-    public function delete($id)
+    public function deleteSelected()
     {
-        DB::table('gradetype_school_user')
-            ->where('school_id', '=', $id)
-            ->where('user_id', '=', auth()->id())
-            ->delete();
-
-        \App\Models\School::find($id)->users()->detach(auth()->id());
-
+        auth()->user()->schools()->detach($this->selected);
         $this->table_schools = auth()->user()->schools;
+        $this->showDeleteModal = false;
+        $this->selected = [];
+    }
+
+    public function exportSelected()
+    {
+        $schools = new SchoolsExport(School::whereKey($this->selected)->get());
+
+        return Excel::download($schools, 'schools.csv');
+    }
+
+    public function mount()
+    {
+        $this->searchresults = [];
+        $this->table_schools = auth()->user()->schools;
+        $this->geostates = $this->buildSimpleArrayFromCollection(Geostate::all(), 'id', 'abbr');
+        $this->gradetypes = $this->buildSimpleArrayFromCollection(Gradetype::orderBy('orderby')->get(), 'id', 'descr');
+        $this->options = $this->geostates;
+        $this->startyears = $this->years();
+        $this->endyears = $this->years(true);
+        $this->setGrades();
+        //initialize select values
+        $this->geostate_id = array_key_first($this->geostates);
     }
 
     public function edit($id)
     {
-        $this->school = \App\Models\School::find($id);
+        $this->school = School::find($id);
 
         $this->tenure = Tenure::where('user_id', auth()->id())->where('school_id', $this->school->id)->first();
 
@@ -145,10 +154,15 @@ class School extends Component
         $this->showEditModal = true;
     }
 
+    public function getSchoolsxProperty()
+    {
+        return $this->schools();
+    }
+
     public function loadSchool($school_id)
     {
         $this->schoolid = $school_id;
-        $this->school = \App\Models\School::find($school_id);
+        $this->school = School::find($school_id);
 
         $this->name = $this->school->name;
         $this->mailingaddress = $this->school->mailingAddress;
@@ -158,6 +172,18 @@ class School extends Component
         $this->setGrades();
 
         $this->searchresults = [];
+    }
+
+    public function render()
+    {
+        if($this->selectall){
+            $this->selected = $this->schools()->pluck('id')->map(fn($id) => (string) $id);
+        }
+
+        return view('livewire.school.update-school-information-form',
+            [
+                'schools' => $this->schools(),
+            ]);
     }
 
     public function save()
@@ -183,6 +209,22 @@ class School extends Component
 
     }
 
+    public function selectAll()
+    {
+        $this->selectall = true;
+        $this->selectpage = true;
+        $this->updatedSelectpage(true);
+    }
+
+    public function sortField($field)
+    {
+        $this->sortdirection = ($this->sortfield === $field)
+            ? (($this->sortdirection === 'asc') ? 'descr' : 'asc')
+            : 'asc';
+
+        $this->sortfield = $field;
+    }
+
     public function updateGrades($key)
     {
         $this->grades[$key] = (! $this->grades[$key]);
@@ -197,6 +239,31 @@ class School extends Component
             : [];
     }
 
+    public function updatedSelectAll($value)
+    {
+        $this->selectall = true;
+    }
+
+    public function updatedSelected()
+    {
+        $this->selectall = false;
+        $this->selectpage = false;
+    }
+
+    public function updatedSelectpage($value)
+    {
+        $this->selected = ($value)
+            //values must be cast as strings
+            ? $this->schools()->pluck('id')->map(fn($id) => (string) $id)
+            : [];
+    }
+
+    public function updatedShowDeleteModal()
+    {
+
+    }
+
+
 /** END OF PUBLIC FUNCTIONS  *************************************************/
 
 
@@ -208,7 +275,7 @@ class School extends Component
     {
         $this->validate();
 
-        $this->school = \App\Models\School::create([
+        $this->school = School::create([
             'name' => $this->name,
             'address0' => $this->address0,
             'address1' => $this->address1,
@@ -222,7 +289,7 @@ class School extends Component
     {
         $a = [];
 
-        $collection = \App\Models\School::where('name', 'LIKE', '%'.$this->name.'%')->orderBy('name')->limit(5)->get();
+        $collection = School::where('name', 'LIKE', '%'.$this->name.'%')->orderBy('name')->limit(5)->get();
 
         //early exit
         if(! $collection->count()){ return $a;}
@@ -245,9 +312,9 @@ class School extends Component
         return $a;
     }
 
-    private function findSchoolName() : \App\Models\School
+    private function findSchoolName() : School
     {
-        return new \App\Models\School;
+        return new School;
     }
 
     private function refreshGradesFound()
@@ -285,6 +352,32 @@ class School extends Component
         //refresh array
         $this->setGrades();
     }
+
+    /**
+     * Return schools for auth()->id()
+     */
+    private function schools()
+    {
+        $schools = $this->searchSchools();
+
+        return ($schools)
+            ? CollectionHelper::paginate($schools, Userconfig::getValue('pagination', auth()->id()))
+            : collect();
+    }
+
+    private function searchSchools()
+    {
+        $schools = auth()->user()->schools->filter(function($school){
+            return (str_contains(strtolower($school->name), strtolower($this->search)));
+        });
+
+        return ($schools->count()
+            ? ($this->sortdirection === 'asc')
+                ? $schools->sortby($this->sortfield)
+                : $schools->sortByDesc($this->sortfield)
+            : null);
+    }
+
 
     /**
      * Initialize $this->grades based on $this->gradetypes

@@ -1,5 +1,6 @@
 <div>
-    <table class="table-auto overflow-scroll">
+
+    <table class="overflow-scroll w-11/12">
         <thead class="bg-gray-50">
         <tr>
             <th scope="col"
@@ -13,7 +14,7 @@
                 Asset
             </th>
             <th scope="col"
-                 class="sr-only px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider min-w-12rem"
+                 class="sr-only px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
                 Message
             </th>
@@ -24,19 +25,22 @@
         @forelse($assets AS $asset)
 
             <tr class="@if($loop->iteration % 2) bg-yellow-100 @else bg-white @endif">
-                <td class="px-6 py-4 whitespace-normal text-sm font-medium text-gray-900 align-text-top">
+                <td class="px-6 py-4 whitespace-normal text-sm font-medium text-gray-900 align-text-top w-1/12">
 
                     <input wire:model="assettypes"
                            type="checkbox"
                            name="assets[{{ $asset->id }}]"
                            value="{{ $asset->id }}"
-                           {{ $ensembleassets->contains($asset) ? 'CHECKED' : '' }}
                     />
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 align-text-top text-left">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 align-text-top text-left w-3/12">
                     {{ ucwords($asset->descr) }}
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 align-text-top text-left">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-400 align-text-top text-left">
+                    @if($assetsupdated)
+                        @if($ensembleassets->contains($asset) && (! $initialassets->contains($asset))) <span class="text-green-400">added</span> @endif
+                        @if((! $ensembleassets->contains($asset)) && $initialassets->contains($asset)) <span class="text-red-300">removed</span> @endif
+                    @endif
                 </td>
             </tr>
         @empty
@@ -46,5 +50,4 @@
         </tbody>
     </table>
 
-    <div>{{ $mssg }}</div>
 </div>

@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class EnsembleassetSeeder extends Seeder
+class AssetSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,46 +14,40 @@ class EnsembleassetSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('asset_ensemble')->insert([
+        DB::table('assets')->insert([
             [
-                'ensemble_id' => 1,
-                'asset_id' => 1,
+                'descr' => 'folder',
+                'created_by' => 45,
                 'created_at' => '2021-06-12 13:25:21',
                 'updated_at' => '2021-06-12 13:25:21',
             ],
             [
-                'ensemble_id' => 1,
-                'asset_id' => 1,
+                'descr' => 'gown',
+                'created_by' => 45,
                 'created_at' => '2021-06-12 13:25:21',
                 'updated_at' => '2021-06-12 13:25:21',
             ],
             [
-                'ensemble_id' => 2,
-                'asset_id' => 1,
+                'descr' => 'tuxedo jacket',
+                'created_by' => 45,
                 'created_at' => '2021-06-12 13:25:21',
                 'updated_at' => '2021-06-12 13:25:21',
             ],
             [
-                'ensemble_id' => 2,
-                'asset_id' => 2,
+                'descr' => 'tuxedo pants',
+                'created_by' => 45,
                 'created_at' => '2021-06-12 13:25:21',
                 'updated_at' => '2021-06-12 13:25:21',
             ],
             [
-                'ensemble_id' => 2,
-                'asset_id' => 3,
+                'descr' => 'cummerbund',
+                'created_by' => 45,
                 'created_at' => '2021-06-12 13:25:21',
                 'updated_at' => '2021-06-12 13:25:21',
             ],
             [
-                'ensemble_id' => 2,
-                'asset_id' => 4,
-                'created_at' => '2021-06-12 13:25:21',
-                'updated_at' => '2021-06-12 13:25:21',
-            ],
-            [
-                'ensemble_id' => 2,
-                'asset_id' => 5,
+                'sash' => 'cummerbund',
+                'created_by' => 45,
                 'created_at' => '2021-06-12 13:25:21',
                 'updated_at' => '2021-06-12 13:25:21',
             ],

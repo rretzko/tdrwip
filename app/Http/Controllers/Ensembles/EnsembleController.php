@@ -63,7 +63,7 @@ class EnsembleController extends Controller
 
         Userconfig::setValue('ensemble_id', auth()->id(), $ensemble->id);
 
-        return redirect()->route('ensembles');
+        return redirect()->route('ensembles.index');
 
     }
 

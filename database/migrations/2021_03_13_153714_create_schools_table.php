@@ -22,6 +22,7 @@ class CreateSchoolsTable extends Migration
             $table->foreignId('geostate_id')->constrained();
             $table->string('postalcode')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -27,7 +27,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     /** AUTHENTICATED USER */
     //Route::get('/students', [App\Http\Controllers\Students\StudentController::class, 'show'])->name('students');
     Route::get('/students', [App\Http\Controllers\Students\StudentTabbedController::class, 'show'])->name('students');
-    Route::get('/schools', [App\Http\Controllers\Schools\SchoolController::class, 'show'])->name('schools');
+
+    /** SCHOOLS */
+    Route::get('/schools', [App\Http\Controllers\Schools\SchoolController::class, 'index'])->name('schools');
+    Route::get('/schools/remove/{school}', [App\Http\Controllers\Schools\SchoolController::class, 'destroy'])->name('schools.destroy');
 
     /** ENSEMBLES */
     Route::get('/ensembles', [App\Http\Controllers\Ensembles\EnsembleController::class,'index'])->name('ensembles.index');
