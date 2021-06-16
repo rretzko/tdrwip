@@ -17,32 +17,10 @@
 
         <x-slot name="table">
             {{-- Studio + Schools table --}}
-            {{-- ADD button --}}
+            {{-- Per Page, Bulk actions and ADD button --}}
             <div class="flex justify-end pr-6 space-x-2">
-                <x-inputs.dropdown label="Bulk Actions">
-                    @if(count($selected))
-                        <x-inputs.dropdownitem type="button" wire:click="exportSelected" class="flex items-center space-x-1">
-                            <x-icons.download class="text-gray-400" />
-                            <span>Export</span>
-                        </x-inputs.dropdownitem>
-
-                        <x-inputs.dropdownitem type="button" wire:click="$toggle('showDeleteModal')" class="flex items-center space-x-1">
-                            <x-icons.trash class="text-gray-400" />
-                            <span>Delete</span>
-                        </x-inputs.dropdownitem>
-                    @else
-                        <x-inputs.dropdownitem class="flex items-center space-x-1 cursor-text">
-                            <x-icons.download class="text-gray-400" />
-                            <span class="text-gray-400 ">Export (none selected)</span>
-                        </x-inputs.dropdownitem>
-
-                        <x-inputs.dropdownitem class="flex items-center space-x-1 cursor-text">
-                            <x-icons.trash class="text-gray-400" />
-                            <span class="text-gray-400">Delete (none selected)</span>
-                        </x-inputs.dropdownitem>
-                    @endif
-
-                </x-inputs.dropdown>
+                <x-inputs.dropdowns.perpage />
+                <x-inputs.dropdowns.bulkactions :selected="$selected" />
                 <x-buttons.button-add toggle="showAddModal" />
             </div>
 

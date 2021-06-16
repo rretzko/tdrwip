@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class Schoolcomponent extends Component
 {
     public $message = 'Successful update!';
-
+    public $perpage =5;
     public $school = NULL;
     public $schoolid = 0;
     public $search = '';
@@ -127,6 +127,7 @@ class Schoolcomponent extends Component
         $this->geostates = $this->buildSimpleArrayFromCollection(Geostate::all(), 'id', 'abbr');
         $this->gradetypes = $this->buildSimpleArrayFromCollection(Gradetype::orderBy('orderby')->get(), 'id', 'descr');
         $this->options = $this->geostates;
+        $this->perpage = Userconfig::getValue('pagination', auth()->id());
         $this->startyears = $this->years();
         $this->endyears = $this->years(true);
         $this->setGrades();
@@ -237,6 +238,11 @@ class Schoolcomponent extends Component
         $this->searchresults = (strlen($this->name))
             ? $this->buildSearchLinks()
             : [];
+    }
+
+    public function updatedPerpage()
+    {
+        Userconfig::setValue('pagination', auth()->id(), $this->perpage);
     }
 
     public function updatedSelectAll($value)
