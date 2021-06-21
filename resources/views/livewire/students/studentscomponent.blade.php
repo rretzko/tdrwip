@@ -1,0 +1,204 @@
+<div>
+    <x-livewire-table-with-modal-forms >
+
+        <x-slot name="title">
+            {{ __('Student Information') }}{{ $population }}
+        </x-slot>
+
+        <x-slot name="description">
+
+            {{ __('Add or edit your student information here.') }}
+
+            <br />
+            {{ __('Click the Current-Alum-All links to filter the table rows.') }}
+
+            <br />
+            {{ __('Click a column header to sort the table rows.') }}
+
+            <br />
+            {{ __('Click the edit button to display an individual student\'s detailed information.') }}
+
+            <br />
+            {{ __('"Voice Part" displays the first voice part found for the student.
+                    All voice parts and instruments can be found by clicking the "Edit" button.') }}
+
+        </x-slot>
+
+        <x-slot name="table">
+            {{-- Student table --}}
+            {{-- Per Page, Bulk actions and ADD button --}}
+            <div class="flex justify-end pr-6 space-x-2">
+                <x-inputs.dropdowns.perpage />
+                <x-inputs.dropdowns.bulkactions :selected="$selected" />
+                <x-buttons.button-add toggle="showAddModal" />
+            </div>
+
+            {{-- beginning of tailwindui table --}}
+            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 ">
+                <div class="py-2 align-middle inline-block min-w sm:px-6 lg:px-8">
+                    <div class="space-y-4 overflow-hidden border-b border-gray-200 sm:rounded-lg">
+
+                        <div class="flex space-x-4">
+                            <div class="flex">
+                                <x-inputs.text wire:model="search"
+                                       for="search"
+                                       label=""
+                                       placeholder="Search last name..."/>
+                            </div>
+                            <div class="flex text-sm text-gray-600">
+                                <x-buttons.button-link wire:click="$toggle('showfilters')">
+                                    @if($showfilters) Hide @endif Advanced Search
+                                </x-buttons.button-link>
+                            </div>
+                        </div>
+
+                        <div>
+                            @if($showfilters)
+                                <div class="bg-gray-300 p-4 rounded shadow-inner flex relative">
+
+                                    <div class="2-1/2 pr-2 space-y-4">
+                                        <x-inputs.group inline for="filter-first" label="First Name">
+
+                                            <x-inputs.text id="filter-first" for="first" label="" placeholder="Seach by first name..."/>
+                                        </x-inputs.group>
+
+                                        <x-inputs.group inline for="filter-instrumentations" label="Voice Parts">
+                                            <x-inputs.select id="filter-instrumentations" for="instrumentation_id" label="" :options="$sortedinstrumentations">
+
+                                            </x-inputs.select>
+                                        </x-inputs.group>
+
+                                        <x-inputs.group inline for="filter-classofs" label="Classes">
+                                            <x-inputs.select id="filter-classofs" for="classofs" label="" :options="$sortedclassofs">
+
+                                            </x-inputs.select>
+                                        </x-inputs.group>
+                                    </div>
+
+                                </div>
+                            @endif
+                        </div>
+
+                        {{-- CURRENT/ALUM/ALL FILTER DISPLAY OPTIONS --}}
+                        <x-navs.currentalumall :population="$population" />
+
+                        <x-tables.surgetable class="w-full ">
+                            <x-slot name="head" >
+
+                                <x-tables.heading >
+                                    <x-inputs.checkbox class="pr-0 w-4" for="selectpage" label=""/>
+                                </x-tables.heading>
+                                <x-tables.heading wire:click.prevent="sortField('name')"
+                                      sortable
+                                      direction="asc"
+                                      :direction="$sortfield === 'name' ? $sortdirection : null"
+                                >
+                                    Name
+                                </x-tables.heading>
+
+                                <x-tables.heading wire:click.prevent="sortField('classof')"
+                                      sortable
+                                      direction="asc"
+                                      :direction="$sortfield === 'classof' ? $sortdirection : null"
+                                >
+                                    Grade
+                                </x-tables.heading>
+
+                                <x-tables.heading wire:click.prevent="sortField('instrumentation')"
+                                      sortable
+                                      direction="asc"
+                                      :direction="$sortfield === 'instrumentation' ? $sortdirection : null"
+                                >
+                                    Voice Part
+                                </x-tables.heading>
+
+                                <th><span class="sr-only">Edit</span></th>
+
+                            </x-slot>
+
+                            <x-slot name="body" >
+
+                                @if($selectpage)
+                                    <x-tables.row class="bg-gray-200" wire:key="row-message">
+                                        <x-tables.cell colspan="5">
+                                            @unless($selectall)
+                                                <div>You have selected <strong>{{ count($selected) }}</strong> students, do
+                                                    you want to select all <strong>{{ $students->total() }}</strong>?
+                                                    <x-buttons.button-link wire:click="selectAll"
+                                                                           class="ml-1 text-blue-600">Select All
+                                                    </x-buttons.button-link>
+                                                </div>
+                                            @else
+                                                <span>You have selected all <strong>{{ $students->total() }}</strong>
+                                                    students.</span>
+                                            @endunless
+                                        </x-tables.cell>
+                                    </x-tables.row>
+                                @endif
+
+                                @forelse($students AS $student)
+                                    <x-tables.row wire:loading.class.delay="opacity-50" altcolor="{{$loop->iteration % 2}}" wire:key="row-{{ $student->user_id }}">
+
+                                        <x-tables.cell>
+                                            <x-inputs.checkbox value="{{ $student->user_id }}" class="" for="selected" label="" />
+                                        </x-tables.cell>
+                                        <x-tables.cell>
+                                            {{ $student->person->fullNameAlpha }}
+                                        </x-tables.cell>
+                                        <x-tables.cell>
+                                            {{ $student->grade }} ({{ $student->classof }})
+                                        </x-tables.cell>
+
+                                        <x-tables.cell>
+                                            {{ $student->person->user->instrumentations->first()->formattedDescr() }}
+                                        </x-tables.cell>
+
+                                        <x-tables.cell>
+                                            <a href="#"
+                                               wire:click.defer="edit({{ $student->user_id }})"
+                                               class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600">
+                                                Edit
+                                            </a>
+                                        </x-tables.cell>
+
+                                    </x-tables.row>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="text-gray-500 text-center">
+                                            No Student found @if(strlen($this->search)) with search value: {{ $this->search }}@endif.
+                                        </td>
+                                    </tr>
+                                @endforelse
+
+                                <div class="mb-2">
+                                    {{$students->count() ? $students->links() : ''}}
+                                </div>
+                            </x-slot>
+
+                        </x-tables.surgetable>
+                        <div class="mb-2">
+                            @if($students->count() > 5)
+                                {{$students->count() ? $students->links() : ''}}
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- MODALS --}}
+            <div>
+                @if($showDeleteModal)
+                     <x-modals.delete :selected="$selected" objectname="student"/>
+                @endif
+            </div>
+
+        </x-slot>
+
+        <x-slot name="actions" >
+
+
+        </x-slot>
+
+    </x-livewire-table-with-modal-forms>
+</div>
+

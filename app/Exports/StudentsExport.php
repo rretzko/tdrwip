@@ -16,7 +16,7 @@ class StudentsExport implements FromCollection, WithHeadings, WithMapping
         $this->students = $students;
     }
 
-    public function headings(): array
+   public function headings(): array
     {
         return [
             'Username',
@@ -29,6 +29,7 @@ class StudentsExport implements FromCollection, WithHeadings, WithMapping
             'Email-Personal',
             'Phone-Cell',
             'Phone-Home',
+            'Instrumentation',
             'Guardian.1.first',
             'Guardian.1.middle',
             'Guardian.1.last',
@@ -72,6 +73,7 @@ class StudentsExport implements FromCollection, WithHeadings, WithMapping
                 $s->emailPersonal->id ? $s->emailPersonal->email : '',
                 $s->phoneMobile->id ? $s->phoneMobile->phone : '',
                 $s->phoneHome->id ? $s->phoneHome->phone : '',
+                $s->person->user->instrumentations->first()->formattedDescr(),
             ];
 
         foreach($s->guardians AS $guardian){

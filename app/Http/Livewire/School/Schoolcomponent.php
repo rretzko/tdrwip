@@ -217,13 +217,13 @@ class Schoolcomponent extends Component
         $this->updatedSelectpage(true);
     }
 
-    public function sortField($field)
+    public function sortField($value)
     {
-        $this->sortdirection = ($this->sortfield === $field)
-            ? (($this->sortdirection === 'asc') ? 'descr' : 'asc')
+        $this->sortdirection = ($this->sortfield === $value)
+            ? (($this->sortdirection === 'asc') ? 'desc' : 'asc')
             : 'asc';
 
-        $this->sortfield = $field;
+        $this->sortfield = $value;
     }
 
     public function updateGrades($key)

@@ -20,6 +20,7 @@ class CreateStudentsTable extends Migration
             $table->date('birthday')->nullable();
             $table->foreignId('shirtsize_id')->default(1)->constrained();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

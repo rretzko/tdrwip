@@ -9,6 +9,11 @@ use Illuminate\View\View;
 
 class StudentController extends Controller
 {
+    public function index()
+    {
+        return view('students.index');
+    }
+
     /**
      * Show the user profile screen.
      *

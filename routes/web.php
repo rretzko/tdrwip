@@ -26,7 +26,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
 
     /** AUTHENTICATED USER */
     //Route::get('/students', [App\Http\Controllers\Students\StudentController::class, 'show'])->name('students');
-    Route::get('/students', [App\Http\Controllers\Students\StudentTabbedController::class, 'show'])->name('students');
+    Route::get('/students', [App\Http\Controllers\Students\StudentController::class, 'index'])->name('students.index');
+    Route::get('/xstudents', [App\Http\Controllers\Students\StudentTabbedController::class, 'show'])->name('xstudents');
 
     /** SCHOOLS */
     Route::get('/schools', [App\Http\Controllers\Schools\SchoolController::class, 'index'])->name('schools');

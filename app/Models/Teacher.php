@@ -41,14 +41,25 @@ class Teacher extends Model
     /**
      * @return Students of $this
      */
-    public function myStudents()
+    public function myStudents($search = '')
     {
         return Student::with('person', 'person.user.instrumentations','person.ensembles')
             ->whereHas('teachers', function($query){
                 return $query->where('user_id', '=', auth()->id());
             })
+            ->whereHas('person', function($query) use ($search){
+                return $query->where('last', 'LIKE', '%'.$search.'%');
+            })
             ->get()
             ->sortBy('person.last');
+    }
+
+    public function removeStudents(array $ids)
+    {
+        DB::table('student_teacher')
+            ->where('teacher_user_id', '=', $this->user_id)
+            ->whereIn('student_user_id', $ids)
+            ->delete();
     }
 
     public function tenures()
