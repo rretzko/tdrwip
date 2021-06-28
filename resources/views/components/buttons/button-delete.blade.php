@@ -2,7 +2,7 @@
 'id'
 ])
 <div
-    class="bg-gray-500 px-0.5 shadow-lg border border-black rounded-md text-center cursor-pointer h-6 pl-1"
+    class="bg-gray-500 px-0.5 shadow-lg border border-black rounded-md text-center cursor-pointer h-5 pl-1"
     style="max-width: 2rem;"
     title="Delete this?"
     wire:click="delete({{ $id }})"
