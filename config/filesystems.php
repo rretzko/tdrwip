@@ -52,6 +52,14 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
         ],
 
+        'profile-photos' => [
+            'driver' => 'local',
+            //'root' => storage_path('app/public/profile-photos'),
+            'root' => storage_path('app/public/profile-photos'),
+            'url' => env('APP_URL').'/storage/profile-photos',
+            'visibility' => 'public',
+        ],
+
     ],
 
     /*
@@ -67,7 +75,8 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
-        public_path('profile-photos') => storage_path('app/profile-photos'),
+        public_path('profile-photos') => storage_path('app/public/profile-photos'),
+        public_path('storage/profile-photos') => storage_path('app/public/profile-photos'),
     ],
 
 ];

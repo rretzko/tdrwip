@@ -16,6 +16,15 @@ class Teacher extends Model
     protected $fillable = ['user_id'];
     protected $primaryKey = 'user_id';
 
+    public function getGradetypeIds(School $school)
+    {
+        return DB::table('gradetype_school_user')
+                ->select('gradetype_id')
+                ->where('school_id', '=', $school->id)
+                ->where('user_id', '=', auth()->id())
+                ->get() ?: 0;
+    }
+
     public function hasGradetype(School $school, $gradetype_id) : bool
     {
         return DB::table('gradetype_school_user')
@@ -41,17 +50,35 @@ class Teacher extends Model
     /**
      * @return Students of $this
      */
-    public function myStudents($search = '')
+    public function myStudents($search = '', $first='', $instrumentation_id=0, $classof=0)
     {
-        return Student::with('person', 'person.user.instrumentations','person.ensembles')
+        $query = Student::with('person', 'person.user.instrumentations','person.ensembles')
             ->whereHas('teachers', function($query){
                 return $query->where('user_id', '=', auth()->id());
             })
             ->whereHas('person', function($query) use ($search){
                 return $query->where('last', 'LIKE', '%'.$search.'%');
             })
-            ->get()
-            ->sortBy('person.last');
+            ->whereHas('person', function($query) use ($first){
+                return $query->where('first', 'LIKE', '%'.$first.'%');
+
+            });
+
+        if($instrumentation_id){
+
+            $query->whereHas('person.user.instrumentations', function ($query) use ($instrumentation_id) {
+
+                    return $query->where('instrumentation_id', '=', $instrumentation_id);
+                });
+        }
+
+        if($classof){
+
+            $query->where('classof', '=', $classof);
+        }
+
+        return $query->get()
+        ->sortBy(['person.last','person.first']);
     }
 
     public function removeStudents(array $ids)

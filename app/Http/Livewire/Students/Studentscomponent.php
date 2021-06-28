@@ -18,6 +18,13 @@ class Studentscomponent extends Component
 {
     use SenioryearTrait,WithPagination;
 
+    public $filters = [
+        'first' => null,
+        'instrumentation_id' => '',
+        'classof' => '',
+        ];
+    public $editstudent = null;
+    public $filterstring = '';
     public $instrumentations = [];
     public $perpage = 0;
     public $population = 'all';
@@ -27,8 +34,10 @@ class Studentscomponent extends Component
     public $selectpage = false;
     public $showDeleteModal = false;
     public $showfilters = false;
+    public $showstudentmodal = false;
     public $sortdirection = 'asc';
     public $sortfield = '';
+    public $tab = '';
 
     //non-paginated population of students
     private $populationstudents = null;
@@ -37,6 +46,19 @@ class Studentscomponent extends Component
         'grade' => ['requried'],
         'name' => ['required'],
     ];
+
+    public function deleteSelected()
+    {
+        auth()->user()->person->teacher->removeStudents($this->selected);
+        $this->showDeleteModal = false;
+        $this->selected = [];
+    }
+
+    public function edit($user_id)
+    {
+        $this->editstudent = Student::find($user_id);
+        $this->showstudentmodal = true;
+    }
 
     public function exportSelected()
     {
@@ -65,10 +87,13 @@ class Studentscomponent extends Component
     public function mount()
     {
         $this->perpage = Userconfig::getValue('pagination', auth()->id());
+        $this->population = Userconfig::getValue('studentpopulation', auth()->id());
+        $this->tab = Userconfig::getValue('studenttab', auth()->id());
     }
 
     public function population($value)
     {
+        Userconfig::setValue('studentpopulation', auth()->id(), $value);
         $this->population = $value;
         $this->selectall = false;
         $this->selectpage = false;
@@ -85,6 +110,12 @@ class Studentscomponent extends Component
             ]);
     }
 
+    public function resetFilters()
+    {
+        $this->reset('filters');
+        $this->reset('filterstring');
+    }
+
     public function selectAll()
     {
         $this->selectall = true;
@@ -99,6 +130,20 @@ class Studentscomponent extends Component
             : 'asc';
 
         $this->sortfield = $value;
+    }
+
+    public function updatedFilters()
+    {
+        $filters = [];
+        if(strlen($this->filters['first'])){$filters[] = $this->filters['first'];}
+
+        if($this->filters['instrumentation_id']){
+            $filters[] = Instrumentation::find($this->filters['instrumentation_id'])->formattedDescr();
+        }
+
+        if($this->filters['classof']){$filters[] = $this->filters['classof'];}
+
+        $this->filterstring = implode(',',$filters);
     }
 
     public function updatedPerpage()
@@ -121,7 +166,17 @@ class Studentscomponent extends Component
             : [];
     }
 
+    public function updatedTab()
+    {
+        Userconfig::setValue('studenttab', auth()->id(), $this->tab);
+    }
+
     /** END OF PUBLIC FUNCTIONS  *************************************************/
+
+    private function applyFilters($students)
+    {
+        return $this->filterPopulation($students);
+    }
 
     private function classofsArray()
     {
@@ -133,16 +188,41 @@ class Studentscomponent extends Component
 
         }
 
-        sort($a);
+        asort($a);
 
         return $a;
     }
 
-    public function deleteSelected()
+    private function filterClassof($students)
     {
-        auth()->user()->person->teacher->removeStudents($this->selected);
-        $this->showDeleteModal = false;
-        $this->selected = [];
+        //early exit
+        if(! $this->filters['classof']){ return $students;}
+
+        return $students->filter(function($student){
+            return ($student->classof == $this->filters['classof']);
+        });
+    }
+
+    private function filterFirst($students)
+    {
+        //early exit
+        if(! strlen($this->filters['first'])){ return $students;}
+
+        return $students->filter(function($student){
+            return (strtolower($student->person->first) === strtolower($this->filters['first']));
+        });
+    }
+
+    private function filterInstrumentation($students)
+    {
+        //early exit
+        if(! $this->filters['instrumentation_id']){ return $students;}
+
+        return $students->filter(function($student){
+           foreach($student->person->user->instrumentations AS $instrumentation){
+               return ($instrumentation->id == $this->filters['instrumentation_id']);
+           }
+        });
     }
 
     private function filterPopulation(Collection $students)
@@ -172,7 +252,7 @@ class Studentscomponent extends Component
             }
         }
 
-        sort($a);
+        asort($a);
 
         return $a;
     }
@@ -180,17 +260,33 @@ class Studentscomponent extends Component
     private function students()
     {
         //pull this teacher's students
-        $students = Teacher::find(auth()->id())->myStudents($this->search);
+        $students = Teacher::find(auth()->id())->myStudents(
+            $this->search,
+            $this->filters['first'],
+            $this->filters['instrumentation_id'],
+            $this->filters['classof']
+        );
 
         //filter and sort student population
-        $filtered  = $this->filterPopulation($students);
+        $filtered  = $this->applyFilters($students);
         //pre-pagination collection of students filtered by population
         $this->populationstudents = $this->sorted($filtered);
 
+        if(strlen($this->filters['first']) || $this->filters['instrumentation_id'] || $this->filters['classof']){
+            $this->resetPage();
+        }
+
+
         //paginate identified students
         return CollectionHelper::paginate($this->populationstudents, Userconfig::getValue('pagination', auth()->id()));
+
     }
 
+    /**
+     * Sort population by column headers
+     * @param Collection $students
+     * @return Collection
+     */
     private function sorted(Collection $students)
     {
         //early exit: return $students in fullNameAlpha order
