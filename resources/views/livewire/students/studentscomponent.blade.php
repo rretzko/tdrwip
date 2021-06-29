@@ -186,7 +186,7 @@
                                         </x-tables.cell>
 
                                         <x-tables.cell>
-                                            {{ $student->person->user->instrumentations->first()->formattedDescr() }}
+                                            {{ $student->person->user->instrumentations->count() ? $student->person->user->instrumentations->first()->formattedDescr() : 'None found'}}
                                         </x-tables.cell>
 
                                         <x-tables.cell>
