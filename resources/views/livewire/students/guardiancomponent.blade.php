@@ -1,3 +1,82 @@
 <div>
     Guardian(s) for {{ $student->person->fullName }}
+
+    @if($guardians->count())
+        <table class="w-full">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th class="sr-only">Edit</th>
+                    <th class="sr-only">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($guardians AS $guardian)
+                    <tr>
+                        <td>{{ $guardian->person->fullName }}</td>
+                        <td>Guardian type</td>
+                        <td>
+                            <x-buttons.button-link
+                                wire:click.defer="edit({{ $guardian->user_id }})"
+                                class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
+                            >
+                                Edit
+                            </x-buttons.button-link>
+                        </td>
+                        <td>
+                            <x-buttons.button-link
+                                wire:click.defer="delete({{ $guardian->user_id }})"
+                                class="border border-red-500 rounded px-2 bg-red-400 text-white hover:bg-red-600"
+                            >
+                                Delete
+                            </x-buttons.button-link>
+                        </td>
+                    </tr>
+                @endforeach
+
+            </tbody>
+        </table>
+    @endif
+
+    {{-- MODAL FORM --}}
+    @if($editguardian)
+
+        <form wire:submit.prevent="save">
+
+            <x-inputs.group label="Name" for="first" class="flex">
+                <x-inputs.text label="" for="editguardianfirst" placeholder="First name..."/>
+                <x-inputs.text label="" for="editguardianmiddle" placeholder=""/>
+                <x-inputs.text label="" for="editguardianlast" placeholder="Last name..."/>
+            </x-inputs.group>
+
+            <x-inputs.group label="Preferred Pronoun" for="pronoun_id">
+                <x-inputs.select label="" :options="$pronouns" for="editguardianpronounid"
+                                 currentvalue="{{ $editguardian->person->pronoun_id }}"/>
+            </x-inputs.group>
+
+            <x-inputs.group label="Type" for="guardiantype_id">
+                <x-inputs.select label="" :options="$guardiantypes" for="editguardiantypeid"
+                                 currentvalue="{{ $editguardiantypeid }}"/>
+            </x-inputs.group>
+
+            <x-inputs.group label="Emails" for="primary_id">
+                <x-inputs.email label="Primary email" for="editguardianemailprimary" placeholder=""/>
+                <x-inputs.email label="Alternate email" for="editguardianemailalternate" placeholder=""/>
+            </x-inputs.group>
+
+            <x-inputs.group label="Phones" for="primary_id">
+                <x-inputs.text label="Cell phone" for="editguardianphonemobile" placeholder=""/>
+                <x-inputs.text label="Home phone" for="editguardianphonehome" placeholder=""/>
+                <x-inputs.text label="Work phone" for="editguardianphonework" placeholder=""/>
+            </x-inputs.group>
+
+            <footer class="mt-4 bg-gray-200 flex justify-end space-x-2 p-2">
+                <x-saves.save-message-without-button message="Guardian/Parent updated" trigger="guardian-saved"/>
+                <x-buttons.button wire:click="save" type="submit">
+                    Update {{ ucwords($student->person->fullname) }}</x-buttons.button>
+            </footer>
+        </form>
+    @endif
+
 </div>

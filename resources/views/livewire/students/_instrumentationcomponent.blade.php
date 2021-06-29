@@ -1,39 +1,32 @@
 <div>
     Instrumentation for {{ $student->person->fullName }}
 
-    <x-inputs.group class="w-full" label="Instrumentations" for="instrumentation_id">
-
+    <x-inputs.group label="Instrumentations" for="instrumentation_id">
+        <div class="flex flex-col space-y-2">
             @if($studentinstrumentations->count())
-                <table class="w-full">
-                    <tbody>
+                <div class="grid-cols-12">
                     @foreach($studentinstrumentations AS $key => $studentinstrumentation)
-                        <tr>
-                            <td>
-                                {{ ucwords($studentinstrumentation->instrumentationbranch->descr) }}
-                            </td>
+                        <div class="flex flex-row space-x-2 ">
+                            <div>
+                                {!! ucwords($studentinstrumentation->instrumentationbranch->descr).':<b>'.$studentinstrumentation->formattedDescr().'</b>' !!}
+                            </div>
 
-                            <th>
-                                {{ $studentinstrumentation->formattedDescr() }}
-                            </th>
-
-                            <td>
+                            <div >
                                 <x-buttons.button-delete id="{{ $studentinstrumentation->id }}"/>
-                            </td>
+                            </div>
 
                             @if(! $key) {{-- Display 'Add' button on the first line only --}}
-                                <td>
+                                <div >
                                     <x-buttons.button-add-icon toggle="addinstrumentation" rotate="{{$addinstrumentation}}"/>
-                                </td>
+                                </div>
                             @endif
-                        </tr>
+                        </div>
                     @endforeach
-                    </tbody>
-                </table>
-
+                </div>
             @endif
 
             @if((! $studentinstrumentations->count()) || $addinstrumentation)
-                    <form wire:submit.prevent="save" class="mt-2">
+                    <form wire:submit.prevent="save">
                         <div class="flex flex-row space-x-2">
                             <div>
                                 <select wire:model="branch_id">
