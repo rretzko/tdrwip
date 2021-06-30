@@ -1,5 +1,5 @@
 <div>
-    Guardian(s) for {{ $student->person->fullName }}
+    @if($guardians->count() > 1) Guardians @else Guardian @endif for {{ $student->person->fullName }}
 
     @if($guardians->count())
         <table class="w-full">
@@ -8,14 +8,15 @@
                     <th>Name</th>
                     <th>Type</th>
                     <th class="sr-only">Edit</th>
-                    <th class="sr-only">Delete</th>
+                    <th><x-buttons.button-add toggle="addguardian" /></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($guardians AS $guardian)
+                @foreach($guardians AS $key => $guardian)
+
                     <tr>
                         <td>{{ $guardian->person->fullName }}</td>
-                        <td>Guardian type</td>
+                        <td>{{ $guardian->guardiantype($student->user_id)->descr }}</td>
                         <td>
                             <x-buttons.button-link
                                 wire:click.defer="edit({{ $guardian->user_id }})"
@@ -24,13 +25,27 @@
                                 Edit
                             </x-buttons.button-link>
                         </td>
+                        {{-- BUTTON TOGGLES TO Sure??? FROM Delete ON CLICK TO CONFIRM DELETION --}}
                         <td>
-                            <x-buttons.button-link
-                                wire:click.defer="delete({{ $guardian->user_id }})"
-                                class="border border-red-500 rounded px-2 bg-red-400 text-white hover:bg-red-600"
-                            >
-                                Delete
-                            </x-buttons.button-link>
+                            @if($confirmingdelete===$guardian->user_id)
+                                <x-buttons.button-link
+                                    wire:click="delete({{ $guardian->user_id }})"
+                                    class="border border-red-500 rounded px-2 bg-red-400 text-white hover:bg-red-600"
+                                    key="{{ $guardian->user_id }}"
+                                >
+                                    Sure??
+                                </x-buttons.button-link>
+
+                            @else
+                                <x-buttons.button-link
+                                    wire:click="delete({{ $guardian->user_id }})"
+                                    class="border border-red-500 rounded px-2 bg-red-400 text-white hover:bg-red-600"
+                                    key="{{ $guardian->user_id }}"
+                                >
+                                    Delete
+                                </x-buttons.button-link>
+                            @endif
+
                         </td>
                     </tr>
                 @endforeach
@@ -48,11 +63,12 @@
                 <x-inputs.text label="" for="editguardianfirst" placeholder="First name..."/>
                 <x-inputs.text label="" for="editguardianmiddle" placeholder=""/>
                 <x-inputs.text label="" for="editguardianlast" placeholder="Last name..."/>
+                {!! $similarnames !!}
             </x-inputs.group>
 
             <x-inputs.group label="Preferred Pronoun" for="pronoun_id">
                 <x-inputs.select label="" :options="$pronouns" for="editguardianpronounid"
-                                 currentvalue="{{ $editguardian->person->pronoun_id }}"/>
+                                 currentvalue="{{ $editguardian->user_id ? $editguardian->person->pronoun_id : $editguardianpronounid}}"/>
             </x-inputs.group>
 
             <x-inputs.group label="Type" for="guardiantype_id">
@@ -73,6 +89,7 @@
 
             <footer class="mt-4 bg-gray-200 flex justify-end space-x-2 p-2">
                 <x-saves.save-message-without-button message="Guardian/Parent updated" trigger="guardian-saved"/>
+                <x-saves.save-message-without-button message="Guardian/Parent update failed" trigger="guardian-failed" removed="true" />
                 <x-buttons.button wire:click="save" type="submit">
                     Update {{ ucwords($student->person->fullname) }}</x-buttons.button>
             </footer>

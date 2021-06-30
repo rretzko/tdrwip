@@ -6,13 +6,24 @@ use App\Models\Emailtype;
 use App\Models\Guardian;
 use App\Models\Guardiantype;
 use App\Models\Nonsubscriberemail;
+use App\Models\Person;
 use App\Models\Phone;
 use App\Models\Phonetype;
 use App\Models\Pronoun;
+use App\Models\User;
+use App\Traits\StoreCommunicationObject;
+use App\Traits\UsernameTrait;
+use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
 class Guardiancomponent extends Component
 {
+    use StoreCommunicationObject, UsernameTrait;
+
+    public $addguardian = false;
+    public $confirmingdelete = false;
     public $editguardian = null;
     public $editguardianemailalternate = '';
     public $editguardianemailprimary = '';
@@ -23,15 +34,18 @@ class Guardiancomponent extends Component
     public $editguardianphonemobile = '';
     public $editguardianphonework = '';
     public $editguardianpronounid = 1;
+    public $editguardiantype = null;
     public $editguardiantypeid = 1;
     public $guardians = null;
+    public $searchname = '';
+    public $similarnames = '';
     public $student = null;
 
     protected $rules = [
         'editguardianfirst' => ['required', 'string'],
         'editguardianlast' => ['required', 'string'],
         'editguardianmiddle' => ['nullable', 'string'],
-        'editguardianpronound_id' => ['required', 'integer'],
+        'editguardianpronounid' => ['required', 'integer'],
         'editguardiantypeid' => ['required', 'integer'],
     ];
 
@@ -39,7 +53,7 @@ class Guardiancomponent extends Component
         'editguardianfirst' => 'first name',
         'editguardianlast' => 'last name',
         'editguardianmiddle' => 'middle name',
-        'editguardianpronound_id' => 'preferred pronoun',
+        'editguardianpronounid' => 'preferred pronoun',
         'editguardiantypeid' => 'parent/guardian type',
     ];
 
@@ -60,7 +74,16 @@ class Guardiancomponent extends Component
 
     public function delete($user_id)
     {
-        dd($user_id);
+        if($this->confirmingdelete) {
+            $this->student->guardians()->detach($user_id);
+            $this->student->refresh();
+            $this->editguardian = null;
+            $this->guardians = $this->student->guardians;
+            $this->confirmingdelete = false;
+        }else{
+
+            $this->confirmingdelete = $user_id;
+        }
     }
 
     public function edit($user_id)
@@ -78,12 +101,90 @@ class Guardiancomponent extends Component
         $this->editguardianphonemobile = $this->editguardian->phoneMobile->id ? $this->editguardian->phoneMobile->phone : '';
         $this->editguardianphonework = $this->editguardian->phoneWork->id ? $this->editguardian->phoneWork->phone : '';
         $this->editguardianpronounid = $this->editguardian->person->pronoun_id;
-        $this->editguardiantypeid = $this->editguardian->guardiantype()->id;
+        $this->editguardiantypeid = $this->editguardian->guardiantype($this->student->user_id)->id;
+        $this->editguardiantype = Guardiantype::find($this->editguardiantypeid);
 
     }
 
     public function save()
     {
+        $this->validate();
+
+        //update existing guardian
+        if($this->editguardian && $this->editguardian->user_id) { //update existing Guardian object
+
+            $this->update();
+
+        }else{ //or create a new guardian
+
+            $this->store();
+        }
+
+        //what to do if failure to create a new guardian
+        if(! $this->editguardian) { //may be false if $this->store() fails
+
+            $this->editguardian = null;
+
+            $this->emit('guardian-failed');
+
+        }else{ //continue updating or inserting guardian components
+
+            //emails and phones
+            $this->updateOrCreateCommunicationObjects();
+
+            //refresh objects
+            $this->editguardian->refresh();
+            $this->student->refresh();
+            $this->guardians = $this->student->guardians;
+
+            //refresh individual editguardian* properties
+            $this->edit($this->editguardian->user_id);
+
+            $this->emit('guardian-saved');
+        }
+    }
+
+    public function updatedAddguardian()
+    {
+        $this->editguardian = new Guardian;
+
+        $this->editguardianemailalternate = '';
+        $this->editguardianemailprimary = '';
+        $this->editguardianfirst = '';
+        $this->editguardianlast = '';
+        $this->editguardianmiddle = '';
+        $this->editguardianphonehome = '';
+        $this->editguardianphonemobile = '';
+        $this->editguardianphonework = '';
+        $this->editguardianpronounid = 1;
+        $this->editguardiantypeid = 1;
+    }
+
+    public function updatedEditguardianfirst()
+    {
+        $this->searchForDuplicate();
+    }
+
+    public function updatedEditguardianlast()
+    {
+        $this->searchForDuplicate();
+    }
+
+    private function updateOrCreateCommunicationObjects()
+    {
+        //emails
+        $this->saveEmails('email_guardian_alternate', $this->editguardianemailalternate, $this->editguardian->user_id);
+        $this->saveEmails('email_guardian_primary', $this->editguardianemailprimary, $this->editguardian->user_id);
+
+        //phones
+        $this->savePhones('phone_guardian_home', $this->editguardianphonehome, $this->editguardian->user_id);
+        $this->savePhones('phone_guardian_mobile', $this->editguardianphonemobile, $this->editguardian->user_id);
+        $this->savePhones('phone_guardian_work', $this->editguardianphonework, $this->editguardian->user_id);
+    }
+
+    private function update()
+    {
+        //update person data
         $person = $this->editguardian->person;
         $person->first = $this->editguardianfirst;
         $person->middle = $this->editguardianmiddle;
@@ -94,79 +195,58 @@ class Guardiancomponent extends Component
         //update guardiantype_id pivot
         $this->editguardian->students()->updateExistingPivot($this->student->user_id,
             ['guardiantype_id' => $this->editguardiantypeid]);
+    }
 
-        //emails
+    /**
+     * @todo build failsafes for avoiding duplicate entries on guardians
+     *  - ex. compare/validate last name, email, phone numbers before saving
+     */
+    private function searchForDuplicate()
+    {
+        $persons = Person::where('first', 'LIKE','%'.$this->editguardianfirst.'%')
+            ->where('last','LIKE','%'.$this->editguardianlast.'%')
+            ->get()
+            ->sortBy('last')
+            ->sortBy('first')
+            ->sortByDesc('middle');
+        if($persons->count()){
+            $this->similarnames = '<h4>'.$persons->count().' similar Guardian/Parents found</h4>';
+            $this->similarnames .= '<ul>';
+            foreach($persons AS $person){
 
+                $this->similarnames .= '<li>'.$person->fullNameAlpha.'</li>';
+            }
+            $this->similarnames .= '</ul>';
+        }
+    }
 
+    private function store()
+    {
+        //early exit
+        if($this->searchForDuplicate()){ $this->editguardian = null; }
+
+        $user = User::create([
+            'username' => $this->username($this->editguardianfirst, $this->editguardianlast),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'remember_token' => Str::random(10),]);
+
+        Person::create([
+            'user_id' => $user->id,
+            'first' => $this->editguardianfirst,
+            'middle' => $this->editguardianmiddle,
+            'last' => $this->editguardianlast,
+            'pronoun_id' => $this->editguardianpronounid,
+        ]);
+
+        $guardian = Guardian::create([
+            'user_id' => $user->id,
+        ]);
+
+        /** Workaround because $guardian always returns model with user_id === 0 */
+        $this->editguardian = Guardian::find($user->id);
+        $this->editguardian->students()->attach($this->student->user_id,
+            ['guardiantype_id' => $this->editguardiantypeid]);
         $this->editguardian->refresh();
-        $this->student->refresh();
-        $this->guardians = $this->student->guardians;
 
-        $this->emit('guardian-saved');
-    }
-
-    private function saveEmails()
-    {
-        $emails = [
-            'personal' => ['obj' => null, 'emailtype_descr' => 'email_student_personal', 'current' => $this->emailpersonal,],
-            'school' => ['obj' => null, 'emailtype_descr' => 'email_student_school', 'current' => $this->emailschool,],
-        ];
-
-        foreach ($emails as $email) {
-            $email['obj'] = Nonsubscriberemail::firstOrCreate(
-                [
-                    'user_id' => $this->student->user_id,
-                    'emailtype_id' => Emailtype::where('descr', $email['emailtype_descr'])->first()->id,
-                ],
-                [
-                    'email' => $email['current'],
-                ]
-            );
-
-            //update object if user's input differs from current record
-            if ($email['current'] !== $email['obj']->email) {
-                $email['obj']->email = $email['current'];
-                $email['obj']->save();
-            }
-        }
-    }
-
-    private function savePhones()
-    {
-        $phones = [
-            'home' => ['obj' => null, 'phonetype_descr' => 'phone_student_home', 'current' => $this->phonehome,],
-            'mobile' => ['obj' => null, 'phonetype_descr' => 'phone_student_mobile', 'current' => $this->phonemobile,],
-        ];
-
-        foreach ($phones as $phone) {
-            $phone['obj'] = Phone::firstOrCreate(
-                [
-                    'user_id' => $this->student->user_id,
-                    'phonetype_id' => Phonetype::where('descr', $phone['phonetype_descr'])->first()->id,
-                ],
-                [
-                    'phone' => $phone['current'],
-                ]
-            );
-
-            //update object if user's input differs from current record
-            if ($phone['current'] !== $phone['obj']->phone) {
-                $phone['obj']->phone = $phone['current'];
-                $phone['obj']->save();
-            }
-        }
-
-    }
-
-
-    private function stripPhone($str)
-    {
-        $chars = str_split($str);
-
-        $ints = array_filter($chars, function($char){
-            return is_numeric($char);
-        });
-
-        return implode($ints);
     }
 }

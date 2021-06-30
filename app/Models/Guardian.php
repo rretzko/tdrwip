@@ -39,9 +39,15 @@ class Guardian extends Model
         return $this->getPhone('phone_guardian_work');
     }
 
-    public function guardiantype()
+    public function guardiantype($student_user_id)
     {
-        return Guardiantype::find($this->pivot->guardiantype_id);
+        $id = DB::table('guardian_student')
+            ->select('guardiantype_id')
+            ->where('guardian_user_id', '=', $this->user_id)
+            ->where('student_user_id', '=', $student_user_id)
+            ->value('guardiantype_id');
+
+        return Guardiantype::find($id);
     }
 
     public function setSearchables()
