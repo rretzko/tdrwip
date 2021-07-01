@@ -47,6 +47,23 @@ class Studentscomponent extends Component
         'name' => ['required'],
     ];
 
+    public function mount()
+    {
+        $this->perpage = Userconfig::getValue('pagination', auth()->id());
+        $this->population = Userconfig::getValue('studentpopulation', auth()->id());
+        $this->tab = Userconfig::getValue('studenttab', auth()->id());
+    }
+
+    public function render()
+    {
+        return view('livewire.students.studentscomponent',
+            [
+                'students' => $this->students(),
+                'sortedclassofs' => $this->classofsArray(),
+                'sortedinstrumentations' => $this->instrumentationsArray(),
+            ]);
+    }
+
     public function deleteSelected()
     {
         auth()->user()->person->teacher->removeStudents($this->selected);
@@ -84,13 +101,6 @@ class Studentscomponent extends Component
         return Excel::download($students, 'students.csv');
     }
 
-    public function mount()
-    {
-        $this->perpage = Userconfig::getValue('pagination', auth()->id());
-        $this->population = Userconfig::getValue('studentpopulation', auth()->id());
-        $this->tab = Userconfig::getValue('studenttab', auth()->id());
-    }
-
     public function population($value)
     {
         Userconfig::setValue('studentpopulation', auth()->id(), $value);
@@ -98,16 +108,6 @@ class Studentscomponent extends Component
         $this->selectall = false;
         $this->selectpage = false;
         $this->selected = [];
-    }
-
-    public function render()
-    {
-        return view('livewire.students.studentscomponent',
-            [
-                'students' => $this->students(),
-                'sortedclassofs' => $this->classofsArray(),
-                'sortedinstrumentations' => $this->instrumentationsArray(),
-            ]);
     }
 
     public function resetFilters()
@@ -269,6 +269,7 @@ class Studentscomponent extends Component
 
         //filter and sort student population
         $filtered  = $this->applyFilters($students);
+
         //pre-pagination collection of students filtered by population
         $this->populationstudents = $this->sorted($filtered);
 
@@ -276,10 +277,8 @@ class Studentscomponent extends Component
             $this->resetPage();
         }
 
-
         //paginate identified students
         return CollectionHelper::paginate($this->populationstudents, Userconfig::getValue('pagination', auth()->id()));
-
     }
 
     /**

@@ -15,13 +15,13 @@ class EmailtypeSeeder extends Seeder
     public function run()
     {
         DB::table('emailtypes')->insert([
-            ['descr' => 'work',],
-            ['descr' => 'personal',],
-            ['descr' => 'other',],
-            ['descr' => 'email_student_school'],
-            ['descr' => 'email_student_personal'],
-            ['descr' => 'email_guardian_alternate'],
-            ['descr' => 'email_guardian_primary'],
+            ['descr' => 'work', 'subscriber' => 1],
+            ['descr' => 'personal', 'subscriber' => 1],
+            ['descr' => 'other', 'subscriber' => 1],
+            ['descr' => 'email_student_school', 'subscriber' => 0],
+            ['descr' => 'email_student_personal', 'subscriber' => 0],
+            ['descr' => 'email_guardian_alternate', 'subscriber' => 0],
+            ['descr' => 'email_guardian_primary', 'subscriber' => 0],
         ]);
     }
 }

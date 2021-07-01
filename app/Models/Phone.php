@@ -14,6 +14,31 @@ class Phone extends Model
 
     protected $fillable = ['phone','phonetype_id', 'user_id'];
 
+    public function getPhoneWithLabel(int $user_id, int $phonetype_id) : string
+    {
+        $phone = Phone::where('user_id', $user_id)
+            ->where('phonetype_id', $phonetype_id)
+            ->first();
+
+        return $phone->phone.' ('.$phone->phonetype->abbr.')';
+    }
+
+    public function getPhoneWithoutLabel(int $user_id, int $phonetype_id) : string
+    {
+        $phone = Phone::where('user_id', $user_id)
+            ->where('phonetype_id', $phonetype_id)
+            ->first();
+
+        return $phone->phone;
+    }
+
+    public function hasPhoneType(int $user_id, int $phonetype_id) : bool
+    {
+        return (bool)Phone::where('user_id', $user_id)
+            ->where('phonetype_id', $phonetype_id)
+            ->first();
+    }
+
     public function person()
     {
         return $this->hasOne(User::class);

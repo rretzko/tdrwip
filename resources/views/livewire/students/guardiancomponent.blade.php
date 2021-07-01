@@ -1,5 +1,13 @@
 <div>
-    @if($guardians->count() > 1) Guardians @else Guardian @endif for {{ $student->person->fullName }}
+    <div class="flex justify-between">
+        <div>
+            @if($guardians->count() > 1) Guardians @else Guardian @endif for {{ $student->person->fullName }}
+        </div>
+        <div>
+            <x-buttons.button-add toggle="addguardian" />
+        </div>
+    </div>
+
 
     @if($guardians->count())
         <table class="w-full">
@@ -8,15 +16,15 @@
                     <th>Name</th>
                     <th>Type</th>
                     <th class="sr-only">Edit</th>
-                    <th><x-buttons.button-add toggle="addguardian" /></th>
+                    <th class="sr-only">Delete</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($guardians AS $key => $guardian)
 
                     <tr>
-                        <td>{{ $guardian->person->fullName }}</td>
-                        <td>{{ $guardian->guardiantype($student->user_id)->descr }}</td>
+                        <td>{{ $guardian->person->fullName.' ('.$guardian->user_id.')' }}</td>
+                        <td>{{ $guardian->guardiantype($student->user_id)->descr.' ('.$selecteduserid.')' }}</td>
                         <td>
                             <x-buttons.button-link
                                 wire:click.defer="edit({{ $guardian->user_id }})"
@@ -30,16 +38,17 @@
                             @if($confirmingdelete===$guardian->user_id)
                                 <x-buttons.button-link
                                     wire:click="delete({{ $guardian->user_id }})"
-                                    class="border border-red-500 rounded px-2 bg-red-400 text-white hover:bg-red-600"
+                                    class="border border-red-500 rounded px-2 bg-red-500 text-white hover:bg-red-600"
                                     key="{{ $guardian->user_id }}"
+                                    title="Click to confirm deletion..."
                                 >
-                                    Sure??
+                                    Confirm
                                 </x-buttons.button-link>
 
                             @else
                                 <x-buttons.button-link
                                     wire:click="delete({{ $guardian->user_id }})"
-                                    class="border border-red-500 rounded px-2 bg-red-400 text-white hover:bg-red-600"
+                                    class="border border-red-300 rounded px-2 bg-red-300 text-white hover:bg-red-600"
                                     key="{{ $guardian->user_id }}"
                                 >
                                     Delete
@@ -56,6 +65,10 @@
 
     {{-- MODAL FORM --}}
     @if($editguardian)
+
+        <div class="flex justify-end mt-6 text-blue-500">
+            <x-buttons.button-link wire:click="closeForm" >Close Form</x-buttons.button-link>
+        </div>
 
         <form wire:submit.prevent="save">
 

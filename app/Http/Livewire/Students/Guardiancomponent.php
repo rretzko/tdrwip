@@ -2,9 +2,11 @@
 
 namespace App\Http\Livewire\Students;
 
+use App\Models\Email;
 use App\Models\Emailtype;
 use App\Models\Guardian;
 use App\Models\Guardiantype;
+use App\Models\Namecard;
 use App\Models\Nonsubscriberemail;
 use App\Models\Person;
 use App\Models\Phone;
@@ -38,6 +40,7 @@ class Guardiancomponent extends Component
     public $editguardiantypeid = 1;
     public $guardians = null;
     public $searchname = '';
+    public $selecteduserid = 0;
     public $similarnames = '';
     public $student = null;
 
@@ -72,6 +75,11 @@ class Guardiancomponent extends Component
         ]);
     }
 
+    public function closeForm()
+    {
+        $this->editguardian = null;
+    }
+
     public function delete($user_id)
     {
         if($this->confirmingdelete) {
@@ -101,9 +109,66 @@ class Guardiancomponent extends Component
         $this->editguardianphonemobile = $this->editguardian->phoneMobile->id ? $this->editguardian->phoneMobile->phone : '';
         $this->editguardianphonework = $this->editguardian->phoneWork->id ? $this->editguardian->phoneWork->phone : '';
         $this->editguardianpronounid = $this->editguardian->person->pronoun_id;
-        $this->editguardiantypeid = $this->editguardian->guardiantype($this->student->user_id)->id;
+        $this->editguardiantypeid = $this->editguardian->guardiantype($this->student->user_id)->id ?? 1;
+        $this->editguardiantype = Guardiantype::find($this->editguardiantypeid);
+    }
+
+    /**
+     * Load form with selected user data WITHOUT saving user as a Guardian and WITHOUT attaching Guardian to
+     * $this->student
+     *
+     * @param $user_id
+     */
+    public function loadUser($user_id)
+    {
+        $this->selecteduserid = $user_id;
+
+        $user = User::find($user_id);
+        $email = new Email;
+        $phone = new Phone;
+
+        // load 'email_guardian_alternate' or if not found, try 'work', else ''
+        $this->editguardianemailalternate =
+            ($email->hasEmailType($user_id, Emailtype::where('descr', 'email_guardian_alternate')->first()))
+            ? $email->getEmail($user_id, Emailtype::where('descr', 'email_guardian_alternate')->first())
+            : (($email->hasEmailType($user_id, Emailtype::where('descr', 'work')->first()))
+                ? $email->getEmail($user_id, Emailtype::where('descr', 'work')->first())
+                : '');
+        // load 'email_guardian_primary' or if not found, try 'personal', else ''
+        $this->editguardianemailprimary =
+            ($email->hasEmailType($user_id, Emailtype::where('descr', 'email_guardian_primary')->first()))
+            ? $email->getEmail($user_id, Emailtype::where('descr', 'email_guardian_primary')->first())
+            : (($email->hasEmailType($user_id, Emailtype::where('descr', 'personal')->first()))
+                ? $email->getEmail($user_id, Emailtype::where('descr', 'personal')->first())
+                : '');
+        $this->editguardianfirst = $user->person->first;
+        $this->editguardianlast = $user->person->last;
+        $this->editguardianmiddle = $user->person->middle ;
+        // load 'phone_guardian_home' or if not found, try 'home', else ''
+        $this->editguardianphonehome =
+            ($phone->hasPhoneType($user_id, Phonetype::where('descr', 'phone_guardian_home')->first()->id))
+                ? $phone->getPhoneWithoutLabel($user_id, Phonetype::where('descr', 'phone_guardian_home')->first()->id)
+                : (($phone->hasPhoneType($user_id, Phonetype::where('descr', 'home')->first()->id))
+                    ? $phone->getPhoneWithoutLabel($user_id, Phonetype::where('descr', 'home')->first()->id)
+                    : '');
+        // load 'phone_guardian_mobile' or if not found, try 'mobile', else ''
+        $this->editguardianphonemobile =
+            ($phone->hasPhoneType($user_id, Phonetype::where('descr', 'phone_guardian_mobile')->first()->id))
+                ? $phone->getPhoneWithoutLabel($user_id, Phonetype::where('descr', 'phone_guardian_mobile')->first()->id)
+                : (($phone->hasPhoneType($user_id, Phonetype::where('descr', 'mobile')->first()->id))
+                    ? $phone->getPhoneWithoutLabel($user_id, Phonetype::where('descr', 'mobile')->first()->id)
+                    : '');
+        $this->editguardianphonework =
+            ($phone->hasPhoneType($user_id, Phonetype::where('descr', 'phone_guardian_work')->first()->id))
+                ? $phone->getPhoneWithoutLabel($user_id, Phonetype::where('descr', 'phone_guardian_work')->first()->id)
+                : (($phone->hasPhoneType($user_id, Phonetype::where('descr', 'work')->first()->id))
+                ? $phone->getPhoneWithoutLabel($user_id, Phonetype::where('descr', 'work')->first()->id)
+                : '');
+        $this->editguardianpronounid = $user->person->pronoun_id;
+        $this->editguardiantypeid = $this->editguardian->guardiantype($this->student->user_id)->id ?? 1;
         $this->editguardiantype = Guardiantype::find($this->editguardiantypeid);
 
+        $this->similarnames = '';
     }
 
     public function save()
@@ -169,6 +234,121 @@ class Guardiancomponent extends Component
     {
         $this->searchForDuplicate();
     }
+/** END OF PUBLIC FUNCTIONS  *************************************************/
+
+    /**
+     * @todo build failsafes for avoiding duplicate entries on guardians
+     *  - ex. compare/validate last name, email, phone numbers before saving
+     */
+    private function searchForDuplicate()
+    {
+        //search when a complete name is available
+        if (strlen($this->editguardianfirst) && strlen($this->editguardianlast)){
+
+            $persons = Person::where('first', 'LIKE', '%' . substr($this->editguardianfirst, 0, 1) . '%')
+                ->where('last', 'LIKE', '%' . $this->editguardianlast . '%')
+                ->orderBy('last')
+                ->orderBy('first')
+                ->get();
+
+            if ($persons->count()) {
+                $this->similarnames = '<h4>' . $persons->count() . ' similar Guardian/Parents found</h4>';
+                $this->similarnames .= '<ul>';
+                foreach ($persons as $person) {
+
+                    $namecard = new Namecard($person->user);
+
+                    $this->similarnames .= '<li>'
+                        . '<span wire:click="loadUser('.$person->user_id.')"
+                                class="text-blue-500 cursor-pointer"
+                                title="' . $namecard->namecard() . '">'
+                        . $person->fullNameAlpha
+                        . '</span>'
+                        . '</li>';
+                }
+                $this->similarnames .= '</ul>';
+            }
+        }
+    }
+
+    private function store()
+    {
+        if($this->selecteduserid){ //user exists in database but not as an existing guardian
+
+            $this->storeNewGuardian();
+
+        }else {
+
+            $user = User::create([
+                'username' => $this->username($this->editguardianfirst, $this->editguardianlast),
+                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+                'remember_token' => Str::random(10),]);
+
+            Person::create([
+                'user_id' => $user->id,
+                'first' => $this->editguardianfirst,
+                'middle' => $this->editguardianmiddle,
+                'last' => $this->editguardianlast,
+                'pronoun_id' => $this->editguardianpronounid,
+            ]);
+
+            Guardian::create([
+                'user_id' => $user->id,
+            ]);
+
+            /** Workaround because $guardian always returns model with user_id === 0 */
+            $this->editguardian = Guardian::find($user->id);
+
+            $this->updateOrCreateCommunicationObjects();
+
+            $this->editguardian->students()->attach($this->student->user_id,
+                ['guardiantype_id' => $this->editguardiantypeid]);
+
+            $this->editguardian->refresh();
+        }
+    }
+
+    /**
+     *
+     */
+    private function storeNewGuardian()
+    {
+        Person::where('user_id', $this->selecteduserid)
+            ->update(
+                [
+                    'first' => $this->editguardianfirst,
+                    'middle' => $this->editguardianmiddle,
+                    'last' => $this->editguardianlast,
+                    'pronoun_id' => $this->editguardianpronounid,
+                ]
+            );
+
+        Guardian::create([
+            'user_id' => $this->selecteduserid,
+        ]);
+
+        /** Workaround because $guardian always returns model with user_id === 0 */
+        $this->editguardian = Guardian::find($this->selecteduserid);
+
+        $this->updateOrCreateCommunicationObjects();
+
+        //add or edit student attachments
+        if($this->editguardian->students->contains($this->student)) {
+
+            $this->editguardian->students()->updateExistingPivot($this->student->user_id,
+                ['guardiantype_id' => $this->editguardiantypeid]);
+
+        }else{
+
+            $this->editguardian->students()->attach($this->student->user_id,
+                ['guardiantype_id' => $this->editguardiantypeid]);
+        }
+
+        $this->editguardian->refresh();
+
+        //resets
+        $this->selecteduserid = 0;
+    }
 
     private function updateOrCreateCommunicationObjects()
     {
@@ -195,58 +375,5 @@ class Guardiancomponent extends Component
         //update guardiantype_id pivot
         $this->editguardian->students()->updateExistingPivot($this->student->user_id,
             ['guardiantype_id' => $this->editguardiantypeid]);
-    }
-
-    /**
-     * @todo build failsafes for avoiding duplicate entries on guardians
-     *  - ex. compare/validate last name, email, phone numbers before saving
-     */
-    private function searchForDuplicate()
-    {
-        $persons = Person::where('first', 'LIKE','%'.$this->editguardianfirst.'%')
-            ->where('last','LIKE','%'.$this->editguardianlast.'%')
-            ->get()
-            ->sortBy('last')
-            ->sortBy('first')
-            ->sortByDesc('middle');
-        if($persons->count()){
-            $this->similarnames = '<h4>'.$persons->count().' similar Guardian/Parents found</h4>';
-            $this->similarnames .= '<ul>';
-            foreach($persons AS $person){
-
-                $this->similarnames .= '<li>'.$person->fullNameAlpha.'</li>';
-            }
-            $this->similarnames .= '</ul>';
-        }
-    }
-
-    private function store()
-    {
-        //early exit
-        if($this->searchForDuplicate()){ $this->editguardian = null; }
-
-        $user = User::create([
-            'username' => $this->username($this->editguardianfirst, $this->editguardianlast),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),]);
-
-        Person::create([
-            'user_id' => $user->id,
-            'first' => $this->editguardianfirst,
-            'middle' => $this->editguardianmiddle,
-            'last' => $this->editguardianlast,
-            'pronoun_id' => $this->editguardianpronounid,
-        ]);
-
-        $guardian = Guardian::create([
-            'user_id' => $user->id,
-        ]);
-
-        /** Workaround because $guardian always returns model with user_id === 0 */
-        $this->editguardian = Guardian::find($user->id);
-        $this->editguardian->students()->attach($this->student->user_id,
-            ['guardiantype_id' => $this->editguardiantypeid]);
-        $this->editguardian->refresh();
-
     }
 }

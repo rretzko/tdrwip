@@ -16,6 +16,7 @@ class CreatePhonetypesTable extends Migration
         Schema::create('phonetypes', function (Blueprint $table) {
             $table->id();
             $table->string('descr', 24)->unique();
+            $table->string('abbr', 2)->default('x');
         });
     }
 

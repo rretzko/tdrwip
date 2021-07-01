@@ -14,6 +14,12 @@ class School extends Model
 
     protected $fillable = ['name', 'address01', 'address02', 'city', 'geostate_id', 'postalcode'];
 
+    public function ensembles()
+    {
+        return $this->hasMany(Ensemble::class)
+            ->with('ensembletype', 'ensembletype.instrumentations');
+    }
+
     public function getCurrentUserGradesAttribute()
     {
         $grades = DB::table('gradetype_school_user')

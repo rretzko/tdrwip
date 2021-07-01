@@ -15,14 +15,14 @@ class PhonetypeSeeder extends Seeder
     public function run()
     {
         DB::table('phonetypes')->insert([
-            ['descr' => 'mobile',],
-            ['descr' => 'work',],
-            ['descr' => 'home',],
-            ['descr' => 'phone_student_mobile'],
-            ['descr' => 'phone_student_home'],
-            ['descr' => 'phone_guardian_mobile'],
-            ['descr' => 'phone_guardian_work'],
-            ['descr' => 'phone_guardian_home'],
+            ['descr' => 'mobile', 'abbr' => 'c',],
+            ['descr' => 'work', 'abbr' => 'w',],
+            ['descr' => 'home', 'abbr' => 'h',],
+            ['descr' => 'phone_student_mobile', 'abbr' => 'c',],
+            ['descr' => 'phone_student_home', 'abbr' => 'h',],
+            ['descr' => 'phone_guardian_mobile', 'abbr' => 'c',],
+            ['descr' => 'phone_guardian_work', 'abbr' => 'w',],
+            ['descr' => 'phone_guardian_home', 'abbr' => 'h',],
         ]);
     }
 }

@@ -74,6 +74,33 @@ class User extends Authenticatable
         return $this->belongsToMany(Instrumentation::class);
     }
 
+    public function isGuardian() : bool
+    {
+        return (bool)Guardian::find($this->id);
+    }
+
+    /**
+     * Future expansion for members of the public who may participate in a teacher's program but
+     * not be a student, teacher or parent/guardian.
+     * ex. Uncle participating in a 'Guys Nite Out' chorus
+     *
+     * @return bool
+     */
+    public function isNonstudent() : bool
+    {
+        return false;
+    }
+
+    public function isStudent() : bool
+    {
+        return (bool)Student::find($this->id);
+    }
+
+    public function isTeacher() : bool
+    {
+        return (bool)Teacher::find($this->id);
+    }
+
     public function person()
     {
         return $this->hasOne(Person::class);
