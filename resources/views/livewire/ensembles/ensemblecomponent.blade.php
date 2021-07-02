@@ -7,13 +7,13 @@
 
         <x-slot name="description">
 
-            {{ __('Add or edit your ensemble information here.') }}
+            <x-sidebar-blurb blurb="Add or edit your ensemble information here." />
 
-            <br />
-            {{ __('Click a column header to sort the table rows.') }}
+            <x-sidebar-blurb blurb="Click a column header to sort the table rows." />
 
-            <br />
-            {{ __('Click the edit button to display an individual ensemble\'s detailed information.') }}
+            <x-sidebar-blurb blurb="Click the edit button to display an individual ensemble's detailed information." />
+
+            <x-sidebar-blurb blurb="Click the number under the 'Members' column to add/edit individual ensemble members." />
 
         </x-slot>
 
@@ -23,7 +23,7 @@
             <div class="flex justify-end pr-6 space-x-2">
                 <x-inputs.dropdowns.perpage />
                 <x-inputs.dropdowns.bulkactions :selected="$selected" />
-                <x-buttons.button-add toggle="showAddModal" />
+                <x-buttons.button-add toggle="showaddmodal" />
             </div>
 
             {{-- beginning of tailwindui table --}}
@@ -33,7 +33,7 @@
 
                         <div class="flex space-x-4">
                             <div class="flex">
-                                <x-inputs.text wire:model="search"
+                                <x-inputs.text wire:model.debounce.1s="search"
                                                for="search"
                                                label=""
                                                placeholder="Search ensemble name..."/>
@@ -140,16 +140,16 @@
 
                                 @if($selectpage)
                                     <x-tables.row class="bg-gray-200" wire:key="row-message">
-                                        <x-tables.cell colspan="6">
+                                        <x-tables.cell colspan="7">
                                             @unless($selectall)
                                                 <div>You have selected <strong>{{ count($selected) }}</strong> ensembles, do
-                                                    you want to select all <strong>{{ $ensembles->total() }}</strong>?
+                                                    you want to select all <strong>{{ $ensembles->count() }}</strong>?
                                                     <x-buttons.button-link wire:click="selectAll"
                                                                            class="ml-1 text-blue-600">Select All
                                                     </x-buttons.button-link>
                                                 </div>
                                             @else
-                                                <span>You have selected all <strong>{{ $ensembles->total() }}</strong>
+                                                <span>You have selected all <strong>{{ $ensembles->count() }}</strong>
                                                     ensembles.</span>
                                             @endunless
                                         </x-tables.cell>
@@ -175,7 +175,12 @@
                                         </x-tables.cell>
 
                                         <x-tables.cell class="text-center">
-                                            {{ $ensemble->members(\App\Models\Schoolyear::find(2020))->count() }}
+                                            <a class='text-blue-700 font-bold'
+                                               href="{{ route('ensemblemembers.index', ['ensemble' => $ensemble]) }}"
+                                               title="Click to add/edit {{ $ensemble->name }} members"
+                                            >
+                                                {{ $ensemble->members()->count() }}
+                                            </a>
                                         </x-tables.cell>
 
                                         <x-tables.cell>

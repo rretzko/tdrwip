@@ -1,33 +1,33 @@
 <div>
+
+
     <x-livewire-table-with-modal-forms >
 
         <x-slot name="title">
-            {{ __('Student Information') }}{{ $population }}
+            {{ __('Ensemble Members Information') }}
         </x-slot>
 
         <x-slot name="description">
 
-            <x-sidebar-blurb blurb="Add or edit your student information here." />
+            <x-sidebar-blurb blurb="Add or edit your ensemble member information here." />
 
-            <x-sidebar-blurb blurb="Click the Current-Alum-All links to filter the table rows." />
+            <x-sidebar-blurb blurb="Use the Advanced Search feature to additionally filter the display." />
 
-            <x-sidebar-blurb blurb="Click a column header to sort the table rows." />
+            <x-sidebar-blurb blurb="Click the edit button to display an individual ensemble member's detailed information." />
 
-            <x-sidebar-blurb blurb="Click the edit button to display an individual student's detailed information." />
-
-            <x-sidebar-blurb blurb="'Voice Part' displays the first voice part found for the student.
-                    All voice parts and instruments can be found by clicking the 'Edit' button." />
+            <x-sidebar-blurb blurb="Members can be uploaded via .csv file by using the 'Import' option under the 'Bulk Actions' drop-down." />
 
         </x-slot>
 
         <x-slot name="table">
-            {{-- Student table --}}
-            {{-- Per Page, Bulk actions and ADD button --}}
-            <div class="flex justify-end pr-6 space-x-2">
+
+            <div class="flex justify-end space-x-2 mb-2">
                 <x-inputs.dropdowns.perpage />
-                <x-inputs.dropdowns.bulkactions :selected="$selected" />
-                <x-buttons.button-add toggle="showAddModal" />
+                <x-inputs.dropdowns.bulkactions import />
+                <x-buttons.button-add toggle="showaddmodal"/>
             </div>
+
+            <x-navs.currentalumall />
 
             {{-- beginning of tailwindui table --}}
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 ">
@@ -36,16 +36,18 @@
 
                         <div class="flex space-x-4">
                             <div class="flex">
-                                <x-inputs.text wire:model="search"
-                                       for="search"
-                                       label=""
-                                       placeholder="Search last name..."/>
+                                <x-inputs.text wire:model.debounce.1s="search"
+                                               for="search"
+                                               label=""
+                                               placeholder="Search ensemble name..."/>
                             </div>
+                        <!-- {{-- SUPPRESS ADVANCED FILTERS
                             <div class="flex text-sm text-gray-600">
                                 <x-buttons.button-link wire:click="$toggle('showfilters')">
                                     @if($showfilters) Hide @endif Advanced Filters @if(strlen($filterstring)) (current: "{{ $filterstring }}") @endif
                                 </x-buttons.button-link>
                             </div>
+--}} -->
                         </div>
 
                         <div>
@@ -86,15 +88,12 @@
                                             </x-inputs.select>
                                         </x-inputs.group>
 
-                                        <x-buttons.button-link wire:click="resetFilters" class="aboslute right-0 bottom-0 p-4">Reset Filters</x-buttons.button-link>
+                                        <x-buttons.button-link wire:click="resetFilters" class="absolute right-0 bottom-0 p-4">Reset Filters</x-buttons.button-link>
                                     </div>
 
                                 </div>
                             @endif
                         </div>
-
-                        {{-- CURRENT/ALUM/ALL FILTER DISPLAY OPTIONS --}}
-                        <x-navs.currentalumall :population="$population" />
 
                         <x-tables.surgetable class="w-full ">
                             <x-slot name="head" >
@@ -103,35 +102,40 @@
                                     <x-inputs.checkbox class="pr-0 w-4" for="selectpage" label=""/>
                                 </x-tables.heading>
 
-                                <x-tables.heading >
-                                    <span class="sr-only">Photo</span>
-                                </x-tables.heading>
-
                                 <x-tables.heading wire:click.prevent="sortField('name')"
-                                      sortable
-                                      direction="asc"
-                                      :direction="$sortfield === 'name' ? $sortdirection : null"
+                                                  sortable
+                                                  direction="asc"
+                                                  :direction="$sortfield === 'name' ? $sortdirection : null"
                                 >
                                     Name
                                 </x-tables.heading>
 
-                                <x-tables.heading wire:click.prevent="sortField('classof')"
-                                      sortable
-                                      direction="asc"
-                                      :direction="$sortfield === 'classof' ? $sortdirection : null"
+                                <x-tables.heading wire:click.prevent="sortField('type')"
+                                                  sortable
+                                                  direction="asc"
+                                                  :direction="$sortfield === 'classof' ? $sortdirection : null"
                                 >
-                                    Grade
+                                    Type
                                 </x-tables.heading>
 
-                                <x-tables.heading wire:click.prevent="sortField('instrumentation')"
-                                      sortable
-                                      direction="asc"
-                                      :direction="$sortfield === 'instrumentation' ? $sortdirection : null"
+                                <x-tables.heading wire:click.prevent="sortField('startyear')"
+                                                  sortable
+                                                  direction="asc"
+                                                  :direction="$sortfield === 'instrumentation' ? $sortdirection : null"
                                 >
-                                    Voice Part
+                                    Since
+                                </x-tables.heading>
+
+                                <x-tables.heading wire:click.prevent="sortField('members')"
+                                                  sortable
+                                                  direction="asc"
+                                                  :direction="$sortfield === 'instrumentation' ? $sortdirection : null"
+                                >
+                                    Members
                                 </x-tables.heading>
 
                                 <th><span class="sr-only">Edit</span></th>
+                                <th><span class="sr-only">Assets</span></th>
 
                             </x-slot>
 
@@ -139,81 +143,92 @@
 
                                 @if($selectpage)
                                     <x-tables.row class="bg-gray-200" wire:key="row-message">
-                                        <x-tables.cell colspan="6">
+                                        <x-tables.cell colspan="7">
                                             @unless($selectall)
-                                                <div>You have selected <strong>{{ count($selected) }}</strong> students, do
-                                                    you want to select all <strong>{{ $students->total() }}</strong>?
+                                                <div>You have selected <strong>{{ count($selected) }}</strong> ensembles, do
+                                                    you want to select all <strong>{{ $ensembles->count() }}</strong>?
                                                     <x-buttons.button-link wire:click="selectAll"
                                                                            class="ml-1 text-blue-600">Select All
                                                     </x-buttons.button-link>
                                                 </div>
                                             @else
-                                                <span>You have selected all <strong>{{ $students->total() }}</strong>
-                                                    students.</span>
+                                                <span>You have selected all <strong>{{ $ensembles->count() }}</strong>
+                                                    ensembles.</span>
                                             @endunless
                                         </x-tables.cell>
                                     </x-tables.row>
                                 @endif
 
-                                @forelse($students AS $student)
-                                    <x-tables.row wire:loading.class.delay="opacity-50" altcolor="{{$loop->iteration % 2}}" wire:key="row-{{ $student->user_id }}">
+                                @forelse($ensembles AS $ensemble)
+                                    <x-tables.row wire:loading.class.delay="opacity-50" altcolor="{{$loop->iteration % 2}}" wire:key="row-{{ $ensemble->id }}">
 
                                         <x-tables.cell>
-                                            <x-inputs.checkbox value="{{ $student->user_id }}" class="" for="selected" label="" />
+                                            <x-inputs.checkbox value="{{ $ensemble->id }}" class="" for="selected" label="" />
                                         </x-tables.cell>
 
                                         <x-tables.cell>
-                                            @if($student->person->user->profile_photo_path ?: false)
-                                                <div>
-                                                    <img class="w-8 h-10 rounded-full inset-0 object-cover" src="{{ '/storage/'.$student->person->user->profile_photo_path }}" />
-                                                </div>
-                                            @else {{-- display default silhouette icon --}}
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-10" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                                            </svg>
-                                            @endif
+                                            {{ $ensemble->name }}
+                                        </x-tables.cell>
+                                        <x-tables.cell>
+                                            {{ $ensemble->ensembletype->descr }}
                                         </x-tables.cell>
 
                                         <x-tables.cell>
-                                            {{ $student->person->fullNameAlpha }}
-                                        </x-tables.cell>
-                                        <x-tables.cell>
-                                            {{ $student->grade }} ({{ $student->classof }})
+                                            {{ $ensemble->startyear }}
                                         </x-tables.cell>
 
-                                        <x-tables.cell>
-                                            {{ $student->person->user->instrumentations->count() ? $student->person->user->instrumentations->first()->formattedDescr() : 'None found'}}
+                                        <x-tables.cell class="text-center">
+                                            <a class='text-blue-700 font-bold'
+                                               href="{{ route('ensemblemembers.index', ['ensemble' => $ensemble]) }}"
+                                               title="Click to add/edit {{ $ensemble->name }} members"
+                                            >
+                                                {{ $ensemble->members()->count() }}
+                                            </a>
                                         </x-tables.cell>
 
                                         <x-tables.cell>
                                             <x-buttons.button-link
-                                                wire:click.defer="edit({{ $student->user_id }})"
+                                                wire:click.defer="edit({{ $ensemble->id }})"
                                                 class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
                                             >
                                                 Edit
                                             </x-buttons.button-link>
                                         </x-tables.cell>
 
+                                        <x-tables.cell>
+                                            <x-buttons.button-link
+                                                wire:click.defer="edit({{ $ensemble->id }})"
+                                                class="border border-green-500 rounded px-2 bg-green-600 text-white hover:bg-green-400"
+                                            >
+                                                Assets
+                                            </x-buttons.button-link>
+
+                                        </x-tables.cell>
+
                                     </x-tables.row>
                                 @empty
                                     <tr>
                                         <td colspan="6" class="text-gray-500 text-center">
-                                            No Student found @if(strlen($this->search)) with search value: {{ $this->search }}@endif.
+                                            No Ensemble found @if(strlen($this->search)) with search value: {{ $this->search }}@endif.
                                         </td>
                                     </tr>
-                                @endforelse
-
+                            @endforelse
+                            <!-- {{-- SUPPRESS PAGINATION
                                 <div class="mb-2">
-                                    {{$students->count() ? $students->links() : ''}}
+                                    {{$ensembles->count() ? $ensembles->links() : ''}}
                                 </div>
+--}} -->
                             </x-slot>
 
                         </x-tables.surgetable>
+
+                    <!-- {{-- SUPPRESS PAGINATION
                         <div class="mb-2">
-                            @if($students->count() > 5)
-                                {{$students->count() ? $students->links() : ''}}
+                            @if($ensembles->count() > 5)
+                                {{$ensembles->count() ? '$ensembles->links()' : ''}}
                             @endif
                         </div>
+--}} -->
                     </div>
                 </div>
             </div>
@@ -221,15 +236,15 @@
             {{-- MODALS --}}
             {{-- ADD/EDIT STUDENT --}}
             <div>
-                @if($showstudentmodal)
-                    <x-modals.student :student="$editstudent" tab="{{ $tab }}" />
+                @if($showeditmodal)
+                    <x-modals.ensemble :ensemble="$editensemble" :ensembletypes="$ensembletypes" :years="$years" />
                 @endif
             </div>
 
-            {{-- DELETE STUDENT --}}
+            {{-- DELETE ENSEMBLE --}}
             <div>
                 @if($showDeleteModal)
-                     <x-modals.delete :selected="$selected" objectname="student" />
+                    <x-modals.delete :selected="$selected" objectname="ensemble" />
                 @endif
             </div>
 
@@ -243,5 +258,5 @@
         </x-slot>
 
     </x-livewire-table-with-modal-forms>
-</div>
 
+</div>

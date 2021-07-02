@@ -7,11 +7,10 @@
 
         <x-slot name="description" >
 
-            {{ __('Add or edit your school and studio information here.') }}
+            <x-sidebar-blurb blurb="Add or edit your school and studio information here." />
 
-            <br />
-            {{ __('Note that a Studio has been created for you to store information which may be related to your
-                    personal studio and independent of any particular school.') }}
+            <x-sidebar-blurb blurb="Note that a Studio has been created for you to store information which may be related to your
+                    personal studio and independent of any particular school." />
 
         </x-slot>
 

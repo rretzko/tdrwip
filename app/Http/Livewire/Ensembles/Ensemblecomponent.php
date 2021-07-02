@@ -28,9 +28,10 @@ class Ensemblecomponent extends Component
     public $perpage = 0;
     public $search = '';
     public $selected = [];
+    public $selectall= false;
     public $selectpage = false;
     public $showfilters = false;
-    public $showAddModal = false;
+    public $showaddmodal = false;
     public $showeditmodal = false;
     public $showDeleteModal = false;
     public $sortdirection = 'asc';
@@ -43,7 +44,7 @@ class Ensemblecomponent extends Component
         $this->ensembletypes = Ensembletype::all();
         $this->perpage = Userconfig::getValue('pagination', auth()->id());
         $this->students = collect();
-        $this->years = array_fill($this->senioryear()+1, ($this->senioryear()+1-1960), -1);
+        $this->years = $this->years();
     }
 
     public function render()
@@ -71,6 +72,7 @@ class Ensemblecomponent extends Component
         $this->abbr = $this->editensemble->abbr;
         $this->ensembletype_id = $this->editensemble->ensembletype_id;
         $this->startyear = $this->editensemble->startyear;
+        $this->descr = $this->editensemble->descr;
     }
 
     public function exportSelected()
@@ -85,10 +87,19 @@ class Ensemblecomponent extends Component
         return Excel::download($ensembles, 'ensembles.csv');
     }
 
-
-    public function updatedPerpage()
+    public function save()
     {
-        Userconfig::setValue('pagination', auth()->id(), $this->perpage);
+        $this->renewProperties();
+        $this->editensemble->save();
+
+        $this->emit('ensemble-saved');
+    }
+
+    public function selectAll()
+    {
+        $this->selectall = true;
+        $this->selectpage = true;
+        $this->updatedSelectpage(true);
     }
 
     public function sortField($value)
@@ -100,7 +111,34 @@ class Ensemblecomponent extends Component
         $this->sortfield = $value;
     }
 
-/** END OF PUBLIC FUNCTIONS  *************************************************/
+    public function updatedSelectpage($value)
+    {
+        $this->selected = ($value)
+            //values must be cast as strings
+            ? $this->ensembles()->pluck('id')->map(fn($id) => (string)$id)
+            : [];
+    }
+
+    public function updatedShowaddmodal()
+    {
+       if($this->showaddmodal) {
+            $this->editensemble = new Ensemble;
+
+            $this->name = '';
+            $this->abbr = '';
+            $this->ensembletype_id = 1;
+            $this->startyear = date('Y');
+
+            $this->showeditmodal = true;
+        }
+    }
+
+    public function updatedPerpage()
+    {
+        Userconfig::setValue('pagination', auth()->id(), $this->perpage);
+    }
+
+    /** END OF PUBLIC FUNCTIONS  *************************************************/
 
     private function ensembles()
     {
@@ -109,6 +147,17 @@ class Ensemblecomponent extends Component
                 ->with('ensembletype', 'ensembletype.instrumentations')
                 ->orderBy('name')
                 ->get());
+    }
+
+    private function renewProperties()
+    {
+        $this->editensemble->user_id = auth()->id();
+        $this->editensemble->school_id = Userconfig::getValue('school_id', auth()->id());
+        $this->editensemble->name = $this->name;
+        $this->editensemble->abbr = $this->abbr;
+        $this->editensemble->ensembletype_id = $this->ensembletype_id;
+        $this->editensemble->startyear = $this->startyear;
+        $this->editensemble->descr = $this->descr;
     }
 
     private function sorted(Collection $ensembles)
@@ -154,5 +203,16 @@ class Ensemblecomponent extends Component
             : $ensembles->sortByDesc('ensembletype.descr');
     }
 
+    private function years()
+    {
+        $a = [];
+        $start = ($this->senioryear() + 1);
+        $end = 1960;
 
+        for($i=$start; $i>=$end; $i--){
+            $a[$i] = $i;
+        }
+
+        return $a;
+    }
 }

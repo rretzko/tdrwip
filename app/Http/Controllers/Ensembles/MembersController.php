@@ -30,7 +30,7 @@ class MembersController extends Controller
             ]);
     }
 
-    public function create(Ensemble $ensemble, Schoolyear $schoolyear)
+    /*public function create(Ensemble $ensemble, Schoolyear $schoolyear)
     {
         Userconfig::setValue('ensemble_id', auth()->id(), $ensemble->id);
 
@@ -42,7 +42,7 @@ class MembersController extends Controller
                 'nonmembers' => $ensemble->nonmembers(),
 
             ]);
-    }
+    }*/
 
     /**
      * Show the form for editing the specified resource.
@@ -50,7 +50,7 @@ class MembersController extends Controller
      * @param Ensemblemember $ensemblemember
      * @return Response
      */
-    public function edit(Ensemblemember $ensemblemember)
+    /*public function edit(Ensemblemember $ensemblemember)
     {
         $ensemble = Ensemble::find($ensemblemember->ensemble_id);
 
@@ -64,8 +64,8 @@ class MembersController extends Controller
 
             ]);
     }
-
-    public function store(Request $request)
+*/
+  /*  public function store(Request $request)
     {
         $ensemble_id = Userconfig::getValue('ensemble_id', auth()->id());
         $schoolyear_id = Userconfig::getValue('schoolyear_id', auth()->id());
@@ -94,8 +94,8 @@ class MembersController extends Controller
             ]);
 
     }
-
-    private function findInstrumentationId($nonmember_id, $ensemble_id)
+*/
+ /*   private function findInstrumentationId($nonmember_id, $ensemble_id)
     {
         $ensemble = Ensemble::find($ensemble_id)->with('ensembletype')->first();
         $ensembleinstrumentations = $ensemble->ensembletype->instrumentations;
@@ -110,5 +110,5 @@ class MembersController extends Controller
 
         return $ensembleinstrumentations->first()->id;
     }
-
+*/
 }

@@ -49,9 +49,10 @@
     </a>
     <a href="{{ route('ensembles.index') }}"
        class="border border-gray-500 rounded px-2 py-1 ml-0.5
-            {{ (strpos(Route::currentRouteName(), 'ensembles')) === 0 ? 'active' : ''  }} "
+            {{ (strpos(Route::currentRouteName(), 'ensemble')) === 0 ? 'active' : ''  }} "
        title="Ensembles"
     >
+
         <!-- heroicon microphone -->
         <svg xmlns="http://www.w3.org/2000/svg"
              width="20px" height="20px"
@@ -126,7 +127,7 @@
     </a>
     <a href="{{ route('ensembles.index') }}"
        class="border border-gray-500 rounded px-2 py-1 ml-0.5
-        {{ (strpos(Route::currentRouteName(), 'ensembles')) === 0 ? 'active' : ''  }}">
+        {{ (strpos(Route::currentRouteName(), 'ensemble')) === 0 ? 'active' : ''  }}">
         Ensembles
     </a>
     <a href="#"
@@ -219,7 +220,7 @@
             (strpos(Route::currentRouteName(), 'ensembles') === 0) ||
             (strpos(Route::currentRouteName(), 'ensemble.create') === 0) ||
             (strpos(Route::currentRouteName(), 'ensemble.edit') === 0) ||
-            (strpos(Route::currentRouteName(), 'ensemble.members.index') === 0)
+            (strpos(Route::currentRouteName(), 'ensemblemembers.index') === 0)
              )
                 ? 'active' : ''  }}">
         <!-- heroicon microphone -->

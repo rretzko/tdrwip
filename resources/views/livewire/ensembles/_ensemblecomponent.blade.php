@@ -23,7 +23,7 @@
             <div class="flex justify-end pr-6 space-x-2">
                 <x-inputs.dropdowns.perpage />
                 <x-inputs.dropdowns.bulkactions :selected="$selected" />
-                <x-buttons.button-add toggle="showAddModal" />
+                <x-buttons.button-add toggle="showaddmodal" />
             </div>
 
             {{-- beginning of tailwindui table --}}
