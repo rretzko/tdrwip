@@ -1,6 +1,5 @@
 <div>
 
-
     <x-livewire-table-with-modal-forms >
 
         <x-slot name="title">
@@ -27,19 +26,30 @@
                 <x-buttons.button-add toggle="showaddmodal"/>
             </div>
 
-            <x-navs.currentalumall />
+            <!-- {{--
+            <div class="mb-2">
+                <x-navs.currentalumall />
+            </div>
+            --}} -->
 
             {{-- beginning of tailwindui table --}}
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 ">
                 <div class="py-2 align-middle inline-block min-w sm:px-6 lg:px-8">
-                    <div class="space-y-4 overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <div class="space-y-2 overflow-hidden border-b border-gray-200 sm:rounded-lg">
 
                         <div class="flex space-x-4">
-                            <div class="flex">
+                            {{-- SCHOOL YEAR FILTER --}}
+                            <div class="flex space-x-2">
+                                <x-inputs.select label="School Year" :options="$schoolyears" for="schoolyear_id"
+                                                 currentvalue="{{ $schoolyear_id }}"
+                                                 placeholder="All"
+                                                 immediate
+                                />
+                                {{-- SEARCH FILTER --}}
                                 <x-inputs.text wire:model.debounce.1s="search"
                                                for="search"
                                                label=""
-                                               placeholder="Search ensemble name..."/>
+                                               placeholder="Search member name..."/>
                             </div>
                         <!-- {{-- SUPPRESS ADVANCED FILTERS
                             <div class="flex text-sm text-gray-600">
@@ -110,28 +120,16 @@
                                     Name
                                 </x-tables.heading>
 
-                                <x-tables.heading wire:click.prevent="sortField('type')"
-                                                  sortable
-                                                  direction="asc"
-                                                  :direction="$sortfield === 'classof' ? $sortdirection : null"
-                                >
-                                    Type
-                                </x-tables.heading>
-
-                                <x-tables.heading wire:click.prevent="sortField('startyear')"
+                                <x-tables.heading wire:click.prevent="sortField('instrumentation')"
                                                   sortable
                                                   direction="asc"
                                                   :direction="$sortfield === 'instrumentation' ? $sortdirection : null"
                                 >
-                                    Since
+                                    Voice Part
                                 </x-tables.heading>
 
-                                <x-tables.heading wire:click.prevent="sortField('members')"
-                                                  sortable
-                                                  direction="asc"
-                                                  :direction="$sortfield === 'instrumentation' ? $sortdirection : null"
-                                >
-                                    Members
+                                <x-tables.heading >
+                                    School Years
                                 </x-tables.heading>
 
                                 <th><span class="sr-only">Edit</span></th>
@@ -159,36 +157,27 @@
                                     </x-tables.row>
                                 @endif
 
-                                @forelse($ensembles AS $ensemble)
+                                @forelse($members AS $m)
                                     <x-tables.row wire:loading.class.delay="opacity-50" altcolor="{{$loop->iteration % 2}}" wire:key="row-{{ $ensemble->id }}">
 
                                         <x-tables.cell>
-                                            <x-inputs.checkbox value="{{ $ensemble->id }}" class="" for="selected" label="" />
+                                            <x-inputs.checkbox value="{{ $m->user_id }}" class="" for="selected" label="" />
                                         </x-tables.cell>
 
                                         <x-tables.cell>
-                                            {{ $ensemble->name }}
+                                            {{ $m->person->fullNameAlpha }}
                                         </x-tables.cell>
                                         <x-tables.cell>
-                                            {{ $ensemble->ensembletype->descr }}
+                                            {{ $m->instrumentation->formattedDescr() }}
                                         </x-tables.cell>
 
                                         <x-tables.cell>
-                                            {{ $ensemble->startyear }}
-                                        </x-tables.cell>
-
-                                        <x-tables.cell class="text-center">
-                                            <a class='text-blue-700 font-bold'
-                                               href="{{ route('ensemblemembers.index', ['ensemble' => $ensemble]) }}"
-                                               title="Click to add/edit {{ $ensemble->name }} members"
-                                            >
-                                                {{ $ensemble->members()->count() }}
-                                            </a>
+                                            Schoolyears?
                                         </x-tables.cell>
 
                                         <x-tables.cell>
                                             <x-buttons.button-link
-                                                wire:click.defer="edit({{ $ensemble->id }})"
+                                                wire:click.defer="edit({{ $m->user_id }})"
                                                 class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
                                             >
                                                 Edit
@@ -197,7 +186,7 @@
 
                                         <x-tables.cell>
                                             <x-buttons.button-link
-                                                wire:click.defer="edit({{ $ensemble->id }})"
+                                                wire:click.defer="edit({{ $m->user_id }})"
                                                 class="border border-green-500 rounded px-2 bg-green-600 text-white hover:bg-green-400"
                                             >
                                                 Assets
@@ -209,7 +198,7 @@
                                 @empty
                                     <tr>
                                         <td colspan="6" class="text-gray-500 text-center">
-                                            No Ensemble found @if(strlen($this->search)) with search value: {{ $this->search }}@endif.
+                                            No Members found @if(strlen($this->search)) with search value: {{ $this->search }}@endif.
                                         </td>
                                     </tr>
                             @endforelse
@@ -236,8 +225,19 @@
             {{-- MODALS --}}
             {{-- ADD/EDIT STUDENT --}}
             <div>
+
                 @if($showeditmodal)
-                    <x-modals.ensemble :ensemble="$editensemble" :ensembletypes="$ensembletypes" :years="$years" />
+                    <x-modals.ensemblemember
+                        :ensemble="$ensemble"
+                        :instrumentations="$instrumentations"
+                        instrumentationid="{{ $instrumentation_id }}"
+                        :member="$editmember"
+                        :members="$members"
+                        :nonmembers="$nonmembers"
+                        schoolyear_id="$schoolyear_id"
+                        :schoolyears="$schoolyears"
+                        userid="{{ $user_id }}"
+                    />
                 @endif
             </div>
 
