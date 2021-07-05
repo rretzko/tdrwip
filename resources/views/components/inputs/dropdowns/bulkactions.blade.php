@@ -15,9 +15,10 @@
         </x-inputs.dropdownitem>
 
         @if($import)
-            <x-inputs.dropdownitem type="button" wire:click="import" class="flex items-center space-x-1">
-                <span>Import</span>
-            </x-inputs.dropdownitem>
+        <x-inputs.dropdownitem type="button" wire:click="$toggle('showfileuploadmodal')" class="flex items-center space-x-1">
+            <x-icons.upload class="text-gray-400" />
+            <span wire:click="$toggle('showfileuploadmodal')">Import</span>
+        </x-inputs.dropdownitem>
         @endif
     @else {{-- no items selected --}}
         <x-inputs.dropdownitem class="flex items-center space-x-1 cursor-text">
@@ -31,10 +32,10 @@
         </x-inputs.dropdownitem>
 
         @if($import)
-        <x-inputs.dropdownitem type="button" wire:click="import" class="flex items-center space-x-1">
-            <x-icons.upload class="text-gray-400" />
-            <span>Import</span>
-        </x-inputs.dropdownitem>
+            <x-inputs.dropdownitem type="button" wire:click="$toggle('showfileuploadmodal')" class="flex items-center space-x-1">
+                <x-icons.upload class="text-gray-400" />
+                <span >Import</span>
+            </x-inputs.dropdownitem>
         @endif
     @endif
 

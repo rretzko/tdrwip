@@ -74,7 +74,7 @@ class Ensemble extends Model
         $operator = ($schoolyear) ? '=' : '>';
         $schoolyear_id = ($schoolyear) ? $schoolyear->id : 0;
 
-        return Ensemblemember::with('person','instrumentation')
+        return Ensemblemember::with('person','instrumentation','schoolyear')
             ->where('ensemble_id', $this->id)
             ->where('schoolyear_id', $operator, $schoolyear_id)
             ->get();

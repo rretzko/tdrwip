@@ -7,18 +7,20 @@ use App\Models\Ensemblemember;
 use App\Models\Schoolyear;
 use App\Models\Userconfig;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Livewire\Component;
 
 class Memberscomponent extends Component
 {
-    //contract properties for pages
+    //common contract properties for pages
+    public $allowimports = true; //allow user to import ensemble members
+    public $confirmingdelete = 0;
     public $search = '';
     public $selectall = false;
     public $selectpage = 0;
     public $showaddmodal = false;
     public $showDeleteModal = false;
     public $showeditmodal = false;
+    public $showfileuploadmodal = false;
     public $showfilters = false;
     public $sortdirection = 'asc';
     public $sortfield = '';
@@ -58,7 +60,6 @@ class Memberscomponent extends Component
         $this->schoolyear = Schoolyear::find($this->schoolyear_id);
         $this->schoolyears = Schoolyear::orderByDesc('id')->get();
         $this->teacher_user_id = auth()->id();
-
     }
 
     public function render()
@@ -69,6 +70,37 @@ class Memberscomponent extends Component
             'members' => $this->members(),
             'nonmembers' => $this->nonmembersArray(),
         ]);
+    }
+
+    public function delete($id)
+    {
+        if($this->confirmingdelete) {
+
+            $this->editmember->delete();
+            $this->reset([
+                'confirmingdelete',
+                'showeditmodal',
+            ]);
+
+        }else{
+
+            $this->confirmingdelete = $id;
+        }
+    }
+
+    public function edit($ensemblemember_id)
+    {
+        $this->editmember = Ensemblemember::find($ensemblemember_id);
+
+        $this->ensemble_id = Userconfig::getValue('ensemble_id', auth()->id());
+        $this->schoolyear_id = Userconfig::getValue('schoolyear_id', auth()->id());
+        $this->user_id = $ensemblemember_id;
+        $this->teacher_user_id = auth()->id();
+
+        $this->instrumentation_id = $this->editmember->instrumentation_id;
+
+        $this->reset('confirmingdelete');
+        $this->showeditmodal = true;
     }
 
     public function save()
@@ -97,6 +129,12 @@ class Memberscomponent extends Component
             : 'asc';
 
         $this->sortfield = $value;
+    }
+
+    public function updatedSchoolyearId()
+    {
+        Userconfig::setValue('schoolyear_id', auth()->id(), $this->schoolyear_id);
+        $this->schoolyear = Schoolyear::find($this->schoolyear_id);
     }
 
     public function updatedSelectpage($value)
@@ -140,7 +178,11 @@ class Memberscomponent extends Component
 
     private function members()
     {
-        return $this->sorted($this->ensemble->members(Schoolyear::find($this->schoolyear_id)));
+        $members = $this->ensemble->members(Schoolyear::find($this->schoolyear_id));
+
+        return (strlen($this->search))
+            ? $this->sorted($this->searched($members))
+            : $this->sorted($members);
     }
 
     private function nonmembersArray(): array
@@ -158,18 +200,33 @@ class Memberscomponent extends Component
 
     private function saveNewMember()
     {
-         $this->editmember = Ensemblemember::create(
-            [
-                'ensemble_id' => $this->ensemble_id,
-                'schoolyear_id' => $this->schoolyear_id,
-                'user_id' => $this->user_id,
-                'teacher_user_id' => $this->teacher_user_id,
-                'instrumentation_id' => $this->instrumentation_id,
-            ]
-        );
+        //restore deleted row or
+        if (! $this->trashedEnsemblememberRestored()) {
+
+            //add new member
+            $this->editmember = Ensemblemember::create(
+                [
+                    'ensemble_id' => $this->ensemble_id,
+                    'schoolyear_id' => $this->schoolyear_id,
+                    'user_id' => $this->user_id,
+                    'teacher_user_id' => $this->teacher_user_id,
+                    'instrumentation_id' => $this->instrumentation_id,
+                ]
+            );
+        }
 
          $this->showaddmodal = false;
          $this->showeditmodal = false;
+    }
+
+    private function searched($members)
+    {
+        $search = strtolower($this->search);
+
+        return $members->filter(function($member) use ($search) {
+
+                return str_contains(strtolower($member->person->last), $search);
+        });
     }
 
     private function sorted(Collection $members)
@@ -213,5 +270,19 @@ class Memberscomponent extends Component
         return ($this->sortdirection === 'asc')
             ? $members->sortBy('.instrumentation.descr')
             : $members->sortByDesc('instrumentation.descr');
+    }
+
+    private function trashedEnsemblememberRestored() : bool
+    {
+        //ensure that the ensemblemember has not been deleted
+        $trashed = Ensemblemember::withTrashed()
+            ->where('user_id', $this->user_id)
+            ->where('ensemble_id', $this->ensemble_id)
+            ->where('schoolyear_id', $this->schoolyear_id)
+            ->first();
+
+        return ($trashed)
+            ? $trashed->restore()
+            : false;
     }
 }

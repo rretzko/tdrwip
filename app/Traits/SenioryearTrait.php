@@ -19,4 +19,12 @@ trait SenioryearTrait
             ? (date('Y', $now)) //Jan - Jun = current year
             : (date('Y', $now) + 1); //Jul - Dec = current year + 1
     }
+
+    public function classOf($grade)
+    {
+        if($grade < 13){
+
+            return ($this->senioryear() + (12 - $grade));
+        }
+    }
 }

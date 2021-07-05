@@ -38,21 +38,6 @@ class Userconfig extends Model
         return self::get($descr, $user_id);
     }
 
-    private static function defaultStudentform($descr, $user_id)
-    {
-        self::defaultSave($descr, $user_id, 'biography');
-    }
-
-    private static function defaultStudenttab($descr, $user_id)
-    {
-        self::defaultSave($descr, $user_id, 'biography');
-    }
-
-    private static function defaultStudentpopulation($descr, $user_id)
-    {
-        self::defaultSave($descr, $user_id, 'all');
-    }
-
     private static function defaultFilter_studentroster($descr, $user_id)
     {
         $user = User::find($user_id);
@@ -81,6 +66,13 @@ class Userconfig extends Model
             ]);
     }
 
+    private static function defaultEnsemble_id($descr, $user_id)
+    {dd($user_id);
+        $person = Person::find($user_id);
+        $ensemble = $person->ensembles->first();
+        self::defaultSave($descr, $user_id, $ensemble->id);
+    }
+
     private static function defaultSchool_id($descr, $user_id)
     {
         $user = User::find($user_id);
@@ -94,9 +86,24 @@ class Userconfig extends Model
         self::defaultSave($descr, $user_id, date('Y'));
     }
 
+    private static function defaultStudentform($descr, $user_id)
+    {
+        self::defaultSave($descr, $user_id, 'biography');
+    }
+
     private static function defaultStudentform_tab($descr, $user_id)
     {
         self::defaultSave($descr, $user_id, 'biography'); //display
+    }
+
+    private static function defaultStudenttab($descr, $user_id)
+    {
+        self::defaultSave($descr, $user_id, 'biography');
+    }
+
+    private static function defaultStudentpopulation($descr, $user_id)
+    {
+        self::defaultSave($descr, $user_id, 'all');
     }
 
     private static function defaultUpdate($descr, $user_id, $value)

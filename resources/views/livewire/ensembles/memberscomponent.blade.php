@@ -22,7 +22,7 @@
 
             <div class="flex justify-end space-x-2 mb-2">
                 <x-inputs.dropdowns.perpage />
-                <x-inputs.dropdowns.bulkactions import />
+                <x-inputs.dropdowns.bulkactions import="$allowimports" />
                 <x-buttons.button-add toggle="showaddmodal"/>
             </div>
 
@@ -143,14 +143,14 @@
                                     <x-tables.row class="bg-gray-200" wire:key="row-message">
                                         <x-tables.cell colspan="7">
                                             @unless($selectall)
-                                                <div>You have selected <strong>{{ count($selected) }}</strong> ensembles, do
-                                                    you want to select all <strong>{{ $ensembles->count() }}</strong>?
+                                                <div>You have selected <strong>{{ count($selected) }}</strong> members, do
+                                                    you want to select all <strong>{{ $members->count() }}</strong>?
                                                     <x-buttons.button-link wire:click="selectAll"
                                                                            class="ml-1 text-blue-600">Select All
                                                     </x-buttons.button-link>
                                                 </div>
                                             @else
-                                                <span>You have selected all <strong>{{ $ensembles->count() }}</strong>
+                                                <span>You have selected all <strong>{{ $members->count() }}</strong>
                                                     ensembles.</span>
                                             @endunless
                                         </x-tables.cell>
@@ -158,7 +158,7 @@
                                 @endif
 
                                 @forelse($members AS $m)
-                                    <x-tables.row wire:loading.class.delay="opacity-50" altcolor="{{$loop->iteration % 2}}" wire:key="row-{{ $ensemble->id }}">
+                                    <x-tables.row wire:loading.class.delay="opacity-50" altcolor="{{$loop->iteration % 2}}" wire:key="row-{{ $m->user_id }}">
 
                                         <x-tables.cell>
                                             <x-inputs.checkbox value="{{ $m->user_id }}" class="" for="selected" label="" />
@@ -167,17 +167,19 @@
                                         <x-tables.cell>
                                             {{ $m->person->fullNameAlpha }}
                                         </x-tables.cell>
-                                        <x-tables.cell>
+                                        <x-tables.cell class="text-center">
                                             {{ $m->instrumentation->formattedDescr() }}
                                         </x-tables.cell>
 
-                                        <x-tables.cell>
-                                            Schoolyears?
+                                        <x-tables.cell class="text-center">
+                                            @foreach($m->yearsInEnsemble() AS $m_yie )
+                                                {!! $m_yie->schoolyear->descr.'<br />' !!}
+                                            @endforeach
                                         </x-tables.cell>
 
                                         <x-tables.cell>
                                             <x-buttons.button-link
-                                                wire:click.defer="edit({{ $m->user_id }})"
+                                                wire:click.defer="edit({{ $m->id }})"
                                                 class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
                                             >
                                                 Edit
@@ -186,7 +188,7 @@
 
                                         <x-tables.cell>
                                             <x-buttons.button-link
-                                                wire:click.defer="edit({{ $m->user_id }})"
+                                                wire:click.defer="edit({{ $m->id }})"
                                                 class="border border-green-500 rounded px-2 bg-green-600 text-white hover:bg-green-400"
                                             >
                                                 Assets
@@ -198,7 +200,7 @@
                                 @empty
                                     <tr>
                                         <td colspan="6" class="text-gray-500 text-center">
-                                            No Members found @if(strlen($this->search)) with search value: {{ $this->search }}@endif.
+                                            No Members found @if(strlen($this->search)) with search value: {{ $this->search }} @endif for school year {{ $this->schoolyear->descr }}.
                                         </td>
                                     </tr>
                             @endforelse
@@ -223,11 +225,12 @@
             </div>
 
             {{-- MODALS --}}
-            {{-- ADD/EDIT STUDENT --}}
+            {{-- ADD/EDIT ENSEMBLEMEMBER --}}
             <div>
 
                 @if($showeditmodal)
                     <x-modals.ensemblemember
+                        confirmingdelete="{{$confirmingdelete}}"
                         :ensemble="$ensemble"
                         :instrumentations="$instrumentations"
                         instrumentationid="{{ $instrumentation_id }}"
@@ -241,19 +244,21 @@
                 @endif
             </div>
 
-            {{-- DELETE ENSEMBLE --}}
+            {{-- FILE UPLOAD FORM --}}
             <div>
-                @if($showDeleteModal)
-                    <x-modals.delete :selected="$selected" objectname="ensemble" />
+                @if($showfileuploadmodal)
+                    <x-modals.ensemblemembersupload
+                        currentvalue="$schoolyear_id"
+                        for="schoolyear_id"
+                        label="school years"
+                        :options="$schoolyears"
+                    />
                 @endif
             </div>
-
-
 
         </x-slot>
 
         <x-slot name="actions" >
-
 
         </x-slot>
 

@@ -59,6 +59,12 @@ return [
             'url' => env('APP_URL').'/storage/profile-photos',
             'visibility' => 'public',
         ],
+        'ensemblemembers' =>[
+            'driver' => 'local',
+            'root' => storage_path('app/public/ensemblemembers'),
+            'url' => env('APP_URL').'/storage/ensemblemembers',
+            'visibility' => 'private',
+        ]
 
     ],
 
