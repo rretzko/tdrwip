@@ -36,6 +36,13 @@ class Ensemble extends Model
         return $this->belongsTo(Ensembletype::class);
     }
 
+    public function ensemblemembers()
+    {
+        return $this->hasMany(Ensemblemember::class)
+            ->with('instrumentation','person', 'schoolyear')
+            ;
+    }
+
     /**
      * @return simple array of gradetype_ids
      */
@@ -63,6 +70,18 @@ class Ensemble extends Model
     }
 
     /**
+     * Return the count of unique members over the lifetime of the ensemble
+     */
+    public function lifetimecount()
+    {
+        return DB::table('ensemblemembers')
+            ->where('ensemble_id', '=', $this->id)
+            ->distinct()
+            ->count('user_id');
+    }
+
+
+    /**
      * Return Ensemblemembers for $schoolyear OR
      * all Ensemblemembers for all years if $schoolyear === null
      *
@@ -71,31 +90,35 @@ class Ensemble extends Model
      */
     public function members(Schoolyear $schoolyear = null)
     {
-        $operator = ($schoolyear) ? '=' : '>';
         $schoolyear_id = ($schoolyear) ? $schoolyear->id : 0;
 
-        return Ensemblemember::with('person','instrumentation','schoolyear')
-            ->where('ensemble_id', $this->id)
-            ->where('schoolyear_id', $operator, $schoolyear_id)
-            ->get();
+        $ensemblemembers = $this->ensemblemembers->filter(function($ensemblemember) use ($schoolyear_id) {
+            return ($schoolyear_id)
+                ? $ensemblemember->schoolyear_id == $schoolyear_id
+                : $ensemblemember->schoolyear_id > 0;
+        });
+
+        return $ensemblemembers->sortBy('person.last');
     }
 
     public function nonmembers()
     {
-        //return Teacher::find(auth()->id())->myStudents()
-        //    ->whereNotIn('ensembles', $this);
-
         return Teacher::find(auth()->id())->myStudents()->filter(function($student){
 
             return (! $student->person->ensembles->contains($this));
         });
-        /*return Student::with('person')
-            ->whereHas('teachers', function($query){
-                return $query->where('user_id', '=', auth()->id());
-            })
-            ->get()
-            ->sortBy('person.last');
-        */
+    }
+
+    /**
+     * Return the count of unique members over the lifetime of the ensemble
+     */
+    public function schoolyearcount()
+    {
+        return DB::table('ensemblemembers')
+        ->where('ensemble_id', '=', $this->id)
+        ->where('schoolyear_id', '=', Userconfig::getValue('schoolyear_id', auth()->id()))
+        ->distinct()
+        ->count('user_id');
     }
 
     public function user()

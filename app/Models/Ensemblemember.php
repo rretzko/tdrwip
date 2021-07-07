@@ -36,6 +36,22 @@ class Ensemblemember extends Model
         return $this->belongsTo(Schoolyear::class);
     }
 
+    public function schoolyears()
+    {
+        $a = [];
+
+        foreach(DB::table('ensemblemembers')
+            ->select('schoolyear_id')
+            ->where('user_id', '=', $this->user_id)
+            ->where('ensemble_id', '=', $this->ensemble_id)
+            ->pluck('schoolyear_id') AS $schoolyear_id){
+
+            $a[] = Schoolyear::find($schoolyear_id);
+        }
+
+        return collect($a);
+    }
+
     public function yearsInEnsemble()
     {
         return Ensemblemember::with('schoolyear')

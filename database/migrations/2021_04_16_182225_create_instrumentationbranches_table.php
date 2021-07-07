@@ -14,7 +14,7 @@ class CreateInstrumentationbranchesTable extends Migration
     public function up()
     {
         Schema::create('instrumentationbranches', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('descr',24);
         });
     }

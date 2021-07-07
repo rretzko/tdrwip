@@ -14,7 +14,7 @@ class CreateSchoolyearsTable extends Migration
     public function up()
     {
         Schema::create('schoolyears', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('descr');
             $table->date('startdate');
             $table->date('enddate');

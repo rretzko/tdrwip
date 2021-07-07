@@ -22,9 +22,9 @@ trait SenioryearTrait
 
     public function classOf($grade)
     {
-        if($grade < 13){
+        //early exit
+        if($grade > 12){ return $grade;}
 
-            return ($this->senioryear() + (12 - $grade));
-        }
+        return ($this->senioryear() + (12 - $grade));
     }
 }

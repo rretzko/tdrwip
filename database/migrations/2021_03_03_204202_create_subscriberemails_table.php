@@ -14,7 +14,7 @@ class CreateSubscriberemailsTable extends Migration
     public function up()
     {
         Schema::create('subscriberemails', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->foreignId('user_id')->constrained();
             $table->foreignId('emailtype_id')->constrained();
             $table->string('email', 255)->unique();

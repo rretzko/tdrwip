@@ -15,6 +15,48 @@
                     Ensemble Member .csv file upload...
                 </h3>
 
+                <p>
+                    The system will automatically upload ensemble members from a .csv file which meets
+                    the following criteria:
+                    <style>#instructions th{border: 1px solid darkblue; text-align: center; font-size: small; padding: 0 2px;}</style>
+                    <ul id="instructions" class="ml-5 list-disc">
+                        <li>Six columns as follows:
+                            <ol class="ml-5">
+                                <li>
+                                    <table >
+                                        <tr>
+                                            <th>First name</th>
+                                            <th>Last name</th>
+                                            <th>Middle name</th>
+                                            <th>Ensemble name</th>
+                                            <th>Voice part</th>
+                                            <th>Grade/ Class</th>
+                                        </tr>
+                                    </table>
+                                </li>
+                            </ol>
+                        </li>
+                        <li>The system will automatically add a new student record UNLESS it finds a match with students
+                            in your Student roster.  The system will check the following fields:
+                            <ul class="ml-5">
+                                <li>First name, last name, school, grade/class</li>
+                            </ul>
+                        </li>
+                        <li>
+                            For those students currently on your Student roster, please ensure that the .csv file
+                            information <u>exactly matches</u> the information on your Student roster.
+                        </li>
+                        <li class="space-y-4">
+                            <a href="/assets/csvs/ensemblemembers_template.csv"
+                               title="Click to download template"
+                               class="text-blue-600"
+                            >
+                                Click here for a template to get you started!
+                            </a>
+                        </li>
+                    </ul>
+                </p>
+
                 <form enctype="multipart/form-data" method="post" action="{{ route('ensemblemembers.import') }}">
 
                     @csrf

@@ -7,13 +7,19 @@ use App\Models\Ensemblemember;
 use App\Models\Schoolyear;
 use App\Models\Userconfig;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Memberscomponent extends Component
 {
+    use WithPagination;
+
     //common contract properties for pages
     public $allowimports = true; //allow user to import ensemble members
     public $confirmingdelete = 0;
+    public $perpage = 0; //pagination
     public $search = '';
     public $selectall = false;
     public $selectpage = 0;
@@ -52,14 +58,15 @@ class Memberscomponent extends Component
     public function mount()
     {
         $this->ensemble = Ensemble::find(Userconfig::getValue('ensemble_id', auth()->id()));
-        $this->ensembles = collect();
-        $this->ensemble_id = Userconfig::getValue('ensemble_id', auth()->id());
+  //      $this->ensembles = collect();
+  //      $this->ensemble_id = Userconfig::getValue('ensemble_id', auth()->id());
         $this->instrumentations = collect();
         $this->members = collect();
-        $this->schoolyear_id = Userconfig::getValue('schoolyear_id', auth()->id());
-        $this->schoolyear = Schoolyear::find($this->schoolyear_id);
+  //      $this->schoolyear_id = Userconfig::getValue('schoolyear_id', auth()->id());
+  //      $this->schoolyear = Schoolyear::find($this->schoolyear_id);
         $this->schoolyears = Schoolyear::orderByDesc('id')->get();
-        $this->teacher_user_id = auth()->id();
+  //      $this->teacher_user_id = auth()->id();
+
     }
 
     public function render()
@@ -105,12 +112,16 @@ class Memberscomponent extends Component
 
     public function save()
     {
-        $input = $this->validate();
+        $items = $this->validate();
 
         if((! $this->editmember) || (! $this->editmember->user_id)){
 
             return $this->saveNewMember();
         }
+
+        $this->editmember->update([
+            'instrumentation_id' => $this->instrumentation_id,
+        ]);
 
         $this->emit('ensemblemember-saved');
     }
@@ -131,6 +142,11 @@ class Memberscomponent extends Component
         $this->sortfield = $value;
     }
 
+    public function updatedPerpage()
+    {
+        Userconfig::setValue('pagination', auth()->id(), $this->perpage);
+    }
+
     public function updatedSchoolyearId()
     {
         Userconfig::setValue('schoolyear_id', auth()->id(), $this->schoolyear_id);
@@ -141,7 +157,7 @@ class Memberscomponent extends Component
     {
         $this->selected = ($value)
             //values must be cast as strings
-            ? $this->ensembles()->pluck('id')->map(fn($id) => (string)$id)
+            ? $this->members()->pluck('id')->map(fn($id) => (string)$id)
             : [];
     }
 
@@ -176,13 +192,15 @@ class Memberscomponent extends Component
         return $a;
     }
 
-    private function members()
+    private function members($page=0)
     {
-        $members = $this->ensemble->members(Schoolyear::find($this->schoolyear_id));
+        $members =  ($this->ensemble->members(Schoolyear::find($this->schoolyear_id)));
+        $options = [];
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1 );
+        $perpage = Userconfig::getValue('pagination', auth()->id());
 
-        return (strlen($this->search))
-            ? $this->sorted($this->searched($members))
-            : $this->sorted($members);
+        $items = $members instanceof Collection ? $members : Collection::make($members);
+        return new LengthAwarePaginator($items->forPage($page,$perpage), $items->count(), $perpage, $page, $options);
     }
 
     private function nonmembersArray(): array

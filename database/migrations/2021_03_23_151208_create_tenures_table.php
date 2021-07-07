@@ -14,7 +14,7 @@ class CreateTenuresTable extends Migration
     public function up()
     {
         Schema::create('tenures', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->foreignId('user_id')->constrained();
             $table->foreignId('school_id')->constrained();
             $table->unsignedSmallInteger('startyear')->default(1960);

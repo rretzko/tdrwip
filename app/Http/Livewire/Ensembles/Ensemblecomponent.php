@@ -144,7 +144,7 @@ class Ensemblecomponent extends Component
     {
         return $this->sorted(Ensemble::where('name', 'LIKE', '%'.$this->search.'%')
                 ->where('school_id', Userconfig::getValue('school_id', auth()->id()))
-                ->with('ensembletype', 'ensembletype.instrumentations')
+                ->with('ensembletype', 'ensembletype.instrumentations', 'ensemblemembers')
                 ->orderBy('name')
                 ->get());
     }

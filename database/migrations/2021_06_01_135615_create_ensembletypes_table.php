@@ -14,7 +14,7 @@ class CreateEnsembletypesTable extends Migration
     public function up()
     {
         Schema::create('ensembletypes', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('descr', 40);
             $table->timestamps();
             $table->softDeletes();

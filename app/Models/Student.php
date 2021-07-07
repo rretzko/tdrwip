@@ -13,7 +13,7 @@ class Student extends Model
 {
     use HasFactory, SenioryearTrait, UpdateSearchablesTrait,SoftDeletes;
 
-    protected $fillable = ['user_id'];
+    protected $fillable = ['birthday', 'classof','height', 'shirtsize_id', 'user_id'];
 
     protected $primaryKey = 'user_id';
 

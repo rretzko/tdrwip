@@ -14,7 +14,7 @@ class CreateAssetEnsembleTable extends Migration
     public function up()
     {
         Schema::create('asset_ensemble', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->foreignId('ensemble_id')->constrained();
             $table->foreignId('asset_id')->constrained();
             $table->timestamps();

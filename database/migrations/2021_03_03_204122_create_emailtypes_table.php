@@ -14,7 +14,7 @@ class CreateEmailtypesTable extends Migration
     public function up()
     {
         Schema::create('emailtypes', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('descr', 24)->unique();
             $table->boolean('subscriber')->default(0);
         });

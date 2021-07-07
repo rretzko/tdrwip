@@ -14,7 +14,7 @@ class CreateStudenttypesTable extends Migration
     public function up()
     {
         Schema::create('studenttypes', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('descr', 24)->unique();
             $table->timestamps();
         });

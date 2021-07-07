@@ -14,7 +14,7 @@ class CreateGradetypesTable extends Migration
     public function up()
     {
         Schema::create('gradetypes', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('descr', 24)->unique();
             $table->smallInteger('orderby')->default(1);
         });

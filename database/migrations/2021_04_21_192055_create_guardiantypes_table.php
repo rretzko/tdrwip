@@ -14,7 +14,7 @@ class CreateGuardiantypesTable extends Migration
     public function up()
     {
         Schema::create('guardiantypes', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('descr', 24);
             $table->foreignId('pronoun_id')->constrained();
             $table->integer('order_by');

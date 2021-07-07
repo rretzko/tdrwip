@@ -14,7 +14,7 @@ class CreateSearchtypesTable extends Migration
     public function up()
     {
         Schema::create('searchtypes', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('descr', 24);
             $table->boolean('unique')->default(0);
         });

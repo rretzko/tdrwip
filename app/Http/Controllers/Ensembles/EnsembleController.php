@@ -137,7 +137,7 @@ class EnsembleController extends Controller
 
     private function ensembles()
     {
-        return Ensemble::with('ensembletype', 'ensembletype.instrumentations')
+        return Ensemble::with('ensembletype', 'ensembletype.instrumentations','ensemblemembers')
             ->where('user_id', auth()->id())
             ->where('school_id', Userconfig::getValue('school_id', auth()->id()))
             ->orderBy('name')->get();

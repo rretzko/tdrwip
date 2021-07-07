@@ -14,7 +14,7 @@ class CreateInstrumentationsTable extends Migration
     public function up()
     {
         Schema::create('instrumentations', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('descr', 60);
             $table->string('abbr', 16);
             $table->foreignId('instrumentationbranch_id')->constrained();

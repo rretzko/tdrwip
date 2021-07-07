@@ -26,12 +26,6 @@
                 <x-buttons.button-add toggle="showaddmodal"/>
             </div>
 
-            <!-- {{--
-            <div class="mb-2">
-                <x-navs.currentalumall />
-            </div>
-            --}} -->
-
             {{-- beginning of tailwindui table --}}
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 ">
                 <div class="py-2 align-middle inline-block min-w sm:px-6 lg:px-8">
@@ -105,6 +99,7 @@
                             @endif
                         </div>
 
+                        <div class="text-bold text-blue-800">{{ $ensemble->name }} has {{ $ensemble->lifetimecount() }} lifetime and {{ $ensemble->schoolyearcount() }} school-year members</div>
                         <x-tables.surgetable class="w-full ">
                             <x-slot name="head" >
 
@@ -129,7 +124,7 @@
                                 </x-tables.heading>
 
                                 <x-tables.heading >
-                                    School Years
+                                    Years
                                 </x-tables.heading>
 
                                 <th><span class="sr-only">Edit</span></th>
@@ -172,8 +167,8 @@
                                         </x-tables.cell>
 
                                         <x-tables.cell class="text-center">
-                                            @foreach($m->yearsInEnsemble() AS $m_yie )
-                                                {!! $m_yie->schoolyear->descr.'<br />' !!}
+                                            @foreach($m->schoolyears() AS $schoolyear )
+                                                {{ $schoolyear->descr }}<br />
                                             @endforeach
                                         </x-tables.cell>
 
@@ -203,23 +198,24 @@
                                             No Members found @if(strlen($this->search)) with search value: {{ $this->search }} @endif for school year {{ $this->schoolyear->descr }}.
                                         </td>
                                     </tr>
-                            @endforelse
-                            <!-- {{-- SUPPRESS PAGINATION
+                                @endforelse
+
+                                {{-- PAGINATION --}}
                                 <div class="mb-2">
-                                    {{$ensembles->count() ? $ensembles->links() : ''}}
+                                    {{$members->count() ? $members->links() : ''}}
                                 </div>
---}} -->
+
                             </x-slot>
 
                         </x-tables.surgetable>
 
-                    <!-- {{-- SUPPRESS PAGINATION
+                        {{-- SPAGINATION --}}
                         <div class="mb-2">
-                            @if($ensembles->count() > 5)
-                                {{$ensembles->count() ? '$ensembles->links()' : ''}}
+                            @if($members->count() > 5)
+                                {{$members->count() ? $members->links() : ''}}
                             @endif
                         </div>
---}} -->
+
                     </div>
                 </div>
             </div>
@@ -247,12 +243,13 @@
             {{-- FILE UPLOAD FORM --}}
             <div>
                 @if($showfileuploadmodal)
-                    <x-modals.ensemblemembersupload
-                        currentvalue="$schoolyear_id"
+        <!-- {{--            <x-modals.ensemblemembersupload
+                        currentvalue="{{$schoolyear_id}}"
                         for="schoolyear_id"
                         label="school years"
                         :options="$schoolyears"
                     />
+--}} -->
                 @endif
             </div>
 

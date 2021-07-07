@@ -14,7 +14,7 @@ class CreateShirtsizesTable extends Migration
     public function up()
     {
         Schema::create('shirtsizes', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('descr',24);
             $table->string('abbr', 8);
             $table->integer('order_by');

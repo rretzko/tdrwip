@@ -14,7 +14,7 @@ class CreateUserconfigsTable extends Migration
     public function up()
     {
         Schema::create('userconfigs', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->foreignId('user_id')->constrained();
             $table->string('descr', 60);
             $table->string('value');

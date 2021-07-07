@@ -14,7 +14,7 @@ class CreateEnsembleGradetypeTable extends Migration
     public function up()
     {
         Schema::create('ensemble_gradetype', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->foreignId('ensemble_id')->constrained();
             $table->foreignId('gradetype_id')->constrained();
             $table->timestamps();

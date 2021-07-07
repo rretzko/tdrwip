@@ -86,7 +86,7 @@
                                             </x-inputs.select>
                                         </x-inputs.group>
 
-                                        <x-buttons.button-link wire:click="resetFilters" class="aboslute right-0 bottom-0 p-4">Reset Filters</x-buttons.button-link>
+                                        <x-buttons.button-link wire:click="resetFilters" class="absolute right-0 bottom-0 p-4">Reset Filters</x-buttons.button-link>
                                     </div>
 
                                 </div>
@@ -209,6 +209,8 @@
                             </x-slot>
 
                         </x-tables.surgetable>
+
+                        {{-- PAGINATION --}}
                         <div class="mb-2">
                             @if($students->count() > 5)
                                 {{$students->count() ? $students->links() : ''}}

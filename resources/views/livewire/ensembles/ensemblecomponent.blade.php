@@ -179,7 +179,7 @@
                                                href="{{ route('ensemblemembers.index', ['ensemble' => $ensemble]) }}"
                                                title="Click to add/edit {{ $ensemble->name }} members"
                                             >
-                                                {{ $ensemble->members()->count() }}
+                                                {{ $ensemble->ensemblemembers->count() }}
                                             </a>
                                         </x-tables.cell>
 

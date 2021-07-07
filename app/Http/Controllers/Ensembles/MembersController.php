@@ -7,6 +7,7 @@ use App\Imports\EnsemblemembersImport;
 use App\Models\Ensemble;
 use App\Models\Ensemblemember;
 use App\Models\Schoolyear;
+use App\Models\User;
 use App\Models\Userconfig;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -36,18 +37,28 @@ class MembersController extends Controller
             Userconfig::setValue('schoolyear_id', auth()->id(), $request['schoolyear_id']);
 
             $path = $request->file('ensemblemembers_csv')->storeAs('ensemblemembers',auth()->id().'_'.strtotime('NOW').'.csv');
+            $res = fopen('../storage/app/'.($path), 'r');
+            $headerrow = 1;
+            $import = new EnsemblemembersImport();
+            while($row = fgetcsv($res)){
+                //don't use first row
+                if($headerrow){
+                    $import->setColumnHeaders($row);
+                    $headerrow = 0;
+                }else{
+                    //process add rows with data
+                    $import->onRow($row);
+                }
+            }
 
-            //Excel::import(new EnsemblemembersImport, storage_path('ensemblemembers.csv'));
-            Excel::import(new EnsemblemembersImport, $path);
-
-            /*return view('ensembles.members.index',
+            return view('ensembles.members.index',
                 [
-                    'ensemble' => Ensemble::find($ensemble_id),
+                    'ensemble' => Ensemble::find($import->ensemble_id),
                     'countmembers' => Ensemblemember::with('person')
-                        ->where('ensemble_id', $ensemble_id)
-                        ->where('schoolyear_id', $schoolyear_id)
+                        ->where('ensemble_id', $import->ensemble_id)
+                        ->where('schoolyear_id', $import->schoolyear_id)
                         ->count(),
-                    'schoolyear' => Schoolyear::find($schoolyear_id),
-                ]);*/
+                    'schoolyear' => Schoolyear::find($import->schoolyear_id),
+                ]);
     }
 }

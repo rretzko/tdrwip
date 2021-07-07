@@ -14,7 +14,7 @@ class CreateHonorificsTable extends Migration
     public function up()
     {
         Schema::create('honorifics', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('descr', 24);
             $table->string('abbr',8);
             $table->smallInteger('order_by');

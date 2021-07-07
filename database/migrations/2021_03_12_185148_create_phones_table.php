@@ -14,7 +14,7 @@ class CreatePhonesTable extends Migration
     public function up()
     {
         Schema::create('phones', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->foreignId('user_id')->constrained();
             $table->foreignId('phonetype_id')->constrained();
             $table->string('phone', 255);

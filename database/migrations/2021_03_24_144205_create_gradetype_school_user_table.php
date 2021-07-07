@@ -14,7 +14,7 @@ class CreateGradetypeSchoolUserTable extends Migration
     public function up()
     {
         Schema::create('gradetype_school_user', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->foreignId('gradetype_id')->constrained();
             $table->foreignId('school_id')->constrained();
             $table->foreignId('user_id')->constrained();

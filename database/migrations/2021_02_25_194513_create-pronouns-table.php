@@ -14,7 +14,7 @@ class CreatePronounsTable extends Migration
     public function up()
     {
         Schema::create('pronouns', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('descr', 60);
             $table->string('intensive',60);
             $table->string('personal',60);

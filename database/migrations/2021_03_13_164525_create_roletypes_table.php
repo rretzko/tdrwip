@@ -14,7 +14,7 @@ class CreateRoletypesTable extends Migration
     public function up()
     {
         Schema::create('roletypes', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('descr', 24)->unique();
         });
     }

@@ -14,7 +14,7 @@ class CreateEnsemblemembersTable extends Migration
     public function up()
     {
         Schema::create('ensemblemembers', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->foreignId('ensemble_id')->constrained();
             $table->foreignId('schoolyear_id')->constrained();
             $table->foreignId('user_id');

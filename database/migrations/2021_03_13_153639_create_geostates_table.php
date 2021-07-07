@@ -14,7 +14,7 @@ class CreateGeostatesTable extends Migration
     public function up()
     {
         Schema::create('geostates', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('country_abbr')->default('US');
             $table->string('name');
             $table->string('abbr');

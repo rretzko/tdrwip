@@ -14,7 +14,7 @@ class CreateSearchablesTable extends Migration
     public function up()
     {
         Schema::create('searchables', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->text('hash')->unique();
             $table->timestamps();
         });
