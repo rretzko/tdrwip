@@ -193,12 +193,19 @@
                                         </x-tables.cell>
 
                                         <x-tables.cell>
-                                            <x-buttons.button-link
+                                            <!-- {{-- <x-buttons.button-link
                                                 wire:click.defer="edit({{ $ensemble->id }})"
                                                 class="border border-green-500 rounded px-2 bg-green-600 text-white hover:bg-green-400"
                                             >
                                                 Assets
                                             </x-buttons.button-link>
+                                            --}} -->
+                                            <a href="{{ route('ensemble.assets.index', ['ensemble' => $ensemble]) }}"
+                                               class="border border-green-500 rounded px-2 bg-green-600 text-white hover:bg-green-400"
+                                               title="Click to edit {{ $ensemble->name }} assets"
+                                            >
+                                                Assets
+                                            </a>
 
                                         </x-tables.cell>
 

@@ -40,7 +40,9 @@ class MembersController extends Controller
             $res = fopen('../storage/app/'.($path), 'r');
             $headerrow = 1;
             $import = new EnsemblemembersImport();
-            while($row = fgetcsv($res)){
+            $ensemble_id = $import->ensemble_id;
+            $schoolyear_id = $import->schoolyear_id;
+           while($row = fgetcsv($res)){
                 //don't use first row
                 if($headerrow){
                     $import->setColumnHeaders($row);
@@ -53,12 +55,12 @@ class MembersController extends Controller
 
             return view('ensembles.members.index',
                 [
-                    'ensemble' => Ensemble::find($import->ensemble_id),
+                    'ensemble' => Ensemble::find($ensemble_id),
                     'countmembers' => Ensemblemember::with('person')
-                        ->where('ensemble_id', $import->ensemble_id)
-                        ->where('schoolyear_id', $import->schoolyear_id)
+                        ->where('ensemble_id',$ensemble_id)
+                        ->where('schoolyear_id', $schoolyear_id)
                         ->count(),
-                    'schoolyear' => Schoolyear::find($import->schoolyear_id),
+                    'schoolyear' => Schoolyear::find($schoolyear_id),
                 ]);
     }
 }

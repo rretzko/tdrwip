@@ -86,9 +86,10 @@ class EnsemblemembersImport
 
             if (! $this->findCurrentUser()) {
 
-                $this->addStudent();
+    //            $this->addStudent();
             }
         }
+
     }
 
     public function setColumnHeaders(array $row){
@@ -260,10 +261,9 @@ class EnsemblemembersImport
     private function findCurrentUser() : int
     {
         //filter criteria
-        $usernames = $this->findCurrentUser_Username();
-        $names = $this->findCurrentUser_FilterName($usernames);
-        $students = $this->findCurrentUser_Students($names);
-        $schools = $this->findCurrentUser_Schools($students);
+        $unames = $this->findCurrentUser_Username();
+        $names = $this->findCurrentUser_FilterName($unames);
+        $schools = $this->findCurrentUser_Schools($names);
         $users = $this->findCurrentUser_Classofs($schools);
 
         //multiple records found
@@ -304,19 +304,18 @@ class EnsemblemembersImport
             }
         }
 
-        //unable to update record with user->id; return 0
-        return 0;
+        return 1;
     }
 
-    private function findCurrentUser_Classofs(Collection $users)
+    private function findCurrentUser_Classofs(Collection $students)
     {
         //early exit
-        if(! $users->count()){ return $users;}
+        if(! $students->count()){ return $students;}
 
-        return $users->filter(function($user){
+        return $students->filter(function($student){
 
-            return $user->person->student &&
-                $user->person->student->classof == $this->clean['classof'];
+            return $student &&
+                $student->classof == $this->clean['classof'];
         });
     }
 
@@ -325,43 +324,39 @@ class EnsemblemembersImport
         //early exit
         if(! $users->count()){ return $users;}
 
-        return $users->filter(function($user){
+        $a = [];
+        foreach($users AS $user){
 
-            return $user->person && $user->person::where('first', 'LIKE', $this->clean['first'])
+            $person = $user->person;
+
+            if($person::where('first', 'LIKE', $this->clean['first'])
                 ->where('last', 'LIKE', $this->clean['last'])
-                ->first();
-        });
+                ->first()){
+
+                $a[] = $person;
+            }
+        }
+
+        return collect($a);
     }
 
-    private function findCurrentUser_Schools(Collection $users)
+    private function findCurrentUser_Schools(Collection $persons)
     {
         //early exit
-        if(! $users->count()){ return $users;}
+        if(! $persons->count()){ return $persons;}
 
-        return $users->filter(function($user){
+        return $persons->filter(function($person){
 
-            return $user->schools &&
-                $user->schools->contains($this->school_id);
-        });
-    }
-
-    private function findCurrentUser_Students(Collection $users)
-    {
-        //early exit
-        if(! $users->count()){ return $users;}
-
-        return $users->filter(function($user){
-
-            return $user->isStudent();
+            return $person->user->schools &&
+                $person->user->schools->contains($this->school_id);
         });
     }
 
     private function findCurrentUser_Username()
     {
         //find username matches
-        return User::with('person', 'person.student', 'schools')
-            ->where('username', 'LIKE', '%'.substr($this->clean['first'], 0, 1).$this->clean['last'].'%')
-            ->get();
+        return User::where('username', 'LIKE', '%'.substr($this->clean['first'], 0, 1).$this->clean['last'].'%')
+            ->with('person')->get();
     }
 
     private function isEnsemblemember(User $user) : bool

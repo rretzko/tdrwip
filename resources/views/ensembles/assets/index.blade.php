@@ -49,7 +49,7 @@
 
                 <div class="overflow-x-auto">
 
-                    @livewire('ensembles.assets-table' )
+                   @livewire('ensembles.assets-table' )
 
                 </div>
             </x-slot>

@@ -1,4 +1,5 @@
 @props([
+'memberschoolyearid',
 'confirmingdelete',
 'ensemble',
 'instrumentations',
@@ -20,8 +21,12 @@
 
             <form wire:submit.prevent="save">
                 <x-inputs.group label="School Year" for="schoolyear_id" >
-                    <x-inputs.select label="" :options="$schoolyears" for="schoolyear_id"
-                                     currentvalue="{{ $member->schoolyear_id }}"/>
+                    <x-inputs.select wire:model="editmemberschoolyear_id"
+                                     label=""
+                                     :options="$schoolyears"
+                                     for="editmemberschoolyear_id"
+                                     currentvalue="{{ $memberschoolyearid }}"
+                    />
                 </x-inputs.group>
 
                 <x-inputs.group label="Name" for="name" >

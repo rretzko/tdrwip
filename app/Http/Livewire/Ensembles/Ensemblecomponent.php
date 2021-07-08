@@ -52,7 +52,6 @@ class Ensemblecomponent extends Component
         return view('livewire.ensembles.ensemblecomponent',
         [
             'ensembles' => $this->ensembles(),
-
         ]);
     }
 

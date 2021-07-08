@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Ensembles;
 
+use App\Exports\MembersExport;
 use App\Models\Ensemble;
 use App\Models\Ensemblemember;
 use App\Models\Schoolyear;
@@ -11,6 +12,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Memberscomponent extends Component
 {
@@ -20,8 +22,10 @@ class Memberscomponent extends Component
     public $allowimports = true; //allow user to import ensemble members
     public $confirmingdelete = 0;
     public $perpage = 0; //pagination
+    public $population = 0; //ALL members count
     public $search = '';
     public $selectall = false;
+    public $selected = [];
     public $selectpage = 0;
     public $showaddmodal = false;
     public $showDeleteModal = false;
@@ -33,6 +37,7 @@ class Memberscomponent extends Component
 
     //properties specific to this concern
     public $editmember = null;
+    public $editmemberschoolyear_id = 0;
     public $ensemble = null;
     public $ensemble_id = 0;
     public $instrumentation_id = 1;
@@ -57,15 +62,18 @@ class Memberscomponent extends Component
 
     public function mount()
     {
+        $this->editmemberschoolyear_id = Userconfig::getValue('schoolyear_id', auth()->id());
         $this->ensemble = Ensemble::find(Userconfig::getValue('ensemble_id', auth()->id()));
   //      $this->ensembles = collect();
   //      $this->ensemble_id = Userconfig::getValue('ensemble_id', auth()->id());
         $this->instrumentations = collect();
-        $this->members = collect();
-  //      $this->schoolyear_id = Userconfig::getValue('schoolyear_id', auth()->id());
-  //      $this->schoolyear = Schoolyear::find($this->schoolyear_id);
+  //      $this->members = collect();
+        $this->population = $this->ensemble->ensemblemembers()->count();
+        $this->schoolyear_id = Userconfig::getValue('schoolyear_id', auth()->id());
+        $this->schoolyear = Schoolyear::find($this->schoolyear_id);
         $this->schoolyears = Schoolyear::orderByDesc('id')->get();
   //      $this->teacher_user_id = auth()->id();
+        $this->ensemble->schoolyear_id = $this->schoolyear_id;
 
     }
 
@@ -79,20 +87,15 @@ class Memberscomponent extends Component
         ]);
     }
 
-    public function delete($id)
+    public function deleteSelected()
     {
-        if($this->confirmingdelete) {
-
-            $this->editmember->delete();
-            $this->reset([
-                'confirmingdelete',
-                'showeditmodal',
-            ]);
-
-        }else{
-
-            $this->confirmingdelete = $id;
+        foreach($this->selected AS $id) {
+            Ensemblemember::find($id)->delete();
         }
+
+        $this->showDeleteModal = false;
+        $this->reset('selected');
+
     }
 
     public function edit($ensemblemember_id)
@@ -100,7 +103,7 @@ class Memberscomponent extends Component
         $this->editmember = Ensemblemember::find($ensemblemember_id);
 
         $this->ensemble_id = Userconfig::getValue('ensemble_id', auth()->id());
-        $this->schoolyear_id = Userconfig::getValue('schoolyear_id', auth()->id());
+        $this->editmemberschoolyear_id = $this->editmember->schoolyear_id;
         $this->user_id = $ensemblemember_id;
         $this->teacher_user_id = auth()->id();
 
@@ -108,6 +111,18 @@ class Memberscomponent extends Component
 
         $this->reset('confirmingdelete');
         $this->showeditmodal = true;
+    }
+
+    public function exportSelected()
+    {
+        $members  = new MembersExport(Ensemblemember::whereKey($this->selected)->get());
+
+        //resetSelects
+        $this->selected = [];
+        $this->selectall = false;
+        $this->selectpage = false;
+
+        return Excel::download($members, 'ensemblemembers.csv');
     }
 
     public function save()
@@ -121,6 +136,7 @@ class Memberscomponent extends Component
 
         $this->editmember->update([
             'instrumentation_id' => $this->instrumentation_id,
+            'schoolyear_id' => $this->editmemberschoolyear_id,
         ]);
 
         $this->emit('ensemblemember-saved');
@@ -151,6 +167,7 @@ class Memberscomponent extends Component
     {
         Userconfig::setValue('schoolyear_id', auth()->id(), $this->schoolyear_id);
         $this->schoolyear = Schoolyear::find($this->schoolyear_id);
+        $this->ensemble->schoolyear_id = $this->schoolyear_id;
     }
 
     public function updatedSelectpage($value)
@@ -194,10 +211,11 @@ class Memberscomponent extends Component
 
     private function members($page=0)
     {
-        $members =  ($this->ensemble->members(Schoolyear::find($this->schoolyear_id)));
+        $members = $this->ensemble->ensemblememberRosterIds();
+
         $options = [];
         $page = $page ?: (Paginator::resolveCurrentPage() ?: 1 );
-        $perpage = Userconfig::getValue('pagination', auth()->id());
+        $perpage = ($this->selectall) ? $this->population : Userconfig::getValue('pagination', auth()->id());
 
         $items = $members instanceof Collection ? $members : Collection::make($members);
         return new LengthAwarePaginator($items->forPage($page,$perpage), $items->count(), $perpage, $page, $options);

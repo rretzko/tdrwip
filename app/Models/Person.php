@@ -88,6 +88,11 @@ class Person extends Model
         return $this->belongsTo(Pronoun::class);
     }
 
+    public function scopeWithAll($query)
+    {
+        $query->with('user');
+    }
+
     public function setSearchable()
     {
         $s = new Searchable;

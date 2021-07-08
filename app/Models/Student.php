@@ -105,6 +105,11 @@ class Student extends Model
         return $this->belongsTo(Person::class, 'user_id', 'user_id');
     }
 
+    public function scopeWithAll($query)
+    {
+        $query->with('person', 'person.user');
+    }
+
     public function phones()
     {
         return $this->hasMany(Phone::class, 'user_id', 'user_id');

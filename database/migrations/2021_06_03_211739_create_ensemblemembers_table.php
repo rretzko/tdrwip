@@ -23,6 +23,7 @@ class CreateEnsemblemembersTable extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->unique(['ensemble_id','schoolyear_id','user_id']);
+            $table->index(['ensemble_id', 'schoolyear_id']);
         });
     }
 

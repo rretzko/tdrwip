@@ -13,7 +13,15 @@ class Ensemble extends Model
 {
     use HasFactory, SoftDeletes;
 
+    public $schoolyear_id;
+
     protected $fillable = ['abbr', 'descr', 'ensembletype_id', 'name', 'school_id', 'startyear', 'user_id',];
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->schoolyear_id = Userconfig::getValue('schoolyear_id', auth()->id());
+    }
 
     public function assets()
     {
@@ -40,7 +48,25 @@ class Ensemble extends Model
     {
         return $this->hasMany(Ensemblemember::class)
             ->with('instrumentation','person', 'schoolyear')
-            ;
+            ->where('schoolyear_id', $this->schoolyear_id);
+    }
+
+    /**
+     * Return a minimal data set to build the ensemble member roster
+     */
+    public function ensemblememberRosterIds()
+    {
+        $operator = ($this->schoolyear_id) ? '='  : '>';
+
+        $res = DB::table('ensemblemembers')
+            ->where('ensemble_id', '=', $this->id)
+            ->where('schoolyear_id', $operator, $this->schoolyear_id)
+            ->pluck('id');
+
+        return Ensemblemember::whereIn('id', $res)->with('person', 'ensemble','schoolyear')
+            ->get()
+            ->sortBy(['person.last','person.first']);
+
     }
 
     /**
@@ -72,14 +98,14 @@ class Ensemble extends Model
     /**
      * Return the count of unique members over the lifetime of the ensemble
      */
-    public function lifetimecount()
+    public function lifetimeCount()
     {
         return DB::table('ensemblemembers')
             ->where('ensemble_id', '=', $this->id)
+            ->whereNull('deleted_at')
             ->distinct()
             ->count('user_id');
     }
-
 
     /**
      * Return Ensemblemembers for $schoolyear OR
@@ -88,17 +114,15 @@ class Ensemble extends Model
      * @param Schoolyear|null $schoolyear
      * @return Builder[]|Collection
      */
-    public function members(Schoolyear $schoolyear = null)
+    public function members()
     {
-        $schoolyear_id = ($schoolyear) ? $schoolyear->id : 0;
-
-        $ensemblemembers = $this->ensemblemembers->filter(function($ensemblemember) use ($schoolyear_id) {
-            return ($schoolyear_id)
-                ? $ensemblemember->schoolyear_id == $schoolyear_id
-                : $ensemblemember->schoolyear_id > 0;
+        $members = $this->ensemblemembers->filter(function($member) {
+            return ($this->schoolyear_id)
+                ? (($member->schoolyear_id == $this->schoolyear_id) && (is_null($this->deleted_at)))
+                : $member->schoolyear_id > 0;
         });
 
-        return $ensemblemembers->sortBy('person.last');
+        return $members->sortBy('person.last');
     }
 
     public function nonmembers()
@@ -112,12 +136,13 @@ class Ensemble extends Model
     /**
      * Return the count of unique members over the lifetime of the ensemble
      */
-    public function schoolyearcount()
+    public function schoolyearCount()
     {
         return DB::table('ensemblemembers')
         ->where('ensemble_id', '=', $this->id)
-        ->where('schoolyear_id', '=', Userconfig::getValue('schoolyear_id', auth()->id()))
-        ->distinct()
+        ->where('schoolyear_id', '=', $this->schoolyear_id) //Userconfig::getValue('schoolyear_id', auth()->id()))
+            ->whereNull('deleted_at')
+            ->distinct()
         ->count('user_id');
     }
 

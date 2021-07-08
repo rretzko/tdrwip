@@ -22,7 +22,7 @@
 
             <div class="flex justify-end space-x-2 mb-2">
                 <x-inputs.dropdowns.perpage />
-                <x-inputs.dropdowns.bulkactions import="$allowimports" />
+                <x-inputs.dropdowns.bulkactions import="$allowimports" :selected="$selected" />
                 <x-buttons.button-add toggle="showaddmodal"/>
             </div>
 
@@ -99,7 +99,7 @@
                             @endif
                         </div>
 
-                        <div class="text-bold text-blue-800">{{ $ensemble->name }} has {{ $ensemble->lifetimecount() }} lifetime and {{ $ensemble->schoolyearcount() }} school-year members</div>
+                        <div class="text-bold text-blue-800">{{ $ensemble->name }} has {{ $ensemble->lifetimeCount() }} lifetime and {{ $ensemble->schoolyearCount() }} school-year members</div>
                         <x-tables.surgetable class="w-full ">
                             <x-slot name="head" >
 
@@ -139,7 +139,7 @@
                                         <x-tables.cell colspan="7">
                                             @unless($selectall)
                                                 <div>You have selected <strong>{{ count($selected) }}</strong> members, do
-                                                    you want to select all <strong>{{ $members->count() }}</strong>?
+                                                    you want to select all <strong>{{ $population }}</strong>?
                                                     <x-buttons.button-link wire:click="selectAll"
                                                                            class="ml-1 text-blue-600">Select All
                                                     </x-buttons.button-link>
@@ -153,10 +153,10 @@
                                 @endif
 
                                 @forelse($members AS $m)
-                                    <x-tables.row wire:loading.class.delay="opacity-50" altcolor="{{$loop->iteration % 2}}" wire:key="row-{{ $m->user_id }}">
+                                    <x-tables.row wire:loading.class.delay="opacity-50" altcolor="{{$loop->iteration % 2}}" wire:key="row-{{ $m->id }}">
 
                                         <x-tables.cell>
-                                            <x-inputs.checkbox value="{{ $m->user_id }}" class="" for="selected" label="" />
+                                            <x-inputs.checkbox defer="true" value="{{ $m->id }}" class="" for="selected" label="" />
                                         </x-tables.cell>
 
                                         <x-tables.cell>
@@ -227,6 +227,7 @@
                 @if($showeditmodal)
                     <x-modals.ensemblemember
                         confirmingdelete="{{$confirmingdelete}}"
+                        memberschoolyearid="{{ $editmemberschoolyear_id }}"
                         :ensemble="$ensemble"
                         :instrumentations="$instrumentations"
                         instrumentationid="{{ $instrumentation_id }}"
@@ -240,16 +241,23 @@
                 @endif
             </div>
 
+            {{-- CONFIRM DELETE MODAL --}}
+            <div>
+                @if($showDeleteModal)
+                    <x-modals.delete :selected="$selected" objectname="ensemblemember" label="Ensemble Member"/>
+                @endif
+            </div>
+
             {{-- FILE UPLOAD FORM --}}
             <div>
                 @if($showfileuploadmodal)
-        <!-- {{--            <x-modals.ensemblemembersupload
+                    <x-modals.ensemblemembersupload
                         currentvalue="{{$schoolyear_id}}"
                         for="schoolyear_id"
                         label="school years"
                         :options="$schoolyears"
                     />
---}} -->
+
                 @endif
             </div>
 
