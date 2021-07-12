@@ -10,13 +10,25 @@
 
                 <x-slot name="description" >
 
-                    {!! __('Add or edit your ensemble asset here.<br/>
-                            Ensemble assets are anything which you assign to an ensemble member.<br/>
-                            Click any checkbox to add an asset type to <b>'.$ensemble->name.'</b> for
-                            <b>'.$schoolyear->descr.'</b>.<br/>
-                            Once an asset type is added, you will be able to create a catalog for all assets assigned to
-                            each <b>'.$ensemble->name.'</b> member.<br />
-                            Click the "Add" button to add a new asset type to the list.') !!}
+                    <x-sidebar-blurb blurb="Add or edit your ensemble assets here." />
+
+                    <x-sidebar-blurb blurb="Ensemble assets are anything which you assign to an ensemble member." />
+
+                    <x-sidebar-blurb blurb="Click any checkbox to add an asset type to <b>{{ $ensemble->name }}</b> for
+                            <b>{{ $schoolyear->descr }}</b>." />
+
+                    <x-sidebar-blurb blurb="Once an asset type is added, you will be able to create a catalog for all assets assigned to
+                            each <b>{{ $ensemble->name }}</b> member." />
+
+                    <x-sidebar-blurb blurb="Click the 'Add' button to add a new asset type to the list." />
+
+                    <x-sidebar-blurb blurb="Edit/Delete buttons are displayed for all assets which you have created
+                            and which have <b>NOT</b> been used by another teacher." />
+
+                    <x-sidebar-blurb blurb="Deleting an asset will also delete <b>ALL</b> ensemble and student links
+                        to that asset." />
+
+
 
                 </x-slot>
 
@@ -25,34 +37,16 @@
                     <div id="assetHeader">
                         <h3 class="font-bold">{{ $ensemble->name }} Asset Types</h3>
                     </div>
-                    <!-- {{--  INITIAL DETERMINATION IS THAT ASSETS ARE NOT DEPENDANT ON SCHOOLYEARS
-                    <div id="schoolYear" class="flex">
-                        <label for="schoolyear_id" class="h-8 pt-2">School Year: </label>
-                        <select name="schoolyear_id" id="schoolyear_id" class="h-8 ml-2 text-sm">
-                            @foreach($schoolyears AS $schoolyear_obj)
-                                <option value="{{ $schoolyear_obj->id }}" class="text-xs">{{ $schoolyear_obj->descr }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    --}} -->
-
-                {{-- ADD button --}}
-                <div class="flex justify-end mb-2 pr-6">
-                    <div
-                        class="bg-green-200 px-1 shadow-lg border border-green-600 rounded-md text-center cursor-pointer"
-                        style="max-width: 4rem;"
-                    >
-                        <a href="{{ route('ensemble.assets.create', ['ensemble' => $ensemble, 'schoolyear' => $schoolyear]) }}"
-                            class="text-green-800">Add</a>
-                    </div>
-                </div>
 
                 <div class="overflow-x-auto">
 
                    @livewire('ensembles.assets-table' )
 
                 </div>
+
             </x-slot>
+
+
 
 </x-table-with-modal-form>
 

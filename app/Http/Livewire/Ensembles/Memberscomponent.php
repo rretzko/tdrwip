@@ -38,6 +38,7 @@ class Memberscomponent extends Component
     //properties specific to this concern
     public $editmember = null;
     public $editmemberschoolyear_id = 0;
+    public $editmemberassets = [];
     public $ensemble = null;
     public $ensemble_id = 0;
     public $instrumentation_id = 1;
@@ -104,6 +105,8 @@ class Memberscomponent extends Component
 
         $this->ensemble_id = Userconfig::getValue('ensemble_id', auth()->id());
         $this->editmemberschoolyear_id = $this->editmember->schoolyear_id;
+        $this->editmemberassets = $this->loadEditmemberAssets();
+        //dd($this->editmemberassets);
         $this->user_id = $ensemblemember_id;
         $this->teacher_user_id = auth()->id();
 
@@ -140,6 +143,11 @@ class Memberscomponent extends Component
         ]);
 
         $this->emit('ensemblemember-saved');
+    }
+
+    public function saveAsset()
+    {
+
     }
 
     public function selectAll()
@@ -205,6 +213,28 @@ class Memberscomponent extends Component
         }
 
         asort($a);
+
+        return $a;
+    }
+
+    private function loadEditmemberAssets()
+    {
+        //return $this->editmember->assets;
+        /* foreach($this->editmember->assets AS $asset){
+             dd($asset->pivot->descr);
+         }
+        */
+        $a = [];//dd($this->ensemble->assets);
+        foreach($this->ensemble->assets AS $ensembleasset){
+//dd($ensembleasset);
+            $a[$ensembleasset->id] = 'none';
+            //if($this->editmember->assets->contains($ensembleasset->id)){
+            //$a[$ensembleasset->id] = $this->editmember->assets
+            //    ->where('asset_id', $ensembleasset)
+            //    ->where('schoolyear_id', Userconfig::getValue('schoolyear_id', auth()->id()))
+            //    ->value('descr');
+            //}
+        }
 
         return $a;
     }

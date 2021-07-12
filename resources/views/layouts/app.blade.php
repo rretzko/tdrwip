@@ -25,7 +25,7 @@
     </head>
     <body class="font-sans antialiased">
 
-        <div x-data x-cloak class="min-h-screen w-full">
+        <div x-data class="min-h-screen w-full"> <!-- removed x-cloak -->
 
             <!-- Page Heading -->
             <x-site-header />

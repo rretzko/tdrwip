@@ -13,9 +13,21 @@ class Asset extends Model
 
     protected $fillable = ['created_by','descr'];
 
+    public function canEdit()
+    {
+        return auth()->id() == $this->created_by;
+    }
+
     public function ensembles()
     {
         return $this->belongsToMany(Ensemble::class)
+            ->withTimestamps();
+    }
+
+    public function ensemblemembers()
+    {
+        return $this->belongsToMany(Ensemblemember::class)
+            ->withPivot(['descr', 'date_issued','date_returned'])
             ->withTimestamps();
     }
 }

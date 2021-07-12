@@ -15,7 +15,7 @@ class CreateAssetsTable extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('descr', 40);
+            $table->string('descr', 40)->unique();
             $table->foreignId('created_by')->constrained('users', 'id')->default(45);
             $table->timestamps();
             $table->softDeletes();

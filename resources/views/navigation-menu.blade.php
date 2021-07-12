@@ -220,7 +220,8 @@
             (strpos(Route::currentRouteName(), 'ensembles') === 0) ||
             (strpos(Route::currentRouteName(), 'ensemble.create') === 0) ||
             (strpos(Route::currentRouteName(), 'ensemble.edit') === 0) ||
-            (strpos(Route::currentRouteName(), 'ensemblemembers.index') === 0)
+            (strpos(Route::currentRouteName(), 'ensemblemembers.index') === 0)  ||
+            (strpos(Route::currentRouteName(), 'ensemble.assets.index') === 0)
              )
                 ? 'active' : ''  }}">
         <!-- heroicon microphone -->

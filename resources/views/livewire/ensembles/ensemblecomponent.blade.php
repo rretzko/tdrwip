@@ -11,9 +11,11 @@
 
             <x-sidebar-blurb blurb="Click a column header to sort the table rows." />
 
-            <x-sidebar-blurb blurb="Click the edit button to display an individual ensemble's detailed information." />
+            <x-sidebar-blurb blurb="Click the '<b>Mbrs</b>' button to add/edit individual ensemble members." />
 
-            <x-sidebar-blurb blurb="Click the number under the 'Members' column to add/edit individual ensemble members." />
+            <x-sidebar-blurb blurb="Click the '<b>Edit</b>' button to display an individual ensemble's detailed information." />
+
+            <x-sidebar-blurb blurb="Click the '<b>Assets</b>' button to add/edit ensemble assets (ex. folders)." />
 
         </x-slot>
 
@@ -175,11 +177,11 @@
                                         </x-tables.cell>
 
                                         <x-tables.cell class="text-center">
-                                            <a class='text-blue-700 font-bold'
+                                            <a class='border border-indigo-600 rounded px-2 bg-indigo-400 text-white hover:bg-blue-600 text-xs py-0.5'
                                                href="{{ route('ensemblemembers.index', ['ensemble' => $ensemble]) }}"
                                                title="Click to add/edit {{ $ensemble->name }} members"
                                             >
-                                                {{ $ensemble->ensemblemembers->count() }}
+                                                {{ $ensemble->ensemblemembers->count() }} Mbr{{ ($ensemble->ensemblemembers->count() !== 1) ? 's' : '' }}
                                             </a>
                                         </x-tables.cell>
 
@@ -193,13 +195,6 @@
                                         </x-tables.cell>
 
                                         <x-tables.cell>
-                                            <!-- {{-- <x-buttons.button-link
-                                                wire:click.defer="edit({{ $ensemble->id }})"
-                                                class="border border-green-500 rounded px-2 bg-green-600 text-white hover:bg-green-400"
-                                            >
-                                                Assets
-                                            </x-buttons.button-link>
-                                            --}} -->
                                             <a href="{{ route('ensemble.assets.index', ['ensemble' => $ensemble]) }}"
                                                class="border border-green-500 rounded px-2 bg-green-600 text-white hover:bg-green-400"
                                                title="Click to edit {{ $ensemble->name }} assets"

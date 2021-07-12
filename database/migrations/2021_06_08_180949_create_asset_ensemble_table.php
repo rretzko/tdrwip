@@ -18,7 +18,7 @@ class CreateAssetEnsembleTable extends Migration
             $table->foreignId('ensemble_id')->constrained();
             $table->foreignId('asset_id')->constrained();
             $table->timestamps();
-            $table->softDeletes();
+            $table->unique(['ensemble_id', 'asset_id']);
         });
     }
 

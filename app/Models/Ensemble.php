@@ -47,7 +47,7 @@ class Ensemble extends Model
     public function ensemblemembers()
     {
         return $this->hasMany(Ensemblemember::class)
-            ->with('instrumentation','person', 'schoolyear')
+            ->with( 'instrumentation','person', 'schoolyear')
             ->where('schoolyear_id', $this->schoolyear_id);
     }
 

@@ -55,7 +55,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::get('/ensemble/{ensemble}/{schoolyear}/assets/new', [App\Http\Controllers\Ensembles\AssetController::class, 'create'])->name('ensemble.assets.create');
     //Route::get('/ensemble/assets/{asset}', [App\Http\Controllers\Ensembles\AssetController::class, 'edit'])->name('ensemble.assets.edit');
     //Route::get('/ensemble/assets/{asset}/destroy', [App\Http\Controllers\Ensembles\AssetController::class, 'destroy'])->name('ensemble.assets.destroy');
-    //Route::post('/ensemble/asset/store', [App\Http\Controllers\Ensembles\AssetController::class,'store'])->name('ensemble.assets.store');
+    Route::post('/ensemble/asset/store', [App\Http\Controllers\Ensembles\AssetController::class,'store'])->name('ensemble.assets.store');
     //Route::post('/ensemble/asset/{ensemble}/update', [App\Http\Controllers\Ensembles\AssetController::class,'update'])->name('ensemble.assets.update');
 });
 

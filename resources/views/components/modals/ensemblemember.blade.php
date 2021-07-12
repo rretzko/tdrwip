@@ -15,11 +15,11 @@
 
     <x-modals.confirmation wire:model="showeditmodal">
 
-        <x-slot name="title">@if($member->id) Edit {{ $member->person->fullName }} @else Add a New Ensemble Member @endif for {{ $ensemble->name }}</x-slot>
+        <x-slot name="title">@if($member->id) Edit {!! '<b>'.$member->person->fullName.'</b>' !!} @else Add a New Ensemble Member @endif for {{ $ensemble->name }}</x-slot>
 
         <x-slot name="content">
 
-            <form wire:submit.prevent="save">
+            <form wire:submit.prevent="save" id="form-ensemblemember">
                 <x-inputs.group label="School Year" for="schoolyear_id" >
                     <x-inputs.select wire:model="editmemberschoolyear_id"
                                      label=""
@@ -29,18 +29,19 @@
                     />
                 </x-inputs.group>
 
-                <x-inputs.group label="Name" for="name" >
+                <div>
+                    @if(! $member->id)
+                        <x-inputs.group label="Name" for="name" >
 
-                    @if($member->id)
-                        <div class="mt-1 font-bold">{{ $member->person->fullnameAlpha }}</div>
-                    @else
-                        <x-inputs.select label="" :options="$nonmembers" for="user_id"
-                                         currentvalue="{{ $userid }}"
-                                         placeholder="Select nonmember..."
-                        />
+                            <x-inputs.select label="" :options="$nonmembers" for="user_id"
+                                             currentvalue="{{ $userid }}"
+                                             placeholder="Select nonmember..."
+                            />
+
+
+                        </x-inputs.group>
                     @endif
-
-                </x-inputs.group>
+                </div>
 
                 <x-inputs.group label="Voice Part" for="instrumentation_id" >
                     <x-inputs.select label="" :options="$instrumentations" for="instrumentation_id"
@@ -58,6 +59,10 @@
 
                 </footer>
             </form>
+
+            @if($member->user_id)
+                <x-forms.ensemblemember-assets :ensemble="$ensemble" :member="$member" />
+            @endif
 
         </x-slot>
 

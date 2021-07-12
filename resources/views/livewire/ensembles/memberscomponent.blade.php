@@ -128,7 +128,6 @@
                                 </x-tables.heading>
 
                                 <th><span class="sr-only">Edit</span></th>
-                                <th><span class="sr-only">Assets</span></th>
 
                             </x-slot>
 
@@ -179,16 +178,6 @@
                                             >
                                                 Edit
                                             </x-buttons.button-link>
-                                        </x-tables.cell>
-
-                                        <x-tables.cell>
-                                            <x-buttons.button-link
-                                                wire:click.defer="edit({{ $m->id }})"
-                                                class="border border-green-500 rounded px-2 bg-green-600 text-white hover:bg-green-400"
-                                            >
-                                                Assets
-                                            </x-buttons.button-link>
-
                                         </x-tables.cell>
 
                                     </x-tables.row>

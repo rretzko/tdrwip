@@ -21,6 +21,14 @@ class Ensemblemember extends Model
 
     protected $fillable = ['ensemble_id', 'instrumentation_id', 'schoolyear_id', 'teacher_user_id', 'user_id', ];
 
+    public function assets()
+    {
+        return $this->belongsToMany(Asset::class)
+         //   ->where('schoolyear_id', Userconfig::getValue('schoolyear_id', auth()->id()))
+          //  ->withPivot(['descr', 'date_issued','date_returned'])
+            ->withTimestamps();
+    }
+
     public function ensemble()
     {
         return $this->belongsTo(Ensemble::class);

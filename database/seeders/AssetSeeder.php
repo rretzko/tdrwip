@@ -46,7 +46,7 @@ class AssetSeeder extends Seeder
                 'updated_at' => '2021-06-12 13:25:21',
             ],
             [
-                'sash' => 'cummerbund',
+                'descr' => 'sash',
                 'created_by' => 45,
                 'created_at' => '2021-06-12 13:25:21',
                 'updated_at' => '2021-06-12 13:25:21',
