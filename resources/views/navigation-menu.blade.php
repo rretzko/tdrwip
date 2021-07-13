@@ -49,7 +49,14 @@
     </a>
     <a href="{{ route('ensembles.index') }}"
        class="border border-gray-500 rounded px-2 py-1 ml-0.5
-            {{ (strpos(Route::currentRouteName(), 'ensemble')) === 0 ? 'active' : ''  }} "
+            {{ (
+            (strpos(Route::currentRouteName(), 'ensembles') === 0) ||
+            (strpos(Route::currentRouteName(), 'ensemble.create') === 0) ||
+            (strpos(Route::currentRouteName(), 'ensemble.edit') === 0) ||
+            (strpos(Route::currentRouteName(), 'ensemblemembers.index') === 0)  ||
+            (strpos(Route::currentRouteName(), 'ensemble.assets.index') === 0)
+             )
+                ? 'active' : ''  }} "
        title="Ensembles"
     >
 
@@ -127,7 +134,14 @@
     </a>
     <a href="{{ route('ensembles.index') }}"
        class="border border-gray-500 rounded px-2 py-1 ml-0.5
-        {{ (strpos(Route::currentRouteName(), 'ensemble')) === 0 ? 'active' : ''  }}">
+        {{ (
+            (strpos(Route::currentRouteName(), 'ensembles') === 0) ||
+            (strpos(Route::currentRouteName(), 'ensemble.create') === 0) ||
+            (strpos(Route::currentRouteName(), 'ensemble.edit') === 0) ||
+            (strpos(Route::currentRouteName(), 'ensemblemembers.index') === 0)  ||
+            (strpos(Route::currentRouteName(), 'ensemble.assets.index') === 0)
+             )
+                ? 'active' : ''  }}">
         Ensembles
     </a>
     <a href="#"
@@ -233,7 +247,7 @@
         </svg>
         <div class="ml-1">Ensembles</div>
     </a>
-    <a href="#"
+    <a href="{{ route('library.index') }}"
        class="flex flex-row border border-blue-300 rounded px-2 py-1 ml-0.5
         {{ (strpos(Route::currentRouteName(), 'library')) === 0 ? 'active' : ''  }}">
         <!-- heroicon book-open -->

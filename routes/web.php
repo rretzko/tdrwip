@@ -29,9 +29,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::get('/students', [App\Http\Controllers\Students\StudentController::class, 'index'])->name('students.index');
     Route::get('/xstudents', [App\Http\Controllers\Students\StudentTabbedController::class, 'show'])->name('xstudents');
 
-    /** SCHOOLS */
-    Route::get('/schools', [App\Http\Controllers\Schools\SchoolController::class, 'index'])->name('schools');
-    Route::get('/schools/remove/{school}', [App\Http\Controllers\Schools\SchoolController::class, 'destroy'])->name('schools.destroy');
+    /** LIBRARY */
+    Route::get('/libraries', [App\Http\Controllers\Libraries\LibraryController::class,'index'])->name('library.index');
 
     /** ENSEMBLES */
     Route::get('/ensembles', [App\Http\Controllers\Ensembles\EnsembleController::class,'index'])->name('ensembles.index');
@@ -57,5 +56,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     //Route::get('/ensemble/assets/{asset}/destroy', [App\Http\Controllers\Ensembles\AssetController::class, 'destroy'])->name('ensemble.assets.destroy');
     Route::post('/ensemble/asset/store', [App\Http\Controllers\Ensembles\AssetController::class,'store'])->name('ensemble.assets.store');
     //Route::post('/ensemble/asset/{ensemble}/update', [App\Http\Controllers\Ensembles\AssetController::class,'update'])->name('ensemble.assets.update');
+
+    /** SCHOOLS */
+    Route::get('/schools', [App\Http\Controllers\Schools\SchoolController::class, 'index'])->name('schools');
+    Route::get('/schools/remove/{school}', [App\Http\Controllers\Schools\SchoolController::class, 'destroy'])->name('schools.destroy');
 });
 

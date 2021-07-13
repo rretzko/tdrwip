@@ -52,6 +52,16 @@ class EnsemblemembersImport
             ];
     }
 
+    public function errors()
+    {
+        return $this->errors;
+    }
+
+    public function matches()
+    {
+        return $this->matches;
+    }
+
     /**
      *
      * @return Ensemblemember
@@ -86,7 +96,7 @@ class EnsemblemembersImport
 
             if (! $this->findCurrentUser()) {
 
-    //            $this->addStudent();
+                $this->addStudent();
             }
         }
 
@@ -260,11 +270,14 @@ class EnsemblemembersImport
 
     private function findCurrentUser() : int
     {
+        $found = false;
+
         //filter criteria
         $unames = $this->findCurrentUser_Username();
         $names = $this->findCurrentUser_FilterName($unames);
         $schools = $this->findCurrentUser_Schools($names);
-        $users = $this->findCurrentUser_Classofs($schools);
+        $persons = $this->findCurrentUser_IsStudent($schools);
+        $users = $this->findCurrentUser_Classofs($persons);
 
         //multiple records found
         if($users->count() && ($users->count() > 1)){
@@ -275,8 +288,8 @@ class EnsemblemembersImport
                 . 'We are unable to automatically add this student and ask that you manually '
                 . 'update the ensemble member roster.';
 
-            //return an $user->id to tell the system that a potential match was found
-            return $users->first()->id;
+            //return true to tell the system that a potential match was found
+            $found = true; //$users->first()->id;
         }
 
         //single record found; return user->id
@@ -289,7 +302,8 @@ class EnsemblemembersImport
                 $this->matches[$this->cntr] = $user->person->fullName . ' at row ' . $this->cntr . ' is in the system '
                     . 'and is included on '. $this->dirty['ensemble'] . '\'s member roster.';
 
-                return $users->first()->id;
+                //return $users->first()->id;
+                $found = true;
 
             }else {
 
@@ -300,22 +314,23 @@ class EnsemblemembersImport
                     . 'We have added this record to ' . $this->dirty['ensemble'] . '. '
                     . 'Please review the ensemble member roster for accuracy.';
 
-                return $user->id;
+                //return $user->id;
+                $found = true;
             }
         }
-
-        return 1;
+        
+        //no student record identified
+        return $found;
     }
 
-    private function findCurrentUser_Classofs(Collection $students)
+    private function findCurrentUser_Classofs(Collection $users)
     {
         //early exit
-        if(! $students->count()){ return $students;}
+        if(! $users->count()){ return $users;}
 
-        return $students->filter(function($student){
-
-            return $student &&
-                $student->classof == $this->clean['classof'];
+        return $users->filter(function($user){
+            return $user &&
+                $user->person->student->classof == $this->clean['classof'];
         });
     }
 
@@ -333,22 +348,31 @@ class EnsemblemembersImport
                 ->where('last', 'LIKE', $this->clean['last'])
                 ->first()){
 
-                $a[] = $person;
+                $a[] = $user;
             }
         }
 
         return collect($a);
     }
 
-    private function findCurrentUser_Schools(Collection $persons)
+    private function findCurrentUser_IsStudent(Collection $users)
     {
         //early exit
-        if(! $persons->count()){ return $persons;}
+        if(! $users->count()){return $users;}
 
-        return $persons->filter(function($person){
+        return $users->filter(function($user){
+            return $user->isStudent();
+        });
+    }
 
-            return $person->user->schools &&
-                $person->user->schools->contains($this->school_id);
+    private function findCurrentUser_Schools(Collection $users)
+    {
+        //early exit
+        if(! $users->count()){ return $users;}
+
+        return $users->filter(function($user){
+            return $user->schools &&
+                $user->schools->contains($this->school_id);
         });
     }
 

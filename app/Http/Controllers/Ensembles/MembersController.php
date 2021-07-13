@@ -42,6 +42,7 @@ class MembersController extends Controller
             $import = new EnsemblemembersImport();
             $ensemble_id = $import->ensemble_id;
             $schoolyear_id = $import->schoolyear_id;
+            $cntr=0;
            while($row = fgetcsv($res)){
                 //don't use first row
                 if($headerrow){
@@ -50,6 +51,7 @@ class MembersController extends Controller
                 }else{
                     //process add rows with data
                     $import->onRow($row);
+                    $cntr++;
                 }
             }
 
@@ -61,6 +63,8 @@ class MembersController extends Controller
                         ->where('schoolyear_id', $schoolyear_id)
                         ->count(),
                     'schoolyear' => Schoolyear::find($schoolyear_id),
+                    'errors' => $import->errors(),
+                    'matches' => $import->matches(),
                 ]);
     }
 }

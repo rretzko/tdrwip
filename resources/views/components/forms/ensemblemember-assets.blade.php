@@ -10,7 +10,7 @@
     <x-tables.surgetable>
             <x-slot name="head">
                 <x-tables.heading >Name</x-tables.heading>
-                <x-tables.heading >Description/Issued/Returned</x-tables.heading>
+                <x-tables.heading >Description - Assigned - Returned</x-tables.heading>
             </x-slot>
 
             <x-slot name="body">
