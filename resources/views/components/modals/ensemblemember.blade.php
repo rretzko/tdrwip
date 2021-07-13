@@ -1,4 +1,5 @@
 @props([
+'assets',
 'memberschoolyearid',
 'confirmingdelete',
 'ensemble',
@@ -61,7 +62,7 @@
             </form>
 
             @if($member->user_id)
-                <x-forms.ensemblemember-assets :ensemble="$ensemble" :member="$member" />
+                <x-forms.ensemblemember-assets :ensemble="$ensemble" :member="$member" :assets="$assets"/>
             @endif
 
         </x-slot>

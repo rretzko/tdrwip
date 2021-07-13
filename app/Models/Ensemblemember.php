@@ -24,8 +24,7 @@ class Ensemblemember extends Model
     public function assets()
     {
         return $this->belongsToMany(Asset::class)
-         //   ->where('schoolyear_id', Userconfig::getValue('schoolyear_id', auth()->id()))
-          //  ->withPivot(['descr', 'date_issued','date_returned'])
+            ->withPivot(['tag', 'date_issued','date_returned'])
             ->withTimestamps();
     }
 

@@ -27,7 +27,7 @@ class Asset extends Model
     public function ensemblemembers()
     {
         return $this->belongsToMany(Ensemblemember::class)
-            ->withPivot(['descr', 'date_issued','date_returned'])
+            ->withPivot(['tag', 'date_issued','date_returned'])
             ->withTimestamps();
     }
 }

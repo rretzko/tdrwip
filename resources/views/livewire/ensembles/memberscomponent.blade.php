@@ -214,9 +214,11 @@
             <div>
 
                 @if($showeditmodal)
+
                     <x-modals.ensemblemember
                         confirmingdelete="{{$confirmingdelete}}"
                         memberschoolyearid="{{ $editmemberschoolyear_id }}"
+                        :assets="$editmemberassets"
                         :ensemble="$ensemble"
                         :instrumentations="$instrumentations"
                         instrumentationid="{{ $instrumentation_id }}"
@@ -228,6 +230,7 @@
                         userid="{{ $user_id }}"
                     />
                 @endif
+
             </div>
 
             {{-- CONFIRM DELETE MODAL --}}

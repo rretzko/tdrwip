@@ -14,7 +14,7 @@ class CreateAssetEnsemblememberTable extends Migration
     public function up()
     {
         Schema::create('asset_ensemblemember', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->primary();
+            $table->bigIncrements('id')->primary();
             $table->foreignId('asset_id')->constrained();
             $table->foreignId('ensemblemember_id')->constrained();
             $table->string('tag',40);

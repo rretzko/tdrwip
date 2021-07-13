@@ -7,6 +7,7 @@ use App\Models\Ensemble;
 use App\Models\Ensemblemember;
 use App\Models\Schoolyear;
 use App\Models\Userconfig;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
@@ -38,7 +39,7 @@ class Memberscomponent extends Component
     //properties specific to this concern
     public $editmember = null;
     public $editmemberschoolyear_id = 0;
-    public $editmemberassets = [];
+    public $editmemberassets = null;
     public $ensemble = null;
     public $ensemble_id = 0;
     public $instrumentation_id = 1;
@@ -58,6 +59,9 @@ class Memberscomponent extends Component
             'user_id' => ['required', 'integer', ],
             'teacher_user_id' => ['required', 'integer',],
             'instrumentation_id' => ['required', 'integer',],
+            'editmemberassets.*.pivot.tag' => ['string', 'nullable'],
+            'editmemberassets.*.pivot.date_issued' => ['nullable', 'date_format:Y-m-d'],
+            'editmemberassets.*.pivot.date_returned' => ['date','nullable'],
         ];
     }
 
@@ -105,8 +109,8 @@ class Memberscomponent extends Component
 
         $this->ensemble_id = Userconfig::getValue('ensemble_id', auth()->id());
         $this->editmemberschoolyear_id = $this->editmember->schoolyear_id;
-        $this->editmemberassets = $this->loadEditmemberAssets();
-        //dd($this->editmemberassets);
+        $this->loadEditmemberAssets();//loads $this->editmemberassets
+
         $this->user_id = $ensemblemember_id;
         $this->teacher_user_id = auth()->id();
 
@@ -145,9 +149,25 @@ class Memberscomponent extends Component
         $this->emit('ensemblemember-saved');
     }
 
-    public function saveAsset()
+    public function saveAssets()
     {
+        //discover newly defined assets
+        $details = [];
+        foreach($this->editmemberassets AS $asset){
 
+            if(array_key_exists('tag', $asset['pivot'])) {
+                $details[$asset['id']] =
+                    [
+                        'tag' => $asset['pivot']['tag'],
+                        'date_issued' => $asset['pivot']['date_issued'],
+                        'date_returned' => $asset['pivot']['date_returned'] ?: NULL,
+                    ];
+            }
+        }
+        //Sync all asset to editmember
+        $this->editmember->assets()->sync($details);
+
+        $this->emit('assets-saved');
     }
 
     public function selectAll()
@@ -219,24 +239,35 @@ class Memberscomponent extends Component
 
     private function loadEditmemberAssets()
     {
-        //return $this->editmember->assets;
-        /* foreach($this->editmember->assets AS $asset){
-             dd($asset->pivot->descr);
-         }
-        */
-        $a = [];//dd($this->ensemble->assets);
-        foreach($this->ensemble->assets AS $ensembleasset){
-//dd($ensembleasset);
-            $a[$ensembleasset->id] = 'none';
-            //if($this->editmember->assets->contains($ensembleasset->id)){
-            //$a[$ensembleasset->id] = $this->editmember->assets
-            //    ->where('asset_id', $ensembleasset)
-            //    ->where('schoolyear_id', Userconfig::getValue('schoolyear_id', auth()->id()))
-            //    ->value('descr');
-            //}
-        }
+        $this->editmemberassets = collect();
 
-        return $a;
+        //all potential ensemble assets
+        $ensembleassets = $this->ensemble->assets;
+
+        //actual current ensemblemember assets
+        $memberassets = $this->editmember->assets;
+
+        //early exit if no ensemble assets have been registered
+        if(! $ensembleassets->count()){ $this->editmemberassets = collect();}
+
+        //match member assets to ensemble assets
+        foreach($ensembleassets AS $key => $asset){
+            if($memberassets->contains($asset->id)){
+
+                $memberasset = $memberassets->where('id', $asset->id)->first();
+
+                $dt_issued = Carbon::createFromFormat('Y-m-d H:i:s', $memberasset->pivot->date_issued ?: now());
+                $memberasset->pivot->date_issued = $dt_issued->toDateTimeLocalString();
+
+                $memberasset->pivot->date_returned = (is_null($memberasset->pivot->date_returned)) ? '' : Carbon::createFromTimestamp(strtotime($memberasset->pivot->date_returned))->toDateTimeLocalString();
+                $this->editmemberassets->add($memberasset);
+
+            }else{
+                $asset->pivot->date_issued = now()->timezone(auth()->user()->timezone)->toDateTimeLocalString();
+                $asset->pivot->date_returned = '';
+                $this->editmemberassets->add($asset);
+            }
+        }
     }
 
     private function members($page=0)
