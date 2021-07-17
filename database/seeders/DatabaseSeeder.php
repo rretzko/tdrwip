@@ -46,5 +46,6 @@ class DatabaseSeeder extends Seeder
          $this->call(EnsembletypeInstrumentationSeeder::class);
          $this->call(AssetSeeder::class);
          $this->call(EnsembleassetSeeder::class);
+         $this->call(PublisherSeeder::class);
     }
 }

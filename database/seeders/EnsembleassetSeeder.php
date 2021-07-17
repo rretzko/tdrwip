@@ -23,7 +23,7 @@ class EnsembleassetSeeder extends Seeder
             ],
             [
                 'ensemble_id' => 1,
-                'asset_id' => 1,
+                'asset_id' => 2,
                 'created_at' => '2021-06-12 13:25:21',
                 'updated_at' => '2021-06-12 13:25:21',
             ],

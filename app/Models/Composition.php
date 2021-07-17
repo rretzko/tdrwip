@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Library extends Model
+class Composition extends Model
 {
     use HasFactory;
 
-    public function compositions()
+    public function publishers()
     {
-        return $this->belongsToMany(Composition::class)
-            ->with('publisher');
+        return $this->belongsToMany(Publisher::class);
     }
 }
