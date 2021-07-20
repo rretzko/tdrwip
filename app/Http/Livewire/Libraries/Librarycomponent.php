@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\Libraries;
 
 use App\Models\Composition;
+use App\Models\Compositioncollectiontype;
+use App\Models\Compositiontype;
 use App\Models\Geostate;
 use App\Models\Publisher;
 use Livewire\Component;
@@ -30,9 +32,19 @@ class Librarycomponent extends Component
     public $sortfield = '';
 
     //library-specific properties
-    public $editcomposition = null;
+    public $compositioncollectiontypes = [];
+    public $compositiontypes = [];
     public $ensembles = [];
     public $geostates = [];
+
+    //composition
+    public $editcomposition = null;
+    public $editcompositioncompositiontype_id = 1;
+    public $editcompositioncompositioncollectiontype_id = 1;
+    public $editcompositionfrom = '';
+    public $editcompositiontitle = '';
+    public $editcompositionsubtitle = '';
+
     //publisher
     public $publisherslist = [];
     public $publisheraddress0 = '';
@@ -43,10 +55,13 @@ class Librarycomponent extends Component
     public $publisherid = 0;
     public $publishername = '';
     public $publishers = [];
+    public $publisherselected = false;
     public $showpublisherform = false;
 
     public function mount()
     {
+        $this->compositioncollectiontypes = $this->compositioncollectiontypes();
+        $this->compositiontypes = $this->compositiontypes();
         $this->geostates = $this->geostates();
         $this->publishers = Publisher::all();
         $this->refreshPublishersList();
@@ -54,6 +69,29 @@ class Librarycomponent extends Component
     public function render()
     {
         return view('livewire.libraries.librarycomponent');
+    }
+
+    public function loadPublisher($id)
+    {
+        $this->publisherid = $id;
+        $this->publishername = $this->publishers->find($id)->name;
+        $this->showpublisherform = false;
+        $this->publisherselected = true;
+    }
+
+    public function save()
+    {
+        $this->editcomposition = Composition::updateOrCreate([
+            'title' => $this->editcompositiontitle,
+            'subtitle' => $this->editcompositionsubtitle,
+            'compositiontype_id' => $this->editcompositioncompositiontype_id,
+            'compositioncollectiontype_id' => $this->editcompositioncompositioncollectiontype_id,
+        ]);
+
+        $this->reset('editcomposition', 'editcompositiontitle', 'editcompositionsubtitle',
+            'editcompositioncompositiontype_id', 'editcompositioncompositioncollectiontype_id', 'showeditmodal');
+
+
     }
 
     public function savepublisher()
@@ -81,10 +119,34 @@ class Librarycomponent extends Component
 
     public function updatedPublishername()
     {
-        if(! Publisher::where('name', $this->publishername)->first()){
+        if((! $this->publisherselected) &&
+            strlen($this->publishername) &&
+            (! Publisher::where('name', $this->publishername)->first())){
 
+            //NOTE: This if() must occur BEFORE the second if()
+            //If the user has NOT selected a publisher from the publisherlist and tabs out of the publisher name field,
+            //display the new publisher form
             $this->showpublisherform = true;
+
+        }elseif($this->publisherselected && (! strlen($this->publishername))){
+
+        //If the user has already selected a publisher, but selects the wrong publisher,
+        //clearing the publisher name should re-display the publisherlist and NOT the publisher form
+
+            $this->reset('publisherselected');
+
+        }else{
+
+            $this->reset('publisherid', 'publisherselected', 'showpublisherform');
         }
+    }
+
+    /**
+     * Reset $this->publisherselected whenever user edits field
+     */
+    public function updatingPublishername()
+    {
+        $this->reset('publisherid','publisherselected');
     }
 
     public function updatedShowaddmodal()
@@ -94,6 +156,28 @@ class Librarycomponent extends Component
     }
 
 /** END OF PUBLIC FUNCTIONS **************************************************/
+
+    public function compositioncollectiontypes()
+    {
+        $a = [];
+
+        foreach(Compositioncollectiontype::all() AS $collectiontype){
+            $a[$collectiontype->id] = $collectiontype->descr.' ('.$collectiontype->media.')';
+        }
+
+        return $a;
+    }
+
+    public function compositiontypes()
+    {
+        $a = [];
+
+        foreach(Compositiontype::all() AS $compositiontype){
+            $a[$compositiontype->id] = $compositiontype->descr;
+        }
+
+        return $a;
+    }
 
     private function geostates()
     {

@@ -15,7 +15,11 @@ class CreateCompositioncollectiontypesTable extends Migration
     {
         Schema::create('compositioncollectiontypes', function (Blueprint $table) {
             $table->id();
+            $table->string('media');
+            $table->string('descr');
             $table->timestamps();
+            $table->softDeletes();
+            $table->unique(['media','descr']);
         });
     }
 

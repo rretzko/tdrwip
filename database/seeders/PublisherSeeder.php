@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Publisher;
 use Illuminate\Database\Seeder;
 
 class PublisherSeeder extends Seeder
@@ -24,7 +24,7 @@ class PublisherSeeder extends Seeder
     {
         foreach($this->seeds AS $seed) {
 
-            $model = new School;
+            $model = new Publisher;
 
             $model->id = $seed[0];
             $model->name = $seed[1];
@@ -33,8 +33,8 @@ class PublisherSeeder extends Seeder
             $model->city = $seed[4];
             $model->geostate_id = $seed[5];
             $model->postalcode = $seed[6];
-            $model->created_at = (isset($seed[7])) ? $seed[7] : '2021-07-15';
-            $model->updated_at = (isset($seed[8])) ? $seed[8] : '2021-07-15';
+            $model->created_at = (isset($seed[7])) ? $seed[7] : date('Y-m-d H:i:s');
+            $model->updated_at = (isset($seed[8])) ? $seed[8] : date('Y-m-d H:i:s');
 
             $model->save();
         }
@@ -44,7 +44,7 @@ class PublisherSeeder extends Seeder
     {
         return [
             [1, 'Charles Hansen II Music & Books of California', '2030 S. Sepulveda Blvd', '', 'West Lost Angeles', 6, '90025', '2021-7-15', '2021-7-15'],
-            [2, 'Hansen House', '1860 Broadway', '', 'New York City', 40, '10023', '2021-07-17', '2021-07027'],
+            [2, 'Hansen House', '1860 Broadway', '', 'New York City', 40, '10023', '2021-07-17', '2021-07-17'],
         ];
     }
 }

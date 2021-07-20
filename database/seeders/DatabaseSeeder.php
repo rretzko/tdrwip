@@ -47,5 +47,7 @@ class DatabaseSeeder extends Seeder
          $this->call(AssetSeeder::class);
          $this->call(EnsembleassetSeeder::class);
          $this->call(PublisherSeeder::class);
+         $this->call(CompositioncollectiontypeSeeder::class);
+         $this->call(CompositiontypeSeeder::class);
     }
 }

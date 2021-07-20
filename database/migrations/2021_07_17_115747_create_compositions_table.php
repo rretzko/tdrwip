@@ -15,7 +15,13 @@ class CreateCompositionsTable extends Migration
     {
         Schema::create('compositions', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->index();
+            $table->string('subtitle')->nullable();
+            $table->string('from')->nullable();
+            $table->foreignId('compositioncollectiontype_id')->default(1)->index();
+            $table->foreignId('compositiontype_id')->default(1)->index();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

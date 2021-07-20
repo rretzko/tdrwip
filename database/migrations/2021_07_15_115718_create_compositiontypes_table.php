@@ -15,7 +15,9 @@ class CreateCompositiontypesTable extends Migration
     {
         Schema::create('compositiontypes', function (Blueprint $table) {
             $table->id();
+            $table->string('descr')->unique();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

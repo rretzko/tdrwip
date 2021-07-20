@@ -230,7 +230,10 @@
                 @if($showeditmodal)
                     <x-modals.composition
                         showpublisherform="{{ $showpublisherform }}"
-                        :composition="$editcomposition"
+                        publisherselected="{{ $publisherselected }}"
+                        :compositioncollectiontypes="$compositioncollectiontypes"
+                        :compositiontypes="$compositiontypes"
+                        :editcomposition="$editcomposition"
                         :geostates="$geostates"
                         :publisherslist="$publisherslist"
                     />
