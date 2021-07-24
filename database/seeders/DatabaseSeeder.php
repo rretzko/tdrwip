@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Organization;
 use App\Models\Person;
 use App\Models\Subscriberemail;
 use App\Models\User;
@@ -49,5 +50,7 @@ class DatabaseSeeder extends Seeder
          $this->call(PublisherSeeder::class);
          $this->call(CompositioncollectiontypeSeeder::class);
          $this->call(CompositiontypeSeeder::class);
+         $this->call(OrganizationtypeSeeder::class);
+         $this->call(OrganizationSeeder::class);
     }
 }

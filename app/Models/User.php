@@ -101,6 +101,11 @@ class User extends Authenticatable
         return (bool)Teacher::find($this->id);
     }
 
+    public function organizations()
+    {
+        return $this->belongsToMany(Organization::class);
+    }
+
     public function person()
     {
         return $this->hasOne(Person::class);
