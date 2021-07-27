@@ -50,6 +50,7 @@ class DatabaseSeeder extends Seeder
          $this->call(PublisherSeeder::class);
          $this->call(CompositioncollectiontypeSeeder::class);
          $this->call(CompositiontypeSeeder::class);
+         $this->call(MembershiptypeSeeder::class);
          $this->call(OrganizationtypeSeeder::class);
          $this->call(OrganizationSeeder::class);
     }

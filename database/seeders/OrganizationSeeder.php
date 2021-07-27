@@ -180,5 +180,71 @@ class OrganizationSeeder extends Seeder
                 'logo_file_alt' => ''
             ],
         ]);
+
+        DB::table('organization_user')->insert([
+            [
+                'organization_id' => 1,
+                'user_id'=> 45,
+                'created_at' => '2021-07-26 20:25:01',
+                'updated_at' => '2021-07-26 20:25:01',
+            ],
+            [
+                'organization_id' => 3,
+                'user_id'=> 45,
+                'created_at' => '2021-07-26 20:25:01',
+                'updated_at' => '2021-07-26 20:25:01',
+            ],
+            [
+                'organization_id' => 4,
+                'user_id'=> 45,
+                'created_at' => '2021-07-26 20:25:01',
+                'updated_at' => '2021-07-26 20:25:01',
+            ],
+            [
+                'organization_id' => 11,
+                'user_id'=> 45,
+                'created_at' => '2021-07-26 20:25:01',
+                'updated_at' => '2021-07-26 20:25:01',
+            ],
+        ]);
+
+        DB::table('memberships')->insert([
+            [
+                'user_id'=> 45,
+                'organization_id' => 1,
+                'membershiptype_id' => 1,
+                'membership_id' => '12345',
+                'expiration' => '2021-08-26 20:25:01',
+                'created_at' => '2021-07-26 20:25:01',
+                'updated_at' => '2021-07-26 20:25:01',
+            ],
+            [
+                'user_id'=> 45,
+                'organization_id' => 3,
+                'membershiptype_id' => 1,
+                'membership_id' => '12345',
+                'expiration' => '2021-08-26 20:25:01',
+                'created_at' => '2021-07-26 20:25:01',
+                'updated_at' => '2021-07-26 20:25:01',
+            ],
+            [
+                'user_id'=> 45,
+                'organization_id' => 4,
+                'membershiptype_id' => 1,
+                'membership_id' => '12345',
+                'expiration' => '2021-08-26 20:25:01',
+                'created_at' => '2021-07-26 20:25:01',
+                'updated_at' => '2021-07-26 20:25:01',
+            ],
+            [
+                'user_id'=> 45,
+                'organization_id' => 11,
+                'membershiptype_id' => 1,
+                'membership_id' => '12345',
+                'expiration' => '2021-08-26 20:25:01',
+                'created_at' => '2021-07-26 20:25:01',
+                'updated_at' => '2021-07-26 20:25:01',
+            ],
+        ]);
     }
 }

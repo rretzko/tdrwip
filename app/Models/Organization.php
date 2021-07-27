@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Organization extends Model
 {
@@ -19,7 +20,7 @@ class Organization extends Model
      *  d) etc.
      */
     public function parents()
-    {info(__CLASS__.': '.__METHOD__.': '.__LINE__);
+    {
         return Organization::where('parent_id', 0)
             ->orderBy('name')
             ->get();
@@ -39,11 +40,25 @@ class Organization extends Model
 
     public function getHasChildrenAttribute() : bool
     {
-        return $this['users']->count();
+        return (bool)DB::table('organizations')
+            ->where('parent_id', '=', $this->id)
+            ->get();
+    }
+
+    public function isMember($user_id)
+    {
+        return $this['users']->contains($user_id);
+    }
+
+    public function membership($user_id)
+    {
+        return Membership::where('user_id', $user_id)
+            ->where('organization_id', $this->id)
+            ->first();
     }
 
     public function users()
-    {info(__CLASS__.': '.__METHOD__.': '.__LINE__);
+    {
         return $this->belongsToMany(User::class);
     }
 

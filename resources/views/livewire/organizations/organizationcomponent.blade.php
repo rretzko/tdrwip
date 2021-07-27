@@ -11,7 +11,7 @@
                 <x-sidebar-blurb blurb="Add or edit your organization information here." />
 
                 <x-sidebar-blurb blurb="Organizations can have the following status:
-                    <ul class='ml-4'>
+                    <ul class='ml-4 list-disc'>
                         <li><b>EVENTS, TDR</b>: Directors in this organization are using TheDirectorsRooms.com and
                             this organization is using AuditionForms.com for managing their auditioned events
                         </li>
@@ -19,16 +19,22 @@
                         <li><b>NONE</b>: No Directors belong to this organization</li>
                     <ul>" />
 
-                <x-sidebar-blurb blurb="If you are a member of an organization, you will show a green <b>Member</b> badge. If
-                    you are not a member, you will display a blue 'Request' button to request membership.
+                <x-sidebar-blurb blurb="If the system is aware of your membership in an organization,
+                    you will show a <b class='bg-green-500 text-white rounded px-2'>Member</b> badge if up-to-date
+                    or a <b class='bg-red-500 text-white rounded px-2'>Member</b> badge if expired.<br />
+                    Hover over the badge to display the expiration date.<br />
+                    If you are a member and need to update your membership information, click the button under the
+                    '<b>Card</b>' column.<br />
+                    If you are not a member, you will display a blue 'Request' button to request membership.
                     Requests will be emailed to that organizations Membership Manager.  Hover over the 'Request' button
-                    to see the contact information for the Membership Manager." />
+                    to see the contact information for the Membership Manager.<br />
+                    <span class='text-yellow-200'>NOTE: Request membership approval at the lowest applicable level as
+                    approval will be reflected upward but not vice-versa!</span>" />
 
-                <x-sidebar-blurb blurb="The <b>Card</b> button allows you to upload your membership card into the
-                system.  This is often useful for organzations using AuditionForms.com to manage their auditioned
-                events. These organization will have a green 'Participating' status badge." />
-
-
+                <x-sidebar-blurb blurb="The <b>Card</b> button allows you to update your membership information and
+                upload your membership card into the system.  This is often useful for organzations using
+                AuditionForms.com to manage their auditioned events. These organization will have an 'events' listing
+                under the Status column." />
 
             </x-slot>
 
@@ -148,15 +154,16 @@
                                     @endif
                                     --}} -->
 
-                                    @forelse($organizations AS $organization)
-                                        <x-tables.row
+                                @forelse($organizations AS $organization)
+
+                                    <x-tables.row
                                             wire:loading.class.delay="opacity-50"
                                             style="{{ $organization->hasChildren ? 'border-bottom: 0px solid transparent;' : '' }} "
                                             wire:key="row-{{ $organization->id }}"
                                             altcolor="{{$loop->even}}"
 
                                         >
-                                            <td colspan="5"
+                                        <td colspan="5"
                                                    class="px-2 @if($organization->hasChildren) py-0 @endif">
                                                 <b>{{ $organization->name.' ('.$organization->id.')' }}</b>
                                             </td>
@@ -166,17 +173,26 @@
                                             </td>
 
                                             <td>
-                                                <x-buttons.button-link
-                                                    wire:click.defer="edit({{ $organization->id }})"
-                                                    class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
-                                                >
-                                                    Member
-                                                </x-buttons.button-link>
+                                                @if($organization->isMember(auth()->id()))
+                                                    <span
+                                                        class="@if($organization->membership(auth()->id())->expired()) bg-red-500 @else bg-green-500 @endif rounded px-2 text-white text-sm"
+                                                        title="Expiration Date: {{ $organization->membership(auth()->id())->expiration }}"
+                                                    >
+                                                        Member
+                                                    </span>
+                                                @else
+                                                    <x-buttons.button-link
+                                                        wire:click.defer="edit({{ $organization->id }})"
+                                                        class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
+                                                    >
+                                                        Request
+                                                    </x-buttons.button-link>
+                                                @endif
                                             </td>
 
                                             <td style="padding-right: .5rem;">
                                                 <a href="#"
-                                                   class="border border-green-500 rounded px-2 bg-green-600 text-white hover:bg-green-400"
+                                                   class="border border-gray-800 rounded px-2 bg-gray-600 text-white hover:bg-gray-400"
                                                    title="Click to add your {{ $organization->abbr }} membership card"
                                                 >
                                                     Card
@@ -272,57 +288,57 @@
                                                             </td>
 
                                                         </x-tables.row>
-                                                    @endforeach
+                                                    {{-- @endforeach --}}
 
                                                     {{-- ADD SECTION ROW IF GRANDCHILD HAS GREATGRANDCHILDREN --}}
 
-                                                    @if($grandchild->hasChildren)
-                                                        @foreach($grandchild->children() AS $greatgrandchild)
-                                                            <x-tables.row
-                                                                wire:loading.class.delay="opacity-50"
-                                                                wire:key="row-{{ $greatgrandchild->id }}"
-                                                                style="border-top: 0px solid transparent;"
-                                                                altcolor="{{$loop->parent->parent->even}}"
-                                                            >
+                                                        @if($grandchild->hasChildren)
+                                                            @foreach($grandchild->children() AS $greatgrandchild)
+                                                                <x-tables.row
+                                                                    wire:loading.class.delay="opacity-50"
+                                                                    wire:key="row-{{ $greatgrandchild->id }}"
+                                                                    style="border-top: 0px solid transparent;"
+                                                                    altcolor="{{$loop->parent->parent->even}}"
+                                                                >
 
-                                                                <td class="py-1"></td>
+                                                                    <td class="py-1"></td>
 
-                                                                <td class="py-1"></td>
+                                                                    <td class="py-1"></td>
 
-                                                                <td class="py-1"></td>
+                                                                    <td class="py-1"></td>
 
-                                                                <td colspan="2"
-                                                                    class="py-1" title="{{ $greatgrandchild->name }}">
-                                                                    {{ $greatgrandchild->abbr.' ('.$greatgrandchild->id.')' }}
-                                                                </td>
+                                                                    <td colspan="2"
+                                                                        class="py-1" title="{{ $greatgrandchild->name }}">
+                                                                        {{ $greatgrandchild->abbr.' ('.$greatgrandchild->id.')' }}
+                                                                    </td>
 
-                                                                <td class="text-center py-1">
-                                                                    {!! $greatgrandchild->auditionsuiteStatus !!}
-                                                                </td>
+                                                                    <td class="text-center py-1">
+                                                                        {!! $greatgrandchild->auditionsuiteStatus !!}
+                                                                    </td>
 
-                                                                <td class=" py-1">
-                                                                    <x-buttons.button-link
-                                                                        wire:click.defer="edit({{ $greatgrandchild->id }})"
-                                                                        class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
-                                                                    >
-                                                                        Member
-                                                                    </x-buttons.button-link>
-                                                                </td>
+                                                                    <td class=" py-1">
+                                                                        <x-buttons.button-link
+                                                                            wire:click.defer="edit({{ $greatgrandchild->id }})"
+                                                                            class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
+                                                                        >
+                                                                            Member
+                                                                        </x-buttons.button-link>
+                                                                    </td>
 
-                                                                <td class=" py-1">
-                                                                    <a href="#"
-                                                                       class="border border-green-500 rounded px-2 bg-green-600 text-white hover:bg-green-400"
-                                                                       title="Click to add your {{ $greatgrandchild->abbr }} membership card"
-                                                                    >
-                                                                        Card
-                                                                    </a>
+                                                                    <td class=" py-1">
+                                                                        <a href="#"
+                                                                           class="border border-green-500 rounded px-2 bg-green-600 text-white hover:bg-green-400"
+                                                                           title="Click to add your {{ $greatgrandchild->abbr }} membership card"
+                                                                        >
+                                                                            Card
+                                                                        </a>
 
-                                                                </td>
+                                                                    </td>
 
-                                                            </x-tables.row>
-                                                        @endforeach
-                                                    @endif
-
+                                                                </x-tables.row>
+                                                            @endforeach
+                                                        @endif
+                                                    @endforeach
                                                 @endif
 
                                             @endforeach
