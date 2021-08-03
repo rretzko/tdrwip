@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Nonsubscriberemail;
+use App\Models\Subscriberemail;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
@@ -27,7 +28,7 @@ class SubscriberEmailSeeder extends Seeder
 
         foreach($this->seeds AS $seed){
 
-            $model = new Nonsubscriberemail();
+            $model = new Subscriberemail();
 
             $model->user_id = $seed[0];
             $model->emailtype_id = $seed[1];

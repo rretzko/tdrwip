@@ -20,7 +20,7 @@ class Auditionsuitestatus extends Model
     {
         $statuses = [];
 info(__CLASS__.': '.__METHOD__.': '.__LINE__.' ('.$organization->id.')');
-        if($organization['users']->count()){
+        if($organization['memberships']->count()){
 
             $statuses[] = '<span class="text-blue-600">tdr</span>';
         }

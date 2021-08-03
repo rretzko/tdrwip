@@ -20,8 +20,11 @@ class CreateMembershipsTable extends Migration
             $table->foreignId('membershiptype_id')->constrained();
             $table->string('membership_id')->nullable();
             $table->date('expiration')->nullable();
+            $table->string('grade_levels')->nullable();
+            $table->string('subjects')->nullable();
             $table->timestamps();
             $table->softDeletes();
+            $table->unique(['user_id','organization_id']);
         });
     }
 

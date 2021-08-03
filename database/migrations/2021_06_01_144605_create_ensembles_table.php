@@ -22,6 +22,7 @@ class CreateEnsemblesTable extends Migration
             $table->text('descr')->nullable();
             $table->foreignId('ensembletype_id')->default(1);
             $table->integer('startyear')->default(1980);
+            $table->integer('endyear')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->unique(['school_id', 'user_id', 'name']);

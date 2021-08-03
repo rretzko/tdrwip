@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRoletypesTable extends Migration
+class MembershipRole extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateRoletypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('roletypes', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('descr', 24)->unique();
-            $table->string('detail', 120)->nullable();
+        Schema::create('membership_role', function (Blueprint $table) {
+            $table->foreignId('membership_id')->constrained();
+            $table->foreignId('role_id')->constrained();
             $table->timestamps();
-            $table->softDeletes();
+            $table->unique(['membership_id', 'role_id']);
         });
     }
 
@@ -29,6 +28,6 @@ class CreateRoletypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roletypes');
+        Schema::dropIfExists('membership_role');
     }
 }

@@ -25,9 +25,9 @@
                     Hover over the badge to display the expiration date.<br />
                     If you are a member and need to update your membership information, click the button under the
                     '<b>Card</b>' column.<br />
-                    If you are not a member, you will display a blue 'Request' button to request membership.
-                    Requests will be emailed to that organizations Membership Manager.  Hover over the 'Request' button
-                    to see the contact information for the Membership Manager.<br />
+                    If you are not a member, a blue 'Request' button to request membership will be displayed.
+                    Hover over the 'Request' button to see the contact information for the Membership Manager or click
+                    to send an email.<br />
                     <span class='text-yellow-200'>NOTE: Request membership approval at the lowest applicable level as
                     approval will be reflected upward but not vice-versa!</span>" />
 
@@ -176,7 +176,7 @@
                                                 @if($organization->isMember(auth()->id()))
                                                     <span
                                                         class="@if($organization->membership(auth()->id())->expired()) bg-red-500 @else bg-green-500 @endif rounded px-2 text-white text-sm"
-                                                        title="Expiration Date: {{ $organization->membership(auth()->id())->expiration }}"
+                                                        title="Expiration Date: {{ $organization->membership(auth()->id())->expirationMdy() }}"
                                                     >
                                                         Member
                                                     </span>
@@ -185,7 +185,7 @@
                                                         wire:click.defer="edit({{ $organization->id }})"
                                                         class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
                                                     >
-                                                        Request
+                                                        <span title="{{$membershipmanagers[$organization->id]}}">Request</span>
                                                     </x-buttons.button-link>
                                                 @endif
                                             </td>
@@ -224,12 +224,21 @@
                                                     </td>
 
                                                     <td class=" py-1">
-                                                        <x-buttons.button-link
-                                                            wire:click.defer="edit({{ $child->id }})"
-                                                            class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
-                                                        >
-                                                            Member
-                                                        </x-buttons.button-link>
+                                                        @if($child->isMember(auth()->id()))
+                                                            <span
+                                                                class="@if($child->membership(auth()->id())->expired()) bg-red-500 @else bg-green-500 @endif rounded px-2 text-white text-sm"
+                                                                title="Expiration Date: {{ $child->membership(auth()->id())->expirationMdy() }}"
+                                                            >
+                                                        Member
+                                                    </span>
+                                                        @else
+                                                            <x-buttons.button-link
+                                                                wire:click.defer="edit({{ $child->id }})"
+                                                                class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
+                                                            >
+                                                                <span title="{{$membershipmanagers[$child->id]}}">Request</span>
+                                                            </x-buttons.button-link>
+                                                        @endif
                                                     </td>
 
                                                     <td class=" py-1">
@@ -269,12 +278,21 @@
                                                             </td>
 
                                                             <td class=" py-1">
-                                                                <x-buttons.button-link
-                                                                    wire:click.defer="edit({{ $grandchild->id }})"
-                                                                    class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
-                                                                >
-                                                                    Member
-                                                                </x-buttons.button-link>
+                                                                @if($grandchild->isMember(auth()->id()))
+                                                                    <span
+                                                                        class="@if($grandchild->membership(auth()->id())->expired()) bg-red-500 @else bg-green-500 @endif rounded px-2 text-white text-sm"
+                                                                        title="Expiration Date: {{ $grandchild->membership(auth()->id())->expirationMdy() }}"
+                                                                    >
+                                                                        Member
+                                                                    </span>
+                                                                @else
+                                                                    <x-buttons.button-link
+                                                                        wire:click.defer="edit({{ $grandchild->id }})"
+                                                                        class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
+                                                                    >
+                                                                        <span title="{{$membershipmanagers[$grandchild->id]}}">Request</span>
+                                                                    </x-buttons.button-link>
+                                                                @endif
                                                             </td>
 
                                                             <td class=" py-1">
@@ -317,12 +335,21 @@
                                                                     </td>
 
                                                                     <td class=" py-1">
-                                                                        <x-buttons.button-link
-                                                                            wire:click.defer="edit({{ $greatgrandchild->id }})"
-                                                                            class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
-                                                                        >
-                                                                            Member
-                                                                        </x-buttons.button-link>
+                                                                        @if($greatgrandchild->isMember(auth()->id()))
+                                                                            <span
+                                                                                class="@if($greatgrandchild->membership(auth()->id())->expired()) bg-red-500 @else bg-green-500 @endif rounded px-2 text-white text-sm"
+                                                                                title="Expiration Date: {{ $greatgrandchild->membership(auth()->id())->expirationMdy() }}"
+                                                                            >
+                                                                        Member
+                                                                    </span>
+                                                                        @else
+                                                                            <x-buttons.button-link
+                                                                                wire:click.defer="edit({{ $greatgrandchild->id }})"
+                                                                                class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
+                                                                            >
+                                                                                <span title="{{$membershipmanagers[$greatgrandchild->id]}}">Request</span>
+                                                                            </x-buttons.button-link>
+                                                                        @endif
                                                                     </td>
 
                                                                     <td class=" py-1">

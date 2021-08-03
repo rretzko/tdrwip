@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRoletypesTable extends Migration
+class CreateEventensemblestatustypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateRoletypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('roletypes', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('descr', 24)->unique();
-            $table->string('detail', 120)->nullable();
+        Schema::create('eventensemblestatustypes', function (Blueprint $table) {
+            $table->id();
+            $table->string('descr');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -29,6 +27,6 @@ class CreateRoletypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roletypes');
+        Schema::dropIfExists('eventensemblestatustypes');
     }
 }

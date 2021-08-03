@@ -15,12 +15,13 @@ class CreateAddressesTable extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained()->primary();
-            $table->text('address01', 255)->nullable();
-            $table->text('address02', 255)->nullable();
-            $table->text('city', 255)->nullable();
+            $table->text('address01')->nullable(); //encrypted value
+            $table->text('address02')->nullable(); //encrypted value
+            $table->text('city')->nullable(); //encrypted value
             $table->foreignId('geostate_id')->default(37)->constrained();
-            $table->text('postalcode', 255)->nullable();
+            $table->text('postalcode')->nullable(); //encrypted value
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

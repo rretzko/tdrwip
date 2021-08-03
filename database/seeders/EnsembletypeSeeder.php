@@ -20,6 +20,7 @@ class EnsembletypeSeeder extends Seeder
             ['descr' => 'SSAA'],
             ['descr' => 'TTBB'],
             ['descr' => 'SSAATB'],
+            ['descr' => 'Tone Chimes'],
         ]);
     }
 }

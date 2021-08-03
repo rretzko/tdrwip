@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSubscriberemailsTable extends Migration
+class CreateEventensemblesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,16 @@ class CreateSubscriberemailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('subscriberemails', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('eventensembles', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('event_id')->constrained();
+            $table->string('name');
+            $table->string('short_name');
+            $table->foreignId('eventensembletype_id')->constrained();
+            $table->foreignId('eventensemblestatustype_id')->constrained();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('emailtype_id')->constrained();
-            $table->string('email', 255)->unique();
             $table->timestamps();
             $table->softDeletes();
-            $table->unique(['user_id','emailtype_id']);
         });
     }
 
@@ -31,6 +33,6 @@ class CreateSubscriberemailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subscriberemails');
+        Schema::dropIfExists('eventensembles');
     }
 }

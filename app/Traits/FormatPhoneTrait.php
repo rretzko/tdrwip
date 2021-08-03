@@ -5,11 +5,9 @@ namespace App\Traits;
 trait FormatPhoneTrait
 {
     /**
-     * Return the current senior year
-     * if the current month is Jan-June, return the current year, else
-     * return the next year
+     * Return phone number in (###) ###-#### [x####] format
      *
-     * @return int
+     * @return string
      */
     public function formatPhone($str) : string
     {

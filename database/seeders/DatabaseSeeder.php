@@ -18,17 +18,30 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+         //TYPES
+         $this->call(CompositiontypeSeeder::class);
+         $this->call(CompositioncollectiontypeSeeder::class);
          $this->call(HonorificsSeeder::class);
-         $this->call(PronounsSeeder::class);
-         $this->call(SearchtypeSeeder::class);
          $this->call(EmailtypeSeeder::class);
-         $this->call(PhonetypeSeeder::class);
+         $this->call(EnsembletypeSeeder::class);
+         $this->call(EventensemblestatustypeSeeder::class);
+         $this->call(EventversiontypeSeeder::class);
          $this->call(GeostateSeeder::class);
-         $this->call(RoletypeSeeder::class);
          $this->call(GradetypeSeeder::class);
-         $this->call(GuardiantypeSeeder::class);
+         $this->call(InstrumentationbranchSeeder::class);
+            $this->call(EventensembletypeSeeder::class); //required instrumentationbranchSeeded to be loaded
+            $this->call(InstrumentationSeeder::class);   //required instrumentationbranchSeeded to be loaded
+         $this->call(MembershiptypeSeeder::class);
+         $this->call(OrganizationtypeSeeder::class);
+         $this->call(PhonetypeSeeder::class);
+         $this->call(PronounsSeeder::class);
+            $this->call(GuardiantypeSeeder::class); //requires PronounsSeeder to be loaded
+         $this->call(RoletypeSeeder::class);
+         $this->call(SearchtypeSeeder::class);
          $this->call(StudenttypeSeeder::class);
          $this->call(ShirtsizeSeeder::class);
+
+         //DATA TABLES
          $this->call(SchoolSeeder::class);
          $this->call(UserSeeder::class);
          $this->call(TeacherSeeder::class);
@@ -36,22 +49,19 @@ class DatabaseSeeder extends Seeder
          $this->call(PhoneSeeder::class);
          $this->call(StudentSeeder::class);
          $this->call(NonsubscriberEmailSeeder::class);
-         $this->call(InstrumentationbranchSeeder::class);
-         $this->call(InstrumentationSeeder::class);
          $this->call(InstrumentationUserSeeder::class);
          $this->call(AddressSeeder::class);
          $this->call(GuardianSeeder::class);
          $this->call(SchoolyearSeeder::class);
          $this->call(EnsembleSeeder::class);
-         $this->call(EnsembletypeSeeder::class);
          $this->call(EnsembletypeInstrumentationSeeder::class);
          $this->call(AssetSeeder::class);
          $this->call(EnsembleassetSeeder::class);
          $this->call(PublisherSeeder::class);
-         $this->call(CompositioncollectiontypeSeeder::class);
-         $this->call(CompositiontypeSeeder::class);
-         $this->call(MembershiptypeSeeder::class);
-         $this->call(OrganizationtypeSeeder::class);
          $this->call(OrganizationSeeder::class);
+         $this->call(EventSeeder::class);
+         $this->call(EventensembleSeeder::class);
+         $this->call(EventversionSeeder::class);
+         $this->call(EventensembleEventversionSeeder::class);
     }
 }
