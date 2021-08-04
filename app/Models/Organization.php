@@ -14,6 +14,29 @@ class Organization extends Model
     protected $with = ['memberships',];
 
     /**
+     * @since 2020.08.04
+     *
+     * RECURSIVE METHOD
+     *
+     * Return array of Organizations above $this with direct parent-child relationship
+     */
+    public function ancestors(array $organizations = [], $includethis=false)
+    {
+        //early exit
+        if($this->parent_id === 0){return $organizations;}
+
+        $parent = Organization::find($this->parent_id);
+
+        array_unshift($organizations, $parent);
+
+        if($includethis){
+            $orgs = $parent->ancestors($organizations);
+            $orgs[] = $this;
+            return $orgs;
+        }else {
+            return $parent->ancestors($organizations);
+        }
+    }/**
      * Return organizations by:
      *  a) Parent_id === 0, alpha order
      *  b) child organization, alpha order
@@ -91,10 +114,31 @@ class Organization extends Model
             ->count();
     }
 
-    public function isMember($user_id)
+    /**
+     * Iterate through memberships to determine if one belongs to $user_id
+     * @param $user_id
+     * @return mixed
+     */
+    public function isMember($user_id) : bool
     {
-        return $this['memberships']->contains($user_id);
+        static $pending = Membershiptype::PENDING;
+
+        return (bool)Membership::where('user_id', $user_id)
+            ->where('organization_id', $this->id)
+            ->where('membershiptype_id', '<>', $pending)
+            ->count();
     }
+
+    public function isPending($user_id)
+    {
+        static $pending = Membershiptype::PENDING;
+
+        return (bool)Membership::where('user_id', $user_id)
+            ->where('organization_id', $this->id)
+            ->where('membershiptype_id', '=', $pending)
+            ->count();
+    }
+
 
     public function membership($user_id)
     {
@@ -110,11 +154,20 @@ class Organization extends Model
 
     public function membershipmanagers()
     {
-        $role = new Membershipmanager;
-        $role->organization_id = $this->id;
-        $role->roletype_id = Roletype::where('descr', 'membership manager')->first()->id;
-        return Roletype::where('organization_id', $this->id)
-            ->get();
+        $persons = collect();
+
+        foreach(DB::table('memberships')
+            ->join('membership_roletype', 'memberships.id','=','membership_roletype.membership_id')
+            ->join('roletypes','membership_roletype.roletype_id','=','roletypes.id')
+            ->where('memberships.organization_id','=',3) //$this->id)
+            ->where('roletypes.descr','=','membership manager')
+            ->select('memberships.user_id')
+            ->get() AS $stdobj){
+
+            $persons->push(Person::find($stdobj->user_id));
+        }
+
+        return $persons;
     }
 
     public function users()

@@ -7,5 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Membershiptype extends Model
 {
+    const PENDING = '11';
+
     use HasFactory;
 }

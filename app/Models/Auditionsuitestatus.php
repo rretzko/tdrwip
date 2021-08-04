@@ -19,7 +19,7 @@ class Auditionsuitestatus extends Model
     static public function status($organization)
     {
         $statuses = [];
-info(__CLASS__.': '.__METHOD__.': '.__LINE__.' ('.$organization->id.')');
+
         if($organization['memberships']->count()){
 
             $statuses[] = '<span class="text-blue-600">tdr</span>';

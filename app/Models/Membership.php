@@ -22,6 +22,9 @@ class Membership extends Model
 
     public function expired(): bool
     {
+        //early exit if $this->expiration === blank || null
+        if(! $this->expiration){ return false;}
+
         return $this->expiration < Carbon::now();
     }
 

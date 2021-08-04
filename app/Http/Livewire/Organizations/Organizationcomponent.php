@@ -2,7 +2,12 @@
 
 namespace App\Http\Livewire\Organizations;
 
+use App\Events\MembershipRequestEvent;
+use App\Models\Membership;
+use App\Models\Membershiptype;
 use App\Models\Organization;
+use App\Models\Person;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class Organizationcomponent extends Component
@@ -26,7 +31,14 @@ class Organizationcomponent extends Component
     public $sortfield = '';
 
     //organization-specific properties
-    private $organization = null;
+    public $editorganization = null;
+    public $editorganizationexpiration = '';
+    public $editorganizationgradelevels = '';
+    public $editorganizationsubjects = '';
+    public $editorganizationmembershipid = '';
+    public $editorganizationmembershiptype_id = 1;
+    public $emailsent = '';
+    public $membershiptypes = [];
     public $organizations = [];
 
     public function mount()
@@ -34,6 +46,7 @@ class Organizationcomponent extends Component
         $organization = new Organization;
         $this->organizations = $organization->parents();
         $this->membershipmanagers = $this->membershipManagers();
+        $this->membershiptypes = Membershiptype::orderBy('descr')->get();
     }
 
     public function render()
@@ -41,9 +54,66 @@ class Organizationcomponent extends Component
         return view('livewire.organizations.organizationcomponent');
     }
 
-    public function membershipmanagers()
+    public function requestMembership($organization_id)
+    {
+        $this->showeditmodal = true;
+        $this->editorganization = Organization::find($organization_id);
+
+        /*$this->emailsent = '';
+        $organization = Organization::find($organization_id);
+        $membershipmanagers = $organization->membershipmanagers(); //person objects
+        $person = Person::find(auth()->id());
+        $pending = Membershiptype::PENDING;
+
+        //add pending status to memberships
+        foreach($organization->ancestors([],true) AS $ancestor){
+/* *** UNCOMMENT THIS AFTER TESTING EMAIL FUNCTIONALITIES
+            Membership::updateOrcreate([
+               'user_id' => auth()->id(),
+               'organization_id' => $ancestor->id,
+               'membershiptype_id' => $pending,
+            ]);
+
+        }
+
+        event(new MembershipRequestEvent($organization, Person::find(auth()->id())));
+
+        $this->emailsent = 'Your request for membership to '.$organization->name.' has been sent to '
+            .$organization->membershipmanagers()->first()->fullName.' for approval.';
+*/
+    }
+
+    public function saveMembership()
+    {
+        foreach($this->editorganization->ancestors([],true) AS $organization) {
+            Membership::updateOrCreate([
+                'user_id' => auth()->id(),
+                'organization_id' => $organization->id,
+                'membershiptype_id' => 11, //pending until approved by membership manager
+                'requestedtype_id' => $this->editorganizationmembershiptype_id,
+                'expiration' => $this->editorganizationexpiration,
+                'grade_levels' => $this->editorganizationgradelevels,
+                'subjects' => $this->editorganizationsubjects,
+            ]);
+        }
+
+        $this->emit('membership-saved');
+    }
+
+    public function sendMembershipRequest()
+    {
+        event(new MembershipRequestEvent($this->editorganization, Person::find(auth()->id())));
+
+        $this->emailsent = 'Your request for membership to '.$this->editorganization->name.' has been sent to '
+            .$this->editorganization->membershipmanagers()->first()->fullName.' for approval.';
+
+        $this->showeditmodal = false;
+    }
+
+    private function membershipmanagers()
     {
         $a = [];
+        $emails = [];
 
         foreach($this->organizations AS $organization){
 
@@ -52,13 +122,18 @@ class Organizationcomponent extends Component
 
                 if ($branch->hasMembershipmanagers) {
 
-                    $str = 'Membership manager name goes here';
+                    $str = '';
 
-                    //foreach($organization->membershipmanagers() AS $membershipmanager){
+                    foreach($organization->membershipmanagers() AS $person){
 
-                    //    $str =
+                        foreach($person->subscriberEmails AS $email){
 
-                    //}
+                            $emails[] = $email->email;
+                        }
+
+                        $str .= $person->fullName.' ('.implode(',',$emails).')';
+
+                    }
 
                     $a[$branch->id] = $str;
 
@@ -69,8 +144,6 @@ class Organizationcomponent extends Component
                 }
             }
         }
-
-        //$a[3] = 'Barbara Retzko (barbararetzko@hotmail.com)';
 
         return $a;
     }

@@ -21,13 +21,14 @@
 
                 <x-sidebar-blurb blurb="If the system is aware of your membership in an organization,
                     you will show a <b class='bg-green-500 text-white rounded px-2'>Member</b> badge if up-to-date
-                    or a <b class='bg-red-500 text-white rounded px-2'>Member</b> badge if expired.<br />
+                    or a <b class='bg-red-500 text-white rounded px-2'>Member</b> badge if expired or missing.<br />
                     Hover over the badge to display the expiration date.<br />
                     If you are a member and need to update your membership information, click the button under the
                     '<b>Card</b>' column.<br />
-                    If you are not a member, a blue 'Request' button to request membership will be displayed.
+                    If you are not a member and a Membership Manager has been identified,
+                    a blue 'Request' button to request membership will be displayed.
                     Hover over the 'Request' button to see the contact information for the Membership Manager or click
-                    to send an email.<br />
+                    to send a request for membership approval.<br />
                     <span class='text-yellow-200'>NOTE: Request membership approval at the lowest applicable level as
                     approval will be reflected upward but not vice-versa!</span>" />
 
@@ -41,9 +42,13 @@
             <x-slot name="table">
                 {{-- Organizations table --}}
                 {{-- Per Page and Bulk actions are commented out but left for future usage --}}
-                <div class="flex justify-end pr-6 space-x-2">
+                <div class="flex justify-between pr-6 space-x-2">
                     <!-- <x-inputs.dropdowns.perpage />
                     <x-inputs.dropdowns.bulkactions :selected="$selected" /> -->
+                    <div class="mb-2 @if($emailsent) p-1 w-10/12 bg-green-50 text-green-700 border border-black rounded @endif">
+                        {{ $emailsent }}
+                    </div>
+
                     <x-buttons.button-add toggle="showaddmodal" />
                 </div>
 
@@ -173,17 +178,33 @@
                                             </td>
 
                                             <td>
-                                                @if($organization->isMember(auth()->id()))
+                                                @if($organization->isMember(auth()->id())) {{-- non-pending membership status --}}
                                                     <span
-                                                        class="@if($organization->membership(auth()->id())->expired()) bg-red-500 @else bg-green-500 @endif rounded px-2 text-white text-sm"
-                                                        title="Expiration Date: {{ $organization->membership(auth()->id())->expirationMdy() }}"
+                                                        class="{{ $organization->membership(auth()->id()) &&
+                                                            $organization->membership(auth()->id())->expiration &&
+                                                            (! $organization->membership(auth()->id())->expired()) ? 'bg-green-500' : 'bg-red-500' }} rounded px-2 text-white text-sm"
+                                                        title="Expiration Date: {{ $organization->membership(auth()->id()) &&
+                                                            $organization->membership(auth()->id())->expiration ? $organization->membership(auth()->id())->expirationMdy() : 'none' }}"
                                                     >
-                                                        Member
+                                                        {{ ucwords($organization->membership(auth()->id())->membershiptype->descr) }}
+                                                    </span>
+                                                @elseif($organization->isPending(auth()->id()))
+                                                    <span
+                                                        class="bg-indigo-500 rounded px-2 text-white text-sm"
+                                                        title="Pending Membership Manager approval"
+                                                    >
+                                                        Pending
+                                                    </span>
+                                                @elseif($membershipmanagers[$organization->id] === 'No membership manager found.')
+                                                    <span
+                                                        class="border border-gray-500 rounded bg-gray-400 hover:bg-gray-600 px-2 text-white"
+                                                    >
+                                                        <span title="No membership manager found.">Request</span>
                                                     </span>
                                                 @else
                                                     <x-buttons.button-link
-                                                        wire:click.defer="edit({{ $organization->id }})"
-                                                        class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
+                                                        wire:click="requestMembership({{ $organization->id }})"
+                                                        class="border border-blue-500 rounded bg-blue-400 hover:bg-blue-600 px-2  text-white "
                                                     >
                                                         <span title="{{$membershipmanagers[$organization->id]}}">Request</span>
                                                     </x-buttons.button-link>
@@ -224,17 +245,33 @@
                                                     </td>
 
                                                     <td class=" py-1">
-                                                        @if($child->isMember(auth()->id()))
+                                                        @if($child->isMember(auth()->id())) {{-- non-pending membership status --}}
                                                             <span
-                                                                class="@if($child->membership(auth()->id())->expired()) bg-red-500 @else bg-green-500 @endif rounded px-2 text-white text-sm"
-                                                                title="Expiration Date: {{ $child->membership(auth()->id())->expirationMdy() }}"
+                                                                class="{{ $child->membership(auth()->id()) &&
+                                                                $child->membership(auth()->id())->expiration &&
+                                                                (! $child->membership(auth()->id())->expired()) ? 'bg-green-500' : 'bg-red-500' }} rounded px-2 text-white text-sm"
+                                                                title="Expiration Date: {{ $child->membership(auth()->id()) &&
+                                                                $child->membership(auth()->id())->expiration ? $child->membership(auth()->id())->expirationMdy() : 'none' }}"
                                                             >
-                                                        Member
-                                                    </span>
+                                                            {{ ucwords($child->membership(auth()->id())->membershiptype->descr) }}
+                                                            </span>
+                                                        @elseif($child->isPending(auth()->id()))
+                                                            <span
+                                                                class="bg-indigo-500 rounded px-2 text-white text-sm"
+                                                                title="Pending Membership Manager approval"
+                                                            >
+                                                                Pending
+                                                            </span>
+                                                        @elseif($membershipmanagers[$child->id] === 'No membership manager found.')
+                                                            <span
+                                                                class="border border-gray-500 rounded bg-gray-400 hover:bg-gray-600 px-2 text-white"
+                                                            >
+                                                                        <span title="No membership manager found.">Request</span>
+                                                                    </span>
                                                         @else
                                                             <x-buttons.button-link
-                                                                wire:click.defer="edit({{ $child->id }})"
-                                                                class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
+                                                                wire:click="requestMembership({{ $child->id }})"
+                                                                class="border border-blue-500 rounded bg-blue-400 hover:bg-blue-600 px-2  text-white "
                                                             >
                                                                 <span title="{{$membershipmanagers[$child->id]}}">Request</span>
                                                             </x-buttons.button-link>
@@ -278,18 +315,34 @@
                                                             </td>
 
                                                             <td class=" py-1">
-                                                                @if($grandchild->isMember(auth()->id()))
+                                                                @if($grandchild->isMember(auth()->id())) {{-- non-pending membership status --}}
                                                                     <span
-                                                                        class="@if($grandchild->membership(auth()->id())->expired()) bg-red-500 @else bg-green-500 @endif rounded px-2 text-white text-sm"
-                                                                        title="Expiration Date: {{ $grandchild->membership(auth()->id())->expirationMdy() }}"
+                                                                        class="{{ $grandchild->membership(auth()->id()) &&
+                                                                        $grandchild->membership(auth()->id())->expiration &&
+                                                                        (! $grandchild->membership(auth()->id())->expired()) ? 'bg-green-500' : 'bg-red-500' }} rounded px-2 text-white text-sm"
+                                                                                title="Expiration Date: {{ $grandchild->membership(auth()->id()) &&
+                                                                        $grandchild->membership(auth()->id())->expiration ? $grandchild->membership(auth()->id())->expirationMdy() : 'none' }}"
+                                                                            >
+                                                                        {{ ucwords($grandchild->membership(auth()->id())->membershiptype->descr) }}
+                                                                    </span>
+                                                                @elseif($grandchild->isPending(auth()->id()))
+                                                                    <span
+                                                                        class="bg-indigo-500 rounded px-2 text-white text-sm"
+                                                                        title="Pending Membership Manager approval"
                                                                     >
-                                                                        Member
+                                                                        Pending
+                                                                    </span>
+                                                                @elseif($membershipmanagers[$grandchild->id] === 'No membership manager found.')
+                                                                    <span
+                                                                        class="border border-gray-500 rounded bg-gray-400 hover:bg-gray-600 px-2 text-white"
+                                                                    >
+                                                                        <span title="No membership manager found.">Request</span>
                                                                     </span>
                                                                 @else
                                                                     <x-buttons.button-link
-                                                                        wire:click.defer="edit({{ $grandchild->id }})"
-                                                                        class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
-                                                                    >
+                                                                        wire:click="requestMembership({{ $grandchild->id }})"
+                                                                        class="border border-blue-500 rounded bg-blue-400 hover:bg-blue-600 px-2  text-white "
+                                                                        >
                                                                         <span title="{{$membershipmanagers[$grandchild->id]}}">Request</span>
                                                                     </x-buttons.button-link>
                                                                 @endif
@@ -335,17 +388,33 @@
                                                                     </td>
 
                                                                     <td class=" py-1">
-                                                                        @if($greatgrandchild->isMember(auth()->id()))
+                                                                        @if($greatgrandchild->isMember(auth()->id())) {{-- non-pending membership status --}}
                                                                             <span
-                                                                                class="@if($greatgrandchild->membership(auth()->id())->expired()) bg-red-500 @else bg-green-500 @endif rounded px-2 text-white text-sm"
-                                                                                title="Expiration Date: {{ $greatgrandchild->membership(auth()->id())->expirationMdy() }}"
+                                                                                class="{{ $greatgrandchild->membership(auth()->id()) &&
+                                                                                $greatgrandchild->membership(auth()->id())->expiration &&
+                                                                                (! $greatgrandchild->membership(auth()->id())->expired()) ? 'bg-green-500' : 'bg-red-500' }} rounded px-2 text-white text-sm"
+                                                                                                title="Expiration Date: {{ $greatgrandchild->membership(auth()->id()) &&
+                                                                                $greatgrandchild->membership(auth()->id())->expiration ? $greatgrandchild->membership(auth()->id())->expirationMdy() : 'none' }}"
+                                                                                            >
+                                                                                {{ ucwords($greatgrandchild->membership(auth()->id())->membershiptype->descr) }}
+                                                                            </span>
+                                                                        @elseif($greatgrandchild->isPending(auth()->id()))
+                                                                            <span
+                                                                                class="bg-indigo-500 rounded px-2 text-white text-sm"
+                                                                                title="Pending Membership Manager approval"
                                                                             >
-                                                                        Member
+                                                                                Pending
+                                                                            </span>
+                                                                        @elseif($membershipmanagers[$greatgrandchild->id] === 'No membership manager found.')
+                                                                            <span
+                                                                                class="border border-gray-500 rounded bg-gray-400 hover:bg-gray-600 px-2 text-white"
+                                                                            >
+                                                                        <span title="No membership manager found.">Request</span>
                                                                     </span>
                                                                         @else
                                                                             <x-buttons.button-link
-                                                                                wire:click.defer="edit({{ $greatgrandchild->id }})"
-                                                                                class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
+                                                                                wire:click="requestMembership({{ $greatgrandchild->id }})"
+                                                                                class="border border-blue-500 rounded bg-blue-400 hover:bg-blue-600 px-2  text-white "
                                                                             >
                                                                                 <span title="{{$membershipmanagers[$greatgrandchild->id]}}">Request</span>
                                                                             </x-buttons.button-link>
@@ -403,7 +472,12 @@
                 {{-- ADD/EDIT STUDENT --}}
                 <div>
                     @if($showeditmodal)
-                <!-- {{--        <x-modals.ensemble :ensemble="$editensemble" :ensembletypes="$ensembletypes" :years="$years" /> --}} -->
+                            <x-modals.membership
+                                request="true"
+                                membershipid="{{$editorganizationmembershipid}}"
+                                :organization="$editorganization"
+                                :membershiptypes="$membershiptypes"
+                            />
                     @endif
                 </div>
 
