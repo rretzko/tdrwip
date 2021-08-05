@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\MembershipRequestEvent;
 use App\Mail\MembershipRequestMail;
+use App\Models\Membership;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
@@ -43,6 +44,10 @@ class SendMembershipRequestEmailListener
 
     private function datatable($event)
     {
+        $membership = Membership::where('user_id', auth()->id())
+            ->where('organization_id', $event->organization->id)
+            ->first();
+
         $str = '<table>';
 
         $str .= '<tbody>';
@@ -61,6 +66,31 @@ class SendMembershipRequestEmailListener
             $str .= $school->name . '<br />';
         }
         $str .='</th>'
+            .'</tr>';
+
+        $str .= '<tr>'
+            .'<td>Membership type</td>'
+            .'<th>'.$membership->requesttypedescr.'</th>'
+            .'</tr>';
+
+        $str .= '<tr>'
+            .'<td>Membership id</td>'
+            .'<th>'.$membership->membership_id.'</th>'
+            .'</tr>';
+
+        $str .= '<tr>'
+            .'<td>Expiration</td>'
+            .'<th>'.$membership->expirationMdy().'</th>'
+            .'</tr>';
+
+        $str .= '<tr>'
+            .'<td>Grade Levels</td>'
+            .'<th>'.$membership->grade_levels.'</th>'
+            .'</tr>';
+
+        $str .= '<tr>'
+            .'<td>Subject</td>'
+            .'<th>'.$membership->subjects.'</th>'
             .'</tr>';
 
         $str .= '</tbody>';

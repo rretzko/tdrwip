@@ -28,6 +28,13 @@ class Membership extends Model
         return $this->expiration < Carbon::now();
     }
 
+    public function getRequesttypedescrAttribute()
+    {
+        $membershiptype = Membershiptype::find($this->requestedtype_id);
+
+        return $membershiptype->descr;
+    }
+
     public function membershiptype()
     {
         return $this->belongsTo(Membershiptype::class);

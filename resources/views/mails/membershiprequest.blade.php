@@ -7,7 +7,7 @@ School(s): @foreach($event->requester->user->schools AS $school)
             {{ $school->name }},
     @endforeach
 
-Please click here to grant {{ $event->requester->first }} admittance to {{ $event->organization->name }} events.
+Please click <a href="{{ route('membership.approval', ['membership', $event->requester->membership]) }}">here</a> to grant {{ $event->requester->first }} admittance to {{ $event->organization->name }} events.
 
 Thanks!
 

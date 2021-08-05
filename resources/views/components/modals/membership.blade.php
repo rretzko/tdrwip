@@ -37,13 +37,13 @@
 
                 <!-- GRADE LEVELS -->
                 <x-inputs.group label="Grade Levels" for="editorganizationgradelevels" >
-                    <x-inputs.text wire:model="editorganizationgradelevels" label="" for="editorganizationgradelevels"   />
+                    <x-inputs.text wire:model.defer="editorganizationgradelevels" label="" for="editorganizationgradelevels"   />
                     <div class="hint">ex. Elementary, Middle, Secondary, Collegiate, Adult...</div>
                 </x-inputs.group>
 
                 <!-- SUBJECTS -->
                 <x-inputs.group label="Subjects" for="editorganizationsubjects" >
-                    <x-inputs.text wire:model="editorganizationsubjects" label="" for="editorganizationsubjects"   />
+                    <x-inputs.text wire:model.defer="editorganizationsubjects" label="" for="editorganizationsubjects"   />
                     <div class="hint">ex. Chorus, Music Theory, Guitar...</div>
                 </x-inputs.group>
 

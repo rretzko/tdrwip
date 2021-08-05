@@ -24,6 +24,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     /** SUPERUSER */
     Route::post('dashboard/impersonation', [App\Http\Controllers\ImpersonationController::class, 'show'])->name('impersonation.show');
 
+    /** MEMBERSHIP MANAGER */
+    Route::get('membership/approval/{membership}', [App\Http\Controllers\Organizations\MembershipmanagerController::class, 'approval'])->name('membership.approval');
+
+
     /** AUTHENTICATED USER */
     //Route::get('/students', [App\Http\Controllers\Students\StudentController::class, 'show'])->name('students');
     Route::get('/students', [App\Http\Controllers\Students\StudentController::class, 'index'])->name('students.index');
