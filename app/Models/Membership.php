@@ -15,6 +15,26 @@ class Membership extends Model
 
     protected $with = ['person','roletypes'];
 
+    public function admin()
+    {
+        /*
+         * 5 => 'event_administrator',
+         * 6 => 'registration_manager',
+         * 16 => 'domainowner',
+         * 19 => 'officer'
+         */
+        $roletypes_ids = [5,6,16,19];
+
+        foreach($this->roletypes AS $roletype){
+
+            if(in_array($roletype->id, $roletypes_ids)){
+
+                return true;
+            }
+        }
+
+        return false;
+    }
     public function expirationMdy()
     {
         return Carbon::parse($this->expiration)->format('M d, Y');
@@ -26,6 +46,27 @@ class Membership extends Model
         if(! $this->expiration){ return false;}
 
         return $this->expiration < Carbon::now();
+    }
+
+    public function getRoletypeIsAdminAttribute()
+    {
+        /**
+         * 5 => 'event_administrator',
+         * 6 => 'registration_manager',
+         * 16 => 'domainowner',
+         * 19 => 'officer'
+         */
+        $roletypeids = [5,6,16,19];
+
+        foreach($this->roletypes AS $roletype){
+
+            if(in_array($roletype->id, $roletypeids)){
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getRequesttypedescrAttribute()

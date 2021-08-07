@@ -61,6 +61,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::post('/ensemble/asset/store', [App\Http\Controllers\Ensembles\AssetController::class,'store'])->name('ensemble.assets.store');
     //Route::post('/ensemble/asset/{ensemble}/update', [App\Http\Controllers\Ensembles\AssetController::class,'update'])->name('ensemble.assets.update');
 
+    /** EVENTS */
+    Route::get('/events', [App\Http\Controllers\Events\EventController::class, 'index'])->name('events.index');
+
     /** ORGANIZATIONS */
     Route::get('/organizations', [App\Http\Controllers\Organizations\OrganizationController::class, 'index'])->name('organizations.index');
 

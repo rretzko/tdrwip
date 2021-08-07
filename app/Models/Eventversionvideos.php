@@ -5,12 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Event extends Model
+class Eventversionvideos extends Model
 {
     use HasFactory;
 
-    public function organization()
-    {
-        return $this->belongsTo(Organization::class);
-    }
+    protected $fillable = ['eventversion_id', 'videotype_ids'];
 }

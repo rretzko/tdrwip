@@ -1,0 +1,42 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateEventversionconfigsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('eventversionconfigs', function (Blueprint $table) {
+            $table->foreignId('eventversion_id')->primary();
+            $table->boolean('paypalteacher')->default(0);
+            $table->boolean('paypalstudent')->default(0);
+            $table->float('registrationfee')->default(0);
+            $table->string('grades')->default('9,10,11,12');
+            $table->boolean('eapplication')->default(0);
+            $table->tinyInteger('judge_count')->default(1);
+            $table->boolean('missing_judge_average')->default(1);
+            $table->boolean('epaymentsurcharge')->default(0);
+            $table->set('bestscore',['asc','desc'])->default('desc');
+            $table->tinyInteger('membershipcard')->default(1);  //0,1,2
+            $table->timestamps();
+            $table->softDeletes();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('eventversionconfigs');
+    }
+}

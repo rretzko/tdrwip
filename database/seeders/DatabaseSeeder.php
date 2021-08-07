@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
          //TYPES
          $this->call(CompositiontypeSeeder::class);
          $this->call(CompositioncollectiontypeSeeder::class);
+         $this->call(DatetypeSeeder::class);
          $this->call(HonorificsSeeder::class);
          $this->call(EmailtypeSeeder::class);
          $this->call(EnsembletypeSeeder::class);
@@ -29,13 +30,13 @@ class DatabaseSeeder extends Seeder
          $this->call(GeostateSeeder::class);
          $this->call(GradetypeSeeder::class);
          $this->call(InstrumentationbranchSeeder::class);
-            $this->call(EventensembletypeSeeder::class); //required instrumentationbranchSeeded to be loaded
-            $this->call(InstrumentationSeeder::class);   //required instrumentationbranchSeeded to be loaded
+         $this->call(EventensembletypeSeeder::class); //required instrumentationbranchSeeded to be loaded
+         $this->call(InstrumentationSeeder::class);   //required instrumentationbranchSeeded to be loaded
          $this->call(MembershiptypeSeeder::class);
          $this->call(OrganizationtypeSeeder::class);
          $this->call(PhonetypeSeeder::class);
          $this->call(PronounsSeeder::class);
-            $this->call(GuardiantypeSeeder::class); //requires PronounsSeeder to be loaded
+         $this->call(GuardiantypeSeeder::class); //requires PronounsSeeder to be loaded
          $this->call(RoletypeSeeder::class);
          $this->call(SearchtypeSeeder::class);
          $this->call(StudenttypeSeeder::class);
