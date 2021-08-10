@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
          $this->call(OrganizationtypeSeeder::class);
          $this->call(PhonetypeSeeder::class);
          $this->call(PronounsSeeder::class);
+         $this->call(RegistranttypeSeeder::class);
          $this->call(GuardiantypeSeeder::class); //requires PronounsSeeder to be loaded
          $this->call(RoletypeSeeder::class);
          $this->call(SearchtypeSeeder::class);
@@ -64,6 +65,10 @@ class DatabaseSeeder extends Seeder
          $this->call(EventensembleSeeder::class);
          $this->call(EventversionSeeder::class);
          $this->call(EventensembleEventversionSeeder::class);
+         $this->call(EventversionconfigSeeder::class);
          $this->call(MembershipSeeder::class);
+         $this->call(EventversiondateSeeder::class);
+         $this->call(RegistrantSeeder::class);
+         $this->call(InstrumentationRegistrantSeeder::class);
     }
 }

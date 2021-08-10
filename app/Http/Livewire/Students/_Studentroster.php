@@ -590,7 +590,7 @@ class Studentroster extends Component
         $senioryear = $this->senioryear();
 
         //what school is being targeted
-        $school = School::find(Userconfig::getValue('school_id', auth()->id()));
+        $school = School::find(Userconfig::getValue('school', auth()->id()));
 
         //what grades are taught at the school for this teacher
         $grades = $school->currentUserGrades;

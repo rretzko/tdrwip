@@ -61,11 +61,17 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::post('/ensemble/asset/store', [App\Http\Controllers\Ensembles\AssetController::class,'store'])->name('ensemble.assets.store');
     //Route::post('/ensemble/asset/{ensemble}/update', [App\Http\Controllers\Ensembles\AssetController::class,'update'])->name('ensemble.assets.update');
 
-    /** EVENTS */
-    Route::get('/events', [App\Http\Controllers\Events\EventController::class, 'index'])->name('events.index');
+    /** EVENTVERSIONS */
+    //NOTE: using "/events" as friendlier designation
+    Route::get('/events', [App\Http\Controllers\Eventversions\EventversionsController::class, 'index'])->name('eventversions.index');
 
     /** ORGANIZATIONS */
     Route::get('/organizations', [App\Http\Controllers\Organizations\OrganizationController::class, 'index'])->name('organizations.index');
+
+    /** REGISTRANTS */
+    Route::get('/registrants/{eventversion}',[App\Http\Controllers\Registrants\RegistrantsController::class, 'index'])->name('registrants.index');
+    Route::get('/registrant/{registrant}',[App\Http\Controllers\Registrants\RegistrantController::class, 'show'])->name('registrant.show');
+    Route::post('/registrant/update/{registrant}',[App\Http\Controllers\Registrants\RegistrantController::class, 'update'])->name('registrant.update');
 
     /** SCHOOLS */
     Route::get('/schools', [App\Http\Controllers\Schools\SchoolController::class, 'index'])->name('schools');

@@ -21,7 +21,7 @@ class Gradetype extends Model
 
         foreach(DB::table('gradetype_school_user')
                 ->select('gradetype_id')
-                ->where('school_id', '=', Userconfig::getValue('school_id', auth()->id()))
+                ->where('school_id', '=', Userconfig::getValue('school', auth()->id()))
                 ->where('user_id', '=', auth()->id())
                 ->pluck('gradetype_id') AS $gradetype_id){
 

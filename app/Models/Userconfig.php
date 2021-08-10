@@ -67,13 +67,19 @@ class Userconfig extends Model
     }
 
     private static function defaultEnsemble_id($descr, $user_id)
-    {dd($user_id);
+    {
         $person = Person::find($user_id);
         $ensemble = $person->ensembles->first();
         self::defaultSave($descr, $user_id, $ensemble->id);
     }
 
-    private static function defaultSchool_id($descr, $user_id)
+    private static function defaultRegistrantpopulation($descr, $user_id)
+    {
+        self::defaultSave($descr, $user_id, 'eligible');
+    }
+
+
+    private static function defaultSchool($descr, $user_id)
     {
         $user = User::find($user_id);
         $school = $user->schools->first();

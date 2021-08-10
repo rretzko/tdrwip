@@ -9,6 +9,11 @@ class Instrumentation extends Model
 {
     use HasFactory;
 
+    public function eventensembletypes()
+    {
+        return $this->belongsToMany(Eventensembletype::class);
+    }
+
     public function formattedDescr()
     {
         return $this->formatStringWithRomanNumerals($this->descr);
@@ -17,6 +22,11 @@ class Instrumentation extends Model
     public function instrumentationbranch()
     {
         return $this->belongsTo(Instrumentationbranch::class);
+    }
+
+    public function registrants()
+    {
+        return $this->belongsToMany(Registrant::class);
     }
 
     public function users()

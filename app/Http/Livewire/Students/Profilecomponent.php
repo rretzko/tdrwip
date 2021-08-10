@@ -94,7 +94,7 @@ class Profilecomponent extends Component
 
         //classofs starting with the $startyear of user/teacher for current school
         $startyear = Tenure::where('user_id', auth()->id())
-            ->where('school_id', Userconfig::getValue('school_id', auth()->id()))
+            ->where('school_id', Userconfig::getValue('school', auth()->id()))
             ->first()
             ->value('startyear');
 

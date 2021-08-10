@@ -1,0 +1,174 @@
+<?php
+
+namespace App\Models\Utility;
+
+use App\Models\Eventversion;
+use App\Models\Registrant;
+use App\Models\Registranttype;
+use App\Models\Student;
+use App\Models\Userconfig;
+use App\Traits\SenioryearTrait;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+
+class Registrants extends Model
+{
+    use SenioryearTrait;
+
+    private static $eventversion;
+    private static $eventversion_id;
+    private static $school_id;
+
+    public static function eligible($search='')
+    {
+        self::$eventversion_id = Userconfig::getValue('eventversion', auth()->id());
+        self::$eventversion = Eventversion::find(self::$eventversion_id);
+        self::$school_id = Userconfig::getValue('school', auth()->id());
+
+        $classofs = array_map('self::getClassofFromGrade',explode(',',self::$eventversion['eventversionconfigs']->grades));
+
+        return self::eligibleRegistrants($search,$classofs);
+
+    }
+
+/** END OF PUBLIC FUNCTIONS **************************************************/
+
+    private static function confirmEligibleStudentsAreRegistrants(string $search, array $classofs)
+    {
+        $students = self::eligibleStudents($search, $classofs);
+
+        //ensure that all eligible students have a registrant record
+        foreach($students AS $student) {
+
+            $registrant = Registrant::firstOrCreate([
+                'user_id' => $student->user_id,
+                'eventversion_id' => self::$eventversion_id,
+                'school_id' => self::$school_id
+            ],
+                [
+                    'id' => self::makeRegistrantId(),
+                    'programname' => $student->person->fullName,
+                    'registranttype_id' => Registranttype::ELIGIBLE,
+                ]);
+
+            // if $registrant does not already have an assigned instrumentation,
+            // assign the $registrant->student's first instrumentation
+            // OR if none exists, assign the first instrumentation for the $eventversion->ensemble
+
+            if (! $registrant['instrumentations']->count()){
+                $registrant->instrumentations()->attach(self::defaultInstrumentationId($registrant));
+            }
+
+            /*if(! Registrant::where('user_id', $student->user_id)
+                ->where('eventversion_id', self::$eventversion_id)
+                ->where('school_id', self::$school_id)
+                ->first()){
+
+                self::makeRegistrant($student);
+            }*/
+        }
+
+        return $students;
+    }
+
+    /**
+     * If no registrant instrumentation currently exists,
+     *  a) Choose the first instrumentation for the $registrant->student IF
+     *      a.1) that instrumentation exists for the first $eventensemble ELSE
+     *  b) Choose the first instrumentation for the $eventensemble
+     *
+     * @param Registrant $registrant
+     * @return int
+     */
+    private static function defaultInstrumentationId(Registrant $registrant)
+    {
+        $eventversion = Eventversion::with('eventensembles')->where('id', self::$eventversion_id)->first();
+
+        $eventversioninstrumentations = $eventversion->eventensembles->first()
+            ->eventensembletype()->instrumentations;
+
+        $eventversionfirstinstrumentid = $eventversioninstrumentations->first()->id;
+
+        $registrantinstrumentations = $registrant->student->person->user->instrumentations ?? null;
+
+        $registrantfirstinstrumentid = ($registrantinstrumentations)
+            ? $registrantinstrumentations->first()->id
+            : 0;
+
+        return ($registrantinstrumentations && $eventversioninstrumentations->contains($registrantfirstinstrumentid))
+                ? $registrantfirstinstrumentid
+                : $eventversionfirstinstrumentid;
+    }
+
+    private static function eligibleRegistrants(string $search, array $classofs)
+    {
+        $registrants = collect();
+        $students = self::confirmEligibleStudentsAreRegistrants($search, $classofs);
+
+        foreach($students AS $student) {
+
+            $registrants->push($student->registrants->where('eventversion_id', self::$eventversion_id)->first());
+        }
+
+        return $registrants;
+    }
+
+    private static function eligibleStudents(string $search, array $classofs)
+    {
+        /**
+         * Raw sql:
+         * SELECT b.user_id,concat(c.last,",",c.first," ",c.middle) AS fullNameAlpha, (12 - (b.classof - 2022)) AS grade
+        FROM students b, people c, student_teacher d
+        WHERE b.classof IN (2022,2023,2024)
+        AND b.user_id=c.user_id
+        AND c.user_id=d.student_user_id
+        AND d.teacher_user_id=28
+        ORDER BY fullNameAlpha
+         */
+        return Student::with('person.user.schools')
+            ->whereIn('classof', $classofs)
+            ->whereHas('teachers', function(Builder $query){
+                $query->where('teacher_user_id','=' , auth()->id());
+            })
+            ->whereHas('person', function(Builder $query) use ($search){
+                $query->where('last','LIKE','%'.$search.'%');
+            })
+            ->get()
+            ->sortBy('person.last');
+    }
+
+    private static function getClassofFromGrade($grade) : int
+    {
+        static $senioryear = null;
+
+        if(is_null($senioryear)){
+            $senioryear = (new Registrants)->senioryear();
+        }
+
+        return ($senioryear + (12 - $grade));
+    }
+
+    private static function makeRegistrant(Student $student)
+    {
+        Registrant::updateOrCreate([
+          'id' => self::makeRegistrantId(),
+          'user_id' => $student->user_id,
+          'eventversion_id' => self::$eventversion_id,
+          'school_id' => self::$school_id,
+          'programname' => $student->person->fullName,
+          'registranttype_id' => Registranttype::ELIGIBLE,
+        ]);
+    }
+
+    private static function makeRegistrantId() : int
+    {
+        $id = self::$eventversion_id.rand(1000,9999);
+
+        while(Registrant::find($id)){
+
+            $id = self::$eventversion_id.rand(1000,9999);
+        }
+
+        return $id;
+    }
+}

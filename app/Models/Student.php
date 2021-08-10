@@ -17,6 +17,8 @@ class Student extends Model
 
     protected $primaryKey = 'user_id';
 
+    protected $with = ['person', 'teachers'];
+
     public $school_id;
     public $student_user_id;
     public $teacher_user_id;
@@ -61,6 +63,11 @@ class Student extends Model
         return (12 - ($this->classof - $sr_year));
     }
 
+    public function getGradeClassofAttribute() : string
+    {
+        return $this->getGradeAttribute().' ('.$this->classof.')';
+    }
+
     public function getHeightFootInchAttribute()
     {
         return floor($this->height / 12)."' ".($this->height % 12).'" ('.$this->height.'")';
@@ -103,6 +110,11 @@ class Student extends Model
     public function person()
     {
         return $this->belongsTo(Person::class, 'user_id', 'user_id');
+    }
+
+    public function registrants()
+    {
+        return $this->hasMany(Registrant::class, 'user_id', 'user_id');
     }
 
     public function scopeWithAll($query)

@@ -696,7 +696,7 @@ class Studentrostertabbed extends Component
         $senioryear = $this->senioryear();
 
         //what school is being targeted
-        $school = School::find(Userconfig::getValue('school_id', auth()->id()));
+        $school = School::find(Userconfig::getValue('school', auth()->id()));
 
         //what grades are taught at the school for this teacher
         $grades = $school->currentUserGrades;
@@ -881,7 +881,7 @@ class Studentrostertabbed extends Component
         $this->student = Student::find($user->id);
 
         //attachments
-        $this->student->person->user->schools()->attach(Userconfig::getValue('school_id', auth()->id()));
+        $this->student->person->user->schools()->attach(Userconfig::getValue('school', auth()->id()));
         $this->student->teachers()->attach(auth()->id(), ['studenttype_id' => Studenttype::where('descr', 'teacher_added')->first()->id]);
 
         //reset tab

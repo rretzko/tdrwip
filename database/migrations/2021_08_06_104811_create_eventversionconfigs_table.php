@@ -25,6 +25,7 @@ class CreateEventversionconfigsTable extends Migration
             $table->boolean('epaymentsurcharge')->default(0);
             $table->set('bestscore',['asc','desc'])->default('desc');
             $table->tinyInteger('membershipcard')->default(1);  //0,1,2
+            $table->tinyInteger('instrumentation_count')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });

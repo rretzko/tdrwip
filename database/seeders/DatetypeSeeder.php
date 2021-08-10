@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Datetype;
 use Illuminate\Database\Seeder;
 
 class DatetypeSeeder extends Seeder

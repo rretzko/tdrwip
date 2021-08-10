@@ -44,7 +44,7 @@ class Teacher extends Model
      */
     public function school()
     {
-        return School::find(Userconfig::getValue('school_id', auth()->id()));
+        return School::find(Userconfig::getValue('school', auth()->id()));
     }
 
     /**

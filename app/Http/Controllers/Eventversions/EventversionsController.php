@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Events;
+namespace App\Http\Controllers\Eventversions;
 
 use App\Http\Controllers\Controller;
+use App\Models\Membereventversion;
+use App\Models\Userconfig;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class EventController extends Controller
+class EventversionsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +17,25 @@ class EventController extends Controller
      */
     public function index()
     {
+        $eventversions = Membereventversion::open();
 
-        return view('events.index');
+        //early exit: if only one eventversion is open,
+        // skip displaying the eventversions page and
+        // directly display those registrants
+        if($eventversions->count() === 1){
+
+            //set userconfigs
+            $eventversion = $eventversions->first();
+
+            Userconfig::setValue('eventversion', auth()->id(), $eventversion->id);
+            Userconfig::setValue('event',auth()->id(),$eventversion['event']->id);
+            Userconfig::setValue('organization',auth()->id(),$eventversion['event']['organization']->id);
+
+            return view('registrants.index');
+        }
+
+        //else display choice of eventversions
+        return view('eventversions.index');
     }
 
 
