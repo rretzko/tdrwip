@@ -159,11 +159,11 @@
                                             </x-tables.cell>
 
                                             <x-tables.cell class="text-center uppercase">
-                                                {{ $registrant->instrumentationCSV }}
+                                                {{ $registrant->instrumentationsCSV }}
                                             </x-tables.cell>
 
                                             <x-tables.cell>
-                                                Eligible
+                                                {{ ucwords($registrant->registranttype->descr) }}
                                             </x-tables.cell>
 
                                             <x-tables.cell>

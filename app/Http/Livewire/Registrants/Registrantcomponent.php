@@ -74,7 +74,11 @@ class Registrantcomponent extends Component
 
     private function registrants()
     {
-        $this->populationregistrants = Registrants::eligible($this->search);
+        if($this->population === 'applied') {
+            $this->populationregistrants = Registrants::applied($this->search);
+        }else{
+            $this->populationregistrants = Registrants::eligible($this->search);
+        }
 
         //paginate identified students
         return CollectionHelper::paginate($this->populationregistrants, Userconfig::getValue('pagination', auth()->id()));

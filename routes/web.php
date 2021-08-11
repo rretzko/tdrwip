@@ -69,6 +69,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::get('/organizations', [App\Http\Controllers\Organizations\OrganizationController::class, 'index'])->name('organizations.index');
 
     /** REGISTRANTS */
+    Route::get('/registrant/{registrant}/application/show',[App\Http\Controllers\Registrants\RegistrantApplicationController::class, 'show'])->name('registrant.application.show');
+    Route::get('/registrant/{registrant}/application',[App\Http\Controllers\Registrants\RegistrantApplicationController::class, 'create'])->name('registrant.application.create');
+    Route::get('/registrant/{registrant}/download',[App\Http\Controllers\Registrants\RegistrantApplicationController::class, 'download'])->name('registrant.application.download');
+
     Route::get('/registrants/{eventversion}',[App\Http\Controllers\Registrants\RegistrantsController::class, 'index'])->name('registrants.index');
     Route::get('/registrant/{registrant}',[App\Http\Controllers\Registrants\RegistrantController::class, 'show'])->name('registrant.show');
     Route::post('/registrant/update/{registrant}',[App\Http\Controllers\Registrants\RegistrantController::class, 'update'])->name('registrant.update');

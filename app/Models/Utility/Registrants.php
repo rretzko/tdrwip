@@ -10,6 +10,7 @@ use App\Models\Userconfig;
 use App\Traits\SenioryearTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class Registrants extends Model
 {
@@ -19,19 +20,49 @@ class Registrants extends Model
     private static $eventversion_id;
     private static $school_id;
 
+    public static function applied($search='')
+    {
+        self::setVars();
+
+        $classofs = array_map('self::getClassofFromGrade',
+            explode(',',self::$eventversion['eventversionconfigs']->grades));
+
+        return self::appliedRegistrants($search,$classofs);
+    }
+
     public static function eligible($search='')
     {
-        self::$eventversion_id = Userconfig::getValue('eventversion', auth()->id());
-        self::$eventversion = Eventversion::find(self::$eventversion_id);
-        self::$school_id = Userconfig::getValue('school', auth()->id());
+        self::setVars();
 
-        $classofs = array_map('self::getClassofFromGrade',explode(',',self::$eventversion['eventversionconfigs']->grades));
+        $classofs = array_map('self::getClassofFromGrade',
+            explode(',',self::$eventversion['eventversionconfigs']->grades));
 
         return self::eligibleRegistrants($search,$classofs);
-
     }
 
 /** END OF PUBLIC FUNCTIONS **************************************************/
+
+    private static function appliedRegistrants(string $search, array $classofs)
+    {
+        $registrants = collect();
+        $students = self::confirmEligibleStudentsAreRegistrants($search, $classofs);
+        $eventversion_id = self::$eventversion_id;
+
+        $applieds = $students->filter(function($student) use ($eventversion_id){
+           return (bool)Registrant::where('user_id', $student->user_id)
+               ->where('eventversion_id', $eventversion_id)
+               ->where('registranttype_id', Registranttype::APPLIED)
+               ->first();
+        });
+
+        foreach($applieds AS $student) {
+
+            $registrants->push($student->registrants
+                ->where('eventversion_id', self::$eventversion_id)->first());
+        }
+
+        return $registrants;
+    }
 
     private static function confirmEligibleStudentsAreRegistrants(string $search, array $classofs)
     {
@@ -40,22 +71,35 @@ class Registrants extends Model
         //ensure that all eligible students have a registrant record
         foreach($students AS $student) {
 
-            $registrant = Registrant::firstOrCreate([
-                'user_id' => $student->user_id,
-                'eventversion_id' => self::$eventversion_id,
-                'school_id' => self::$school_id
-            ],
+            $id = self::makeRegistrantId();
+
+            $registrant = Registrant::firstOrCreate(
                 [
-                    'id' => self::makeRegistrantId(),
+                    'user_id' => $student->user_id,
+                    'eventversion_id' => self::$eventversion_id,
+                    'school_id' => self::$school_id,
+                ],
+                [
+                    'id' => $id,
                     'programname' => $student->person->fullName,
                     'registranttype_id' => Registranttype::ELIGIBLE,
-                ]);
+                ]
+            );
+
+            //ensure that newly created $registrant has its properties
+            if($registrant->id){
+
+                $registrant->fresh();
+
+            }else{
+
+                $registrant = Registrant::find($id);
+            }
 
             // if $registrant does not already have an assigned instrumentation,
             // assign the $registrant->student's first instrumentation
             // OR if none exists, assign the first instrumentation for the $eventversion->ensemble
-
-            if (! $registrant['instrumentations']->count()){
+            if (! $registrant->instrumentations->count()){
                 $registrant->instrumentations()->attach(self::defaultInstrumentationId($registrant));
             }
 
@@ -100,6 +144,12 @@ class Registrants extends Model
                 : $eventversionfirstinstrumentid;
     }
 
+    /**
+     * Returns ALL registrants except HIDDEN
+     * @param string $search
+     * @param array $classofs
+     * @return Collection
+     */
     private static function eligibleRegistrants(string $search, array $classofs)
     {
         $registrants = collect();
@@ -107,7 +157,8 @@ class Registrants extends Model
 
         foreach($students AS $student) {
 
-            $registrants->push($student->registrants->where('eventversion_id', self::$eventversion_id)->first());
+            $registrants->push($student->registrants
+                ->where('eventversion_id', self::$eventversion_id)->first());
         }
 
         return $registrants;
@@ -170,5 +221,13 @@ class Registrants extends Model
         }
 
         return $id;
+    }
+
+    private static function setVars()
+    {
+        self::$eventversion_id = Userconfig::getValue('eventversion', auth()->id());
+        self::$eventversion = Eventversion::find(self::$eventversion_id);
+        self::$school_id = Userconfig::getValue('school', auth()->id());
+
     }
 }

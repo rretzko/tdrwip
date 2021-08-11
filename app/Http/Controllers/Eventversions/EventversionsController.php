@@ -21,7 +21,7 @@ class EventversionsController extends Controller
 
         //early exit: if only one eventversion is open,
         // skip displaying the eventversions page and
-        // directly display those registrants
+        // directly display that eventversion's registrants
         if($eventversions->count() === 1){
 
             //set userconfigs
