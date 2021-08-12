@@ -15,7 +15,7 @@ class RegistranttypeSeeder extends Seeder
     public function run()
     {
         DB::table('registranttypes')->insert([
-            ['id'=>14,'descr'=>'qualified'],
+            ['id'=>14,'descr'=>'eligible'],
             ['id'=>15,'descr'=>'applied'],
             ['id'=>16,'descr'=>'registered'],
             ['id'=>17,'descr'=>'hidden'],

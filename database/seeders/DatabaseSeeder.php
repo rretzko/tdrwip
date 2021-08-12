@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Filecontenttype;
 use App\Models\Organization;
 use App\Models\Person;
 use App\Models\Subscriberemail;
@@ -27,6 +28,7 @@ class DatabaseSeeder extends Seeder
          $this->call(EnsembletypeSeeder::class);
          $this->call(EventensemblestatustypeSeeder::class);
          $this->call(EventversiontypeSeeder::class);
+         $this->call(FilecontenttypeSeeder::class);
          $this->call(GeostateSeeder::class);
          $this->call(GradetypeSeeder::class);
          $this->call(InstrumentationbranchSeeder::class);
@@ -65,6 +67,7 @@ class DatabaseSeeder extends Seeder
          $this->call(EventensembleSeeder::class);
          $this->call(EventversionSeeder::class);
          $this->call(EventensembleEventversionSeeder::class);
+         $this->call(EventensembletypeInstrumentationSeeder::class);
          $this->call(EventversionconfigSeeder::class);
          $this->call(MembershipSeeder::class);
          $this->call(EventversiondateSeeder::class);

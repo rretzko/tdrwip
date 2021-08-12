@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInstrumentationsTable extends Migration
+class CreateEventversionFilecontenttypeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateInstrumentationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('instrumentations', function (Blueprint $table) {
-            $table->id('id');
-            $table->string('descr', 60);
-            $table->string('abbr', 16);
-            $table->foreignId('instrumentationbranch_id')->constrained();
+        Schema::create('eventversion_filecontenttype', function (Blueprint $table) {
+            $table->foreignId('eventversion_id')->constrained();
+            $table->foreignId('filecontenttype_id')->constrainer();
+            $table->string('title')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateInstrumentationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('instrumentations');
+        Schema::dropIfExists('eventversion_filecontenttype');
     }
 }

@@ -116,27 +116,48 @@
                                     </form>
 
                                     {{-- APPLICATION --}}
-                                    <div class="bg-red-50 text-center">
+                                    <div class="bg-red-50 text-center mx-2 py-2 border border-red-200">
+                                        <a
                                         @if($registrant->hasApplication)
-                                            <a href="{{ route('registrant.application.show',['registrant' => $registrant]) }}" class="text-blue-700">
+                                            href="{{ route('registrant.application.show',['registrant' => $registrant]) }}" class="text-blue-700">
                                         @else
-                                            <a href="{{ route('registrant.application.create',['registrant' => $registrant]) }}" class="text-blue-700">
+                                            href="{{ route('registrant.application.create',['registrant' => $registrant]) }}" class="text-blue-700">
                                         @endif
                                             Click here for the
-                                            {{ $eventversion['eventversionconfigs']->eapplication  ? 'eApplication' : 'Application pdf' }}
+                                                {{ $eventversion['eventversionconfigs']->eapplication  ? 'eApplication' : 'Application pdf' }}
+                                                @if($registrant->applications->count())
+                                                    <span title="Applications downloaded">
+                                                        ({{ $registrant->applications->count() }})
+                                                    </span>
+                                                @endif
                                         </a>
 
                                     </div>
 
                                     {{-- FILE UPLOAD ADVISORY --}}
-                                    <div class="bg-indigo-100">
-                                        File upload advisory
+                                    <div id="advisory" class="text-center bg-gray-50 border border-gray-800 text-info mx-2 p-2 mb-2">
+                                        <b>Teachers</b> may upload audition recordings from:<br /> {{ $eventversion->dates('videos_membership_open') }}
+                                    <!-- {{-- and ends on {{ Carbon\Carbon::parse($eventversion->eventversiondates->where('datetype_id', \App\Datetype::where('descr', 'videos_membership_close')->first()->id)->first()->dt )->format('F jS') }}. --}} -->
+                                        through {{ $eventversion->dates('videos_membership_close') }}.
+                                        <br />
+                                        <b>Students</b> may upload audition recordings from:<br />{{ $eventversion->dates('videos_student_open') }}
+                                    <!-- {{-- and ends on {{ Carbon\Carbon::parse($eventversion->eventversiondates->where('datetype_id', \App\Datetype::where('descr', 'videos_student_close')->first()->id)->first()->dt)->format('F jS') }} --}} -->
+                                        through {{ $eventversion->dates('videos_student_close') }}.
                                     </div>
 
                                     {{-- FILE UPLOADS --}}
 
-                                    <div class="bg-green-100">
-                                        File uploads
+                                    <div class="bg-green-50 mx-2 p-2">
+                                        <h2 class="font-bold">File Uploads</h2>
+                                        @foreach($eventversion->filecontenttypes AS $filecontenttype)
+
+                                            <div>
+                                                {{ ucwords($filecontenttype->descr) }}
+                                                @if(strlen($filecontenttype->pivot->title))
+                                                    : <span  class="font-bold">{{ $filecontenttype->pivot->title }}</span>
+                                                @endif
+                                            </div>
+                                        @endforeach
                                     </div>
 
                                 </div>

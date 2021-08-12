@@ -14,7 +14,7 @@ class CreateRegistrantsTable extends Migration
     public function up()
     {
         Schema::create('registrants', function (Blueprint $table) {
-            $table->integer('id')->primary();
+            $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('eventversion_id')->constrained();
             $table->foreignId('school_id')->constrained();

@@ -17,7 +17,7 @@ class CreatePhonesTable extends Migration
             $table->bigIncrements('id');
             $table->foreignId('user_id')->constrained();
             $table->foreignId('phonetype_id')->constrained();
-            $table->string('phone', 255);
+            $table->text('phone');
             $table->timestamps();
             $table->softDeletes();
             $table->unique(['user_id','phonetype_id']);

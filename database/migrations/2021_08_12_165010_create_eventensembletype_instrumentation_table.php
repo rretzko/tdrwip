@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInstrumentationRegistrantTable extends Migration
+class CreateEventensembletypeInstrumentationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateInstrumentationRegistrantTable extends Migration
      */
     public function up()
     {
-        Schema::create('instrumentation_registrant', function (Blueprint $table) {
+        Schema::create('eventensembletype_instrumentation', function (Blueprint $table) {
+            $table->foreignId('eventensembletype_id')->constrained();
             $table->foreignId('instrumentation_id')->constrained();
-            $table->foreignId('registrant_id');
+            $table->smallInteger('order_by')->default(1);
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class CreateInstrumentationRegistrantTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('instrumentation_registrant');
+        Schema::dropIfExists('eventensembletype_instrumentation');
     }
 }

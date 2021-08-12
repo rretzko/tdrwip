@@ -48,4 +48,11 @@ class Eventversion extends Model
         return $this->hasMany(Eventversiondate::class);
     }
 
+    public function filecontenttypes()
+    {
+        return $this->belongsToMany(Filecontenttype::class)
+            ->withPivot('title')
+            ->withTimestamps();
+    }
+
 }
