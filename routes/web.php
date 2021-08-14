@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Registrants\FileapprovalController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
+
+/** SPROUT VIDEO CONFIRMATIONS */
+Route::get('fileserver/confirmation/{registrant}/{filecontenttype}/{person}/{folder_id}', [App\Http\Controllers\Fileservers\FileserverController::class, 'store']);
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function() {
 
@@ -76,6 +80,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::get('/registrants/{eventversion}',[App\Http\Controllers\Registrants\RegistrantsController::class, 'index'])->name('registrants.index');
     Route::get('/registrant/{registrant}',[App\Http\Controllers\Registrants\RegistrantController::class, 'show'])->name('registrant.show');
     Route::post('/registrant/update/{registrant}',[App\Http\Controllers\Registrants\RegistrantController::class, 'update'])->name('registrant.update');
+
+    Route::get('/registrant/approve/{registrant}/{filecontenttype}', [FileapprovalController::class,'approve'])->name('fileupload.approve');
+    Route::get('/registrant/reject/{registrant}/{filecontenttype}', [FileapprovalController::class,'reject'])->name('fileupload.reject');
 
     /** SCHOOLS */
     Route::get('/schools', [App\Http\Controllers\Schools\SchoolController::class, 'index'])->name('schools');

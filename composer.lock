@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d11a95cb46ea605a4cfbc3b7764ef2f5",
+    "content-hash": "40d601e39e11f02204e9988dba5b7842",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -250,16 +250,16 @@
         },
         {
             "name": "calebporzio/sushi",
-            "version": "v2.2.0",
+            "version": "v2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/calebporzio/sushi.git",
-                "reference": "3faf827881c27fde73eb5339586e59b14f5cb408"
+                "reference": "75a2418601296797f6b8bd4cb49b2d95797df102"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/calebporzio/sushi/zipball/3faf827881c27fde73eb5339586e59b14f5cb408",
-                "reference": "3faf827881c27fde73eb5339586e59b14f5cb408",
+                "url": "https://api.github.com/repos/calebporzio/sushi/zipball/75a2418601296797f6b8bd4cb49b2d95797df102",
+                "reference": "75a2418601296797f6b8bd4cb49b2d95797df102",
                 "shasum": ""
             },
             "require": {
@@ -291,7 +291,7 @@
             ],
             "description": "Eloquent's missing \"array\" driver.",
             "support": {
-                "source": "https://github.com/calebporzio/sushi/tree/v2.2.0"
+                "source": "https://github.com/calebporzio/sushi/tree/v2.3.0"
             },
             "funding": [
                 {
@@ -299,7 +299,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-04-16T21:59:24+00:00"
+            "time": "2021-08-12T13:54:53+00:00"
         },
         {
             "name": "coconutcraig/laravel-postmark",
@@ -2352,16 +2352,16 @@
         },
         {
             "name": "maatwebsite/excel",
-            "version": "3.1.32",
+            "version": "3.1.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Maatwebsite/Laravel-Excel.git",
-                "reference": "9dc29b63a77fb7f2f514ef754af3a1b57e83cadf"
+                "reference": "b2de5ba92c5c1ad9415f0eb7c72838fb3eaaa5b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/9dc29b63a77fb7f2f514ef754af3a1b57e83cadf",
-                "reference": "9dc29b63a77fb7f2f514ef754af3a1b57e83cadf",
+                "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/b2de5ba92c5c1ad9415f0eb7c72838fb3eaaa5b8",
+                "reference": "b2de5ba92c5c1ad9415f0eb7c72838fb3eaaa5b8",
                 "shasum": ""
             },
             "require": {
@@ -2414,7 +2414,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Maatwebsite/Laravel-Excel/issues",
-                "source": "https://github.com/Maatwebsite/Laravel-Excel/tree/3.1.32"
+                "source": "https://github.com/Maatwebsite/Laravel-Excel/tree/3.1.33"
             },
             "funding": [
                 {
@@ -2426,7 +2426,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-07-08T10:11:21+00:00"
+            "time": "2021-08-12T15:52:25+00:00"
         },
         {
             "name": "maennchen/zipstream-php",
@@ -4327,6 +4327,52 @@
                 "source": "https://github.com/sabberworm/PHP-CSS-Parser/tree/8.3.1"
             },
             "time": "2020-06-01T09:10:00+00:00"
+        },
+        {
+            "name": "sproutvideo/sproutvideo",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SproutVideo/sproutvideo-php.git",
+                "reference": "e798cfd9c26d07cc3246e07b10bcd02c4ead68bd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SproutVideo/sproutvideo-php/zipball/e798cfd9c26d07cc3246e07b10bcd02c4ead68bd",
+                "reference": "e798cfd9c26d07cc3246e07b10bcd02c4ead68bd",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "SproutVideo\\": "lib/"
+                },
+                "files": [
+                    "lib/SproutVideo/SproutVideo.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-4-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Adam Podolnick",
+                    "email": "adam@sproutvideo.com"
+                }
+            ],
+            "description": "A PHP client for SproutVideo (https://sproutvideo.com)",
+            "homepage": "https://sproutvideo.com",
+            "keywords": [
+                "video",
+                "video hosting"
+            ],
+            "support": {
+                "issues": "https://github.com/SproutVideo/sproutvideo-php/issues",
+                "source": "https://github.com/SproutVideo/sproutvideo-php/tree/master"
+            },
+            "time": "2021-03-02T20:52:44+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -7777,16 +7823,16 @@
         },
         {
             "name": "nunomaduro/collision",
-            "version": "v5.6.0",
+            "version": "v5.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/collision.git",
-                "reference": "0122ac6b03c75279ef78d1c0ad49725dfc52a8d2"
+                "reference": "0f0f46b6345ee788325b5ce9d53c4e851b2293a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/0122ac6b03c75279ef78d1c0ad49725dfc52a8d2",
-                "reference": "0122ac6b03c75279ef78d1c0ad49725dfc52a8d2",
+                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/0f0f46b6345ee788325b5ce9d53c4e851b2293a0",
+                "reference": "0f0f46b6345ee788325b5ce9d53c4e851b2293a0",
                 "shasum": ""
             },
             "require": {
@@ -7798,7 +7844,7 @@
             "require-dev": {
                 "brianium/paratest": "^6.1",
                 "fideloper/proxy": "^4.4.1",
-                "friendsofphp/php-cs-fixer": "^2.17.3",
+                "friendsofphp/php-cs-fixer": "^3.0",
                 "fruitcake/laravel-cors": "^2.0.3",
                 "laravel/framework": "^8.0 || ^9.0",
                 "nunomaduro/larastan": "^0.6.2",
@@ -7861,7 +7907,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-07-26T20:39:06+00:00"
+            "time": "2021-08-12T13:56:54+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -9706,7 +9752,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "barryvdh/laravel-dompdf": 20
+        "barryvdh/laravel-dompdf": 20,
+        "sproutvideo/sproutvideo": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

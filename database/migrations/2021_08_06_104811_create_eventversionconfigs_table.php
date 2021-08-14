@@ -24,6 +24,8 @@ class CreateEventversionconfigsTable extends Migration
             $table->boolean('missing_judge_average')->default(1);
             $table->boolean('epaymentsurcharge')->default(0);
             $table->boolean('virtualaudition')->default(0);
+            $table->boolean('audiofiles')->default(0);
+            $table->boolean('videofiles')->default(0);
             $table->set('bestscore',['asc','desc'])->default('desc');
             $table->tinyInteger('membershipcard')->default(1);  //0,1,2
             $table->tinyInteger('instrumentation_count')->default(1);

@@ -73,5 +73,6 @@ class DatabaseSeeder extends Seeder
          $this->call(EventversiondateSeeder::class);
          $this->call(RegistrantSeeder::class);
          $this->call(InstrumentationRegistrantSeeder::class);
+         $this->call(FileuploadfolderSeeder::class);
     }
 }

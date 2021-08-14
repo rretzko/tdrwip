@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Registrants;
 
 use App\Http\Controllers\Controller;
 use App\Models\Eventversion;
+use App\Models\Fileserver;
+use App\Models\Fileuploadfolder;
 use App\Models\Registrant;
+use App\Models\Userconfig;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -49,8 +52,18 @@ class RegistrantController extends Controller
      */
     public function show(Registrant $registrant)
     {
+        $eventversion = Eventversion::find(Userconfig::getValue('eventversion',auth()->id()));
+        $fileserver = new Fileserver($registrant);
+
+        $folders = Fileuploadfolder::where('eventversion_id', $eventversion->id)
+            ->whereIn('instrumentation_id', $registrant->instrumentations)
+            ->get();
+
         return view('registrants.registrant.show', [
             'eventversion' => Eventversion::find($registrant->eventversion_id),
+            'filename' => $fileserver->buildFilename($registrant),
+            'fileserver' => $fileserver,
+            'folders' => $folders,
             'registrant' => $registrant,
         ]);
     }

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Utility\Fileviewport;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,6 +25,43 @@ class Registrant extends Model
         return $this->belongsTo(Eventversion::class);
     }
 
+    public function fileuploads()
+    {
+        return $this->hasMany(Fileupload::class);
+    }
+
+    public function fileuploadapprovaltimestamp($filecontenttype) : string
+    {
+        return Carbon::parse(Fileupload::where('registrant_id', $this->id)
+            ->where('filecontenttype_id', $filecontenttype->id)
+            ->first()
+            ->approved)
+            ->format('M d, Y g:i a');
+    }
+
+    public function fileuploadapproved($filecontenttype) : bool
+    {
+        return (bool)Fileupload::where('registrant_id', $this->id)
+            ->where('filecontenttype_id', $filecontenttype->id)
+            ->first()
+            ->approved;
+    }
+
+    /**
+     * Return the embed code for the requested videotype
+     *
+     * NOTE: self::hasVideoType($videotype) should be run BEFORE this function.
+     *
+     * @param Videotype $videotype
+     * @return string
+     */
+    public function fileviewport(Filecontenttype $filecontenttype)
+    {
+        $viewport = new Fileviewport($this,$filecontenttype);
+
+        return $viewport->viewport();
+    }
+
     public function getHasApplicationAttribute(): bool
     {
         return (bool)Application::where('registrant_id', $this->id)->first();
@@ -37,6 +76,13 @@ class Registrant extends Model
         }
 
         return ($descrs) ? implode(',',$descrs) : 'None found';
+    }
+
+    public function hasFileUploaded(Filecontenttype $filecontenttype): bool
+    {
+        return (bool)Fileupload::where('registrant_id', $this->id)
+            ->where('filecontenttype_id', $filecontenttype->id)
+            ->first();
     }
 
     public function instrumentations()
@@ -78,4 +124,5 @@ class Registrant extends Model
     {
         return $this->belongsTo(Student::class,'user_id', 'user_id');
     }
+
 }

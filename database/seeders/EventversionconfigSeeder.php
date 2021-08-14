@@ -35,6 +35,7 @@ class EventversionconfigSeeder extends Seeder
                 'epaymentsurcharge' => $seed['epaymentsurcharge'],
                 'bestscore' => $seed['bestscore'],
                 'membershipcard' => $seed['membershipcard'],
+                'virtualaudition' => $seed['virtualaudition'],
             ]);
         }
     }
@@ -54,6 +55,7 @@ class EventversionconfigSeeder extends Seeder
                 'epaymentsurcharge' => 1,
                 'bestscore' => 'desc',
                 'membershipcard' => 0,
+                'virtualaudition' => 0,
             ],
             [
                 'eventversion_id' => 62,
@@ -67,6 +69,7 @@ class EventversionconfigSeeder extends Seeder
                 'epaymentsurcharge' => 0,
                 'bestscore' => 'desc',
                 'membershipcard' => 1,
+                'virtualaudition' => 0,
             ],
             [
                 'eventversion_id' => 63,
@@ -80,6 +83,7 @@ class EventversionconfigSeeder extends Seeder
                 'epaymentsurcharge' => 0,
                 'bestscore' => 'desc',
                 'membershipcard' => 2,
+                'virtualaudition' => 0,
             ],
             [
                 'eventversion_id' => 64,
@@ -93,6 +97,7 @@ class EventversionconfigSeeder extends Seeder
                 'epaymentsurcharge' => 0,
                 'bestscore' => 'desc',
                 'membershipcard' => 1,
+                'virtualaudition' => 0,
             ],
             [
                 'eventversion_id' => 65,
@@ -106,6 +111,7 @@ class EventversionconfigSeeder extends Seeder
                 'epaymentsurcharge' => 0,
                 'bestscore' => 'asc',
                 'membershipcard' => 1,
+                'virtualaudition' => 1,
             ],
 
         ];
