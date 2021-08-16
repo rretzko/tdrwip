@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Fileservers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Eventversion;
 use App\Models\Filecontenttype;
+use App\Models\Fileserver;
 use App\Models\Fileupload;
+use App\Models\Fileuploadfolder;
 use App\Models\Person;
 use App\Models\Registrant;
+use App\Models\Userconfig;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -52,7 +56,21 @@ class FileserverController extends Controller
            'uploaded_by' => $person->user_id,
         ]);
 
-        return ('file uploaded');
+        $eventversion = Eventversion::find(Userconfig::getValue('eventversion',auth()->id()));
+        $fileserver = new Fileserver($registrant);
+
+        $folders = Fileuploadfolder::where('eventversion_id', $eventversion->id)
+            ->whereIn('instrumentation_id', $registrant->instrumentations)
+            ->get();
+
+        return view('registrants.registrant.show', [
+        'eventversion' => Eventversion::find($registrant->eventversion_id),
+        'filename' => $fileserver->buildFilename($registrant),
+        'fileserver' => $fileserver,
+        'folders' => $folders,
+        'registrant' => $registrant,
+    ]);
+
     }
 
     /**

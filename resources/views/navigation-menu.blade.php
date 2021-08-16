@@ -100,7 +100,9 @@
                 (strpos(Route::currentRouteName(), 'events') === 0 ? 'active' : '')   ||
                 (strpos(Route::currentRouteName(), 'registrants.index') === 0) ||
                 (strpos(Route::currentRouteName(), 'eventversions.index') === 0) ||
-                (strpos(Route::currentRouteName(), 'registrant.show') === 0)
+                (strpos(Route::currentRouteName(), 'registrant.show') === 0) ||
+                (strpos(Route::currentRouteName(), 'pitchfiles') === 0) ||
+                (strpos(Route::currentRouteName(), 'registrant.application.create') === 0)
              )
                 ? 'active' : ''  }} "
        title="Events"
@@ -166,7 +168,9 @@
                 (strpos(Route::currentRouteName(), 'events') === 0 ? 'active' : '')   ||
                 (strpos(Route::currentRouteName(), 'registrants.index') === 0) ||
                 (strpos(Route::currentRouteName(), 'eventversions.index') === 0) ||
-                (strpos(Route::currentRouteName(), 'registrant.show') === 0)
+                (strpos(Route::currentRouteName(), 'registrant.show') === 0) ||
+                (strpos(Route::currentRouteName(), 'pitchfiles') === 0) ||
+                (strpos(Route::currentRouteName(), 'registrant.application.create') === 0)
              )
                 ? 'active' : ''  }}"
     >
@@ -291,7 +295,9 @@
                 (strpos(Route::currentRouteName(), 'events') === 0 ? 'active' : '')   ||
                 (strpos(Route::currentRouteName(), 'registrants.index') === 0) ||
                 (strpos(Route::currentRouteName(), 'eventversions.index') === 0) ||
-                (strpos(Route::currentRouteName(), 'registrant.show') === 0)
+                (strpos(Route::currentRouteName(), 'registrant.show') === 0) ||
+                (strpos(Route::currentRouteName(), 'pitchfiles') === 0) ||
+                (strpos(Route::currentRouteName(), 'registrant.application.create') === 0)
              )
                 ? 'active' : ''  }}"
     >
@@ -306,3 +312,4 @@
         <div class="ml-1">Events</div>
     </a>
 </nav>
+

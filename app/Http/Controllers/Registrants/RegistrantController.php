@@ -60,7 +60,7 @@ class RegistrantController extends Controller
             ->get();
 
         return view('registrants.registrant.show', [
-            'eventversion' => Eventversion::find($registrant->eventversion_id),
+            'eventversion' => $eventversion,
             'filename' => $fileserver->buildFilename($registrant),
             'fileserver' => $fileserver,
             'folders' => $folders,

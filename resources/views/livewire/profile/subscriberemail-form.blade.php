@@ -15,6 +15,7 @@
 
                 <!-- EMAIL:WORK -->
                 <x-jet-label for="email_work" value="{{ __('Work') }}" />
+                <span class="font-bold text-red-700">NOTE: This email address will be used for cc: on student emails.</span>
                 <x-jet-input wire:model.defer="email_work" id="email_work" type="email" class="mt-1 block w-full"  />
                 <x-jet-input-error for="email_work" class="mt-2" />
 

@@ -233,9 +233,9 @@
 --}} -->
                                                                     <div class="flex mx-2 my-4 justify-around">
                                                                         @if($registrant->fileuploadapproved($filecontenttype))
-                                                                            <span class="text-green-700 text-xs font-bold">
+                                                                            <div class="text-green-700 text-xs font-bold bg-green-100 p-2">
                                                                                 Approved: {{ $registrant->fileuploadapprovaltimestamp($filecontenttype) }}
-                                                                            </span>
+                                                                            </div>
                                                                         @else
                                                                             <a href="{{ route('fileupload.approve',['registrant' => $registrant, 'filecontenttype' => $filecontenttype]) }}">
                                                                                 <button

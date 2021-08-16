@@ -68,6 +68,11 @@ class Person extends Model
         return Honorific::find($this->honorific_id)->abbr;
     }
 
+    public function getSubscriberemailworkAttribute()
+    {
+        return $this->subscriberemails->where('emailtype_id', Emailtype::WORK)->first()->email ?? '';
+    }
+
     public function guardian()
     {
         return $this->hasOne(Guardian::class,'user_id', 'user_id');

@@ -39,13 +39,22 @@
                         <div class="space-y-4 overflow-hidden border-b border-gray-200 sm:rounded-lg">
 
                         {{-- SEARCH --}}
-                         <div class="flex space-x-4">
+                         <div class="flex space-x-4 justify-between">
                              <div class="flex">
                                 <x-inputs.text wire:model.debounce.1s="search"
                                    for="search"
                                    label=""
                                    placeholder="Search last name..."/>
                             </div>
+
+                             <div class="">
+                                 <a href="{{ route('pitchfiles',['eventversion' => $event]) }}" title="Pitch Files" class="text-blue-600">
+                                 {{-- SIXTEENTH NOTES --}}
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor">
+                                         <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.37 4.37 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z" />
+                                     </svg>
+                                 </a>
+                             </div>
  <!-- {{--
                             <div class="flex text-sm text-gray-600">
                                 <x-buttons.button-link wire:click="$toggle('showfilters')">
@@ -108,6 +117,7 @@
                                     <th class="px-2" title="Student name">Name</th>
                                     <th class="px-2" title="Open">Grade</th>
                                     <th class="px-2" title="Event voice part">Voice</th>
+                                    <th class="px-2" title="Signature Confirmation">Sig</th>
                                     <th class="px-2 cursor-pointer text-blue-700" title="Status"
                                             wire:click='status'>
                                         {{ ucwords($population) }}
@@ -160,6 +170,10 @@
 
                                             <x-tables.cell class="text-center uppercase">
                                                 {{ $registrant->instrumentationsCSV }}
+                                            </x-tables.cell>
+
+                                            <x-tables.cell>
+                                                chkbx
                                             </x-tables.cell>
 
                                             <x-tables.cell>

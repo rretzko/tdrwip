@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Registrants;
 
+use App\Events\FileuploadRejectionEvent;
 use App\Http\Controllers\Controller;
+use App\Models\Eventversion;
 use App\Models\Filecontenttype;
 use App\Models\Fileupload;
 use App\Models\Registrant;
+use App\Models\Userconfig;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -31,6 +34,13 @@ class FileapprovalController extends Controller
                 'approved' => NULL,
                 'approved_by' => auth()->id()
             ]);
+
+
+
+        event(new FileuploadRejectionEvent(
+            Eventversion::find(Userconfig::getValue('eventversion', auth()->id())),
+            $filecontenttype,
+            $registrant ));
 
         return back();
     }

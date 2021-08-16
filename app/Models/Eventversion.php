@@ -55,4 +55,16 @@ class Eventversion extends Model
             ->withTimestamps();
     }
 
+    /**
+     * Returns a collection of instrumentations from $this first eventensemble
+     */
+    public function instrumentations()
+    {
+        return $this->eventensembles->first()->eventensembletype()->instrumentations;
+    }
+
+    public function pitchfiles()
+    {
+        return $this->hasMany(Pitchfile::class);
+    }
 }

@@ -21,6 +21,9 @@ Route::get('/', function () {
 /** SPROUT VIDEO CONFIRMATIONS */
 Route::get('fileserver/confirmation/{registrant}/{filecontenttype}/{person}/{folder_id}', [App\Http\Controllers\Fileservers\FileserverController::class, 'store']);
 
+/** GENERAL ACCESS PITCH FILES */
+Route::get('pitchfiles/{eventversion}', [App\Http\Controllers\Pitchfiles\PitchfilesController::class, 'index'])->name('pitchfiles');
+
 Route::middleware(['auth:sanctum', 'verified'])->group(function() {
 
     Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'show'])->name('dashboard');

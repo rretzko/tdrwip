@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\FileuploadRejectionEvent;
 use App\Events\MembershipRequestEvent;
+use App\Listeners\FileuploadRejectionStudentEmailListener;
 use App\Listeners\SendMembershipRequestEmailListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -22,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         MembershipRequestEvent::class => [
             SendMembershipRequestEmailListener::class,
+        ],
+        FileuploadRejectionEvent::class => [
+            FileuploadRejectionStudentEmailListener::class,
         ]
     ];
 
