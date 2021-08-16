@@ -34,6 +34,7 @@ class Registrantcomponent extends Component
     //registrants-specific properties
     public $event = null; //shorthand for eventversion
     public $events = [];
+    public $signatures = [];
 
     private $populations = ['eligible','applied','registered','hidden'];
 
@@ -68,6 +69,11 @@ class Registrantcomponent extends Component
     public function updatedPerpage()
     {
         Userconfig::setValue('pagination', auth()->id(), $this->perpage);
+    }
+
+    public function updatedSignatures()
+    {
+        //dd($this->signatures);
     }
 
 /** END OF PUBLIC FUNCTIONS **************************************************/

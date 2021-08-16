@@ -87,6 +87,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::get('/registrant/approve/{registrant}/{filecontenttype}', [FileapprovalController::class,'approve'])->name('fileupload.approve');
     Route::get('/registrant/reject/{registrant}/{filecontenttype}', [FileapprovalController::class,'reject'])->name('fileupload.reject');
 
+    Route::get('/registrant/{registrant}/signatures', [App\Http\Controllers\Registrants\RegistrantSignaturesController::class,'update'])->name('registrant.signatures');
+
     /** SCHOOLS */
     Route::get('/schools', [App\Http\Controllers\Schools\SchoolController::class, 'index'])->name('schools');
     Route::get('/schools/remove/{school}', [App\Http\Controllers\Schools\SchoolController::class, 'destroy'])->name('schools.destroy');

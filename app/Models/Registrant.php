@@ -67,6 +67,11 @@ class Registrant extends Model
         return (bool)Application::where('registrant_id', $this->id)->first();
     }
 
+    public function getHasSignaturesAttribute() : bool
+    {
+        return ($this->signatures->whereNotNull('confirmed')->count() === 4);
+    }
+
     public function getInstrumentationsCSVAttribute()
     {
         $descrs = [];
@@ -76,6 +81,17 @@ class Registrant extends Model
         }
 
         return ($descrs) ? implode(',',$descrs) : 'None found';
+    }
+
+    /**
+     * Return timestamp of teacher signature
+     */
+    public function getSignatureconfirmationAttribute()
+    {
+        return Carbon::parse(Signature::where('registrant_id', $this->id)
+            ->where('signaturetype_id', Signaturetype::TEACHER)
+            ->first()->confirmed)
+            ->format('M d, Y g:i a');
     }
 
     public function hasFileUploaded(Filecontenttype $filecontenttype): bool
@@ -118,6 +134,11 @@ class Registrant extends Model
                 $this->registranttype_id = $newtype->id;
                 $this->save();
         }
+    }
+
+    public function signatures()
+    {
+        return $this->hasMany(Signature::class);
     }
 
     public function student()

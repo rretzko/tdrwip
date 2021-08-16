@@ -163,6 +163,25 @@
                                             @endif
                                         </a>
 
+                                        <div>
+                                            @if($registrant->hasSignatures)
+                                                <div class="my-2 px-2 bg-green-100 ">
+                                                    Signatures confirmed at: {{ $registrant->signatureconfirmation }}
+                                                </div>
+                                            @endif
+                                            <a href="{{ route('registrant.signatures', ['registrant' => $registrant]) }}"
+                                                class="rounded"
+                                            >
+                                                <button class="bg-gray-500 mt-2 py-1 px-2 rounded">
+                                                    @if($registrant->hasSignatures)
+                                                        Remove my signature
+                                                    @else
+                                                        I confirm that the application has all required signatures.
+                                                    @endif
+                                                </button>
+                                            </a>
+                                        </div>
+
                                     </div>
 
                                     {{-- FILE UPLOAD ADVISORY --}}

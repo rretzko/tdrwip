@@ -42,6 +42,7 @@ class DatabaseSeeder extends Seeder
          $this->call(GuardiantypeSeeder::class); //requires PronounsSeeder to be loaded
          $this->call(RoletypeSeeder::class);
          $this->call(SearchtypeSeeder::class);
+         $this->call(SignaturetypeSeeder::class);
          $this->call(StudenttypeSeeder::class);
          $this->call(ShirtsizeSeeder::class);
 

@@ -55,60 +55,7 @@
                                      </svg>
                                  </a>
                              </div>
- <!-- {{--
-                            <div class="flex text-sm text-gray-600">
-                                <x-buttons.button-link wire:click="$toggle('showfilters')">
-                                    @if($showfilters) Hide @endif Advanced Filters @if(strlen($filterstring)) (current: "{{ $filterstring }}") @endif
-                                </x-buttons.button-link>
-                            </div>
- --}} -->
                         </div>
-<!-- {{--
-                           <div>
-                                @if($showfilters)
-                                    <div class="bg-gray-300 p-4 rounded shadow-inner flex relative">
-
-                                        <div class="2-1/2 pr-2 space-y-4">
-                                            <div class=" border border-black p-2 bg-gray-200 text-sm" id="advisory">
-                                                Please note: Filters are applied against the selected population
-                                                (Current/Alum/All) and will temporarily remove pagination.
-                                            </div>
-
-                                            <x-inputs.group inline for="filter-first" label="First Name">
-
-                                                <x-inputs.text id="filter-first" for="filters.first" label="" placeholder="Seach by first name..."/>
-                                            </x-inputs.group>
-
-                                            <x-inputs.group inline for="filter-instrumentations" label="Voice Parts">
-                                                <x-inputs.select id="filter-instrumentations"
-                                                                 for="filters.instrumentation_id"
-                                                                 label=""
-                                                                 :options="$sortedinstrumentations"
-                                                                 placeholder="Select Voice Part..."
-                                                                 immediate
-                                                >
-
-                                                </x-inputs.select>
-                                            </x-inputs.group>
-
-                                            <x-inputs.group inline for="filter-classofs" label="Classes">
-                                                <x-inputs.select id="filter-classofs"
-                                                                 for="filters.classof" label=""
-                                                                 :options="$sortedclassofs"
-                                                                 placeholder="Select Class..."
-                                                                 immediate
-                                                >
-
-                                                </x-inputs.select>
-                                            </x-inputs.group>
-
-                                            <x-buttons.button-link wire:click="resetFilters" class="absolute right-0 bottom-0 p-4">Reset Filters</x-buttons.button-link>
-                                        </div>
-
-                                    </div>
-                                @endif
-                            </div>
---}} -->
 
                             <x-tables.surgetable class="w-full">
                                 <x-slot name="head">
@@ -117,7 +64,6 @@
                                     <th class="px-2" title="Student name">Name</th>
                                     <th class="px-2" title="Open">Grade</th>
                                     <th class="px-2" title="Event voice part">Voice</th>
-                                    <th class="px-2" title="Signature Confirmation">Sig</th>
                                     <th class="px-2 cursor-pointer text-blue-700" title="Status"
                                             wire:click='status'>
                                         {{ ucwords($population) }}
@@ -127,28 +73,6 @@
                                 </x-slot>
 
                                 <x-slot name="body">
-
-                                {{-- Commented out and left for future usage --}}
-                                <!-- {{--
-                                    @if($selectpage)
-
-                                        <x-tables.row class="bg-gray-200" wire:key="row-message">
-                                            <x-tables.cell colspan="8">
-                                                @unless($selectall)
-                                                    <div>You have selected <strong>{{ count($selected) }}</strong> organizations, do
-                                                        you want to select all <strong>{{ $organizations->count() }}</strong>?
-                                                        <x-buttons.button-link wire:click="selectAll"
-                                                                               class="ml-1 text-blue-600">Select All
-                                                        </x-buttons.button-link>
-                                                    </div>
-                                                @else
-                                                    <span>You have selected all <strong>{{ $organizations->count() }}</strong>
-                                                    organizations.</span>
-                                                @endunless
-                                            </x-tables.cell>
-                                        </x-tables.row>
-                                    @endif
-                                    --}} -->
 
                                     @forelse($registrants AS $registrant)
                                         <x-tables.row
@@ -173,10 +97,6 @@
                                             </x-tables.cell>
 
                                             <x-tables.cell>
-                                                chkbx
-                                            </x-tables.cell>
-
-                                            <x-tables.cell>
                                                 {{ ucwords($registrant->registranttype->descr) }}
                                             </x-tables.cell>
 
@@ -193,8 +113,10 @@
                                     @empty
                                         <tr>
                                             <td colspan="6" class="text-gray-500 text-center">
-                                                No Events found @if(strlen($this->search)) with search
-                                                value: {{ $this->search }}@endif.
+                                                No Registrants found
+                                                @if(strlen($this->search))
+                                                    with search value: {{ $this->search }}
+                                                @endif.
                                             </td>
                                         </tr>
 
@@ -220,26 +142,6 @@
                     </div>
                 </div>
 
-                {{-- MODALS --}}
-                {{-- ADD/EDIT EVENT --}}
-                <div>
-                    @if($showeditmodal)
-                        {{-- <x-modals.membership
-                            request="true"
-                            membershipid="{{$editorganizationmembershipid}}"
-                            :organization="$editorganization"
-                            :membershiptypes="$membershiptypes"
-                        /> --}}
-                    @endif
-                </div>
-
-                {{-- DELETE ENSEMBLE --}}
-                <div>
-                @if($showDeleteModal)
-                    <!-- {{-- <x-modals.delete :selected="$selected" objectname="ensemble" /> --}} -->
-                    @endif
-                </div>
-
             </x-slot>
 
             <x-slot name="actions">
@@ -247,6 +149,7 @@
             </x-slot>
 
         </x-livewire-table-with-modal-forms>
+
     </div>
 
 </div>
