@@ -9,11 +9,13 @@ use App\Models\Filecontenttype;
 use App\Models\Fileupload;
 use App\Models\Registrant;
 use App\Models\Userconfig;
+use App\Traits\UpdateRegistrantStatusTrait;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 class FileapprovalController extends Controller
 {
+    use UpdateRegistrantStatusTrait;
+
     public function approve(Registrant $registrant, Filecontenttype $filecontenttype)
     {
         Fileupload::where('registrant_id', $registrant->id)
@@ -22,6 +24,8 @@ class FileapprovalController extends Controller
                 'approved' => Carbon::now(),
                 'approved_by' => auth()->id()
             ]);
+
+        $this->updateRegistrantStatus($registrant);
 
         return back();
     }
@@ -35,7 +39,7 @@ class FileapprovalController extends Controller
                 'approved_by' => auth()->id()
             ]);
 
-
+        $this->updateRegistrantStatus($registrant);
 
         event(new FileuploadRejectionEvent(
             Eventversion::find(Userconfig::getValue('eventversion', auth()->id())),

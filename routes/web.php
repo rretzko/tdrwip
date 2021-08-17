@@ -74,6 +74,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
 
     /** ORGANIZATIONS */
     Route::get('/organizations', [App\Http\Controllers\Organizations\OrganizationController::class, 'index'])->name('organizations.index');
+    Route::get('/organization/membershipcard/{organization}', [App\Http\Controllers\Organizations\MembershipcardController::class,'show'])
+        ->name('organization.membershipcard');
+    Route::post('/organization/membershipcard/create', [App\Http\Controllers\Organizations\MembershipcardController::class,'create'])
+        ->name('organization.membershipcard.create');
+    Route::post('organization/membershipcard/{membership?}/update', [App\Http\Controllers\Organizations\MembershipcardController::class,'update'])
+        ->name('organization.membershipcard.update');
 
     /** REGISTRANTS */
     Route::get('/registrant/{registrant}/application/show',[App\Http\Controllers\Registrants\RegistrantApplicationController::class, 'show'])->name('registrant.application.show');
@@ -88,6 +94,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::get('/registrant/reject/{registrant}/{filecontenttype}', [FileapprovalController::class,'reject'])->name('fileupload.reject');
 
     Route::get('/registrant/{registrant}/signatures', [App\Http\Controllers\Registrants\RegistrantSignaturesController::class,'update'])->name('registrant.signatures');
+
+    Route::get('/registrant/estimateform/{eventversion}', [App\Http\Controllers\Registrants\RegistrantEstimateFormController::class,'show'])->name('registrant.estimateform');
+    Route::get('/registrant/estimateform/{eventversion}/download', [App\Http\Controllers\Registrants\RegistrantEstimateFormController::class,'download'])->name('registrant.estimateform.download');
 
     /** SCHOOLS */
     Route::get('/schools', [App\Http\Controllers\Schools\SchoolController::class, 'index'])->name('schools');

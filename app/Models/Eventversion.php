@@ -55,6 +55,11 @@ class Eventversion extends Model
             ->withTimestamps();
     }
 
+    public function getRequiredSignaturesCountAttribute()
+    {
+        return Signaturetype::all()->count();
+    }
+
     /**
      * Returns a collection of instrumentations from $this first eventensemble
      */

@@ -212,7 +212,7 @@
                                             </td>
 
                                             <td style="padding-right: .5rem;">
-                                                <a href="#"
+                                                <a href="{{ route('organization.membershipcard', ['organization' => $organization]) }}"
                                                    class="border border-gray-800 rounded px-2 bg-gray-600 text-white hover:bg-gray-400"
                                                    title="Click to add your {{ $organization->abbr }} membership card"
                                                 >
@@ -279,7 +279,7 @@
                                                     </td>
 
                                                     <td class=" py-1">
-                                                        <a href="#"
+                                                        <a href="{{ route('organization.membershipcard', ['organization' => $child]) }}"
                                                            class="border border-green-500 rounded px-2 bg-green-600 text-white hover:bg-green-400"
                                                            title="Click to add your {{ $child->abbr }} membership card"
                                                         >
@@ -349,7 +349,7 @@
                                                             </td>
 
                                                             <td class=" py-1">
-                                                                <a href="#"
+                                                                <a href="{{ route('organization.membershipcard', ['organization' => $grandchild]) }}"
                                                                    class="border border-green-500 rounded px-2 bg-green-600 text-white hover:bg-green-400"
                                                                    title="Click to add your {{ $grandchild->abbr }} membership card"
                                                                 >
@@ -422,7 +422,7 @@
                                                                     </td>
 
                                                                     <td class=" py-1">
-                                                                        <a href="#"
+                                                                        <a href="{{ route('organization.membershipcard', ['organization' => $greatgrandchild]) }}"
                                                                            class="border border-green-500 rounded px-2 bg-green-600 text-white hover:bg-green-400"
                                                                            title="Click to add your {{ $greatgrandchild->abbr }} membership card"
                                                                         >

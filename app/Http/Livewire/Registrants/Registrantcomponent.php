@@ -71,18 +71,20 @@ class Registrantcomponent extends Component
         Userconfig::setValue('pagination', auth()->id(), $this->perpage);
     }
 
-    public function updatedSignatures()
-    {
-        //dd($this->signatures);
-    }
-
 /** END OF PUBLIC FUNCTIONS **************************************************/
 
     private function registrants()
     {
         if($this->population === 'applied') {
+
             $this->populationregistrants = Registrants::applied($this->search);
+
+        }elseif($this->population === 'registered'){
+
+            $this->populationregistrants = Registrants::registered($this->search);
+
         }else{
+
             $this->populationregistrants = Registrants::eligible($this->search);
         }
 

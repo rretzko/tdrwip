@@ -48,6 +48,11 @@
                         {{-- REGISTRANT FORM --}}
                         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 ">
                             <div class="py-2 align-middle inline-block min-w sm:px-6 lg:px-8">
+
+                                <div class="border border-black text-center font-bold {{ $registrant->registranttypedescrbackground }} ">
+                                    Registrant status: {{ $registrant->registranttypedescr }}
+                                </div>
+
                                 <div class="space-y-4 overflow-hidden border-b border-gray-200 sm:rounded-lg">
 
                                     <form class="px-2" method="post"
@@ -164,22 +169,24 @@
                                         </a>
 
                                         <div>
-                                            @if($registrant->hasSignatures)
-                                                <div class="my-2 px-2 bg-green-100 ">
-                                                    Signatures confirmed at: {{ $registrant->signatureconfirmation }}
-                                                </div>
+                                            @if($registrant->hasApplication)
+                                                @if($registrant->hasSignatures)
+                                                    <div class="my-2 px-2 bg-green-100 ">
+                                                        Signatures confirmed at: {{ $registrant->signatureconfirmation }}
+                                                    </div>
+                                                @endif
+                                                <a href="{{ route('registrant.signatures', ['registrant' => $registrant]) }}"
+                                                    class="rounded"
+                                                >
+                                                    <button class="bg-gray-500 mt-2 py-1 px-2 rounded">
+                                                        @if($registrant->hasSignatures)
+                                                            Remove my signature
+                                                        @else
+                                                            I confirm that the application has all required signatures.
+                                                        @endif
+                                                    </button>
+                                                </a>
                                             @endif
-                                            <a href="{{ route('registrant.signatures', ['registrant' => $registrant]) }}"
-                                                class="rounded"
-                                            >
-                                                <button class="bg-gray-500 mt-2 py-1 px-2 rounded">
-                                                    @if($registrant->hasSignatures)
-                                                        Remove my signature
-                                                    @else
-                                                        I confirm that the application has all required signatures.
-                                                    @endif
-                                                </button>
-                                            </a>
                                         </div>
 
                                     </div>

@@ -67,9 +67,23 @@ class Registrant extends Model
         return (bool)Application::where('registrant_id', $this->id)->first();
     }
 
+    public function getHasFileuploadsAttribute(): bool
+    {
+        $eventversion = Eventversion::find(Userconfig::getValue('eventversion',auth()->id()));
+        $fileuploadtypescount = $eventversion->filecontenttypes->count();
+        $approvedscount = $this->fileuploads->whereNotNull('approved')->count();
+
+        return $fileuploadtypescount === $approvedscount;
+    }
+
+    public function getHasInstrumentationAttribute(): bool
+    {
+        return (bool)$this->instrumentations;
+    }
+
     public function getHasSignaturesAttribute() : bool
     {
-        return ($this->signatures->whereNotNull('confirmed')->count() === 4);
+        return ($this->signatures->whereNotNull('confirmed')->count() === Signaturetype::all()->count());
     }
 
     public function getInstrumentationsCSVAttribute()
@@ -81,6 +95,32 @@ class Registrant extends Model
         }
 
         return ($descrs) ? implode(',',$descrs) : 'None found';
+    }
+
+    public function getRegistranttypeDescrAttribute()
+    {
+        return Registranttype::find($this->registranttype_id)->descr;
+    }
+
+    public function getRegistranttypeDescrBackgroundAttribute()
+    {
+        $descr = $this->getRegistranttypeDescrAttribute();
+
+        switch($descr){
+            case 'applied':
+                $bg = 'bg-yellow-100';
+                break;
+            case 'prohibited':
+                $bg = 'bg-red-100';
+                break;
+            case 'registered':
+                $bg = 'bg-green-100';
+                break;
+            default:
+                $bg = 'bg-white';
+        }
+
+        return $bg;
     }
 
     /**

@@ -15,6 +15,11 @@
 
                 <x-sidebar-blurb blurb="Click the 'Eligible' column header to toggle the roster for each status type." />
 
+                <x-sidebar-blurb blurb="Click the <a class='text-yellow-100' href='{{ route('pitchfiles',['eventversion' => $event]) }}'>eighth-notes</a> icon to access the pitch files." />
+
+                <x-sidebar-blurb blurb="If you have students with a status type of 'Registered' a link for your
+                    <a class='text-yellow-100' href='{{ route('registrant.estimateform',['eventversion' => $event]) }}'>Estimate Form</a>
+                    will display between the Search bar and the Pitch Files icon." />
             </x-slot>
 
             <x-slot name="table">
@@ -47,6 +52,15 @@
                                    placeholder="Search last name..."/>
                             </div>
 
+                             {{-- ESTIMATE FORM --}}
+                             <div class="pt-3">
+                                 <a href="{{ route('registrant.estimateform',['eventversion' => $event]) }}"
+                                    class=" bg-yellow-200 text-blue-700 font-bold border border-blue-700 rounded px-2">
+                                     Estimate Form
+                                 </a>
+                             </div>
+
+                             {{-- PITCH FILES --}}
                              <div class="">
                                  <a href="{{ route('pitchfiles',['eventversion' => $event]) }}" title="Pitch Files" class="text-blue-600">
                                  {{-- SIXTEENTH NOTES --}}
@@ -96,8 +110,10 @@
                                                 {{ $registrant->instrumentationsCSV }}
                                             </x-tables.cell>
 
-                                            <x-tables.cell>
-                                                {{ ucwords($registrant->registranttype->descr) }}
+                                            <x-tables.cell >
+                                                <div class="{{ $registrant->registranttypeDescrBackground }} p-1 text-center text-xs border border-gray-400 rounded">
+                                                    {{ ucwords($registrant->registranttypeDescr) }}
+                                                </div>
                                             </x-tables.cell>
 
                                             <x-tables.cell>

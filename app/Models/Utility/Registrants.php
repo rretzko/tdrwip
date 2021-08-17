@@ -40,7 +40,19 @@ class Registrants extends Model
         return self::eligibleRegistrants($search,$classofs);
     }
 
-/** END OF PUBLIC FUNCTIONS **************************************************/
+    public static function registered($search='')
+    {
+        self::setVars();
+
+        $classofs = array_map('self::getClassofFromGrade',
+            explode(',',self::$eventversion['eventversionconfigs']->grades));
+
+        return self::registeredRegistrants($search,$classofs);
+    }
+
+
+
+    /** END OF PUBLIC FUNCTIONS **************************************************/
 
     private static function appliedRegistrants(string $search, array $classofs)
     {
@@ -222,6 +234,29 @@ class Registrants extends Model
 
         return $id;
     }
+
+    private static function registeredRegistrants(string $search, array $classofs)
+    {
+        $registrants = collect();
+        $students = self::confirmEligibleStudentsAreRegistrants($search, $classofs);
+        $eventversion_id = self::$eventversion_id;
+
+        $registereds = $students->filter(function($student) use ($eventversion_id){
+            return (bool)Registrant::where('user_id', $student->user_id)
+                ->where('eventversion_id', $eventversion_id)
+                ->where('registranttype_id', Registranttype::REGISTERED)
+                ->first();
+        });
+
+        foreach($registereds AS $student) {
+
+            $registrants->push($student->registrants
+                ->where('eventversion_id', self::$eventversion_id)->first());
+        }
+
+        return $registrants;
+    }
+
 
     private static function setVars()
     {

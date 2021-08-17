@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Events\FileuploadRejectionEvent;
 use App\Events\MembershipRequestEvent;
+use App\Events\UpdateRegistrantStatusEvent;
 use App\Listeners\FileuploadRejectionStudentEmailListener;
 use App\Listeners\SendMembershipRequestEmailListener;
+use App\Listeners\UpdateRegistrantStatusListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -27,6 +29,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         FileuploadRejectionEvent::class => [
             FileuploadRejectionStudentEmailListener::class,
+        ],
+        UpdateRegistrantStatusEvent::class => [
+            UpdateRegistrantStatusListener::class,
         ]
     ];
 

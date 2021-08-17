@@ -102,7 +102,9 @@
                 (strpos(Route::currentRouteName(), 'eventversions.index') === 0) ||
                 (strpos(Route::currentRouteName(), 'registrant.show') === 0) ||
                 (strpos(Route::currentRouteName(), 'pitchfiles') === 0) ||
-                (strpos(Route::currentRouteName(), 'registrant.application.create') === 0)
+                (strpos(Route::currentRouteName(), 'registrant.application.create') === 0) ||
+                (strpos(Route::currentRouteName(), 'registrant.estimateform') === 0) ||
+                (strpos(Route::currentRouteName(), 'registrant.estimateform.download') === 0)
              )
                 ? 'active' : ''  }} "
        title="Events"
@@ -170,7 +172,9 @@
                 (strpos(Route::currentRouteName(), 'eventversions.index') === 0) ||
                 (strpos(Route::currentRouteName(), 'registrant.show') === 0) ||
                 (strpos(Route::currentRouteName(), 'pitchfiles') === 0) ||
-                (strpos(Route::currentRouteName(), 'registrant.application.create') === 0)
+                (strpos(Route::currentRouteName(), 'registrant.application.create') === 0) ||
+                (strpos(Route::currentRouteName(), 'registrant.estimateform') === 0) ||
+                (strpos(Route::currentRouteName(), 'registrant.estimateform.download') === 0)
              )
                 ? 'active' : ''  }}"
     >
@@ -297,7 +301,9 @@
                 (strpos(Route::currentRouteName(), 'eventversions.index') === 0) ||
                 (strpos(Route::currentRouteName(), 'registrant.show') === 0) ||
                 (strpos(Route::currentRouteName(), 'pitchfiles') === 0) ||
-                (strpos(Route::currentRouteName(), 'registrant.application.create') === 0)
+                (strpos(Route::currentRouteName(), 'registrant.application.create') === 0) ||
+                (strpos(Route::currentRouteName(), 'registrant.estimateform') === 0) ||
+                (strpos(Route::currentRouteName(), 'registrant.estimateform.download') === 0)
              )
                 ? 'active' : ''  }}"
     >

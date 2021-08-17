@@ -21,6 +21,8 @@ class CreateEventversionconfigsTable extends Migration
             $table->string('grades')->default('9,10,11,12');
             $table->boolean('eapplication')->default(0);
             $table->tinyInteger('judge_count')->default(1);
+            $table->tinyInteger('max_count')->default(30);
+            $table->tinyInteger('max-uppervoice_count')->default(0);
             $table->boolean('missing_judge_average')->default(1);
             $table->boolean('epaymentsurcharge')->default(0);
             $table->boolean('virtualaudition')->default(0);

@@ -8,11 +8,14 @@ use App\Models\Fileserver;
 use App\Models\Fileuploadfolder;
 use App\Models\Registrant;
 use App\Models\Userconfig;
+use App\Traits\UpdateRegistrantStatusTrait;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class RegistrantController extends Controller
 {
+    use UpdateRegistrantStatusTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -102,6 +105,8 @@ class RegistrantController extends Controller
         $registrant->instrumentations()->sync($data['instrumentations']);
 
         $registrant->refresh();
+
+        $this->updateRegistrantStatus($registrant);
 
         return view('registrants.registrant.show', [
             'eventversion' => Eventversion::find($registrant->eventversion_id),
