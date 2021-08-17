@@ -54,7 +54,6 @@ return [
 
         'profile-photos' => [
             'driver' => 'local',
-            //'root' => storage_path('app/public/profile-photos'),
             'root' => storage_path('app/public/profile-photos'),
             'url' => env('APP_URL').'/storage/profile-photos',
             'visibility' => 'public',
@@ -64,7 +63,13 @@ return [
             'root' => storage_path('app/public/ensemblemembers'),
             'url' => env('APP_URL').'/storage/ensemblemembers',
             'visibility' => 'private',
-        ]
+        ],
+        'membershipcards' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/membershipcards'),
+            'url' => env('APP_URL').'/storage/membershipcards',
+            'visibility' => 'public',
+        ],
 
     ],
 
@@ -83,6 +88,7 @@ return [
         public_path('storage') => storage_path('app/public'),
         public_path('profile-photos') => storage_path('app/public/profile-photos'),
         public_path('storage/profile-photos') => storage_path('app/public/profile-photos'),
+        public_path('storage/membershipcards') => storage_path('app/public/membershipcards'),
     ],
 
 ];

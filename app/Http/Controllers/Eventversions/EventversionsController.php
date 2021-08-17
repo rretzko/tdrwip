@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Eventversions;
 
 use App\Http\Controllers\Controller;
+use App\Models\Event;
+use App\Models\Eventversion;
 use App\Models\Membereventversion;
 use App\Models\Userconfig;
 use Illuminate\Http\Request;
@@ -24,14 +26,14 @@ class EventversionsController extends Controller
         // directly display that eventversion's registrants
         if($eventversions->count() === 1){
 
-            //set userconfigs
-            $eventversion = $eventversions->first();
+            if($eventversions->first()->obligationMet(auth()->id())){
 
-            Userconfig::setValue('eventversion', auth()->id(), $eventversion->id);
-            Userconfig::setValue('event',auth()->id(),$eventversion['event']->id);
-            Userconfig::setValue('organization',auth()->id(),$eventversion['event']['organization']->id);
+                return $this->show($eventversions->first());
 
-            return view('registrants.index');
+            }else{
+
+                return view('eventversions.obligations', ['eventversion' => $eventversions->first()]);
+            }
         }
 
         //else display choice of eventversions
@@ -63,12 +65,17 @@ class EventversionsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Eventversion $eventversion
      * @return Response
      */
-    public function show($id)
+    public function show(Eventversion $eventversion)
     {
-        //
+        //set userconfigs
+        Userconfig::setValue('eventversion', auth()->id(), $eventversion->id);
+        Userconfig::setValue('event',auth()->id(),$eventversion['event']->id);
+        Userconfig::setValue('organization',auth()->id(),$eventversion['event']['organization']->id);
+
+        return view('registrants.index');
     }
 
     /**
@@ -104,4 +111,5 @@ class EventversionsController extends Controller
     {
         //
     }
+
 }

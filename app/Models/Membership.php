@@ -11,7 +11,8 @@ class Membership extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['expiration', 'grade_levels', 'membershiptype_id', 'organization_id', 'subjects', 'user_id',];
+    protected $fillable = ['expiration', 'grade_levels', 'membership_card_path','membershiptype_id',
+        'organization_id', 'subjects', 'user_id',];
 
     protected $with = ['person','roletypes'];
 

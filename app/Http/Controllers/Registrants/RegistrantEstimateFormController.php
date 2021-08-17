@@ -21,6 +21,8 @@ class RegistrantEstimateFormController extends Controller
     /**
      * PDF download of application
      *
+     * @todo Test screen display and printing of membership card
+     *
      * @param  Registrant
      * @return Response
      */

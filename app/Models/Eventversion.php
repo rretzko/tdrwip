@@ -68,6 +68,14 @@ class Eventversion extends Model
         return $this->eventensembles->first()->eventensembletype()->instrumentations;
     }
 
+    public function obligationMet($user_id)
+    {
+        return (bool)Obligation::where('user_id',$user_id)
+            ->where('eventversion_id', $this->id)
+            ->where('acknowledgment', 1)
+            ->first();
+    }
+
     public function pitchfiles()
     {
         return $this->hasMany(Pitchfile::class);

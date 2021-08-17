@@ -8,7 +8,7 @@
                 <x-livewire-table-with-modal-forms>
 
                     <x-slot name="title">
-                        {{ __('Estimate Form') }}
+                        {{ __('Template Form') }}
                     </x-slot>
 
                     <x-slot name="description">
@@ -32,8 +32,8 @@
                             </a>
                         </div>
 
-                        {{-- ESTIMATE FORM --}}
-                        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 ">
+                        {{-- TEMPLATE FORM --}}
+                        <div class="overflow-x-auto ">
 
                         </div>
 

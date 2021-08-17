@@ -83,7 +83,11 @@
     </a>
     <a href="{{ route('organizations.index') }}"
        class="border border-gray-500 rounded px-2 py-1 ml-0.5
-            {{ (strpos(Route::currentRouteName(), 'organizations')) === 0 ? 'active' : ''  }} "
+            {{ (
+                (strpos(Route::currentRouteName(), 'organizations.index') === 0) ||
+                (strpos(Route::currentRouteName(), 'organization.membershipcard') === 0)
+             )
+                ? 'active' : ''  }}"
        title="Organizations"
     >
         <!-- heroicon briefcase -->
@@ -97,7 +101,7 @@
     <a href="{{ route('eventversions.index') }}"
        class="border border-gray-500 rounded px-2 py-1 ml-0.5
             {{ (
-                (strpos(Route::currentRouteName(), 'events') === 0 ? 'active' : '')   ||
+                (strpos(Route::currentRouteName(), 'events') === 0)   ||
                 (strpos(Route::currentRouteName(), 'registrants.index') === 0) ||
                 (strpos(Route::currentRouteName(), 'eventversions.index') === 0) ||
                 (strpos(Route::currentRouteName(), 'registrant.show') === 0) ||
@@ -161,13 +165,18 @@
     </a>
     <a href="{{ route('organizations.index') }}"
        class="border border-gray-500 rounded px-2 py-1 ml-0.5
-        {{ (strpos(Route::currentRouteName(), 'organizations')) === 0 ? 'active' : ''  }}">
+        {{ (
+                (strpos(Route::currentRouteName(), 'organizations.index') === 0) ||
+                (strpos(Route::currentRouteName(), 'organization.membershipcard') === 0)
+             )
+                ? 'active' : ''  }}"
+    >
         Organizations
     </a>
     <a href="{{ route('eventversions.index') }}"
        class="border border-gray-500 rounded px-2 py-1 ml-0.5
         {{ (
-                (strpos(Route::currentRouteName(), 'events') === 0 ? 'active' : '')   ||
+                (strpos(Route::currentRouteName(), 'events') === 0)   ||
                 (strpos(Route::currentRouteName(), 'registrants.index') === 0) ||
                 (strpos(Route::currentRouteName(), 'eventversions.index') === 0) ||
                 (strpos(Route::currentRouteName(), 'registrant.show') === 0) ||
@@ -280,10 +289,16 @@
         </svg>
         <div class="ml-1">Library</div>
     </a>
+
     <!-- ORGANIZATIONS -->
     <a href="{{ route('organizations.index') }}"
        class="flex flex-row border border-blue-300 rounded px-2 py-1 ml-0.5
-        {{ (strpos(Route::currentRouteName(), 'organizations')) === 0 ? 'active' : ''  }}">
+       {{ (
+                (strpos(Route::currentRouteName(), 'organizations.index') === 0) ||
+                (strpos(Route::currentRouteName(), 'organization.membershipcard') === 0)
+             )
+                ? 'active' : ''  }}"
+    >
         <!-- heroicon briefcase -->
         <svg xmlns="http://www.w3.org/2000/svg"
              width="20px" height="20px"
@@ -296,7 +311,7 @@
     <a href="{{ route('eventversions.index') }}"
        class="flex flex-row border border-blue-300 rounded px-2 py-1 ml-0.5
         {{ (
-                (strpos(Route::currentRouteName(), 'events') === 0 ? 'active' : '')   ||
+                (strpos(Route::currentRouteName(), 'events') === 0)   ||
                 (strpos(Route::currentRouteName(), 'registrants.index') === 0) ||
                 (strpos(Route::currentRouteName(), 'eventversions.index') === 0) ||
                 (strpos(Route::currentRouteName(), 'registrant.show') === 0) ||

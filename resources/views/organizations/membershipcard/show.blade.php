@@ -19,102 +19,131 @@
 
                     </x-slot>
 
-
-
-
                     <x-slot name="table">
 
-                        {{-- BACK TO ROSTER --}}
-                        <div class="flex text-red-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 20 20"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                            </svg>
-                            <a href="{{ route('organizations.index') }}"
-                               class="text-red-700 ml-2 pb-4">
-                                Return to Organization Roster
-                            </a>
-                        </div>
+                        <section class="w-full border border-black border-t-0 border-l-0 border-r-0 " id="page_header">
+                            {{-- BACK TO ROSTER --}}
+                            <div class="flex text-red-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 20 20"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                                </svg>
+                                <a href="{{ route('organizations.index') }}"
+                                   class="text-red-700 ml-2 pb-4">
+                                    Return to Organization Roster
+                                </a>
+                            </div>
 
-                        {{-- MEMBERSHIP CARD FORM --}}
-                        <div class="overflow-x-auto lg:w-6/12 md:w-8/12 w-11/12 ">
+                            <h3 class="font-bold">{{ $organization->name }} Membership</h3>
+                        </section>
 
-                            <form method="post" action="{{ ($membership && $membership->id)
-                                ? route('organization.membershipcard.update', ['membership' => $membership])
-                                : route('organization.membershipcard.create')}}"
-                                  enctype="multipart/form-data"
-                            >
+                        <section  class="flex" id="inputs_and_card">
 
-                                @csrf
+                            <section class="w-9/12" id="inputs">
+                                {{-- MEMBERSHIP CARD FORM --}}
+                                <div class="overflow-x-auto lg:w-6/12 md:w-8/12 w-11/12 ">
 
-                                {{-- MEMBERSHIP TYPE --}}
-                                <x-inputs.group label="Membership type" for="membershiptype_id">
+                                    <form method="post" action="{{ ($membership && $membership->id)
+                                        ? route('organization.membershipcard.update', ['membership' => $membership])
+                                        : route('organization.membershipcard.create')}}"
+                                          enctype="multipart/form-data"
+                                    >
 
-                                    <x-inputs.select
-                                        label="Membership type"
-                                        for="membershiptype_id"
-                                        :options=$membershiptypes
-                                    />
+                                        @csrf
 
-                                </x-inputs.group>
 
-                                {{-- MEMBERSHIP ID --}}
-                                <x-inputs.group label="Membership id" for="membershiptype_id" borderless="true" paddingless="true">
 
-                                    <x-inputs.text
-                                        label=""
-                                        for="membershiptype_id"
+                                        {{-- MEMBERSHIP TYPE --}}
+                                        <x-inputs.group label="Membership type" for="membershiptype_id">
 
-                                    />
+                                            <select name="membershiptype_id">
+                                                @foreach($membershiptypes AS $membershiptype)
+                                                    <option value="{{ $membershiptype->id }}"
+                                                        {{ (($membership->membershiptype_id == $membershiptype->id) ? 'SELECTED' : '' )}}
+                                                    >
+                                                        {{ $membershiptype->descr }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
 
-                                </x-inputs.group>
+                                        </x-inputs.group>
 
-                                {{-- EXPIRATION --}}
-                                <x-inputs.group label="Expiration date" for="expiration" borderless="true" paddingless="true">
+                                        {{-- MEMBERSHIP ID --}}
+                                        <x-inputs.group label="Membership id" for="membership_id" borderless="true" paddingless="true">
 
-                                    <x-inputs.date
-                                        label=""
-                                        for="expiration"
-                                    />
+                                            <x-inputs.text
+                                                label=""
+                                                for="membership_id"
+                                                currentvalue="{{ $membership->membership_id }}"
 
-                                </x-inputs.group>
+                                            />
 
-                                {{-- GRADE LEVELS --}}
-                                <x-inputs.group label="Grade levels" for="grade_levels" borderless="true" paddingless="true">
+                                        </x-inputs.group>
 
-                                    <x-inputs.text
-                                        label=""
-                                        for="grade_levels"
-                                        placeholder="Secondary, middle, elementary"
-                                    />
+                                        {{-- EXPIRATION --}}
+                                        <x-inputs.group label="Expiration date"
+                                                        for="expiration"
+                                                        borderless="true"
+                                                        paddingless="true"
+                                        >
 
-                                </x-inputs.group>
+                                            <x-inputs.date
+                                                label=""
+                                                for="expiration"
+                                                currentvalue="{{ $membership->expiration }}"
+                                            />
 
-                                {{-- SUBJECTS --}}
-                                <x-inputs.group label="Subjects" for="subject" borderless="true" paddingless="true">
+                                        </x-inputs.group>
 
-                                    <x-inputs.text
-                                        label=""
-                                        for="subject"
-                                        placeholder="Chorus, General Music"
-                                    />
+                                        {{-- GRADE LEVELS --}}
+                                        <x-inputs.group label="Grade levels"
+                                                        for="grade_levels"
+                                                        borderless="true"
+                                                        paddingless="true"
+                                        >
 
-                                </x-inputs.group>
+                                            <x-inputs.text
+                                                label=""
+                                                for="grade_levels"
+                                                placeholder="Secondary, middle, elementary"
+                                                currentvalue="{{ $membership->grade_levels }}"
+                                            />
 
-                                {{-- MEMBERSHIP CARD --}}
-                                <x-inputs.group label="Membership card" for="membershipcard" borderless="true" paddingless="true">
+                                        </x-inputs.group>
 
-                                    <input type="file" name="membershipcard">
+                                        {{-- SUBJECTS --}}
+                                        <x-inputs.group label="Subjects" for="subjects" borderless="true" paddingless="true">
 
-                                </x-inputs.group>
+                                            <x-inputs.text
+                                                label=""
+                                                for="subjects"
+                                                placeholder="Chorus, General Music"
+                                                currentvalue="{{ $membership->subjects }}"
+                                            />
 
-                                <x-inputs.group for="submit" label="" borderless="true" >
-                                    <x-buttons.button-save />
-                                </x-inputs.group>
-                            </form>
-                        </div>
+                                        </x-inputs.group>
 
+                                        {{-- MEMBERSHIP CARD --}}
+                                        <x-inputs.group label="Membership card" for="membershipcard" borderless="true" paddingless="true">
+
+                                            <input type="file" name="membershipcard">
+
+                                        </x-inputs.group>
+
+                                        <x-inputs.group for="submit" label="" borderless="true" >
+                                            <x-buttons.button-save />
+                                        </x-inputs.group>
+                                    </form>
+                                </div>
+                            </section>
+
+                            <section class="w-2/12" id="card">
+                                <h4>Membership Card Image</h4>
+                                <img src="/membershipcards/LxabilADYPk5zg5kiqftqFexZUS9Z1tLVMzE3gs9.png" alt="membership card" />
+                            </section>
+
+                        </section>
                     </x-slot>
 
                 </x-livewire-table-with-modal-forms>

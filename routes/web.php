@@ -71,6 +71,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     /** EVENTVERSIONS */
     //NOTE: using "/events" as friendlier designation
     Route::get('/events', [App\Http\Controllers\Eventversions\EventversionsController::class, 'index'])->name('eventversions.index');
+    Route::get('/event/{eventversion}', [App\Http\Controllers\Eventversions\EventversionsController::class, 'show'])->name('eventversion.show');
+    Route::get('/event/obligations/update', [App\Http\Controllers\Eventversions\ObligationsController::class, 'create'])->name('eventversion.obligations.update');
 
     /** ORGANIZATIONS */
     Route::get('/organizations', [App\Http\Controllers\Organizations\OrganizationController::class, 'index'])->name('organizations.index');

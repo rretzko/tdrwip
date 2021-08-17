@@ -20,7 +20,6 @@
         @foreach($options AS $key => $value)
             <option
                 value="{{ (is_object($value)) ? $value->id : $key }}"
-
             >
                 {{ is_object($value) ? $value->$displayproperty : $value }}
 
