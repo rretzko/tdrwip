@@ -66,6 +66,13 @@ class Userconfig extends Model
             ]);
     }
 
+    private static function defaultSchool_id($descr, $user_id)
+    {
+        $user = User::find($user_id);
+        $school = $user->schools->first();
+        self::defaultSave($descr, $user_id, $school->id);
+    }
+
     private static function defaultEnsemble_id($descr, $user_id)
     {
         $person = Person::find($user_id);

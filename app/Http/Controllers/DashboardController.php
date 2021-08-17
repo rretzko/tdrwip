@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Utility\Dashboard;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -16,9 +17,16 @@ class DashboardController extends Controller
      */
     public function show(Request $request)
     {
+        $teachers = collect();
+        if(auth()->id() === 368) {
+            $teachers = Teacher::with('person')->get()->sortBy('person.last');
+        }
+
+        $dashboard = new Dashboard;
 
         return view('dashboard',[
-            'teachers' => Teacher::with('person')->get()->sortBy('person.last'),
+            'dashboard' => $dashboard,
+            'teachers' => $teachers,
         ]);
     }
 }

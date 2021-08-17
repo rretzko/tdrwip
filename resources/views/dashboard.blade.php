@@ -1,30 +1,48 @@
-<x-app-layout>
+<x-app-layout><!-- app/view/components/AppLayout.php calling resources/views/layouts/app.blade.php -->
 
-    <div class="relative bg-indigo-600">
-        <div class="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
-            <div class="pr-16 sm:text-center text-white sm:px-16 space-x-3">
-                <form method="POST" action="{{ route('impersonation.show') }}">
-                    @csrf
-                    <label for="user_id">Impersonate Director</label>
-                    <select name="user_id" class="text-black">
-                        @foreach($teachers AS $teacher)
-                            <option value="{{ $teacher->user_id }}">{{ $teacher->person->fullNameAlpha }}</option>
-                        @endforeach
-                    </select>
-                    <x-buttons.button-save />
-                </form>
+    <div>
+        <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+
+            @if($teachers->count())
+                <x-impersonationbar/>
+            @endif
+
+            <div>
+
+                <x-livewire-table-with-modal-forms>
+
+                    <x-slot name="title">
+                        {{ __('Dashboard') }}
+                    </x-slot>
+
+                    <x-slot name="description">
+
+                        <x-sidebar-blurb blurb="The Dashboard will contain various tabular, graphic and linked data
+                            for your general use."/>
+
+                    </x-slot>
+
+                    <style>
+                        .statbox{border: 1px solid black;margin-left: 1rem;}
+                        .statboxheader{background-color: lightgrey; border: 1px solid black;}
+                        ul{margin-left: 1rem; list-style-type: disc;}
+                    </style>
+                    <x-slot name="table">
+                        <div class=" flex flex-wrap space-x-2">
+                            <x-dashboard.countstudents :dashboard="$dashboard" />
+                            <x-dashboard.schoollist :dashboard="$dashboard" />
+                            <x-dashboard.orientation />
+
+                        </div>
+                    </x-slot>
+
+                </x-livewire-table-with-modal-forms>
+
             </div>
-            <div class="@if(session()->has('impersonating')) block @else hidden @endif pr-16 sm:text-center sm:px-16">
-                <p class="font-medium text-white space-x-3">
-                    <span class="hidden md:inline">
-                      You are impersonating: {{ auth()->user()->username }}
-                    </span>
-                    <span class="">
-                        <a href="#" class="text-yellow-300">Leave Impersonation</a>
-                    </span>
-                </p>
-            </div>
+
         </div>
     </div>
+
+    <x-jet-section-border />
 
 </x-app-layout>
