@@ -102,6 +102,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::get('/registrant/estimateform/{eventversion}', [App\Http\Controllers\Registrants\RegistrantEstimateFormController::class,'show'])->name('registrant.estimateform');
     Route::get('/registrant/estimateform/{eventversion}/download', [App\Http\Controllers\Registrants\RegistrantEstimateFormController::class,'download'])->name('registrant.estimateform.download');
 
+    Route::get('/registrant/payments/{eventversion}', [App\Http\Controllers\Registrants\RegistrantPaymentsController::class,'index'])->name('registrant.payments');
+    Route::get('/registrant/payments/for/{registrant}', [App\Http\Controllers\Registrants\RegistrantPaymentsController::class,'show'])->name('registrant.payments.show');
+    Route::post('/registrant/payment/new', [App\Http\Controllers\Registrants\RegistrantPaymentsController::class,'store'])->name('registrant.payments.store');
+    Route::post('/registrant/payment/update/{payment}', [App\Http\Controllers\Registrants\RegistrantPaymentsController::class,'update'])->name('registrant.payments.update');
+
     /** SCHOOLS */
     Route::get('/schools', [App\Http\Controllers\Schools\SchoolController::class, 'index'])->name('schools');
     Route::get('/schools/remove/{school}', [App\Http\Controllers\Schools\SchoolController::class, 'destroy'])->name('schools.destroy');

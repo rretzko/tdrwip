@@ -21,6 +21,11 @@ class Registrant extends Model
         return $this->hasMany(Application::class);
     }
 
+    public function due()
+    {
+        return $this->eventversion->eventversionconfigs->registrationfee - $this->paid();
+    }
+
     public function eventversion()
     {
         return $this->belongsTo(Eventversion::class);
@@ -175,6 +180,23 @@ class Registrant extends Model
         return $this->belongsToMany(Instrumentation::class)
             ->withTimestamps()
             ->orderBy('abbr','asc');
+    }
+
+    public function paid()
+    {
+        $amount = 0;
+
+        foreach($this->payments AS $payment)
+        {
+            $amount += $payment->amount;
+        }
+
+        return $amount;
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
     }
 
     public function registranttype()

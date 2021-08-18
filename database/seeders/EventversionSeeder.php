@@ -36,11 +36,6 @@ class EventversionSeeder extends Seeder
             $model->updated_at = $seed[7];
 
             $model->save();
-
-            if($model->id == 65){
-                $filecontenttypes = [1,4 => ['title' => 'The Silver Swan'],5 => ['title' => 'Shenandoah']];
-                $model->filecontenttypes->sync($filecontenttypes);
-            }
         }
     }
 

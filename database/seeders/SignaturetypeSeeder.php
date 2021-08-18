@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Signaturetype;
 use Illuminate\Database\Seeder;
 
 class SignaturetypeSeeder extends Seeder

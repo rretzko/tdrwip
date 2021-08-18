@@ -59,16 +59,58 @@ class Registrantcomponent extends Component
 
     public function registrantstatus(Registrant $registrant)
     {
-            $str = '<div class="bg-blue-700 p-2 rounded shadow">';
+            $str = '<div class="bg-white text-blue-800 p-2 rounded shadow">';
 
-            $str .= '<div class="uppercase">'.$registrant->student->person->fullName.'</div>';
-            $str .= '<div>Status: <b>'.ucwords($registrant->registranttypeDescr).'</b></div>';
-            $str .= '<div>Application: <b>'
-                .(($registrant->hasApplication) ? 'Downloaded' : 'None')
-                .'</b></div>';
-            $str .= '<div>Signatures: <b>'.(($registrant->hasSignatures) ? 'Signed' : 'Pending').'</b></div>';
-            $str .= '<div>Files Uploaded: <b>'.($registrant->fileuploads()->count()).'</b> ('.$registrant->filesUploadedDescrCSV.')</div>';
-            $str .= '<div>Files Approved: <b>'.($registrant->filesApprovedCount).'</b> ('.$registrant->filesApprovedDescrCSV.')</div>';
+            $str .= '<div class="uppercase font-bold text-red-700">'.$registrant->student->person->fullName.'</div>';
+
+            $str .= '<div class="flex">
+                        <div class="w-5/12">Status:</div>
+                        <div class="w-7/12 font-bold">'.ucwords($registrant->registranttypeDescr).'</div>
+                    </div>';
+
+            $str .= '<div class="flex">
+                        <div class="w-5/12">Application: </div>
+                        <div class="w-7/12 font-bold">'.(($registrant->hasApplication) ? 'Downloaded' : 'None').'</div>
+                        </div>';
+
+            $str .= '<div class="flex">
+                        <div class="w-5/12">Signatures: </div>
+                        <div class="w-7/12 font-bold">'.(($registrant->hasSignatures) ? 'Signed' : 'Pending').'</div>
+                        </div>';
+
+            $fileuploadscount = $registrant->fileuploads()->count();
+            $str .= '<div class="flex">
+                        <div class="w-5/12">Files Uploaded: </div>
+                        <div class="w-7/12">
+                            <span class="font-bold">'.$fileuploadscount.'</span> ';
+                if($fileuploadscount){
+                    $str.= '('.$registrant->filesUploadedDescrCSV.')';
+                }
+            $str .= '</div>
+            </div>';
+
+            $filesapprovedcount = ($registrant->filesApprovedCount);
+            $str .= '<div class="flex">
+                        <div class="w-5/12">Files Approved: </div>
+                        <div class="w-7/12"><span class="font-bold">'.$filesapprovedcount.'</span> ';
+                if($filesapprovedcount) {
+                    $str .= '(' . $registrant->filesApprovedDescrCSV . ')';
+                }
+            $str .= '</div>
+            </div>';
+
+            $str .= '<div class="flex">
+                        <div class="w-5/12">Registrantion Fee: </div>
+                        <div class="w-7/12 font-bold">$'.$this->event->eventversionconfigs->registrationfee.'</div>
+                        </div>';
+            $str .= '<div class="flex">
+                        <div class="w-5/12">Paid: </div>
+                        <div class="w-7/12 font-bold">$'.$registrant->paid().'</div>
+                        </div>';
+            $str .= '<div class="flex">
+                        <div class="w-5/12">Due: </div>
+                        <div class="w-7/12 font-bold">$'.$registrant->due().'</div>
+                        </div>';
 
             $str .= '</div>';
 

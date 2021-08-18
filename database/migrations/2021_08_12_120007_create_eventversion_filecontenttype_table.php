@@ -18,7 +18,7 @@ class CreateEventversionFilecontenttypeTable extends Migration
             $table->foreignId('filecontenttype_id')->constrainer();
             $table->string('title')->nullable();
             $table->timestamps();
-            $table->primary(['eventversion_id','filecontenttype_id']);
+            $table->primary(['eventversion_id','filecontenttype_id'], 'evid_fctid');
         });
     }
 

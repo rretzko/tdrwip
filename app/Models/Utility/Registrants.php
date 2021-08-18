@@ -114,14 +114,6 @@ class Registrants extends Model
             if (! $registrant->instrumentations->count()){
                 $registrant->instrumentations()->attach(self::defaultInstrumentationId($registrant));
             }
-
-            /*if(! Registrant::where('user_id', $student->user_id)
-                ->where('eventversion_id', self::$eventversion_id)
-                ->where('school_id', self::$school_id)
-                ->first()){
-
-                self::makeRegistrant($student);
-            }*/
         }
 
         return $students;
@@ -188,7 +180,7 @@ class Registrants extends Model
         AND d.teacher_user_id=28
         ORDER BY fullNameAlpha
          */
-        return Student::with('person.user.schools')
+        return Student::with('person','person.user.schools','registrants')
             ->whereIn('classof', $classofs)
             ->whereHas('teachers', function(Builder $query){
                 $query->where('teacher_user_id','=' , auth()->id());

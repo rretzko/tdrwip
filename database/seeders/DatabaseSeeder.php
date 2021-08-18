@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
          $this->call(InstrumentationSeeder::class);   //required instrumentationbranchSeeded to be loaded
          $this->call(MembershiptypeSeeder::class);
          $this->call(OrganizationtypeSeeder::class);
+         $this->call(PaymenttypeSeeder::class);
          $this->call(PhonetypeSeeder::class);
          $this->call(PronounsSeeder::class);
          $this->call(RegistranttypeSeeder::class);

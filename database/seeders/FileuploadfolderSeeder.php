@@ -24,7 +24,7 @@ class FileuploadfolderSeeder extends Seeder
         foreach($this->seeds AS $seed){
 
             Fileuploadfolder::create([
-               'id' => $seed[0],
+               'folder_id' => $seed[0],
                'eventversion_id' => $seed[1],
                'instrumentation_id' => $seed[2],
                'filecontenttype_id' => $seed[3],
