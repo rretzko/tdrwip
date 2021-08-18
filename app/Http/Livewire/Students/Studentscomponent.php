@@ -16,6 +16,9 @@ use Livewire\WithPagination;
 
 class Studentscomponent extends Component
 {
+    /**
+     * @todo Figure out how <select>Class of</select> in profilecomponent.blade.php can default to current senior year (grade 12) for new students
+     */
     use SenioryearTrait,WithPagination;
 
     public $filters = [
@@ -43,7 +46,7 @@ class Studentscomponent extends Component
     private $populationstudents = null;
 
     protected $rules = [
-        'grade' => ['requried'],
+        'grade' => ['required'],
         'name' => ['required'],
     ];
 

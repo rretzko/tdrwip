@@ -2,17 +2,18 @@
 
 namespace App\Http\Livewire\Students;
 
+use App\Models\Address;
 use App\Models\Geostate;
 use Livewire\Component;
 
 class Homeaddresscomponent extends Component
 {
-    public $address01;
-    public $address02;
-    public $city;
-    public $geostate_id;
+    public $address01 = '';
+    public $address02 = '';
+    public $city = '';
+    public $geostate_id = 37; //NJ
     public $geostates;
-    public $postalcode;
+    public $postalcode = '';
     public $student = null;
 
     protected $rules = [
@@ -32,12 +33,15 @@ class Homeaddresscomponent extends Component
 
     public function mount()
     {
-        $address = $this->student->person->user->address;
-        $this->address01 = $address->address01;
-        $this->address02 = $address->address02;
-        $this->city = $address->city;
-        $this->geostate_id = $address->geostate_id;
-        $this->postalcode = $address->postalcode;
+        $address = $this->student->person->user->address ?? new Address;
+        if ($address && $address->user_id){
+            $this->address01 = $address->address01;
+            $this->address02 = $address->address02;
+            $this->city = $address->city;
+            $this->geostate_id = $address->geostate_id;
+            $this->postalcode = $address->postalcode;
+        }
+
         $this->geostates = $this->geostates();
     }
 
@@ -48,7 +52,8 @@ class Homeaddresscomponent extends Component
 
     public function save()
     {
-        $address = $this->student->person->user->address;
+        $address = $this->student->person->user->address ?? new Address;
+        $address->user_id = $this->student->user_id;
         $address->address01 = $this->address01;
         $address->address02 = $this->address02;
         $address->city = $this->city;

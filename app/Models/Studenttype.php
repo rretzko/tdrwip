@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Studenttype extends Model
 {
     use HasFactory;
+
+    const TEACHER_ADDED = 13;
 }

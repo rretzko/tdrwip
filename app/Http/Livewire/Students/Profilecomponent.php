@@ -3,18 +3,24 @@
 namespace App\Http\Livewire\Students;
 
 use App\Models\Gradetype;
+use App\Models\Person;
 use App\Models\Pronoun;
 use App\Models\School;
 use App\Models\Shirtsize;
+use App\Models\Student;
+use App\Models\Studenttype;
 use App\Models\Teacher;
 use App\Models\Tenure;
+use App\Models\User;
 use App\Models\Userconfig;
 use App\Traits\SenioryearTrait;
+use App\Traits\UsernameTrait;
+use Carbon\Carbon;
 use Livewire\Component;
 
 class Profilecomponent extends Component
 {
-    use SenioryearTrait;
+    use SenioryearTrait,UsernameTrait;
 
     public $birthday = '';
     public $classof = 0;
@@ -25,7 +31,7 @@ class Profilecomponent extends Component
     public $heightininches = '3\' 0"';
     public $last = '';
     public $middle = '';
-    public $pronoun_id = '';
+    public $pronoun_id = 1;
     public $pronouns = [];
     public $shirtsize_id = 1;
     public $shirtsizes = [];
@@ -39,6 +45,8 @@ class Profilecomponent extends Component
         $this->heights = self::setHeights();
         $this->pronouns = Pronoun::all()->sortBy('order_by');
         $this->shirtsizes = Shirtsize::all()->sortBy('order_by');
+        $this->birthday = Carbon::now();
+        $this->classof = date('Y');
     }
 
     public function render()
@@ -48,20 +56,26 @@ class Profilecomponent extends Component
 
     public function save()
     {
-        $this->student->birthday = $this->birthday;
-        $this->student->classof = $this->classof;
-        $this->student->height = $this->height;
-        $this->student->shirtsize_id =$this->shirtsize_id;
+        if(is_null($this->student)){
+            $this->addNewStudent();
 
-        $this->student->save();
+        }else {
 
-        $person = $this->student->person;
+            $this->student->birthday = $this->birthday;
+            $this->student->classof = $this->classof;
+            $this->student->height = $this->height;
+            $this->student->shirtsize_id = $this->shirtsize_id;
 
-        $person->first = $this->first;
-        $person->middle = $this->middle;
-        $person->last = $this->last;
+            $this->student->save();
 
-        $person->save();
+            $person = $this->student->person;
+
+            $person->first = $this->first;
+            $person->middle = $this->middle;
+            $person->last = $this->last;
+
+            $person->save();
+        }
 
         $this->emit('profile-saved');
     }
@@ -122,5 +136,41 @@ class Profilecomponent extends Component
         }
 
         return $a;
+    }
+
+    private function addNewStudent()
+    {
+        //add user
+        $user = User::create([
+            'username' => $this->username($this->first,$this->last),
+            'password' => bcrypt('Password1!'),
+        ]);
+
+
+        //add person
+        Person::create([
+            'user_id' => $user->id,
+            'first' => $this->first,
+            'middle' => $this->middle,
+            'last' => $this->last,
+            'pronoun_id' => $this->pronoun_id,
+        ]);
+
+        //add student
+        $student = Student::create([
+            'user_id' => $user->id,
+            'classof' => $this->classof,
+            'height' => $this->height,
+            'birthday' => $this->birthday,
+            'shirtsize_id' => $this->shirtsize_id,
+        ]);
+
+        $student=Student::find($user->id);
+
+        //sync student to school
+        $student->teachers()->sync([auth()->id() =>['studenttype_id' => Studenttype::TEACHER_ADDED]]);
+
+        //sync student to teacher
+        $user->schools()->sync(Userconfig::getValue('school', auth()->id()));
     }
 }
