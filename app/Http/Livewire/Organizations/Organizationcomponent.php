@@ -86,15 +86,22 @@ class Organizationcomponent extends Component
     public function saveMembership()
     {
         foreach($this->editorganization->ancestors([],true) AS $organization) {
-            Membership::updateOrCreate([
-                'user_id' => auth()->id(),
-                'organization_id' => $organization->id,
-                'membershiptype_id' => 11, //pending until approved by membership manager
-                'requestedtype_id' => $this->editorganizationmembershiptype_id,
-                'expiration' => $this->editorganizationexpiration,
-                'grade_levels' => $this->editorganizationgradelevels,
-                'subjects' => $this->editorganizationsubjects,
-            ]);
+
+            $m = Membership::updateOrCreate(
+                [
+                    'user_id' => auth()->id(),
+                    'organization_id' => $organization->id,
+                ],
+                [
+                    'membership_id' => $this->editorganizationmembershipid,
+                    'membershiptype_id' => 11, //pending until approved by membership manager
+                    'requestedtype_id' => $this->editorganizationmembershiptype_id,
+                    'expiration' => $this->editorganizationexpiration,
+                    'grade_levels' => $this->editorganizationgradelevels,
+                    'subjects' => $this->editorganizationsubjects,
+                ],
+            );
+
         }
 
         $this->emit('membership-saved');

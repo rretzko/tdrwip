@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Userconfig;
 use App\Models\Utility\Dashboard;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
@@ -27,6 +28,17 @@ class DashboardController extends Controller
         return view('dashboard',[
             'dashboard' => $dashboard,
             'teachers' => $teachers,
+            'gettingstarted' => Userconfig::getValue('gettingstarted', auth()->id()),
         ]);
+    }
+
+    /**
+     * This function is only used to update the Userconfig::gettingstarted property
+     */
+    public function update(Request $request)
+    {
+        Userconfig::setValue('gettingstarted', auth()->id(), 0);
+
+        return $this->show($request);
     }
 }

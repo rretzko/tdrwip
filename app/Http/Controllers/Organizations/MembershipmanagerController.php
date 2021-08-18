@@ -15,11 +15,13 @@ class MembershipmanagerController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param Membership $membership
+     * @param int $id //membership id
      * @return Response
      */
-    public function approval(Request $request, Membership $membership)
+    public function approval(Request $request, $id)
     {
+        $membership = Membership::find($id);
+
         $organization = Organization::find($membership->organization_id);
         $person = Person::find($membership->user_id);
 

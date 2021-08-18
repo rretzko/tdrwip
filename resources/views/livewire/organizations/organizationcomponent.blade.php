@@ -49,7 +49,7 @@
                         {{ $emailsent }}
                     </div>
 
-                    <x-buttons.button-add toggle="showaddmodal" />
+                  <!-- {{--  <x-buttons.button-add toggle="showaddmodal" /> --}} -->
                 </div>
 
                 {{-- beginning of tailwindui table --}}

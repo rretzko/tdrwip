@@ -80,6 +80,18 @@ class Userconfig extends Model
         self::defaultSave($descr, $user_id, $ensemble->id);
     }
 
+    private static function defaultEventversion($descr, $user_id)
+    {
+        self::defaultSave($descr, $user_id, -1);
+    }
+
+    private static function defaultGettingstarted($descr, $user_id)
+    {
+        //defaults to true so that a new user is seen as needing
+        //to read 'Getting Started' doc.
+        self::defaultSave($descr, $user_id, 1);
+    }
+
     private static function defaultRegistrantpopulation($descr, $user_id)
     {
         self::defaultSave($descr, $user_id, 'eligible');

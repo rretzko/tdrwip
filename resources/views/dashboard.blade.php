@@ -20,6 +20,12 @@
                         <x-sidebar-blurb blurb="The Dashboard will contain various tabular, graphic and linked data
                             for your general use."/>
 
+                        @if($gettingstarted)
+                            <x-dashboard.gettingstarted />
+                        @endif
+
+
+
                     </x-slot>
 
                     <style>

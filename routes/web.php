@@ -27,12 +27,14 @@ Route::get('pitchfiles/{eventversion}', [App\Http\Controllers\Pitchfiles\Pitchfi
 Route::middleware(['auth:sanctum', 'verified'])->group(function() {
 
     Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'show'])->name('dashboard');
+    Route::get('dashboard/gettingstarted', [App\Http\Controllers\DashboardController::class, 'update'])
+        ->name('dashboard.gettingstarted');
 
     /** SUPERUSER */
     Route::post('dashboard/impersonation', [App\Http\Controllers\ImpersonationController::class, 'show'])->name('impersonation.show');
 
     /** MEMBERSHIP MANAGER */
-    Route::get('membership/approval/{membership}', [App\Http\Controllers\Organizations\MembershipmanagerController::class, 'approval'])->name('membership.approval');
+    Route::get('membership/approval/{id}', [App\Http\Controllers\Organizations\MembershipmanagerController::class, 'approval'])->name('membership.approval');
 
 
     /** AUTHENTICATED USER */

@@ -11,8 +11,8 @@ class Membership extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['expiration', 'grade_levels', 'membership_card_path','membershiptype_id',
-        'organization_id', 'subjects', 'user_id',];
+    protected $fillable = ['expiration', 'grade_levels', 'membership_card_path','membership_id', 'membershiptype_id',
+        'organization_id', 'requestedtype_id','subjects', 'user_id',];
 
     protected $with = ['person','roletypes'];
 
@@ -74,7 +74,7 @@ class Membership extends Model
     {
         $membershiptype = Membershiptype::find($this->requestedtype_id);
 
-        return $membershiptype->descr;
+        return $membershiptype->descr ?? 'none';
     }
 
     public function membershiptype()
