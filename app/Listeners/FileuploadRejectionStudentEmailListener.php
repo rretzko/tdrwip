@@ -31,13 +31,15 @@ class FileuploadRejectionStudentEmailListener
     {
         $emails = $event->registrant->student->nonsubscriberemails;
 
+        $ccemail = (auth()->user()->subscriberemailwork)
+            ? auth()->user()->subscriberemailwork
+            : 'e@mfrholdings.com';  //temporary catch basin for recording mailing
+
         foreach($emails AS $email){
 
             Mail::to($email->email)
-                ->cc(auth()->user()->person->subscriberemailwork)
+                ->cc($ccemail)
                 ->send(new FileuploadRejectionMail($event, $email->email));
-
-
         }
     }
 }

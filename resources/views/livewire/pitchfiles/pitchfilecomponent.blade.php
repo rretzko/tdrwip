@@ -14,6 +14,19 @@
 
             <x-slot name="table">
 
+                {{-- BACK TO ROSTER --}}
+                <div class="flex text-red-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 20 20"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    <a href="{{ route('registrants.index',['eventversion' => $eventversion]) }}"
+                       class="text-red-700 ml-2 pb-4">
+                        Return to Registrant Roster
+                    </a>
+                </div>
+
                 <div class="flex justify-center space-x-2" id="selections">
 
                     <div class="inputgroup flex flex-col mb-4">
@@ -64,7 +77,6 @@
                                 <x-tables.cell>
                                     {{ $loop->iteration }}
                                 </x-tables.cell>
-
 
                                 <x-tables.cell class="text-center">
                                     {{ $pitchfile->filecontenttypedescr }}

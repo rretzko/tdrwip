@@ -26,9 +26,15 @@ class EventversionsController extends Controller
         // directly display that eventversion's registrants
         if($eventversions->count() === 1){
 
-            if($eventversions->first()->obligationMet(auth()->id())){
+            $eventversion = $eventversions->first();
 
-                return $this->show($eventversions->first());
+            Userconfig::setValue('eventversion', auth()->id(), $eventversion->id);
+            Userconfig::setValue('event', auth()->id(), $eventversion->event->id);
+            Userconfig::setValue('organization', auth()->id(), $eventversion->event->organization->id);
+
+            if($eventversion->obligationMet(auth()->id())){
+
+                return $this->show($eventversion);
 
             }else{
 

@@ -9,6 +9,8 @@ class Emailtype extends Model
 {
     use HasFactory;
 
+    const OTHER = 3;
+    const PERSONAL = 2;
     const WORK = 1;
 
     public function nonsubscriberemails()
