@@ -20,6 +20,9 @@
                 <x-sidebar-blurb blurb="If you have students with a status type of 'Registered' a link for your
                     <a class='text-yellow-100' href='{{ route('registrant.estimateform',['eventversion' => $event]) }}'>Estimate Form</a>
                     will display between the Search bar and the Pitch Files icon." />
+
+                <div class="mb-1.5 text-white">{!! $registrantstatus !!}</div>
+
             </x-slot>
 
             <x-slot name="table">
@@ -29,7 +32,7 @@
                     <x-inputs.dropdowns.perpage />
                     <!-- {{-- <x-inputs.dropdowns.bulkactions :selected="$selected" /> --}} -->
 
-                    <x-buttons.button-add toggle="showaddmodal"/>
+                    <!-- {{-- <x-buttons.button-add toggle="showaddmodal"/> --}} -->
                 </div>
 
                 {{-- HEADER --}}
@@ -69,6 +72,11 @@
                                      </svg>
                                  </a>
                              </div>
+                        </div>
+
+                        {{-- REGISTRATION STATE --}}
+                        <div>
+                            {!! $schoolregistrationstatus !!}
                         </div>
 
                             <x-tables.surgetable class="w-full">
@@ -112,7 +120,9 @@
 
                                             <x-tables.cell >
                                                 <div class="{{ $registrant->registranttypeDescrBackground }} p-1 text-center text-xs border border-gray-400 rounded">
-                                                    {{ ucwords($registrant->registranttypeDescr) }}
+                                                    <div wire:click="registrantstatus({{ $registrant  }})" class="cursor-pointer">
+                                                        {{ ucwords($registrant->registranttypeDescr) }}
+                                                    </div>
                                                 </div>
                                             </x-tables.cell>
 

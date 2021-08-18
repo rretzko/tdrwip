@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Utility\Fileviewport;
+use App\Traits\RegistranttypeBackgroundColorsTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -62,6 +63,35 @@ class Registrant extends Model
         return $viewport->viewport();
     }
 
+    public function getFilesApprovedCountAttribute(): int
+    {
+        return $this->fileuploads->whereNotNull('approved')->count();
+    }
+
+    public function getFilesApprovedDescrCSVAttribute(): string
+    {
+        $files = [];
+
+        foreach($this->fileuploads->whereNotNull('approved') AS $fileupload){
+
+            $files[] = $fileupload->filecontenttypeDescr;
+        }
+
+        return implode(',',$files);
+    }
+
+    public function getFilesUploadedDescrCSVAttribute(): string
+    {
+        $files = [];
+
+        foreach($this->fileuploads AS $fileupload){
+
+            $files[] = $fileupload->filecontenttypeDescr;
+        }
+
+        return implode(',',$files);
+    }
+
     public function getHasApplicationAttribute(): bool
     {
         return (bool)Application::where('registrant_id', $this->id)->first();
@@ -71,9 +101,8 @@ class Registrant extends Model
     {
         $eventversion = Eventversion::find(Userconfig::getValue('eventversion',auth()->id()));
         $fileuploadtypescount = $eventversion->filecontenttypes->count();
-        $approvedscount = $this->fileuploads->whereNotNull('approved')->count();
 
-        return $fileuploadtypescount === $approvedscount;
+        return $fileuploadtypescount === $this->filesApprovedCount;
     }
 
     public function getHasInstrumentationAttribute(): bool

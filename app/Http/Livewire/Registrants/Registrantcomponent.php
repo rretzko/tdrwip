@@ -4,8 +4,10 @@ namespace App\Http\Livewire\Registrants;
 
 use App\Helpers\CollectionHelper;
 use App\Models\Eventversion;
+use App\Models\Registrant;
 use App\Models\Userconfig;
 use App\Models\Utility\Registrants;
+use App\Models\Utility\Schoolregistrationstatus;
 use Livewire\WithPagination;
 use Livewire\Component;
 
@@ -35,6 +37,8 @@ class Registrantcomponent extends Component
     public $event = null; //shorthand for eventversion
     public $events = [];
     public $signatures = [];
+    public $registrantstatus = "Click the student's status (Eligible, Applied, Registered) to display their
+        status details here...";
 
     private $populations = ['eligible','applied','registered','hidden'];
 
@@ -49,7 +53,26 @@ class Registrantcomponent extends Component
     {
         return view('livewire.registrants.registrantcomponent',[
             'registrants' => $this->registrants(),
+            'schoolregistrationstatus' => Schoolregistrationstatus::horizontalBarChart(),
         ]);
+    }
+
+    public function registrantstatus(Registrant $registrant)
+    {
+            $str = '<div class="bg-blue-700 p-2 rounded shadow">';
+
+            $str .= '<div class="uppercase">'.$registrant->student->person->fullName.'</div>';
+            $str .= '<div>Status: <b>'.ucwords($registrant->registranttypeDescr).'</b></div>';
+            $str .= '<div>Application: <b>'
+                .(($registrant->hasApplication) ? 'Downloaded' : 'None')
+                .'</b></div>';
+            $str .= '<div>Signatures: <b>'.(($registrant->hasSignatures) ? 'Signed' : 'Pending').'</b></div>';
+            $str .= '<div>Files Uploaded: <b>'.($registrant->fileuploads()->count()).'</b> ('.$registrant->filesUploadedDescrCSV.')</div>';
+            $str .= '<div>Files Approved: <b>'.($registrant->filesApprovedCount).'</b> ('.$registrant->filesApprovedDescrCSV.')</div>';
+
+            $str .= '</div>';
+
+            $this->registrantstatus = $str;
     }
 
     public function status()
