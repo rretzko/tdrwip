@@ -44,7 +44,7 @@ class Dashboard extends Model
 
     public function getSchoolsUlAttribute() : string
     {
-        $str = '<ul class="ml-8 list-disc">';
+        $str = '<ul class="ml-8 list-disc mr-4">';
 
         foreach($this->user->schools AS $school){
 

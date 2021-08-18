@@ -28,13 +28,13 @@
 
                     </x-slot>
 
-                    <style>
-                        .statbox{border: 1px solid black;margin-left: 1rem;}
-                        .statboxheader{background-color: lightgrey; border: 1px solid black;}
-                        ul{margin-left: 1rem; list-style-type: disc;}
-                    </style>
                     <x-slot name="table">
-                        <div class=" flex flex-wrap space-x-2">
+                        <div class=" flex flex-wrap space-x-2 space-y-1 align-top">
+                            <style>
+                                .dashboardcard{}
+                                .dashboardcard header{background-color: lightgray; border: 1px solid black;text-align: center;font-weight: bold;}
+                                .dashboardcard .dashboardbody{border: 1px solid black; padding:0 .25rem;}
+                            </style>
                             <x-dashboard.countstudents :dashboard="$dashboard" />
                             <x-dashboard.schoollist :dashboard="$dashboard" />
                             <x-dashboard.orientation />

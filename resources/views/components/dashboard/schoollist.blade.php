@@ -1,9 +1,11 @@
 @props([
 'dashboard'
 ])
-<div class="border border-black">
-    <div class="bg-gray-200 border border-black text-center font-bold">
+<div class="dashboardcard">
+    <header class="bg-gray-200 border border-black text-center font-bold">
         Schools
+    </header>
+    <div class="dashboardbody">
+        {!! $dashboard->schoolsUl !!}
     </div>
-    {!! $dashboard->schoolsUl !!}
 </div>

@@ -1,16 +1,14 @@
 (<div class="bg-white border border-red-600 rounded px-2 py-1">
     <header class="text-lg italic font-bold text-center">Getting Started!</header>
     Welcome and Thank you for registering at TheDirectorsRoom.com!
-    <p>
-        This message will remain on the Dashboard until you click the button
-        at the bottom of the page.  You can also find it under the 'Site Orientation PDSs'
-        box over there on your right.  It'll remain there after you've clicked the
-        checkbox, just in case you need it for additional reference!
+    <p class="my-4">
+        This message will remain here until you click the button at the bottom of the page.
+        You will also find an amplified version under the 'Site Orientation PDFs' box on your right (or below
+        if you're viewing this on a mobile device).  It'll remain there in case you need it for future reference!
     </p>
 
     <p>
-        You'll find more details in the 'Getting Started' pdf, but here's the
-        quick checklist:
+        You'll want to get started, so here's a quick activity list:
         <ol class="ml-8 list-decimal">
         <li>
             <b>Check your Profile</b>
