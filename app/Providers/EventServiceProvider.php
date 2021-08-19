@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Events\FileuploadRejectionEvent;
 use App\Events\MembershipRequestEvent;
+use App\Events\SubscriberPasswordResetEvent;
 use App\Events\UpdateRegistrantStatusEvent;
 use App\Listeners\FileuploadRejectionStudentEmailListener;
 use App\Listeners\SendMembershipRequestEmailListener;
+use App\Listeners\SubscriberResetPasswordEmailListener;
 use App\Listeners\UpdateRegistrantStatusListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -32,7 +34,11 @@ class EventServiceProvider extends ServiceProvider
         ],
         UpdateRegistrantStatusEvent::class => [
             UpdateRegistrantStatusListener::class,
-        ]
+        ],
+        SubscriberPasswordResetEvent::class =>[
+            SubscriberResetPasswordEmailListener::class,
+        ],
+
     ];
 
     /**

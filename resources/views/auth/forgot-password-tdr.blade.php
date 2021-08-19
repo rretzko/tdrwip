@@ -16,9 +16,6 @@
 
         <x-jet-validation-errors class="mb-4" />
 
-        <!-- {{-- OUT OF THE BOX
-            <form method="POST" action="{{ route('password.email') }}">
-        --}} -->
         <form method="POST" action="{{ route('password.email-tdr') }}">
             @csrf
 

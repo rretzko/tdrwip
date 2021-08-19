@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Registrants\FileapprovalController;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,15 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+/* Custom password route */
+Route::post('forgot-password/tdr', [App\Http\Controllers\Authtdrs\ForgotPasswordController::class, 'update'])
+    ->middleware('guest')
+    ->name('password.email-tdr');
+Route::get('reset-password/tdr/{user}', [App\Http\Controllers\Authtdrs\ResetPasswordController::class, 'show'])
+    ->name('resetpassword.tdr');
+Route::post('reset-password/tdr/update', [App\Http\Controllers\Authtdrs\ResetPasswordController::class, 'update'])
+    ->name('resetpassword.tdr.update');
 
 Route::get('/', function () {
     return view('welcome');
