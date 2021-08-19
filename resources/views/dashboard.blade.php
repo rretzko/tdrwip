@@ -38,6 +38,7 @@
                             <x-dashboard.countstudents :dashboard="$dashboard" />
                             <x-dashboard.schoollist :dashboard="$dashboard" />
                             <x-dashboard.orientation />
+                            <x-dashboard.eventversiondocs />
 
                         </div>
                     </x-slot>
