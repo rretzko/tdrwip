@@ -15,7 +15,7 @@ class CreateStudentTeacherTable extends Migration
     {
         Schema::create('student_teacher', function (Blueprint $table) {
             $table->foreignId('student_user_id')->constrained('users');
-            $table->foreignId('teacher_user_id')->constrained('teachers', 'user_id');
+            $table->foreignId('teacher_user_id')->references('user_id')->on('teachers');
             $table->foreignId('studenttype_id')->constrained();
             $table->timestamps();
             $table->primary(['student_user_id','teacher_user_id']);
