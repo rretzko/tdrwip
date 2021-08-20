@@ -28,7 +28,10 @@ class CreateEventversionconfigsTable extends Migration
             $table->boolean('virtualaudition')->default(0);
             $table->boolean('audiofiles')->default(0);
             $table->boolean('videofiles')->default(0);
-            $table->set('bestscore',['asc','desc'])->default('desc');
+            /* mysql */
+            //$table->set('bestscore',['asc','desc'])->default('desc');
+            /* postgreSql */
+            $table->enum('bestscore',['asc','desc'])->default('desc');
             $table->tinyInteger('membershipcard')->default(1);  //0,1,2
             $table->tinyInteger('instrumentation_count')->default(1);
             $table->timestamps();
