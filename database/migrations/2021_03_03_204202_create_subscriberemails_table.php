@@ -17,7 +17,7 @@ class CreateSubscriberemailsTable extends Migration
             $table->bigIncrements('id');
             $table->foreignId('user_id')->constrained();
             $table->foreignId('emailtype_id')->constrained();
-            $table->string('email', 255)->unique();
+            $table->longText('email');//subscriber emails are encrypted
             $table->timestamps();
             $table->softDeletes();
             $table->unique(['user_id','emailtype_id']);
