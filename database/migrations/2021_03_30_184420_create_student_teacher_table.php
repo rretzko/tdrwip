@@ -18,7 +18,7 @@ class CreateStudentTeacherTable extends Migration
             $table->foreignId('teacher_user_id')->references('user_id')->on('users');
             $table->foreignId('studenttype_id')->constrained();
             $table->timestamps();
-            $table->primary(['student_user_id','teacher_user_id']);
+            //$table->primary(['student_user_id','teacher_user_id']);
         });
     }
 
