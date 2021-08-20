@@ -13,6 +13,8 @@ class Eventversionconfig extends Model
         'membershipcard','missing_judge_average','paypalstudent','paypalteacher','registrationfee',
         ];
 
+    protected $primaryKey = 'eventversion_id';
+
     public function eventversion()
     {
         return $this->belongsTo(Eventversion::class);
