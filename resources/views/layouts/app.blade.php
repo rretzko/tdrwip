@@ -14,6 +14,9 @@
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <link rel="stylesheet" href="{{ asset('css/tdr.css') }}">
 
+        <!-- HARD CODE CSS LOCATIONS -->
+        <link rel="stylesheet" href="/css/app.css">
+        <link rel="stylesheet" href="/css/tdr.css">
 
         @livewireStyles
 
