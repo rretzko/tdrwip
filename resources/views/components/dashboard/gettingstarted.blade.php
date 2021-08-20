@@ -1,4 +1,4 @@
-(<div class="bg-white border border-red-600 rounded px-2 py-1">
+<div class="bg-white border border-red-600 rounded px-2 py-1">
     <header class="text-lg italic font-bold text-center">Getting Started!</header>
     Welcome and Thank you for registering at TheDirectorsRoom.com!
     <p class="my-4">
