@@ -5,7 +5,7 @@
         <!-- LOGO -->
         <a id="logo" href="{{ route('welcome') }}" title="Return to Welcome page">
             <img
-                src="{{ asset('images\tdr_logo_20200716.svg') }}"
+                src="\images\tdr_logo_20200716.svg"
                 alt="TheDirectorsRoom.com svg image"
             />
         </a>
