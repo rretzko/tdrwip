@@ -39,14 +39,14 @@ class PitchfilesSeeder extends Seeder
             //ALL INSTRUMENTATIONS
             [
                 'eventversion_id' => 65,
-                'filecontenttype_id' => 1,
+                'filecontenttype_id' => 4,
                 'instrumentation_id' => NULL,
                 'location' => '/assets/pitchfiles/9/65/quintet/all/all-quintet-full-ensemble.mp3',
                 'descr' => 'Full Ensemble'
             ],
             [
                 'eventversion_id' => 65,
-                'filecontenttype_id' => 1,
+                'filecontenttype_id' => 4,
                 'instrumentation_id' => NULL,
                 'location' => '/assets/pitchfiles/9/65/quintet/all/all-quintet-sheet-music.pdf',
                 'descr' => 'Sheet music'
@@ -75,14 +75,14 @@ class PitchfilesSeeder extends Seeder
             ],
             [
                 'eventversion_id' => 65,
-                'filecontenttype_id' => 1,
+                'filecontenttype_id' => 5,
                 'instrumentation_id' => 63,
                 'location' => '/assets/pitchfiles/9/65/solo/si/soprano_i-solo-shenandoah.mp3',
                 'descr' => 'Shenandoah'
             ],
             [
                 'eventversion_id' => 65,
-                'filecontenttype_id' => 1,
+                'filecontenttype_id' => 4,
                 'instrumentation_id' => 63,
                 'location' => '/assets/pitchfiles/9/65/quintet/si/soprano_i-quintet-without-si.mp3',
                 'descr' => 'Without SI'
@@ -111,14 +111,14 @@ class PitchfilesSeeder extends Seeder
             ],
             [
                 'eventversion_id' => 65,
-                'filecontenttype_id' => 1,
+                'filecontenttype_id' => 5,
                 'instrumentation_id' => 64,
                 'location' => '/assets/pitchfiles/9/65/solo/sii/soprano_ii-solo-shenandoah.mp3',
                 'descr' => 'Shenandoah'
             ],
             [
                 'eventversion_id' => 65,
-                'filecontenttype_id' => 1,
+                'filecontenttype_id' => 4,
                 'instrumentation_id' => 64,
                 'location' => '/assets/pitchfiles/9/65/quintet/sii/soprano_ii-quintet-without-sii.mp3',
                 'descr' => 'Without SII'
@@ -147,14 +147,14 @@ class PitchfilesSeeder extends Seeder
             ],
             [
                 'eventversion_id' => 65,
-                'filecontenttype_id' => 1,
+                'filecontenttype_id' => 5,
                 'instrumentation_id' => 65,
                 'location' => '/assets/pitchfiles/9/65/solo/ai/alto_i-solo-shenandoah.mp3',
                 'descr' => 'Shenandoah'
             ],
             [
                 'eventversion_id' => 65,
-                'filecontenttype_id' => 1,
+                'filecontenttype_id' => 4,
                 'instrumentation_id' => 65,
                 'location' => '/assets/pitchfiles/9/65/quintet/ai/alto_i-quintet-without-alto.mp3',
                 'descr' => 'Without Alto'
@@ -183,14 +183,14 @@ class PitchfilesSeeder extends Seeder
             ],
             [
                 'eventversion_id' => 65,
-                'filecontenttype_id' => 1,
+                'filecontenttype_id' => 5,
                 'instrumentation_id' => 66,
                 'location' => '/assets/pitchfiles/9/65/solo/aii/alto_ii-solo-shenandoah.mp3',
                 'descr' => 'Shenandoah'
             ],
             [
                 'eventversion_id' => 65,
-                'filecontenttype_id' => 1,
+                'filecontenttype_id' => 4,
                 'instrumentation_id' => 66,
                 'location' => '/assets/pitchfiles/9/65/quintet/aii/alto_ii-quintet-without-alto.mp3',
                 'descr' => 'Without Alto'
@@ -219,14 +219,14 @@ class PitchfilesSeeder extends Seeder
             ],
             [
                 'eventversion_id' => 65,
-                'filecontenttype_id' => 1,
+                'filecontenttype_id' => 5,
                 'instrumentation_id' => 67,
                 'location' => '/assets/pitchfiles/9/65/solo/ti/tenor_i-solo-shenandoah.mp3',
                 'descr' => 'Shenandoah'
             ],
             [
                 'eventversion_id' => 65,
-                'filecontenttype_id' => 1,
+                'filecontenttype_id' => 4,
                 'instrumentation_id' => 67,
                 'location' => '/assets/pitchfiles/9/65/quintet/ti/tenor_i-quintet-without-tenor.mp3',
                 'descr' => 'Without Tenor'
@@ -255,14 +255,14 @@ class PitchfilesSeeder extends Seeder
             ],
             [
                 'eventversion_id' => 65,
-                'filecontenttype_id' => 1,
+                'filecontenttype_id' => 5,
                 'instrumentation_id' => 68,
                 'location' => '/assets/pitchfiles/9/65/solo/tii/tenor_ii-solo-shenandoah.mp3',
                 'descr' => 'Shenandoah'
             ],
             [
                 'eventversion_id' => 65,
-                'filecontenttype_id' => 1,
+                'filecontenttype_id' => 4,
                 'instrumentation_id' => 68,
                 'location' => '/assets/pitchfiles/9/65/quintet/tii/tenor_ii-quintet-without-tenor.mp3',
                 'descr' => 'Without Tenor'
@@ -291,14 +291,14 @@ class PitchfilesSeeder extends Seeder
             ],
             [
                 'eventversion_id' => 65,
-                'filecontenttype_id' => 1,
+                'filecontenttype_id' => 5,
                 'instrumentation_id' => 69,
                 'location' => '/assets/pitchfiles/9/65/solo/bi/bass_i-solo-shenandoah.mp3',
                 'descr' => 'Shenandoah'
             ],
             [
                 'eventversion_id' => 65,
-                'filecontenttype_id' => 1,
+                'filecontenttype_id' => 4,
                 'instrumentation_id' => 69,
                 'location' => '/assets/pitchfiles/9/65/quintet/bi/bass_i-quintet-without-bass.mp3',
                 'descr' => 'Without Bass'
@@ -327,14 +327,14 @@ class PitchfilesSeeder extends Seeder
             ],
             [
                 'eventversion_id' => 65,
-                'filecontenttype_id' => 1,
+                'filecontenttype_id' => 5,
                 'instrumentation_id' => 70,
                 'location' => '/assets/pitchfiles/9/65/solo/bii/bass_ii-solo-shenandoah.mp3',
                 'descr' => 'Shenandoah'
             ],
             [
                 'eventversion_id' => 65,
-                'filecontenttype_id' => 1,
+                'filecontenttype_id' => 4,
                 'instrumentation_id' => 70,
                 'location' => '/assets/pitchfiles/9/65/quintet/bii/bass_ii-quintet-without-bass.mp3',
                 'descr' => 'Without Bass'
