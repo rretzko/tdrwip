@@ -99,8 +99,9 @@
                                         </a>
                                     @else
                                         <audio controls>
-                                            <source src="{{ $pitchfile->location }}" type="audio/ogg">
                                             <source src="{{ $pitchfile->location }}" type="audio/mpeg">
+                                            <!-- {{-- <source src="{{ $pitchfile->location }}" type="audio/ogg"> --}} -->
+
                                             Your browser does not support the audio tag.
                                         </audio>
                                     @endif
