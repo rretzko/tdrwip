@@ -42,6 +42,7 @@
                         </div>
 
                         <div>
+<!-- {{--
                             @if($showfilters)
                                 <div class="bg-gray-300 p-4 rounded shadow-inner flex relative">
 
@@ -84,126 +85,24 @@
 
                                 </div>
                             @endif
+--}} -->
                         </div>
 
-                        <x-tables.surgetable class="w-full ">
+                        <x-tables.surgetable class="w-11/12 ">
                             <x-slot name="head" >
-
-                                <x-tables.heading >
-                                    <x-inputs.checkbox class="pr-0 w-4" for="selectpage" label=""/>
-                                </x-tables.heading>
-
-                                <x-tables.heading wire:click.prevent="sortField('name')"
-                                                  sortable
-                                                  direction="asc"
-                                                  :direction="$sortfield === 'name' ? $sortdirection : null"
-                                >
-                                    Name
-                                </x-tables.heading>
-
-                                <x-tables.heading wire:click.prevent="sortField('type')"
-                                                  sortable
-                                                  direction="asc"
-                                                  :direction="$sortfield === 'classof' ? $sortdirection : null"
-                                >
-                                    Type
-                                </x-tables.heading>
-
-                                <x-tables.heading wire:click.prevent="sortField('startyear')"
-                                                  sortable
-                                                  direction="asc"
-                                                  :direction="$sortfield === 'instrumentation' ? $sortdirection : null"
-                                >
-                                    Since
-                                </x-tables.heading>
-
-                                <x-tables.heading wire:click.prevent="sortField('members')"
-                                                  sortable
-                                                  direction="asc"
-                                                  :direction="$sortfield === 'instrumentation' ? $sortdirection : null"
-                                >
-                                    Members
-                                </x-tables.heading>
-
-                                <th><span class="sr-only">Edit</span></th>
-                                <th><span class="sr-only">Assets</span></th>
+                                <th class="w-2/12">Title</th>
+                                <th class="w-2/12">Composer</th>
+                                <th class="w-2/12">Arranger</th>
+                                <th class="w-2/12">Style</th>
+                                <th class="w-2/12">Count</th>
 
                             </x-slot>
 
                             <x-slot name="body" >
 
-                                @if($selectpage)
-                                    <x-tables.row class="bg-gray-200" wire:key="row-message">
-                                        <x-tables.cell colspan="7">
-                                            @unless($selectall)
-                                                <div>You have selected <strong>{{ count($selected) }}</strong> ensembles, do
-                                                    you want to select all <strong>{{ $ensembles->count() }}</strong>?
-                                                    <x-buttons.button-link wire:click="selectAll"
-                                                                           class="ml-1 text-blue-600">Select All
-                                                    </x-buttons.button-link>
-                                                </div>
-                                            @else
-                                                <span>You have selected all <strong>{{ $ensembles->count() }}</strong>
-                                                    ensembles.</span>
-                                            @endunless
-                                        </x-tables.cell>
-                                    </x-tables.row>
-                                @endif
-
-                                @forelse($ensembles AS $ensemble)
-                                    <x-tables.row wire:loading.class.delay="opacity-50" altcolor="{{$loop->iteration % 2}}" wire:key="row-{{ $ensemble->id }}">
-
-                                        <x-tables.cell>
-                                            <x-inputs.checkbox value="{{ $ensemble->id }}" class="" for="selected" label="" />
-                                        </x-tables.cell>
-
-                                        <x-tables.cell>
-                                            {{ $ensemble->name }}
-                                        </x-tables.cell>
-                                        <x-tables.cell>
-                                            {{ $ensemble->ensembletype->descr }}
-                                        </x-tables.cell>
-
-                                        <x-tables.cell>
-                                            {{ $ensemble->startyear }}
-                                        </x-tables.cell>
-
-                                        <x-tables.cell class="text-center">
-                                            <a class='border border-indigo-600 rounded px-2 bg-indigo-400 text-white hover:bg-blue-600 text-xs py-0.5'
-                                               href="{{ route('ensemblemembers.index', ['ensemble' => $ensemble]) }}"
-                                               title="Click to add/edit {{ $ensemble->name }} members"
-                                            >
-                                                {{ $ensemble->ensemblemembers->count() }} Mbr{{ ($ensemble->ensemblemembers->count() !== 1) ? 's' : '' }}
-                                            </a>
-                                        </x-tables.cell>
-
-                                        <x-tables.cell>
-                                            <x-buttons.button-link
-                                                wire:click.defer="edit({{ $ensemble->id }})"
-                                                class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
-                                            >
-                                                Edit
-                                            </x-buttons.button-link>
-                                        </x-tables.cell>
-
-                                        <x-tables.cell>
-                                            <a href="{{ route('ensemble.assets.index', ['ensemble' => $ensemble]) }}"
-                                               class="border border-green-500 rounded px-2 bg-green-600 text-white hover:bg-green-400"
-                                               title="Click to edit {{ $ensemble->name }} assets"
-                                            >
-                                                Assets
-                                            </a>
-
-                                        </x-tables.cell>
-
-                                    </x-tables.row>
-                                @empty
-                                    <tr>
-                                        <td colspan="6" class="text-gray-500 text-center">
-                                            No Ensemble found @if(strlen($this->search)) with search value: {{ $this->search }}@endif.
-                                        </td>
-                                    </tr>
-                            @endforelse
+                                <tr>
+                                    <th colspan="5" class="font-bold text-center" style="width:30rem;">Under Development but coming soon!!</th>
+                                </tr>
                             <!-- {{-- SUPPRESS PAGINATION
                                 <div class="mb-2">
                                     {{$ensembles->count() ? $ensembles->links() : ''}}
