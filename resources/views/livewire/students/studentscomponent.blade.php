@@ -2,7 +2,7 @@
     <x-livewire-table-with-modal-forms >
 
         <x-slot name="title">
-            {{ __('Student Information') }}{{ $population }}
+            {{ __('Student Information') }}
         </x-slot>
 
         <x-slot name="description">
@@ -13,14 +13,14 @@
 
             <x-sidebar-blurb blurb="Click a column header to sort the table rows." />
 
-            <x-sidebar-blurb blurb="Click the edit button to display an individual student's detailed information." />
+            <x-sidebar-blurb blurb="Click the <span class='bg-blue-400 text-white'> Edit </span> button to display an individual student's detailed information." />
 
             <x-sidebar-blurb blurb="'Voice Part' displays the first voice part found for the student.
                     All voice parts and instruments can be found by clicking the 'Edit' button." />
 
         </x-slot>
 
-        <x-slot name="table">
+        <x-slot name="table" >
             {{-- Student table --}}
             {{-- Per Page, Bulk actions and ADD button --}}
             <div class="flex justify-end pr-6 space-x-2">
