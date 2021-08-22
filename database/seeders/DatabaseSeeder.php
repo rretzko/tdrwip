@@ -71,6 +71,7 @@ class DatabaseSeeder extends Seeder
          $this->call(EventensembleEventversionSeeder::class);
          $this->call(EventensembletypeInstrumentationSeeder::class);
          $this->call(EventversionconfigSeeder::class);
+         $this->call(EventversionFilecontenttypeSeeder::class);
          $this->call(MembershipSeeder::class);
          $this->call(EventversiondateSeeder::class);
          $this->call(RegistrantSeeder::class);
