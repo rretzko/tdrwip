@@ -91,7 +91,7 @@ class EventversionSeeder extends Seeder
             [62,23,'2020-21 SJCDA Elementary Chorus','SJCDA Elem',2021,22,'2020-08-20 10:31:00','2021-07-27 11:03:00'],
             [63,11,'59th Annual Junior High Chorus','SJCDA Jr. High',2021,22,'2020-08-20 10:31:00','2021-07-27 11:03:00'],
             [64,12,'63rd Annual Senior High Chorus','SJCDA Sr. High',2021,22,'2020-08-20 10:31:00','2021-07-27 11:03:00'],
-            [65,9,'2021 All-State Chorus','2021 NJASC',2021,21,'2020-08-20 10:31:00','2021-07-27 11:03:00'],
+            [65,9,'2021 NJ All-State Chorus','2021 NJASC',2021,21,'2020-08-20 10:31:00','2021-07-27 11:03:00'],
         ];
     }
 }

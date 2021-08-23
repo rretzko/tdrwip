@@ -7,36 +7,39 @@
             </x-slot>
 
             <x-slot name="description">
-
+<!-- {{--
                 <x-sidebar-blurb blurb="Add or edit your organization information here." />
+--}} -->
+                <x-sidebar-blurb blurb="If you have students interested in an audition (NJ All-State Chorus, for example),
+                the organization sponsoring that audition will want to confirm that you're a member in good standing.
+                This page is designed to allow you to record your membership information, including uploading a copy of
+                your membership card." />
 
-                <x-sidebar-blurb blurb="Organizations can have the following status:
+                <x-sidebar-blurb blurb="Organizations (NAfME, ACDA, etc. and their subsidiaries) can have the following status:
                     <ul class='ml-4 list-disc'>
-                        <li><b>auds, tdr</b>: This organization manages their auditioned ensembles with AuditionForms.com
-                        and their members use TheDirectorsRooms.com.
-                        </li>
-                        <li><b>tdr</b>: Directors use TheDirectorsRoom.com</li>
-                        <li><b>none</b>: Directors belonging to this organization are not currently using TheDirectorsRoom.com</li>
+                        <li><b>auds</b>: This organization is using our system to manage their ensemble auditions.</li>
+                        <li><b>tdr</b>: Directors from that organization are independently using TheDirectorsRoom.com.</li>
+                        <li><b>none</b>: Neither the organization nor their any of their members are using our system.</li>
                     <ul>" />
 
-                <x-sidebar-blurb blurb="Your membership in this organization is confirmed with the an up-to-date,
-                    missing, or expired Member Badge.  Display the expiration date by hovering over the Member Badge.
-                    To update your membership information, click the button under the
-                    '<b>Card</b>' column." />
+                <x-sidebar-blurb blurb="Your membership is confirmed with the an up-to-date,
+                    missing, or expired Member Badge.  Hovering over the Member Badge will display the expiration date we have on record.
+                    To update your membership information, click the button under the '<b>Card</b>' column." />
 
-                <x-sidebar-blurb blurb="Organizations with a blue 'Request' button have identified a Membership Manager.
-                You can directly request membership in that organization by clicking the blue 'Request' button to
-                send an email, or hover over the button to see the contact information for the Membership Manager.<br />
+                <x-sidebar-blurb blurb="Organizations tell us who their members are.  If you see an organization to which
+                you belong, but without the appropriate badge, you may be able to contact the Membership Manager directly
+                from this page. If the 'Request' button is blue, you can quickly request membership by clicking that button,
+                or hover over the button to see the contact information for the Membership Manager.<br />
                     <span class='text-yellow-200'>NOTE</span>: Request membership approval at the lowest applicable level as
                     approval will be reflected upward but not vice-versa! For example: Requesting membership in CJMEA
                     will automatically link to membership in NJMEA, the Eastern Division and NAfME.  However, requesting
                     membership in NJMEA will not grant you membership in any of the regional organizations." />
-
+<!-- {{--
                 <x-sidebar-blurb blurb="Use the <b>Card</b> button to update your membership information and
                 upload your membership card.  This is useful for organzations using
-                AuditionForms.com to manage their auditioned ensembless. These organization will have an 'auds' listing
+                AuditionForms.com to manage their auditioned ensembles. These organization will have an 'auds' listing
                 under the Status column." />
-
+--}} -->
             </x-slot>
 
             <x-slot name="table">
