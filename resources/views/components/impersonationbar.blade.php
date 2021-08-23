@@ -7,11 +7,13 @@
                 @csrf
 
                 <label for="user_id">Impersonate Director</label>
-                <select name="user_id" class="text-black">
-                    @foreach($teachers AS $teacher)
-                        <option value="{{ $teacher->user_id }}">{{ $teacher->person->fullNameAlpha }}</option>
-                    @endforeach
-                </select>
+                @if(isset($teachers) && ($teachers->count() !== null))
+                    <select name="user_id" class="text-black">
+                        @foreach($teachers AS $teacher)
+                            <option value="{{ $teacher->user_id }}">{{ $teacher->person->fullNameAlpha }}</option>
+                        @endforeach
+                    </select>
+                @endif
                 <x-buttons.button-save />
 
             </form>

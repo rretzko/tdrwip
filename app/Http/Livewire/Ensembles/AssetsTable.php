@@ -61,7 +61,10 @@ class AssetsTable extends Component
      */
     public function delete($id)
     {
-        if($this->authorize('edit-asset', $this->editasset)) {
+        $asset = Asset::find($id);
+
+        if($this->authorize('edit-asset', [$asset])) {
+
             if ($id === $this->confirmingdelete) {
 
                 Asset::find($id)->ensembles()->detach();
@@ -94,7 +97,7 @@ class AssetsTable extends Component
             'editassetdescr' => ['string', 'required', 'min:3']
         ]);
 
-        if($this->authorize('edit-asset', $this->editasset)) {
+        if(! $this->duplicateDescr()){
 
             $asset = Asset::create([
                 'descr' => $this->editassetdescr,
@@ -152,6 +155,11 @@ class AssetsTable extends Component
         $this->mssg = $this->setMssg();
         $this->assetsupdated = true;
 
+    }
+
+    private function duplicateDescr()
+    {
+        return (bool)Asset::where('descr', $this->editassetdescr)->first();
     }
 
     private function setAssettypes()

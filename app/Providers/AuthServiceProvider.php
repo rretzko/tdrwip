@@ -26,6 +26,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('edit-asset', function ($user, $asset){
+
            return $user->id === $asset->created_by;
         });
     }
