@@ -14,7 +14,7 @@
                     <x-slot name="description">
 
                         <x-sidebar-blurb blurb="You must acknowledge the following obligations to
-                            {{ $eventversion->name }} before continuing with the student registration process."/>
+                            {{ $eventversion->name }} in order to continue with the student registration process."/>
 
                     </x-slot>
 
@@ -45,8 +45,8 @@
                                 </li>
 
                                 <li>
-                                    <b>I understand</b> that any substitutions made for my obligations must be served
-                                    by approved NAfME Members.
+                                    <b>Should I need</b> to send a substitute, I understand that my substitute must be
+                                    a NAfME Member in good standing.
                                 </li>
 
                                 <li>
