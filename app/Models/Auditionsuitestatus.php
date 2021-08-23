@@ -20,6 +20,13 @@ class Auditionsuitestatus extends Model
     {
         $statuses = [];
 
+        $hasEvents = (bool)Event::where('organization_id', $organization->id)->first();
+
+        if($hasEvents){
+
+            $statuses[] = '<span class="text-blue-600">auds</span>';
+        }
+
         if($organization['memberships']->count()){
 
             $statuses[] = '<span class="text-blue-600">tdr</span>';

@@ -12,29 +12,29 @@
 
                 <x-sidebar-blurb blurb="Organizations can have the following status:
                     <ul class='ml-4 list-disc'>
-                        <li><b>EVENTS, TDR</b>: Directors in this organization are using TheDirectorsRooms.com and
-                            this organization is using AuditionForms.com for managing their auditioned events
+                        <li><b>auds, tdr</b>: This organization manages their auditioned ensembles with AuditionForms.com
+                        and their members use TheDirectorsRooms.com.
                         </li>
-                        <li><b>TDR</b>: Directors from this organization are using TheDirectorsRoom.com</li>
-                        <li><b>NONE</b>: No Directors belong to this organization</li>
+                        <li><b>tdr</b>: Directors use TheDirectorsRoom.com</li>
+                        <li><b>none</b>: Directors belonging to this organization are not currently using TheDirectorsRoom.com</li>
                     <ul>" />
 
-                <x-sidebar-blurb blurb="If the system is aware of your membership in an organization,
-                    you will show a <b class='bg-green-500 text-white rounded px-2'>Member</b> badge if up-to-date
-                    or a <b class='bg-red-500 text-white rounded px-2'>Member</b> badge if expired or missing.<br />
-                    Hover over the badge to display the expiration date.<br />
-                    If you are a member and need to update your membership information, click the button under the
-                    '<b>Card</b>' column.<br />
-                    If you are not a member and a Membership Manager has been identified,
-                    a blue 'Request' button to request membership will be displayed.
-                    Hover over the 'Request' button to see the contact information for the Membership Manager or click
-                    to send a request for membership approval.<br />
-                    <span class='text-yellow-200'>NOTE: Request membership approval at the lowest applicable level as
-                    approval will be reflected upward but not vice-versa!</span>" />
+                <x-sidebar-blurb blurb="Your membership in this organization is confirmed with the an up-to-date,
+                    missing, or expired Member Badge.  Display the expiration date by hovering over the Member Badge.
+                    To update your membership information, click the button under the
+                    '<b>Card</b>' column." />
 
-                <x-sidebar-blurb blurb="The <b>Card</b> button allows you to update your membership information and
-                upload your membership card into the system.  This is often useful for organzations using
-                AuditionForms.com to manage their auditioned events. These organization will have an 'events' listing
+                <x-sidebar-blurb blurb="Organizations with a blue 'Request' button have identified a Membership Manager.
+                You can directly request membership in that organization by clicking the blue 'Request' button to
+                send an email, or hover over the button to see the contact information for the Membership Manager.<br />
+                    <span class='text-yellow-200'>NOTE</span>: Request membership approval at the lowest applicable level as
+                    approval will be reflected upward but not vice-versa! For example: Requesting membership in CJMEA
+                    will automatically link to membership in NJMEA, the Eastern Division and NAfME.  However, requesting
+                    membership in NJMEA will not grant you membership in any of the regional organizations." />
+
+                <x-sidebar-blurb blurb="Use the <b>Card</b> button to update your membership information and
+                upload your membership card.  This is useful for organzations using
+                AuditionForms.com to manage their auditioned ensembless. These organization will have an 'auds' listing
                 under the Status column." />
 
             </x-slot>
@@ -170,7 +170,7 @@
                                         >
                                         <td colspan="5"
                                                    class="px-2 @if($organization->hasChildren) py-0 @endif">
-                                                <b>{{ $organization->name.' ('.$organization->id.')' }}</b>
+                                                <b>{{ $organization->name }}</b>
                                             </td>
 
                                             <td class="text-center">
@@ -237,7 +237,7 @@
 
                                                     <td colspan="4"
                                                         class="py-1" title="{{ $child->name }}">
-                                                        {{ $child->abbr.' ('.$child->id.')' }}
+                                                        {{ $child->abbr }}
                                                     </td>
 
                                                     <td class="text-center py-1">
@@ -307,7 +307,7 @@
 
                                                             <td colspan="3"
                                                                 class="py-1" title="{{ $grandchild->name }}">
-                                                                {{ $grandchild->abbr.' ('.$grandchild->id.')' }}
+                                                                {{ $grandchild->abbr }}
                                                             </td>
 
                                                             <td class="text-center py-1">
@@ -380,7 +380,7 @@
 
                                                                     <td colspan="2"
                                                                         class="py-1" title="{{ $greatgrandchild->name }}">
-                                                                        {{ $greatgrandchild->abbr.' ('.$greatgrandchild->id.')' }}
+                                                                        {{ $greatgrandchild->abbr }}
                                                                     </td>
 
                                                                     <td class="text-center py-1">
