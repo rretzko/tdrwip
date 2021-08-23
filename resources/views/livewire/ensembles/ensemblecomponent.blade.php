@@ -11,11 +11,11 @@
 
             <x-sidebar-blurb blurb="Click a column header to sort the table rows." />
 
-            <x-sidebar-blurb blurb="Click the '<b>Mbrs</b>' button to add/edit individual ensemble members." />
+            <x-sidebar-blurb blurb="Click the '<b>Mbrs</b>' (purple) button to add/edit individual ensemble members." />
 
-            <x-sidebar-blurb blurb="Click the '<b>Edit</b>' button to display an individual ensemble's detailed information." />
+            <x-sidebar-blurb blurb="Click the '<b>Edit</b>' (blue) button to display an individual ensemble's detailed information." />
 
-            <x-sidebar-blurb blurb="Click the '<b>Assets</b>' button to add/edit ensemble assets (ex. folders)." />
+            <x-sidebar-blurb blurb="Click the '<b>Assets</b>' (green) button to add/edit ensemble assets (ex. folders, uniforms, etc.)." />
 
         </x-slot>
 
