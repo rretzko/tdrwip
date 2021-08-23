@@ -38,10 +38,13 @@ class SubscriberPasswordResetMail extends Mailable
     {
         $token = URL::temporarySignedRoute('resetpassword.tdr', now()->addHours(12),['user' => $this->event->email->user_id]);
 
+        $person = Person::find($this->event->email->user_id);
+
         return $this->view('mails.subscriberpasswordreset',
             [
-                'first' => Person::find($this->event->email->user_id)->first,
+                'first' => $person->first,
                 'token' => $token,
+                'username' => $person->user->username,
             ]);
     }
 }

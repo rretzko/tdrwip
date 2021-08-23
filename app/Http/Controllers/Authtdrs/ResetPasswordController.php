@@ -47,7 +47,17 @@ class ResetPasswordController extends Controller
             'password_confirmation' => $request['password_confirmation'],
             ];
 
-        $email = Subscriberemail::where('email', $data['email'])->first();
+        $found = false;
+
+        foreach(Subscriberemail::all() AS $email){
+
+            if($email->email === $data['email']){
+
+                $found = true;
+            }
+
+            if($found){break;}
+        }
 
         if($email && ($email->user_id == $data['token'])){
 
