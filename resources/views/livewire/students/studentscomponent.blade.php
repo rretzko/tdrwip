@@ -9,14 +9,26 @@
 
             <x-sidebar-blurb blurb="Add or edit your student information here." />
 
-            <x-sidebar-blurb blurb="Click the Current-Alum-All links to filter the table rows." />
+            <x-sidebar-blurb blurb="Click the <b>Current</b> link to display your current students." />
 
-            <x-sidebar-blurb blurb="Click a column header to sort the table rows." />
+            <x-sidebar-blurb blurb="Click the <b>Alum</b> link to display your graduates." />
 
-            <x-sidebar-blurb blurb="Click the <span class='bg-blue-400 text-white'> Edit </span> button to display an individual student's detailed information." />
+            <x-sidebar-blurb blurb="Click the <b>All</b> link to display every student in your database." />
 
-            <x-sidebar-blurb blurb="'Voice Part' displays the first voice part found for the student.
+            <x-sidebar-blurb blurb="Click the <b>Name</b> column header to sort your students A-Z or Z-A." />
+
+            <x-sidebar-blurb blurb="Click the <b>Grade</b> column header to sort your students by year of graduation." />
+
+            <x-sidebar-blurb blurb="Click the <b>Voice Part</b> column header to sort your students A-Z within their voice part.<br />
+            <span class='text-yellow-200'>Note: </span> 'Voice Part' displays the first voice part found for the student.
                     All voice parts and instruments can be found by clicking the 'Edit' button." />
+
+            <x-sidebar-blurb blurb="Click the <span class='bg-blue-400 text-white'> Edit </span> button to display eachstudent's profile information." />
+
+            <x-sidebar-blurb blurb="Per Page: Select the number of student (5-50) that will display per page." />
+
+            <x-sidebar-blurb blurb="Bulk Actions: Use the checkbox next to each student to create lists to download or delete.
+            Downloads will be done through .csv files." />
 
         </x-slot>
 

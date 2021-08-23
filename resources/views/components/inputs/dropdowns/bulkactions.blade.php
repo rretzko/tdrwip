@@ -6,7 +6,7 @@
     @if(count($selected)) {{-- items have been selected for a bulk action --}}
         <x-inputs.dropdownitem type="button" wire:click="exportSelected" class="flex items-center space-x-1">
             <x-icons.download class="text-gray-400" />
-            <span>Export</span>
+            <span>Download</span>
         </x-inputs.dropdownitem>
 
         <x-inputs.dropdownitem type="button" wire:click="$toggle('showDeleteModal')" class="flex items-center space-x-1">
@@ -23,7 +23,7 @@
     @else {{-- no items selected --}}
         <x-inputs.dropdownitem class="flex items-center space-x-1 cursor-text">
             <x-icons.download class="text-gray-400" />
-            <span class="text-gray-400 ">Export (none selected)</span>
+            <span class="text-gray-400 ">Download (none selected)</span>
         </x-inputs.dropdownitem>
 
         <x-inputs.dropdownitem class="flex items-center space-x-1 cursor-text">
