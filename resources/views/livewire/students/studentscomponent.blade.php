@@ -23,12 +23,12 @@
             <span class='text-yellow-200'>Note: </span> 'Voice Part' displays the first voice part found for the student.
                     All voice parts and instruments can be found by clicking the 'Edit' button." />
 
-            <x-sidebar-blurb blurb="Click the <span class='bg-blue-400 text-white'> Edit </span> button to display eachstudent's profile information." />
+            <x-sidebar-blurb blurb="Click the <span class='bg-blue-400 text-white'> Edit </span> button to display each student's profile information." />
 
-            <x-sidebar-blurb blurb="Per Page: Select the number of student (5-50) that will display per page." />
+            <x-sidebar-blurb blurb="Per Page: View up to 50 names per page." />
 
-            <x-sidebar-blurb blurb="Bulk Actions: Use the checkbox next to each student to create lists to download or delete.
-            Downloads will be done through .csv files." />
+            <x-sidebar-blurb blurb="Bulk Actions: Use the checkbox next to each student's name to create lists to download or delete.
+            Downloads will be exported to a .csv file." />
 
         </x-slot>
 
