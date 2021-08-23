@@ -1,6 +1,6 @@
 <div class="bg-white border border-red-600 rounded px-2 py-1">
     <header class="text-lg italic font-bold text-center">Getting Started!</header>
-    Welcome and Thank you for registering at TheDirectorsRoom.com!
+    Welcome and Thank you for registering with TheDirectorsRoom.com!
     <p class="my-4">
         This message will remain here until you click the button at the bottom of the page.
         You will also find an amplified version under the 'Site Orientation PDFs' box on your right (or below
@@ -8,7 +8,7 @@
     </p>
 
     <p>
-        You'll want to get started, so here's a quick activity list:
+        Here's your checklist:
         <ol class="ml-8 list-decimal">
         <li>
             <b>Check your Profile</b>
@@ -21,39 +21,41 @@
         </li>
 
         <li>
-            <b>Check your organization memberships</b> <span class="hint text-xs">("Organizations" link a the top of the
-            page.  This is especially important if you've come here to register your students for an organization's event!)</span>
+            <b>Add Students</b><span class="hint text-xs">(It'll be easier on your time and fingers
+            if you'll encourage your students to self-register on StudentFolder.info.  Once they add their information,
+                you'll immediately see it here!)</span>
         </li>
 
         <li>
-            <b>Add Students</b><span class="hint text-xs">(Absolutely! But note, it'll be easier on your time and fingers
-            if you'll encourage your students to self-register on StudentFolder.info.  Once they add their information
-            there, you'll immediately see it here!)</span>
-        </li>
-
-        <li>
-            <b>Add Ensembles</b> <span class="hint text-xs">(Really?  Yup.  Our goal is to be your one-stop-shop for
+            <b>Add Ensembles</b> <span class="hint text-xs">(Really?  Yes!  Our goal is to be your one-stop-shop for
             managing <i>all</i> of the thousands of data points which make up your program.  Ensembles are a big part
             of that program.)</span>
         </li>
 
         <li>
-            <b>Add to your Library</b> <span class="hint text-xs">(What's an ensemble without music to perform.
-                Build your library here and stop worrying about what music you have.
-                We'll keep track of it here...and much more...)</span>
+            <b>Add to your Library</b> <span class="hint text-xs">(What's an ensemble without music to perform?
+                Enter library information and we'll keep track of it here...and much more...)</span>
         </li>
 
         <li>
-            <b>Register your students for open Events</b> <span class="hint text-xs">(Once approved for organization
-            membership and populating your student roster, you can use that information to quickly register your
-            students on-line for your organization's events.  And your students can again save you time and trouble
-            by registering themselves at StudentFolder.info!)</span>
+            <b>Check your organization memberships</b> <span class="hint text-xs">("Organizations" link at the top of the
+            page.  This is especially important if you've come here to register your students for an organization's auditions,
+                for example, the NJ All-State Chorus!)</span>
+        </li>
+
+
+        <li>
+            <b>Register your students for open Auditions</b> <span class="hint text-xs">(Use your student information
+                from #3 above to  quickly register your students for upcoming auditions.  And, again, your students
+                can again save you time and trouble by registering themselves at StudentFolder.info!)</span>
         </li>
     </ol>
     </p>
 
-    <p>
-        Looking for a deeper dive?  Click the 'TheDirectorsRoom.com' link for much more detailed information!
+    <p class="mt-4">
+        Looking for a deeper dive?<br />
+        Click the <a href="/assets/docs/TheDirectorsRoomOrientation.pdf" class="text-blue-700" target="_BLANK">TheDirectorsRoom.com</a>
+        link for much more detailed information!
     </p>
 
     <div class="bg-gray-300 mt-4 px-2 py-1 text-center rounded w-11/12 mx-auto">
