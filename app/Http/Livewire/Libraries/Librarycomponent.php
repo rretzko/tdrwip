@@ -68,7 +68,11 @@ class Librarycomponent extends Component
     }
     public function render()
     {
-        return view('livewire.libraries.librarycomponent');
+        return view('livewire.libraries.librarycomponent',
+            [
+              'compositions' => $this->compositions(),
+            ]
+        );
     }
 
     public function loadPublisher($id)
@@ -177,6 +181,11 @@ class Librarycomponent extends Component
         }
 
         return $a;
+    }
+
+    private function compositions()
+    {
+        return collect();
     }
 
     private function geostates()
