@@ -80,11 +80,15 @@
                                             {{ auth()->user()->person->teacher->tenureYearsAtSchool($school->id) }}
                                         </x-tables.cell>
                                         <x-tables.cell>
-                                            <a href="#"
-                                               wire:click.defer="edit({{ $school->id }})"
-                                               class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600">
-                                                Edit
-                                            </a>
+                                            @if(strpos($school->name, 'Studio'))
+                                                <span class="text-blue-700" title="Coming soon: Keep records for your own studio!">DEV</span>
+                                            @else
+                                                <a href="#"
+                                                   wire:click.defer="edit({{ $school->id }})"
+                                                   class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600">
+                                                    Edit
+                                                </a>
+                                            @endif
                                         </x-tables.cell>
                                     </x-tables.row>
                                 @empty
