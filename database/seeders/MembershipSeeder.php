@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Membership;
 use App\Models\Teacher;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class MembershipSeeder extends Seeder
 {
@@ -28,7 +29,7 @@ class MembershipSeeder extends Seeder
                     'subjects' => 'Chorus',
                 ]);
 
-                Membership::create([
+                Membership::updateOrCreate([
                     'user_id' => $user_id,
                     'organization_id' => 11, //Eastern Division
                     'membershiptype_id' => 1,
@@ -38,7 +39,7 @@ class MembershipSeeder extends Seeder
                     'subjects' => 'Chorus',
                 ]);
 
-                Membership::create([
+                Membership::updateOrCreate([
                     'user_id' => $user_id,
                     'organization_id' => 3, //NJMEA
                     'membershiptype_id' => 1,
@@ -51,9 +52,9 @@ class MembershipSeeder extends Seeder
         }
 
         //just barbara
-        $orgids = [1,3,4,8,9,11];
-        foreach($orgids AS $orgid){
-            Membership::createOrUpdate([
+        $orgids1 = [8,9];
+        foreach($orgids1 AS $orgid){
+            Membership::updateOrCreate([
                 'user_id' => 45,
                 'organization_id' => $orgid,
                 'membershiptype_id' => 1,
@@ -64,7 +65,8 @@ class MembershipSeeder extends Seeder
             ]);
         }
 
-        foreach($orgids AS $orgid){
+        $orgids2 = [1,3,4,8,9,11];
+        foreach($orgids2 AS $orgid){
             DB::table('organization_user')
                 ->insert([
                     'organization_id' => $orgid,

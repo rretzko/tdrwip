@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Database\Query\Builder;
+use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Component;
@@ -24,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(UrlGenerator $url)
     {
         /**
          * since FJR 2021.02.20
@@ -43,6 +44,14 @@ class AppServiceProvider extends ServiceProvider
 
             return $string ? $this->where($field, 'like', '%'.$string.'%') : $this;
         });
+
+        /**
+         * FROM: https://laracasts.com/discuss/channels/laravel/mixed-content-issue-content-must-be-served-as-https
+         * to attempt to solve 'mixed content' error
+         */
+        if(env('APP_ENV') !== 'local'){
+            $url->forceSchema('https');
+        }
 
     }
 }
