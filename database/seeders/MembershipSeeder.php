@@ -49,5 +49,29 @@ class MembershipSeeder extends Seeder
                 ]);
             }
         }
+
+        //just barbara
+        $orgids = [1,3,4,8,9,11];
+        foreach($orgids AS $orgid){
+            Membership::createOrUpdate([
+                'user_id' => 45,
+                'organization_id' => $orgid,
+                'membershiptype_id' => 1,
+                'membership_id' => '123456',
+                'expiration' => '2022-08-05',
+                'grade_levels' => 'Secondary',
+                'subjects' => 'Chorus',
+            ]);
+        }
+
+        foreach($orgids AS $orgid){
+            DB::table('organization_user')
+                ->insert([
+                    'organization_id' => $orgid,
+                    'user_id' => 45,
+                    'created_at' => '2021-08-24 17:54.38',
+                    'updated_at' => '2021-08-24 17:54:38',
+                ]);
+        }
     }
 }
