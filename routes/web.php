@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+URL::forceSchema("https");
+
 /* Custom login route */
 Route::get('login/tdr', [App\Http\Controllers\Authtdrs\LoginController::class, 'show'])->name('login.tdr.show');
 Route::post('login/tdr/update', [App\Http\Controllers\Authtdrs\LoginController::class, 'update'])->name('login.tdr.update');
