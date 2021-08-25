@@ -243,7 +243,8 @@
 
             <div style="position:relative; top:240px; left:25%; background-color:lightgray; border-radius: 1rem; width: 50%; padding-top: .25rem;">
                 <h2 style="text-align: center; ">Welcome!  Please log in!</h2>
-                <form method="post" action="{{ route('login.tdr.update') }}" style="padding:.25rem .5rem;">
+                <!-- {{-- <form method="post" action="{{ route('login.tdr.update') }}" style="padding:.25rem .5rem;"> --}} -->
+                <form method="post" action="https://thedirectorsroom.com/login/tdr/update" style="padding:.25rem .5rem;">
 
                     @csrf
 
