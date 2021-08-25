@@ -110,7 +110,7 @@
 
             body {
                 font-family: 'Nunito';
-                background: rgba(0, 0, 0, .88) url('assets/images/floatingHandChalkTransparent.png') no-repeat;
+                background: rgba(0, 0, 0, .88) url('/assets/images/floatingHandChalkTransparent.png') no-repeat;
                 background-size: 100vw ;
                 background-position-y: 100px;
             }
@@ -137,13 +137,13 @@
                 width: 100vw;
             }
 
-                #guest-modules{
+            #guest-modules{
 
-                }
+            }
 
-                #login-register{
-                    margin-left: 2rem;
-                }
+            #login-register{
+                margin-left: 2rem;
+            }
 
             #logo {
                 position: absolute;
@@ -199,7 +199,7 @@
         </style>
     </head>
 
-    <!-- {{--
+<!-- {{--
         <div id="guest-nav"><!-- relative flex items-top justify-center min-h-screen sm:items-center sm:pt-0 -->
             @if (Route::has('login'))
                 <div id="guest-nav" class="text-xs"><!-- hidden fixed top-0 right-0 px-6 py-4 sm:block -->
@@ -219,29 +219,61 @@
 --}} -->
     <body class="antialiased" >
 
-        <div id="welcome-header">
-            <!-- LOGO -->
-              <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-                  <div id="logo">
-                      <img
-                          src="images\tdr_logo_20200716.svg"
-                          alt="TheDirectorsRoom.com svg image"
-                      />
-                  </div>
+    <div id="welcome-header">
+        <!-- LOGO -->
+        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+            <div id="logo">
+                <img
+                    src="\images\tdr_logo_20200716.svg"
+                    alt="TheDirectorsRoom.com svg image"
+                />
+            </div>
 
-                  <h1>TheDirectorsRoom.com</h1>
+            <h1>TheDirectorsRoom.com</h1>
 
-                  @guest
-                      <div style="position: absolute; top:40px; right:80px;" id="login-register">
-                          <a href="{{ route('login.tdr.show') }}" class="underline">Log in</a>
+            @guest
+                <div style="position: absolute; top:40px; right:80px;" id="login-register">
+                    <a href="{{ route('login.tdr.show') }}" class="underline">Log in</a>
 
-                          @if (Route::has('register'))
-                              <a href="{{ route('register') }}" class="ml-1 underline">Register</a>
-                          @endif
-                      </div>
-                  @endguest
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}" class="ml-1 underline">Register</a>
+                    @endif
+                </div>
+            @endguest
 
-              <div id="welcome-footer" class="">
+            <div style="position:relative; top:240px; left:25%; background-color:lightgray; border-radius: 1rem; width: 50%; padding-top: .25rem;">
+                <h2 style="text-align: center; ">Welcome!  Please log in!</h2>
+                <form method="post" action="{{ route('login.tdr.update') }}" style="padding:.25rem .5rem;">
+
+                    @csrf
+
+                    <div id="input-group">
+                        <div class="input-row" style="display:flex; margin-bottom: .25rem;">
+                            <label for="username" style="min-width: 25%; margin-right: 4px;">Username</label>
+                            <input type="text" name="username" id="username" value="" style="font-size: 1.25rem;">
+                        </div>
+
+                        <div class="input-row" style="display:flex; margin-bottom: .5rem;">
+                            <label for="username" style="min-width: 25%; margin-right: 4px;">Password</label>
+                            <input type="password" name="password" id="password" value="" style="font-size: 1.25rem;">
+                        </div>
+
+                        <div class="input-row" style="display:flex; margin-bottom: .25rem;">
+                            <label for="submit" style="min-width: 25%; margin-right: 4px;"></label>
+                            <div>
+                                <a href="{{ route('password.request') }}" style="color: black; font-size: small; text-decoration: underline;">
+                                    Forgot your passord?
+                                </a>
+                                <input type="submit" name="submit" id="submit" value="Log In"
+                                   style="margin-left: .5rem; padding: .25rem; font-size: 1rem; background-color: black; color: white; border-radius: 1rem;">
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div id="welcome-footer" class="">
                 <div id="copyright">
                     &copy; 2020-{{ date('Y') }}
                 </div>
@@ -257,9 +289,9 @@
                 <div id="version">
                     v.2021.3
                 </div>
-              </div>
             </div>
         </div>
+    </div>
 
     </body>
-</html>
+    </html>
