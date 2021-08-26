@@ -68,21 +68,6 @@ class Person extends Model
         return Honorific::find($this->honorific_id)->abbr;
     }
 
-    public function getSubscriberemailpersonalAttribute()
-    {
-        return $this->subscriberemails->where('emailtype_id', Emailtype::PERSONAL)->first()->email ?? '';
-    }
-
-    public function getSubscriberemailotherAttribute()
-    {
-        return $this->subscriberemails->where('emailtype_id', Emailtype::OTHER)->first()->email ?? '';
-    }
-
-    public function getSubscriberemailworkAttribute()
-    {
-        return $this->subscriberemails->where('emailtype_id', Emailtype::WORK)->first()->email ?? '';
-    }
-
     public function guardian()
     {
         return $this->hasOne(Guardian::class,'user_id', 'user_id');
@@ -120,9 +105,47 @@ class Person extends Model
         return $this->hasOne(Student::class,'user_id', 'user_id');
     }
 
+    public function getSubscriberemailpersonalAttribute()
+    {
+        return $this->subscriberemails->where('emailtype_id', Emailtype::PERSONAL)->first()->email ?? '';
+    }
+
+    public function getSubscriberemailotherAttribute()
+    {
+        return $this->subscriberemails->where('emailtype_id', Emailtype::OTHER)->first()->email ?? '';
+    }
+
     public function subscriberemails()
     {
         return $this->hasMany(Subscriberemail::class, 'user_id');
+    }
+
+    public function getSubscriberemailworkAttribute()
+    {
+        return $this->subscriberemails->where('emailtype_id', Emailtype::WORK)->first()->email ?? '';
+    }
+
+    public function getSubscriberPhoneCsvAttribute()
+    {
+        $phones = [];
+
+        $home = Phone::where('user_id', $this->user_id)
+            ->where('phonetype_id', Phonetype::HOME)
+            ->first();
+
+        $mobile = Phone::where('user_id', $this->user_id)
+            ->where('phonetype_id', Phonetype::MOBILE)
+            ->first();
+
+        $work = Phone::where('user_id', $this->user_id)
+            ->where('phonetype_id', Phonetype::WORK)
+            ->first();
+
+        if($mobile){$phones[] = $mobile->phone.' (c)';}
+        if($home){$phones[] = $home->phone.' (h)';}
+        if($work){$phones[] = $work->phone.' (w)';}
+
+        return implode(', ', $phones);
     }
 
     public function teacher()

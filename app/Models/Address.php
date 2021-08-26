@@ -16,6 +16,26 @@ class Address extends Model
 
     protected $primaryKey = 'user_id';
 
+    /**
+     * Return address in comma-separated-value format: Address01, Address02, City, State, Postalcode
+     * @return string
+     */
+    public function getAddressCsvAttribute() : string
+    {
+        $str = $this->address01;
+
+        $str .= (strlen($this->address02)) ? ', '.$this->address02 : '';
+
+        $str .= (strlen($this->city)) ? ', '.$this->city : '';
+
+        $str .= (strlen($this->geostate_id)) ? ', '.Geostate::find($this->geostate_id)->abbr : '';
+
+        $str .= (strlen($this->postalcode)) ? ', '.$this->postalcode : '';
+
+        return $str;
+
+    }
+
     public function users()
     {
         return $this->hasMany(User::class);

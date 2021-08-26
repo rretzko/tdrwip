@@ -19,9 +19,35 @@ class Guardian extends Model
         return $this->getEmail('email_guardian_alternate');
     }
 
+    public function getEmailCsvAttribute()
+    {
+        $emails = [];
+        $alternate = $this->getEmailAlternateAttribute();
+        $primary = $this->getEmailPrimaryAttribute();
+
+        if($primary->id){ $emails[] = $primary->email;}
+        if($alternate->id){ $emails[] = $alternate->email;}
+
+        return implode(', ',$emails);
+    }
+
     public function getEmailPrimaryAttribute()
     {
         return $this->getEmail('email_guardian_primary');
+    }
+
+    public function getPhoneCsvAttribute()
+    {
+        $phones = [];
+        $home = $this->getPhoneHomeAttribute();
+        $mobile = $this->getPhoneMobileAttribute();
+        $work = $this->getPhoneWorkAttribute();
+
+        if($mobile->id){ $phones[] = $mobile->phone.' (c)';}
+        if($home->id){ $phones[] = $home->phone.' (h)';}
+        if($work->id){ $phones[] = $work->phone.' (w)';}
+
+        return implode(', ',$phones);
     }
 
     public function getPhoneHomeAttribute()

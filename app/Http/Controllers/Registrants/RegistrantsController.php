@@ -57,12 +57,17 @@ class RegistrantsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  App\Models\Eventversion $eventversion
      * @return Response
      */
-    public function show($id)
+    public function show(Eventversion $eventversion)
     {
-        //
+        //set userconfigs
+        Userconfig::setValue('eventversion', auth()->id(), $eventversion->id);
+        Userconfig::setValue('event',auth()->id(),$eventversion['event']->id);
+        Userconfig::setValue('organization',auth()->id(),$eventversion['event']['organization']->id);
+
+        return view('registrants.index');
     }
 
     /**

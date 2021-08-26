@@ -31,13 +31,6 @@ class LoginController extends Controller
                 auth()->login($user);
 
                 return redirect()->intended('dashboard');
-                /*return (view('dashboard',
-                    [
-                        'dashboard' => new Dashboard,
-                        'gettingstarted' => Userconfig::getValue('gettingstarted', $user->id),
-                        'teachers' => collect()
-                    ]));
-                */
             }
 
         }

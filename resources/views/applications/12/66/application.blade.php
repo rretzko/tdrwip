@@ -53,206 +53,170 @@
                             <div class="row justify-content-center">
                                 <div class="col-md-8">
                                     <div class="flex text-xl my-4" >
-                                        <div class="justify-self-start">
-                                            <img
-                                                src="\assets\images\njmea_logo_state.jpg"
-                                                alt="NJMEA logo image"
-                                            />
-                                        </div>
+
                                         <div class="justify-self-center w-full">
-                                            <div class="font-bold text-center">{{ $registrant->student->person->user->schools->first()->name }}</div>
-                                            <div class="text-center">NJ ALL-STATE CHORUS</div>
-                                            <div class="text-center text-sm">Student Application</div>
+                                            <div class="font-bold text-center">SOUTH JERSEY Jr. & SR. HIGH CHORUS APPLICATION</div>
+                                            <div class="text-center">{{ $eventversion->name }}</div>
+                                            <div class="text-center text-sm">
+                                                All signatures must be written clearly in ink and every category must
+                                                be filled or the student will not be permitted to audition.
+                                            </div>
                                         </div>
+
                                     </div>
 
                                     {{-- STUDENT DETAIL DECLARATION --}}
-                                    <div class="flex justify-center font-bold mb-4">
-                                        <div class="border border-black px-2" >
-                                            {{ $registrant->student->person->fullName }}
+                                    <div style="mb-4">
+                                        <style>
+                                            .detail-row{display:flex; width: 90%;}
+                                            .detail-row label{width: 25%;}
+                                            .detail-row .data{font-weight: bold; margin-left: .5rem;}
+                                        </style>
+                                        <div class="detail-row">
+                                            <label>Student Name:</label>
+                                            <div class="data">{{ $registrant->student->person->fullName }}</div>
                                         </div>
-                                        <div class="border border-black px-2 text-red-600 uppercase" >
-                                            {{ $registrant->instrumentationsCSV }}
+                                        <div class="detail-row">
+                                            <label>Address:</label>
+                                            <div class="data">{{ $registrant->student->person->user->address->addressCsv }}</div>
                                         </div>
-                                        <div class="border border-black px-2">
-                                            Grade: {{ $registrant->student->gradeClassof }}
+                                        <div class="detail-row">
+                                            <label>Height (in shoes):</label>
+                                            <div class="data">{{ $registrant->student->heightFootInch }}</div>
                                         </div>
-                                        <div class="border border-black px-2">
-                                            {{ $registrant->student->person->user->schools->first()->shortName }}
+
+                                        <div class="detail-row mt-4">
+                                            <label>Home Phone:</label>
+                                            <div class="data">{{ $registrant->student->phoneHome->id ? $registrant->student->phoneHome->phone : '' }}</div>
+                                        </div>
+                                        <div class="detail-row">
+                                            <label>Cell Phone:</label>
+                                            <div class="data">{{ $registrant->student->phoneMobile->id ? $registrant->student->phoneMobile->phone : ''}}</div>
+                                        </div>
+
+                                        <div class="detail-row mt-4">
+                                            <label>Email Personal:</label>
+                                            <div class="data">{{ $registrant->student->emailPersonal->id ? $registrant->student->emailPersonal->email : '' }}</div>
+                                        </div>
+                                        <div class="detail-row">
+                                            <label>Email School:</label>
+                                            <div class="data">{{ $registrant->student->emailSchool->id ? $registrant->student->emailSchool->email : '' }}</div>
                                         </div>
                                     </div>
 
-                                    {{-- AUDITION FEE --}}
-                                    <div class="flex justify-end mb-2 font-bold" >
-                                        <div class="text-xs">THE AUDITION FEE IS: ${{ number_format($eventversion->eventversionconfigs->registrationfee,2) }}</div>
-                                    </div>
-
-                                    {{-- GUARDIAN ENDORSEMENT --}}
+                                    {{-- EMERGENCY CONTACT INFORMATION --}}
                                     <div class="mb-4">
                                         <div class="sectionheader" >
-                                            PARENT/LEGAL GUARDIAN ENDORSEMENT - SIGNATURES REQUIRED
+                                            Emergency Contact Information
                                         </div>
-                                        <div class="italic justify-self-stretch mx-4 mb-4">
-                                            As the parent or legal guardian of <b>{{ $registrant->student->person->fullName }}</b>, I declare that I have
-                                            read the endorsement, which {{ $registrant->student->person->first_name }} has signed, and I give permission
-                                            for {{ $registrant->student->person->pronoun->possessive }} to audition to become a member of the
-                                            {{ $eventversion->name }}.  I promise to assist {{ $registrant->student->person->first_name }} in
-                                            fulfilling All-State obligations and in meeting any expenses necessary for rehearsals and concerts.  I
-                                            understand it is the policy of NJMEA  that if an All-State student is incapacitated in any way that
-                                            requires additional assistance, it will be the responsibility of the All-State student's parent/guardian/school
-                                            to provide the necessary help at all rehearsals, meals, concerts, etc.  The provided chaperone will be
-                                            housed with the student and will be charged the regular student housing fee.
+                                        <div class="detail-row">
+                                            <label>Parent Name:</label>
+                                            <div class="data">{{ $registrant->student->guardians->count() ? $registrant->student->guardians->first()->person->fullName : '' }}</div>
                                         </div>
-
-                                        <div>
-                                            <div class="flex justify-between font-bold" >
-                                                <div>
-                                                    PARENT/LEGAL GUARDIAN SIGNATURE: ________________________
-                                                </div>
-                                                <div>
-                                                    DATE: _________
-                                                </div>
-                                            </div>
-                                            <div class="font-bold">
-                                                PARENT/LEGAL GUARDIAN CELL: {{ $registrant->student->guardians->first()->person->phoneMobile }}
-                                            </div>
+                                        <div class="detail-row">
+                                            <label>Parent Phone:</label>
+                                            <div class="data">{{ $registrant->student->guardians->count() ? $registrant->student->guardians->first()->phoneCsv : '' }}</div>
+                                        </div>
+                                        <div class="detail-row">
+                                            <label>Parent Email:</label>
+                                            <div class="data">{{ $registrant->student->guardians->count() ? $registrant->student->guardians->first()->emailCsv : '' }}</div>
                                         </div>
                                     </div>
 
-                                    {{-- PRINCIPAL/TEACHER ENDORSEMENT --}}
+                                    {{-- CHORAL DIRECTOR INFORMATION --}}
                                     <div class="mb-4">
-                                        <div class="sectionheader">
-                                            PRINCIPAL/TEACHER ENDORSEMENT - SIGNATURES REQUIRED
+                                        <div class="sectionheader" >
+                                            Choral Director Information
                                         </div>
-                                        <div class="italic justify-self-stretch mx-4 mb-4" >
-                                            We recommend <b>{{ $registrant->student->person->fullName }}</b> for participation in the {{ $eventversion->name }}.
-                                            <b>{{ $registrant->student->person->first_name }}</b> is a qualified candidate in good
-                                            standing in {{ $registrant->student->person->pronoun->possessive }} Choral Department and is presently
-                                            enrolled in grade {{ $registrant->student->gradeClassof }} at {{ $registrant->student->person->user->schools->first()->name }}.
-                                            We understand that <b>{{ $me->first_name }}</b>, who is sponsoring <b>{{ $registrant->student->person->fullName }}</b>,
-                                            is to be a current (paid) member of the National Association for Music Educators (NAfME), and is required to
-                                            participate as a JUDGE FOR VIRTUAL AUDITIONS, as described in the Directors's Packet, from October 14-16, 2021.
-
-                                            We will review this application to ensure that all parts are complete and accurate.  This application
-                                            will be mailed to the audition chairperson postmarked by the application deadline of <b>October 6th, 2021</b>.
-                                            LATE APPLICATIONS WILL NOT BE ACCEPTED.  If <b>{{ $registrant->student->person->fullName }}</b> is accepted,
-                                            we will ensure that <b>{{ $registrant->student->person->first_name }}</b> is prepared and adheres to
-                                            the rules and regulations set forth by the NJMEA.
-
+                                        <div class="detail-row">
+                                            <label>Choral Director:</label>
+                                            <div class="data">{{ auth()->user()->person->fullName }}</div>
                                         </div>
+                                        <div class="detail-row">
+                                            <label>Phones:</label>
+                                            <div class="data">{{ auth()->user()->person->subscriberPhoneCsv }}</div>
+                                        </div>
+                                    </div>
 
-                                        <div>{{-- SIGNATURES --}}
-                                            <div class="flex justify-between font-bold mb-4" >
-                                                <div>
-                                                    HS PRINCIPAL SIGNATURE: ________________________
-                                                </div>
-                                                <div>
-                                                    DATE: _________
-                                                </div>
-                                            </div>
-                                            <div style="display: flex; justify-content: space-between; font-weight: bold;  ">
-                                                <div>
-                                                    HS MUSIC TEACHER SIGNATURE: __________________
-                                                </div>
-                                                <div>
-                                                    DATE: _________
-                                                </div>
-                                            </div>
+                                    {{-- AUDITION INFORMATION --}}
+                                    <div class="mb-4">
+                                        <div class="sectionheader" >
+                                            Audition Information
+                                        </div>
+                                        <div class="detail-row">
+                                            <label>Grade:</label>
+                                            <div class="data">{{ $registrant->student->gradeClassof }}</div>
+                                        </div>
+                                        <div class="detail-row">
+                                            <label>Preferred Pronoun:</label>
+                                            <div class="data">{{ $registrant->student->person->pronoun->descr }}</div>
+                                        </div>
+                                        <div class="detail-row">
+                                            <label>Voice Part:</label>
+                                            <div class="data">{{ $registrant->instrumentations->first()->formattedDescr() }}</div>
+                                        </div>
+                                    </div>
+
+                                    {{-- ENDORSEMENT --}}
+                                    <div class="mb-4">
+                                        <div class="sectionheader" >
+                                            Endorsements - Signatures Required
+                                        </div>
+                                        <div class=" justify-self-stretch mx-4 mb-4">
+                                            We, the undersigned, recommend <b>{{ $registrant->student->person->fullName }}</b>
+                                            to audition for the {{ $eventversion->name }}.  <b>{{ $registrant->student->person->first }}</b>
+                                            is aware of the fact that {{ $registrant->student->person->pronoun->personal }}
+                                            must remain an active member in good standing of the school performing group
+                                            throughout {{ $registrant->student->person->pronoun->possessive }} South
+                                            Jersey experience.  {{ ucwords($registrant->student->person->pronoun->personal) }}
+                                            is a qualified student, and is now enrolled in Grade {{ $registrant->student->grade }}
+                                            at <b>{{ $registrant->student->person->user->schools()->first()->name }}</b>.
+                                            In the event that <b>{{ $registrant->student->person->fullName }}</b> is
+                                            accepted for membership in this chorus, we will use our influence to see that
+                                            {{ $registrant->student->person->pronoun->personal }} is properly prepared,
+                                            and all whose signatures appear on this application will adhere to the Rules
+                                            and Regulations of the South Jersey Chorus.  We agree to the stated
+                                            attendance policy and all relevant policies stated in the SJCDA Choral
+                                            auditions packet.  Students will be removed from the chorus at any time if a
+                                            jury of choral directors selected by the Festival Coordinator determines the
+                                            student cannot capably perform their music, or if the student failes to meet
+                                            the requirements outlined in this packet.
                                         </div>
 
                                     </div>
 
-                                    {{-- STUDENT ENDORSEMENT --}}
+                                    {{-- SIGNATURES HEADER --}}
                                     <div class="mb-4">
-                                        <div class="sectionheader">
-                                            STUDENT ENDORSEMENT - SIGNATURES REQUIRED
+                                        <div class="text-center">
+                                            ALL SIGNATURES MUST BE ORIGINAL
                                         </div>
-                                        <div class="flex flex-col italic justify-self-stretch mx-4 mb-4">
-                                            <b>In return for the privilege of participating in an NJMEA sponsored NJ All-State Ensemble, I agree to
-                                                the following:</b>
-                                            <ul class="ml-8 list-disc">
-                                                <style>li{margin-bottom: .5rem;}</style>
-                                                <li>
-                                                    I, <b>{{ $registrant->student->person->fullName }}</b>, agree to accept the decision of the
-                                                    judges and conductors as binding.  If selected, I will accept membership in the {{ $eventversion->name }}
-                                                    for which I have auditioned.  I also agree to pay $80.00 as a participation fee
-                                                    for music and rehearsal tracks.  I understand that membership in this organization may be
-                                                    terminated by the endorsers of my application if I fail to comply with the rules set forth or if
-                                                    I fail to learn my music.
-                                                </li>
-                                                <li>
-                                                    I understand that NJ All-State Mixed Chorus members are expected to attend all rehearsals from
-                                                    June through November.  All-State Treble Chorus rehearsals continue until February.  One
-                                                    absence will result in testing at the following rehearsal.  An absence is defined as missing any
-                                                    scheduled rehearsal or any part thereof.  I further understand that all activities involving
-                                                    performance weekends, Atlantic City, the NJPAC Concert and the February NJMEA Conferences,
-                                                    including registration sign-in and all rehearsals, must be attended in their entirety.  I understand
-                                                    that it is not possible for me to be a member of the NJ All-State Chorus and participate in fall
-                                                    activities including Conference/NJSIAA tournament games that may take place before/during the
-                                                    completion of my NJ All-State obligations.  Failure to fulfill my NJ All-State obligations will
-                                                    result in disqualification from any NJMEA sponsored event for the period of one year, up to and
-                                                    including the applicable event.  I understand that the manager, with the approval of the NJ All-State
-                                                    Choral Procedures Committee, will resolve all serious conflicts and/or questionable circumstances
-                                                    not specifically covered by the above.
-                                                </li>
-                                                <li>
-                                                    I will respect the property of others, will act professionally, and will treat all members of the
-                                                    ensemble with respect.
-                                                </li>
-                                                <li>
-                                                    I will learn all the music to the best of my ability.  <b>Chorus members agree to memorize all music.</b>
-                                                </li>
-                                                <li>
-                                                    I will cooperate fully with managers, counselors, and all other administrative officials of the
-                                                    NJ All-State Chorus and the New Jersey Music Educators Associations (NJMEA).
-                                                </li>
-                                                <li>
-                                                    I will assume all responsibility for my music, folder, performance apparel, luggage and other
-                                                    belongings at the sites of all rehearsals and concerts.
-                                                </li>
-                                                <li>
-                                                    I will neither use nor have in my possession, at any time, alcoholic beverages, illegal drugs or
-                                                    weapons of any kind.
-                                                </li>
-                                                <li>
-                                                    I acknowledge that Mixed Chorus not also participate in any of these other NJ All-State ensembles:
-                                                    Orchestra, Jazz Ensemble or Vocal Jazz Ensemble.  Treble Chorus members may not be a member of
-                                                    the NJ All-State Band.
-                                                </li>
-                                                <li>
-                                                    I understand that a total evaluation of my NJ All-State experience is used to determine any
-                                                    recommendation for the Governor's Award, All-Eastern and/or National High School Ensembles.  In
-                                                    addition to my placement in the NJ All-State Chorus, such factors as behavior, promptness and
-                                                    preparedness for rehearsals will also be considered.  I understand the NJ All-State Administrative
-                                                    personnel with the approval of the NJ All-State Choral Procedures Committee(s) will make these
-                                                    recommendations.
-                                                </li>
-                                                <li>
-                                                    I will adhere to all dates concerning fees/forms or any other deadlines requested for my participation.
-                                                </li>
-                                                <li>
-                                                    I understand that NJ All-State Chorus members are required to comply with all obligations set
-                                                    forth above.  Non-compliance with any provision contained herein shall constitute a breach of
-                                                    this Agreement and shall serve as the basis of the participant's immediate termination and
-                                                    exclusion from all performances.
-                                                </li>
-                                                <li>
-                                                    I further understand that as a NJ All-State Chorus member, I must remain an active member in
-                                                    good standing with the school ensemble that corresponds to my NJ All-State ensemble throughout
-                                                    my entire All-State experience.
-                                                </li>
-                                            </ul>
+                                        <div class="text-center">
+                                            NO SIGNATURE STAMPS OR PHOTOCOPIED SIGNATURES ARE ALLOWED
+                                        </div>
+                                    </div>
 
+                                    {{-- SIGNATURES --}}
+                                    <div class="mb-4">
+
+                                        <div class="signature-line mx-4">
+                                            <div class="signature-line-line flex justify-between">
+                                                <div>{{ str_repeat('_',40) }}</div>
+                                                <div>{{ str_repeat('_',40) }}</div>
+                                            </div>
+                                            <div class="signature-line-signature flex w-full">
+                                                <div class="text-center w-6/12">Principal Signature</div>
+                                                <div class="text-center w-6/12">{{ auth()->user()->person->fullName }} Signature</div>
+                                            </div>
                                         </div>
 
-                                        <div>{{-- SIGNATURES --}}
-                                            <div style="display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 1rem;">
-                                                <div>
-                                                    STUDENT SIGNATURE: ________________________
-                                                </div>
-                                                <div>
-                                                    DATE: _________
-                                                </div>
+                                        <div class="signature-line mx-4">
+                                            <div class="signature-line-line flex justify-between">
+                                                <div>{{ str_repeat('_',40) }}</div>
+                                                <div>{{ str_repeat('_',40) }}</div>
+                                            </div>
+                                            <div class="signature-line-signature flex w-full">
+                                                <div class="text-center w-6/12">Parent/Guardian Signature</div>
+                                                <div class="text-center w-6/12">{{ $registrant->student->person->fullName }} Signature</div>
                                             </div>
                                         </div>
                                     </div>
