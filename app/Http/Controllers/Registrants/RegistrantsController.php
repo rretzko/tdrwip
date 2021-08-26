@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Registrants;
 
 use App\Http\Controllers\Controller;
 use App\Models\Eventversion;
+use App\Models\Obligation;
 use App\Models\Userconfig;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -22,7 +23,14 @@ class RegistrantsController extends Controller
         Userconfig::setValue('event',auth()->id(),$eventversion->event->id);
         Userconfig::setValue('organization',auth()->id(),$eventversion->event->organization->id);
 
-        return view('registrants.index', ['eventversion' => $eventversion]);
+        if($eventversion->obligationMet(auth()->id())){
+
+                return $this->show($eventversion);
+
+            }else{
+
+            return view('eventversions.obligations', ['eventversion' => $eventversion]);
+        }
     }
 
     /**

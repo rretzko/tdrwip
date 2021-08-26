@@ -26,6 +26,23 @@
                             ul{list-style-type: disc; margin-left: 2rem;}
                         </style>
                         <div class="overflow-x-auto ">
+                            @if($eventversion->id === 65)
+                                <x-obligations.9.65.obligations />
+                            @endif
+                            @if($eventversion->id === 66)
+                                <x-obligations.12.66.obligations />
+                            @endif
+                            @if($eventversion->id === 67)
+                                    <x-obligations.11.67.obligations />
+                            @endif
+                            @if($eventversion->id === 68)
+                                    <x-obligations.11.67.obligations />
+                            @endif
+                            @if($eventversion->id === 69)
+                                <x-obligations.19.69.obligations />
+                            @endif
+
+                            <!-- {{--
                             <ul>
                                 <li>
                                     <b>I understand</b> that I must serve as an Adjudicator at least once every
@@ -55,6 +72,8 @@
                                 </li>
 
                             </ul>
+
+                            --}} -->
 
 
                             <a href="{{ route('eventversion.obligations.update') }}" class="bg-gray-500 rounded text-white px-4 hover:bg-gray-700 text-lg">I have read and acknowledge my obligations.</a>
