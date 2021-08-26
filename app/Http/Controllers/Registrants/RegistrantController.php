@@ -58,9 +58,8 @@ class RegistrantController extends Controller
         $eventversion = Eventversion::find(Userconfig::getValue('eventversion',auth()->id()));
         $fileserver = new Fileserver($registrant);
 
-        $folders = Fileuploadfolder::where('eventversion_id', $eventversion->id)
-            ->whereIn('instrumentation_id', $registrant->instrumentations)
-            ->get();
+
+        $folders = $this->getFolders($eventversion, $registrant);
 
         return view('registrants.registrant.show', [
             'eventversion' => $eventversion,
@@ -123,5 +122,23 @@ class RegistrantController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function getFolders(Eventversion $eventversion, Registrant $registrant)
+    {
+        //early exit
+        if(! $registrant->instrumentations->count()){ return collect();}
+
+        if($registrant->instrumentations->count() === 1){
+
+            return Fileuploadfolder::where('eventversion_id', $eventversion->id)
+                ->where('instrumentation_id', $registrant->instrumentations->first())
+                ->get();
+        }
+
+        return Fileuploadfolder::where('eventversion_id', $eventversion->id)
+            ->whereIn('instrumentation_id', $registrant->instrumentations)
+            ->get();
+
     }
 }
