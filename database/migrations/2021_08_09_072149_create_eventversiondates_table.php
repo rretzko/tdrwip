@@ -17,7 +17,8 @@ class CreateEventversiondatesTable extends Migration
             $table->id();
             $table->foreignId('eventversion_id')->constrained();
             $table->foreignId('datetype_id')->constrained();
-            $table->dateTime('dt');
+            $table->dateTime('dt')->nullable();
+            $table->unique(['eventversion_id', 'datetype_id']);
             $table->timestamps();
             $table->softDeletes();
         });
