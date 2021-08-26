@@ -25,8 +25,8 @@ class CreateEapplicationsTable extends Migration
             $table->boolean('dressrehearsal')->default(0);
             $table->boolean('parentread')->default(0);
             $table->boolean('courtesy')->default(0);
-            $table->string('signatureparent')->nullable();
-            $table->string('signaturestudent')->nullable();
+            $table->boolean('signatureguardian')->default(0);
+            $table->boolean('signaturestudent')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

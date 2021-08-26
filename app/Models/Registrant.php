@@ -26,6 +26,11 @@ class Registrant extends Model
         return $this->eventversion->eventversionconfigs->registrationfee - $this->paid();
     }
 
+    public function eapplication()
+    {
+        return $this->hasOne(Eapplication::class);
+    }
+
     public function eventversion()
     {
         return $this->belongsTo(Eventversion::class);
@@ -117,6 +122,15 @@ class Registrant extends Model
 
     public function getHasSignaturesAttribute() : bool
     {
+        if($this->eventversion->eventversionconfigs->eapplication){
+            $cntr = 0;
+
+            $cntr += $this->eapplication->signatureguardian;
+            $cntr += $this->eapplication->signaturestudent;
+
+            return $cntr === 2;
+        }
+
         return ($this->signatures->whereNotNull('confirmed')->count() === Signaturetype::all()->count());
     }
 

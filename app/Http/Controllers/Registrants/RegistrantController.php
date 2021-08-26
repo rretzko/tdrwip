@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Registrants;
 
 use App\Http\Controllers\Controller;
+use App\Models\Eapplication;
 use App\Models\Eventversion;
 use App\Models\Fileserver;
 use App\Models\Fileuploadfolder;
@@ -67,6 +68,7 @@ class RegistrantController extends Controller
             'fileserver' => $fileserver,
             'folders' => $folders,
             'registrant' => $registrant,
+            'countsignatures' => $this->countSignatures($eventversion, $registrant),
         ]);
     }
 
@@ -122,6 +124,20 @@ class RegistrantController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function countSignatures(Eventversion $eventversion, Registrant $registrant)
+    {
+        //early exit
+        if(! $eventversion->eventversionconfigs->eapplication){ return 0;}
+
+        $cntr = 0;
+
+        $eapplication = Eapplication::find($registrant->id);
+        $cntr += $eapplication->signatureguardian;
+        $cntr += $eapplication->signaturestudent;
+
+        return $cntr;
     }
 
     private function getFolders(Eventversion $eventversion, Registrant $registrant)

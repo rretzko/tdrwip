@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Registrants;
 
 use App\Http\Controllers\Controller;
 use App\Models\Application;
+use App\Models\Eapplication;
 use App\Models\Eventversion;
 use App\Models\Registrant;
 use App\Models\Teacher;
@@ -31,6 +32,18 @@ class RegistrantApplicationController extends Controller
      */
     public function create(Registrant $registrant)
     {
+        if($registrant->eventversion->eventversionconfigs->eapplication){ //eventversion is using Eapplications
+
+            return view($this->pathEapplication($registrant), [
+                'eventversion' => $registrant->eventversion,
+                'page_title' => 'PAGE TITLE',
+                'path_update' => 'PATH UPDATE',
+                'registrant' => $registrant,
+                'me' => auth()->user()->person,
+                'eapplication' => $registrant->eapplication,
+            ]);
+        }
+
         return view($this->pathApplication($registrant), [
             'eventversion' => $registrant->eventversion,
             'page_title' => 'PAGE TITLE',
@@ -85,8 +98,14 @@ class RegistrantApplicationController extends Controller
      */
     public function show(Registrant $registrant)
     {
-        echo __METHOD__;
-        dd($registrant);
+        return view($this->pathEapplication($registrant), [
+            'eventversion' => $registrant->eventversion,
+            'page_title' => 'PAGE TITLE',
+            'path_update' => 'PATH UPDATE',
+            'registrant' => $registrant,
+            'me' => auth()->user()->person,
+            'eapplication' => $registrant->eapplication,
+        ]);
     }
 
     /**
@@ -104,12 +123,36 @@ class RegistrantApplicationController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param  int  $id
+     * @param  App\Models\Registrant $registrant
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Registrant $registrant)
     {
-        //
+        $data = $request->validate([
+            'signatureguardian' => ['nullable', 'numeric'],
+            'signaturestudent' => ['nullable', 'numeric'],
+        ]);
+
+        Application::create([
+            'registrant_id' => $registrant->id,
+            'updated_by' => auth()->id(),
+        ]);
+
+        Eapplication::updateOrCreate(
+            [
+                'registrant_id' => $registrant->id,
+                'eventversion_id' => $registrant->eventversion->id,
+            ],
+            [
+                'signatureguardian' => ($data['signatureguardian'] ?? 0),
+                'signaturestudent' => ($data['signaturestudent'] ?? 0),
+            ],
+        );
+
+        //update registrant status
+        $registrant->resetRegistrantType('applied');
+
+        return view('registrants.index');
     }
 
     /**
@@ -145,10 +188,19 @@ class RegistrantApplicationController extends Controller
 
     private function pathApplication(Registrant $registrant)
     {
-        return $path='applications/'
+        return 'applications/'
             .$registrant->eventversion->event->id
             .'/'
             .$registrant->eventversion->id
             .'/application';
+    }
+
+    private function pathEapplication(Registrant $registrant)
+    {
+        return 'applications/'
+            .$registrant->eventversion->event->id
+            .'/'
+            .$registrant->eventversion->id
+            .'/eapplication';
     }
 }
