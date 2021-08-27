@@ -40,4 +40,11 @@ class LoginController extends Controller
 
         return back();
     }
+
+    public function destroy()
+    {
+        auth()->logout();
+
+        return view('welcome');
+    }
 }

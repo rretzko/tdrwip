@@ -19,11 +19,11 @@
         <!-- {{-- OUT OF THE BOX
             <form method="POST" action="{{ route('password.email') }}">
         --}} -->
-        <form method="POST" action="{{ route('password.email-tdr') }}">
+        <form method="POST" action="https://thedirectorsroom.com/forgot-password/tdr">
             @csrf
 
             <div class="block">
-                <x-jet-label for="email" value="{{ __('Email') }}" />
+                <x-jet-label for="email" value="{{ __('Email') }}" {{ 'OR HERE' }} />
                 <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
             </div>
 

@@ -57,7 +57,7 @@
                 </a>
 
                 @if(config('app.url') === 'http://localhost')
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
                 @else
                     <form id="logout-form" action="https://thedirectorsroom.com/logout" method="POST" style="display: none;">@csrf</form>
                 @endif

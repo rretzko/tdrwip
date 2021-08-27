@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\URL;
 /* Custom login route */
 Route::get('login/tdr', [App\Http\Controllers\Authtdrs\LoginController::class, 'show'])->name('login.tdr.show');
 Route::post('login/tdr/update', [App\Http\Controllers\Authtdrs\LoginController::class, 'update'])->name('login.tdr.update');
-//Route::post('logout/tdr', [App\Http\Controllers\Authtdrs\LoginController::class, 'destroy'])->name('login.tdr.destroy');
+//Route::get('logout/tdr', [App\Http\Controllers\Authtdrs\LoginController::class, 'destroy'])->name('login.tdr.destroy');
 
 /* Custom password route */
 Route::post('forgot-password/tdr', [App\Http\Controllers\Authtdrs\ForgotPasswordController::class, 'update'])

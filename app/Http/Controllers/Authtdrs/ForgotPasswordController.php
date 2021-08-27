@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Password;
 class ForgotPasswordController extends Controller
 {
     public function update(Request $request)
-    {
+    {info('FJR: '.__METHOD__);
         $data = $request->validate(['email' => 'required|email']);
         $found = false;
         foreach(Subscriberemail::all() AS $email){
