@@ -13,7 +13,7 @@
                 <div>Congratulations!</div>
                 <div>
                     Your password has been reset.
-                    Please use the <a class="text-green-700" href="{{ route('login') }}">log in link</a> above to log into TheDirectorsRoom.com!
+                    Please click <a class="text-green-800" href="https://thedirectorsroom.com/login/tdr">HERE</a> to log into TheDirectorsRoom.com!
                 </div>
             </div>
 
