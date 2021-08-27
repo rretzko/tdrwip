@@ -49,9 +49,9 @@ class AppServiceProvider extends ServiceProvider
          * FROM: https://laracasts.com/discuss/channels/laravel/mixed-content-issue-content-must-be-served-as-https
          * to attempt to solve 'mixed content' error
          */
-        if(env('APP_ENV') !== 'local'){
-            $url->forceSchema('https');
-        }
+        //if(env('APP_ENV') !== 'local'){
+        //    $url->forceSchema('https');
+        //}
 
     }
 }

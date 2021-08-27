@@ -12,7 +12,7 @@
                 <x-livewire-table-with-modal-forms>
 
                     <x-slot name="title">
-                        {{ __('Dashboard') }}
+                        {{ __('Dashboard') }}:{{config('app_env')}}
                     </x-slot>
 
                     <x-slot name="description">
