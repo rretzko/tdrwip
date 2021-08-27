@@ -78,8 +78,6 @@ class ResetPasswordController extends Controller
 
             Session::flash('status', 'Password reset. Please use the "Log in" link to log into TheDirectorsRoom.com');
 
-            auth()->logout();
-
             return view('auth.reset-password-success-tdr');
 
         }else{

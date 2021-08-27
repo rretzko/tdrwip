@@ -8,7 +8,7 @@
 
 
             <div class="block text-center bg-green-100">
-                <div>Congratulations!</div>
+                <div>Congratulations! (id: {{ auth()->id() }})</div>
                 <div>
                     Your password has been reset.
                     Please click <a class="text-green-800" href="{{ route('welcome') }}">HERE</a> to log into TheDirectorsRoom.com!
