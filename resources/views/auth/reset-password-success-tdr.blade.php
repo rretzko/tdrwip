@@ -13,7 +13,7 @@
                 <div>Congratulations!</div>
                 <div>
                     Your password has been reset.
-                    Please click <a class="text-green-800" href="https://thedirectorsroom.com/login/tdr">HERE</a> to log into TheDirectorsRoom.com!
+                    Please click <a class="text-green-800" href="https://thedirectorsroom.com">HERE</a> to log into TheDirectorsRoom.com!
                 </div>
             </div>
 

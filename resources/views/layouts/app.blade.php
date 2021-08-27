@@ -31,7 +31,9 @@
 
             <!-- Page navigation -->
             @livewire('navigation-user')
-            @livewire('navigation-menu')
+            @auth
+                @livewire('navigation-menu')
+            @endauth
 
             <!-- Page Content -->
             <main>
