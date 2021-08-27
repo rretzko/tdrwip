@@ -5,8 +5,12 @@
         </x-slot>
 
         <x-jet-validation-errors class="mb-4" />
+        @if(config('app.url') === 'http://localhost')
+            <form method="POST" action="{{ route('resetpassword.tdr.update') }}">
+        @else
+            <form method="POST" action="https://thedirectorsroom.com/reset-password/tdr/update">
+        @endif
 
-        <form method="POST" action="{{ route('resetpassword.tdr.update') }}">
             @csrf
 @if(count($errors))
     <div class="text-red-600">
