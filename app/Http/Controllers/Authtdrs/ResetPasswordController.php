@@ -76,6 +76,8 @@ class ResetPasswordController extends Controller
                 'password' => Hash::make($input['password']),
             ])->save();
 
+            auth()->logout();
+
             Session::flash('status', 'Password reset. Please use the "Log in" link to log into TheDirectorsRoom.com');
 
             return view('auth.reset-password-success-tdr');
