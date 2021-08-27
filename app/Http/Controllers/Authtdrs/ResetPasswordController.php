@@ -20,7 +20,7 @@ class ResetPasswordController extends Controller
 
     public function show(Request $request)
     {
-        if (!$request->hasValidSignature()) {
+        if (! $request->hasValidSignature()) {
             abort(401);
         }
 
@@ -29,7 +29,7 @@ class ResetPasswordController extends Controller
         $user_id = (array_pop($parts));
 
 
-        Auth::loginUsingId($user_id);
+        //Auth::loginUsingId($user_id);
 
         return view('auth.reset-password-tdr',['email' => '', 'token' => $user_id]);
     }
