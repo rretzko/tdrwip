@@ -6,17 +6,15 @@
 
         <x-jet-validation-errors class="mb-4" />
 
-        <form method="POST" action="">
-            @csrf
 
             <div class="block text-center bg-green-100">
                 <div>Congratulations!</div>
                 <div>
                     Your password has been reset.
-                    Please click <a class="text-green-800" href="https://thedirectorsroom.com">HERE</a> to log into TheDirectorsRoom.com!
+                    Please click <a class="text-green-800" href="{{ route('welcome') }}">HERE</a> to log into TheDirectorsRoom.com!
                 </div>
             </div>
 
-        </form>
+
     </x-jet-authentication-card>
 </x-app-layout>
