@@ -16,7 +16,7 @@ class CreateInstrumentationUserTable extends Migration
         Schema::create('instrumentation_user', function (Blueprint $table) {
             $table->foreignId('instrumentation_id')->constrained();
             $table->foreignId('user_id')->constrained();
-            $table->tinyInteger('order_by');
+            $table->tinyInteger('order_by')->default(1);
             $table->timestamps();
             $table->primary(['instrumentation_id', 'user_id']);
         });

@@ -148,7 +148,7 @@ class RegistrantController extends Controller
         if($registrant->instrumentations->count() === 1){
 
             return Fileuploadfolder::where('eventversion_id', $eventversion->id)
-                ->where('instrumentation_id', $registrant->instrumentations->first())
+                ->where('instrumentation_id', $registrant->instrumentations->first()->id)
                 ->get();
         }
 
