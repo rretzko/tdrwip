@@ -22,6 +22,10 @@
 
                         @if($gettingstarted)
                             <x-dashboard.gettingstarted />
+                        @else
+                            <div>
+                                <input type="checkbox"
+                            </div>
                         @endif
 
 
