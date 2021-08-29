@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -46,7 +47,7 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'id' => $seed[0],
             'username' => $seed[1],
-            'password' => $seed[2],
+            'password' => $seed[2],//Hash::make('Password1!'),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
