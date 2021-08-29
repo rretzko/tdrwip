@@ -59,8 +59,16 @@ class FileserverController extends Controller
         $eventversion = Eventversion::find(Userconfig::getValue('eventversion',auth()->id()));
         $fileserver = new Fileserver($registrant);
 
+        /*
+         * whereIn('instrumentation_id, $registrant->instrumentations) results in SQL error:
+         * SQLSTATE[HY093]: Invalid parameter number (SQL: select * from `fileuploadfolders` where `eventversion_id` = 65 and `instrumentation_id` in (64))
+         * in production
+         *
+         * Defaulting to single instrumentation
+         */
         $folders = Fileuploadfolder::where('eventversion_id', $eventversion->id)
-            ->whereIn('instrumentation_id', $registrant->instrumentations)
+            //->whereIn('instrumentation_id', $registrant->instrumentations)
+            ->where('instrumentation_id', $registrant->instrumentations->first())
             ->get();
 
         return view('registrants.registrant.show', [
