@@ -3,14 +3,14 @@
         <x-livewire-table-with-modal-forms>
 
             <x-slot name="title">
-                {{ __('Event Information') }}
+                {{ __('Audition Information') }}
             </x-slot>
 
             <x-slot name="description">
 
-                <x-sidebar-blurb blurb="Add or edit your event information here."/>
+                <x-sidebar-blurb blurb="Add or edit your audition information here."/>
 
-                <x-sidebar-blurb blurb="Events..." />
+                <x-sidebar-blurb blurb="Auditions..." />
 
             </x-slot>
 
@@ -99,7 +99,7 @@
                             <x-tables.surgetable class="w-full">
                                 <x-slot name="head">
 
-                                    <th class="px-2" title="Event"><span class="">Event</span></th>
+                                    <th class="px-2" title="Event"><span class="">Audition</span></th>
                                     <th class="px-2" title="Open"><span class="">Open</span></th>
                                     <th class="px-2" title="Closed"><span class="">Closed</span></th>
 
