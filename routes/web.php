@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\URL;
 |
 */
 
+/* Redirect /login request */
+Route::get('login', [App\Http\Controllers\Authtdrs\LoginController::class, 'show'])->name('login');
+
 /* Custom login route */
 Route::get('login/tdr', [App\Http\Controllers\Authtdrs\LoginController::class, 'show'])->name('login.tdr.show');
 Route::post('login/tdr/update', [App\Http\Controllers\Authtdrs\LoginController::class, 'update'])->name('login.tdr.update');

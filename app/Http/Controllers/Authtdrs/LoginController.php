@@ -13,6 +13,9 @@ class LoginController extends Controller
 {
     public function show()
     {
+        //if anyone is logged in, log them out
+        if(auth()->id()){auth()->logout();}
+
         return view('auth.login-tdr');
     }
 
