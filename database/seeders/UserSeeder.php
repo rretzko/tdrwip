@@ -47,7 +47,7 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'id' => $seed[0],
             'username' => $seed[1],
-            'password' => $seed[2],//Hash::make('Password1!'),
+            'password' => Hash::make('Password1!'),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
