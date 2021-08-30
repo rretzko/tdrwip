@@ -62,10 +62,10 @@
     </p>
 
     <div class="bg-gray-300 mt-4 px-2 py-1 text-center rounded w-11/12 mx-auto">
-        @if(isset($gettingstarted) && $gettingstarted)
-            <a href="{{ route('dashboard.gettingstarted') }}" class="text-black text-center w-full">OK, I've got it.  You can close now.</a>
-        @else
+        @if((isset($gettingstarted)) && ($gettingstarted)) {{-- User has previously hidden getting started block --}}
             <span class="text-black text-center w-full cursor-pointer" onclick="toggleGettingStarted()">OK, I've got it.  You can close now.</span>
+        @else
+            <a href="{{ route('dashboard.gettingstarted') }}" class="text-black text-center w-full">OK, I've got it.  You can close now.</a>
         @endif
     </div>
 </div>
