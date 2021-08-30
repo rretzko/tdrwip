@@ -1,3 +1,6 @@
+@props([
+ 'gettingstarted',
+])
 <div class="bg-white border border-red-600 rounded px-2 py-1">
     <header class="text-lg italic font-bold text-center">Getting Started!</header>
     Welcome and Thank you for registering with TheDirectorsRoom.com!
@@ -55,11 +58,14 @@
     <p class="mt-4">
         Looking for a deeper dive?<br />
         Click the <a href="/assets/docs/TheDirectorsRoomOrientation.pdf" class="text-blue-700" target="_BLANK">TheDirectorsRoom.com</a>
-        link for much more detailed information!
+        under the "Site Orientation PDFs" card for much more detailed information!
     </p>
 
     <div class="bg-gray-300 mt-4 px-2 py-1 text-center rounded w-11/12 mx-auto">
-        <a href="{{ route('dashboard.gettingstarted') }}" class="text-black text-center w-full">OK, I've got it.  You can close now.</a>
+        @if($gettingstarted)
+            <a href="{{ route('dashboard.gettingstarted') }}" class="text-black text-center w-full">OK, I've got it.  You can close now.</a>
+        @else
+            <span class="text-black text-center w-full cursor-pointer" onclick="toggleGettingStarted()">OK, I've got it.  You can close now.</span>
+        @endif
     </div>
 </div>
-)

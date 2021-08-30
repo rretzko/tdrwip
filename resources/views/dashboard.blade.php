@@ -23,12 +23,18 @@
                         @if($gettingstarted)
                             <x-dashboard.gettingstarted />
                         @else
-                            <div>
+                            <div id="gettingStartedBlock" style="display: none; visibility: hidden;">
+                                <x-dashboard.gettingstarted gettingstarted="{{$gettingstarted}}"/>
+                            </div>
+                            <div id="gettingStartedToggle">
                                 <input type="checkbox"
+                                       name="gettingstartedcheckbox"
+                                       id="gettingstartedcheckbox"
+                                       value="1"
+                                       onclick="toggleGettingStarted()"/>
+                                <label  class="text-white text-xs" for="gettingstarted">Please show the 'Getting Started' advice again!</label>
                             </div>
                         @endif
-
-
 
                     </x-slot>
 
@@ -53,6 +59,35 @@
 
         </div>
     </div>
+
+    <script>
+        var $toggle=false;
+
+        function toggleGettingStarted() {
+
+            if ($toggle){ //gettingStartedBlock is displayed
+                document.getElementById('gettingStartedBlock').style.display = "none";
+                document.getElementById('gettingStartedBlock').style.visibility = "hidden";
+
+                document.getElementById('gettingStartedToggle').style.display = "block";
+                document.getElementById('gettingStartedToggle').style.visibility = "visible";
+
+                $toggle = false;
+
+            }else{ //gettingStartedBlock is hidden
+
+                document.getElementById('gettingStartedBlock').style.display = "block";
+                document.getElementById('gettingStartedBlock').style.visibility = "visible";
+
+                document.getElementById('gettingStartedToggle').style.display = "none";
+                document.getElementById('gettingStartedToggle').style.visibility = "hidden";
+
+                $toggle = true;
+                document.getElementById('gettingstartedcheckbox').checked = false;
+
+            }
+        }
+    </script>
 
     <x-jet-section-border />
 

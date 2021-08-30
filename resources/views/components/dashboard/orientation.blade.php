@@ -3,7 +3,7 @@
 ])
 <div class="dashboardcard">
     <header class="">
-        Site Orientation PDFsx
+        Site Orientation PDFs
     </header>
 
     <div class="dashboardbody">
