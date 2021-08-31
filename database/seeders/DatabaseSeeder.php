@@ -58,7 +58,13 @@ class DatabaseSeeder extends Seeder
          $this->call(UserStudent2dSeeder::class);
          $this->call(UserStudent2eSeeder::class);
          $this->call(UserStudent2fSeeder::class);
-         $this->call(UserGuardianSeeder::class);
+         $this->call(UserGuardianASeeder::class);
+         $this->call(UserGuardianBSeeder::class);
+         $this->call(UserGuardianCSeeder::class);
+         $this->call(UserGuardianDSeeder::class);
+         $this->call(UserGuardianESeeder::class);
+         $this->call(UserGuardianFSeeder::class);
+         $this->call(UserGuardianGSeeder::class);
          $this->call(TeacherSeeder::class);
          $this->call(SubscriberEmailSeeder::class);
          $this->call(PhoneSeeder::class);
