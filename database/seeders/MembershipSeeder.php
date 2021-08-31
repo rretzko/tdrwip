@@ -75,5 +75,7 @@ class MembershipSeeder extends Seeder
                     'updated_at' => '2021-08-24 17:54:38',
                 ]);
         }
+
+
     }
 }
