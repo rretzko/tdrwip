@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
-class UserStudent2Seeder extends Seeder
+class UserStudent2cSeeder extends Seeder
 {
     private $seeds;
 
