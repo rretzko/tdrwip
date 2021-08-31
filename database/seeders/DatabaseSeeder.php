@@ -49,7 +49,10 @@ class DatabaseSeeder extends Seeder
 
          //DATA TABLES
          $this->call(SchoolSeeder::class);
-         $this->call(UserSeeder::class);
+         //$this->call(UserSeeder::class);
+         $this->call(UserTeacherSeeder::class);
+         $this->call(UserStudentSeeder::class);
+         $this->call(UserGuardianSeeder::class);
          $this->call(TeacherSeeder::class);
          $this->call(SubscriberEmailSeeder::class);
          $this->call(PhoneSeeder::class);

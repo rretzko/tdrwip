@@ -872,6 +872,15 @@ class SubscriberEmailSeeder extends Seeder
             [433,1,'wyerkes@wdeptford.k12.nj.us'],
             [227,2,'zintelks@gmail.com'],
 
+            [8460,1, 'pcarpenter@audubonschools.org'],
+            [8494,1, 'cshields@frhsd.com'],
+            [8494,2, 'cshieldsmusic@gmail.com'],
+            [8455,2, 'gornick@gmail.com'],
+            [8474,1, 'jadessa@mhrd.org'],
+            [8456,1, 'kweldon@oceanschools.org'],
+            [8454,1, 'cbeadle@bernardsboe.com'],
+            [8465,1, 'mfrancis@westfieldnjk12.org'],
+
         ];
     }
 }
