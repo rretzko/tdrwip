@@ -68,7 +68,7 @@ class FileserverController extends Controller
          */
         $folders = Fileuploadfolder::where('eventversion_id', $eventversion->id)
             //->whereIn('instrumentation_id', $registrant->instrumentations)
-            ->where('instrumentation_id', $registrant->instrumentations->first())
+            ->where('instrumentation_id', $registrant->instrumentations->first()->id)
             ->get();
 
         return view('registrants.registrant.show', [
