@@ -43,7 +43,7 @@ class Siteadministrator extends Component
             DB::table('student_teacher')
                 ->where('student_user_id', '=', $id)
                 ->where('teacher_user_id', '=', 54)
-                ->update(['teacher_user_id' => 1234]);
+                ->update(['teacher_user_id' => 8495]);
         }
 
     }
