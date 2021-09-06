@@ -6,7 +6,7 @@ use App\Models\Person;
 use App\Models\School;
 use Livewire\Component;
 
-class Siteadministrator extends Component
+class Siteadministrator_orig extends Component
 {
     public $search='';
     public $searchschool='';
