@@ -45,6 +45,10 @@ Route::get('pitchfiles/{eventversion}', [App\Http\Controllers\Pitchfiles\Pitchfi
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function() {
 
+    /** SITE ADMINISTRATOR */
+    Route::get('sa/', [App\Http\Controllers\Siteadministration\SiteadministratorController::class, 'index'])->name('siteadministrator.index');
+
+    /** DASHBOARD */
     Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'show'])->name('dashboard');
     Route::get('dashboard/gettingstarted', [App\Http\Controllers\DashboardController::class, 'update'])
         ->name('dashboard.gettingstarted');

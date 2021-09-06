@@ -63,6 +63,11 @@
                 @endif
 
             </li>
+            @if(auth()->id() === 368)
+                <li>
+                    <a href="{{ route('siteadministrator.index') }}" class="text-white">Site Admin</a>
+                </li>
+            @endif
         </ul>
 
     </div>
