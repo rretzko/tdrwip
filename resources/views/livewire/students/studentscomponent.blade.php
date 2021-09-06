@@ -187,7 +187,7 @@
                                         </x-tables.cell>
 
                                         <x-tables.cell>
-                                            {{ $student->person->fullNameAlpha }}
+                                            <span title="{{ $student->user_id }}">{{ $student->person->fullNameAlpha }}</span>
                                         </x-tables.cell>
                                         <x-tables.cell>
                                             {{ $student->grade }} ({{ $student->classof }})

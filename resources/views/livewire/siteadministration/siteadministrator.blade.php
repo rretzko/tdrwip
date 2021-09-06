@@ -1,20 +1,22 @@
 <div class="mt-4 border-black p-1">
-    <h2 class="font-bold text-lg mb-1">Users</h2>
 
-    <div class="w-12/12">
-        <label class="w-6/12" for="search">Search</label>
-        <input type="text" wire:model.debounce.500ms="search" placeholder="Enter person's name">
+    <x-siteadministration.searchusers :persons="$persons" />
+<!-- {{--
+    <x-siteadministration.transfercurrentstudents
+        :schools="$schools"
+        selectedschoolname="{{ $selectedschoolname }}"
+        :students="$students"
+        :teachers="$teachers"
+        />
+--}} -->
+    <div>
+        <span class="bg-black text-white rounded px-1" wire:click="transferStudents" >Workaround</span>
     </div>
+        <!-- {{-- :selectedschool="$selectedschool"
 
-    <div class="w-full flex flex-col">
-        <label class="" for="">Results</label>
-        <div class="">
 
-            @foreach($persons AS $person)
-                <x-siteadministration.cards.userprofile :person="$person" />
-            @endforeach
 
-        </div>
+    /> --}} -->
 
-    </div>
+
 </div>

@@ -63,7 +63,7 @@
             <div class="card-row">
                 <label>Email student personal</label>
                 <div class="data">
-                    @if($person->student->emailPersonal->id))
+                    @if($person->student->emailPersonal->id)
                         {{ $person->student->emailPersonal->email}}
                     @endif
                 </div>
