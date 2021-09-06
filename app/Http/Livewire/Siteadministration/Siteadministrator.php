@@ -31,6 +31,7 @@ class Siteadministrator extends Component
 
         return Person::where('last','LIKE', $likevalue)
             ->orWhere('first', 'LIKE', $likevalue)
+            ->limit(25)
             ->get()
             ->sortBy(['person.last','person.first']);
     }

@@ -129,11 +129,11 @@ class Student extends Model
 
     public function searchName($str="bla")
     {
-        $items = Person::all()->filter(function($record) use($str) {
+        /*$items = Person::all()->filter(function($record) use($str) {
             if(($record->first) == $searchValue) {
                 return $record;
             }
-        });
+        });*/
     }
 
     public function setSearchables()

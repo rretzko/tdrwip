@@ -13,6 +13,11 @@
     </div>
 
     <div class="card-row">
+        <label>Username</label>
+        <div class="data">{{ $person->user->username }}</div>
+    </div>
+
+    <div class="card-row">
         <label>Name</label>
         <div class="data">{{ $person->fullName }}</div >
     </div>
@@ -27,4 +32,57 @@
             @endif
         </div>
     </div>
+
+    <div>
+        @if($person->user->isTeacher())
+            <div class="card-row">
+                <label>Email personal</label>
+                <div class="data">
+                    {{ strlen($person->emailPersonal) ? $person->emailPersonal :  ''}}
+                </div>
+            </div>
+
+            <div class="card-row">
+                <label>Email work</label>
+                <div class="data">
+                    {{ strlen($person->emailWork) ? $person->emailWork :  ''}}
+                </div>
+            </div>
+
+            <div class="card-row">
+                <label>Email other</label>
+                <div class="data">
+                    {{ strlen($person->emailOther) ? $person->emailOther : ''}}
+                </div>
+            </div>
+        @endif
+    </div>
+
+    <div>
+        @if($person->user->isStudent())
+            <div class="card-row">
+                <label>Email student personal</label>
+                <div class="data">
+                    @if($person->student->emailPersonal->id))
+                        {{ $person->student->emailPersonal->email}}
+                    @endif
+                </div>
+            </div>
+
+            <div class="card-row">
+                <label>Email student school</label>
+                <div class="data">
+                    @if($person->student->emailSchool->id)
+                        {{ $person->student->emailSchool->email }}
+                    @endif
+                </div>
+            </div>
+        @endif
+    </div>
+
+
+
+
+
+
 </div>

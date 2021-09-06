@@ -100,19 +100,41 @@ class Person extends Model
         $s->add($this->user, 'name', $this->first.$this->middle.$this->last);
     }
 
-    public function student()
+    /**
+     * Synonym
+     * @return string
+     */
+    public function getEmailOtherAttribute()
     {
-        return $this->hasOne(Student::class,'user_id', 'user_id');
+        return $this->getSubscriberemailotherAttribute();
     }
 
-    public function getSubscriberemailpersonalAttribute()
+    /**
+     * Synonym
+     * @return string
+     */
+    public function getEmailPersonalAttribute()
     {
-        return $this->subscriberemails->where('emailtype_id', Emailtype::PERSONAL)->first()->email ?? '';
+        return $this->getSubscriberemailpersonalAttribute();
+    }
+
+    /**
+     * Synonym
+     * @return string
+     */
+    public function getEmailWorkAttribute()
+    {
+        return $this->getSubscriberemailworkAttribute();
     }
 
     public function getSubscriberemailotherAttribute()
     {
         return $this->subscriberemails->where('emailtype_id', Emailtype::OTHER)->first()->email ?? '';
+    }
+
+    public function getSubscriberemailpersonalAttribute()
+    {
+        return $this->subscriberemails->where('emailtype_id', Emailtype::PERSONAL)->first()->email ?? '';
     }
 
     public function subscriberemails()
@@ -151,6 +173,11 @@ class Person extends Model
     public function teacher()
     {
         return $this->hasOne(Teacher::class,'user_id', 'user_id');
+    }
+
+    public function student()
+    {
+        return $this->hasOne(Student::class, 'user_id', 'user_id');
     }
 
     public function user()
