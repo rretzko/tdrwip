@@ -80,6 +80,22 @@
         @endif
     </div>
 
+    <div>
+        <div class="card-row">
+            <label>Schools</label>
+            <div class="data">
+                @if($person->user->schools->count())
+                    <ul>
+                    @foreach($person->user->schools AS $school)
+                        <li>{{ $school->name.' ('.$school-id.')' }}</li>
+                    @endforeach
+                    </ul>
+                @endif
+            </div>
+        </div>
+
+    </div>
+
 
 
 

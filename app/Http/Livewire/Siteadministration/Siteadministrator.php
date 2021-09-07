@@ -37,14 +37,29 @@ class Siteadministrator extends Component
 
     public function transferStudents()
     {
-        $studentuserids = [3610,3639,3583,3568,1267,3628,3561,2817];
+        /*$studentuserids = [3610,3639,3583,3568,1267,3628,3561,2817];
 
         foreach($studentuserids AS $id){
             DB::table('student_teacher')
                 ->where('student_user_id', '=', $id)
                 ->where('teacher_user_id', '=', 54)
                 ->update(['teacher_user_id' => 8495]);
-        }
+        }*/
+
+        //Kai Cleary for West Morris Central: Mark Stingle
+        DB::table(school_user)
+            ->insert([
+                'user_id' => 8497,
+                'school_id' => 3547
+            ]);
+
+        DB::table('student_teacher')
+            ->insert([
+                'student_user_id' => 8497,
+                'teacher_user_id' =>324,
+                'created_at' => '2021-09-07 07:48:00',
+                'updated_at' => '2021-09-07 07:48:00'
+            ]);
 
     }
 
