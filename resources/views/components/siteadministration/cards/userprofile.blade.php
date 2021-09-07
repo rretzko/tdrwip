@@ -87,7 +87,7 @@
                 @if($person->user->schools->count())
                     <ul>
                     @foreach($person->user->schools AS $school)
-                        <li>{{ $school->name.' ('.$school-id.')' }}</li>
+                        <li>{{ $school->name.' ('.$school->id.')' }}</li>
                     @endforeach
                     </ul>
                 @endif
