@@ -47,7 +47,7 @@ class Siteadministrator extends Component
         }*/
 
         //Kai Cleary for West Morris Central: Mark Stingle
-        DB::table(school_user)
+        DB::table('school_user')
             ->insert([
                 'user_id' => 8497,
                 'school_id' => 3547
