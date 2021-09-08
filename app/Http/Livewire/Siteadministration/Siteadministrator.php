@@ -37,6 +37,37 @@ class Siteadministrator extends Component
 
     public function transferStudents()
     {
+        DB::table('eventversionconfigs')
+            ->where('eventversion_id', '=', '66')
+            ->update([
+                'eapplication' => 1,
+                'audiofiles' => 1,
+                'virtualaudition' => 1,
+            ]);
+
+        DB::table('eventversionconfigs')
+            ->where('eventversion_id', '=', '67')
+            ->update([
+                'eapplication' => 1,
+                'audiofiles' => 1,
+                'virtualaudition' => 1,
+            ]);
+
+        DB::table('eventversionconfigs')
+            ->where('eventversion_id', '=', '68')
+            ->update([
+                'eapplication' => 1,
+                'virtualaudition' => 1,
+                'audiofiles' => 1,
+            ]);
+
+        DB::table('eventversionconfigs')
+            ->where('eventversion_id', '=', '69')
+            ->update([
+                'audiofiles' => 1,
+                'virtualaudition' => 1,
+            ]);
+
         /*$studentuserids = [3610,3639,3583,3568,1267,3628,3561,2817];
 
         foreach($studentuserids AS $id){
