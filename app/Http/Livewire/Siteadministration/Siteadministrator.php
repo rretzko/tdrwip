@@ -47,7 +47,7 @@ class Siteadministrator extends Component
         }*/
 
         //Kai Cleary for West Morris Central: Mark Stingle
-        DB::table('school_user')
+        /*DB::table('school_user')
             ->insert([
                 'user_id' => 8497,
                 'school_id' => 3547
@@ -60,7 +60,7 @@ class Siteadministrator extends Component
                 'created_at' => '2021-09-07 07:48:00',
                 'updated_at' => '2021-09-07 07:48:00'
             ]);
-
+        */
     }
 
     public function updateSchool($value)
