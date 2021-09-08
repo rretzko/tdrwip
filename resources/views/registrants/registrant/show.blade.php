@@ -280,7 +280,7 @@
                                                                         @if(config('app.url') === 'http://localhost')
                                                                             <a href="{{ route('fileupload.reject',['registrant' => $registrant, 'filecontenttype' => $filecontenttype]) }}">
                                                                         @else
-                                                                            <a href="https://thedirectorsroom.com/registrant/reject/{{ $registrant }}/{{ $filecontenttype }}">
+                                                                            <a href="https://thedirectorsroom.com/registrant/reject/{{ $registrant->id }}/{{ $filecontenttype->id }}">
                                                                         @endif
                                                                             <button
                                                                                 type="button"
