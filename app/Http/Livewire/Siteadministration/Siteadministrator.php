@@ -4,12 +4,14 @@ namespace App\Http\Livewire\Siteadministration;
 
 use App\Models\Person;
 use App\Models\School;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Siteadministrator extends Component
 {
     public $search='';
+    public $searchloginas='';
     public $searchschool='';
     //public $selectedschool=NULL;
     public $selectedschoolname='';
@@ -28,11 +30,26 @@ class Siteadministrator extends Component
 
     public function render()
     {
-        return view('livewire.siteadministration.siteadministrator',
-        [
-            'persons' => $this->persons(),
-            'schools' => $this->schools(),
-        ]);
+        if(auth()->id() === 368) {
+            return view('livewire.siteadministration.siteadministrator',
+                [
+                    'persons' => $this->persons(),
+                    'schools' => $this->schools(),
+                    'loginas' => $this->loginas(),
+                ]);
+        }
+
+        auth()->logout();
+        return view('login');
+    }
+
+    public function switchLogin($value)
+    {
+        Auth::loginUsingId($value);
+        // \Illuminate\Auth\RequestGuard::loginUsingId($value,true);
+        //auth()->loginUsingId($value, true);
+
+        $_SESSION['loginas'] = true;
     }
 
     public function transferStudents()
@@ -110,6 +127,11 @@ class Siteadministrator extends Component
         //$this->render();
     }
 
+    public function updatedSearchloginas()
+    {
+        //dd('as: '.$this->searchloginas);
+    }
+
     public function updatedSearchschool()
     {
         //$this->reset('search','selectedschool','selectedschoolname','selectedteachers','students','teachers');
@@ -120,6 +142,20 @@ class Siteadministrator extends Component
     public function updateSelectedTeachers($value)
     {
         $this->selectedteachers[] = $value;
+    }
+
+    private function loginas()
+    {
+        //early exit
+        if(! strlen($this->searchloginas)){ return collect(); }
+
+        $likevalue = '%'.$this->searchloginas.'%';
+
+        return Person::where('last','LIKE', $likevalue)
+            ->orWhere('first', 'LIKE', $likevalue)
+            ->limit(25)
+            ->get()
+            ->sortBy(['person.last','person.first']);
     }
 
     private function persons()

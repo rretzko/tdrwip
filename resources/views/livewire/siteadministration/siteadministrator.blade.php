@@ -9,7 +9,9 @@
         :teachers="$teachers"
         />
 --}} -->
-    <div>
+    <x-siteadministration.loginas :loginas="$loginas" />
+
+    <div class="mt-1">
         <span class="bg-black text-white rounded px-1" wire:click="transferStudents" >Workaround</span>
     </div>
         <!-- {{-- :selectedschool="$selectedschool"

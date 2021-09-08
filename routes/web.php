@@ -43,10 +43,12 @@ Route::get('fileserver/confirmation/{registrant}/{filecontenttype}/{person}/{fol
 /** GENERAL ACCESS PITCH FILES */
 Route::get('pitchfiles/{eventversion}', [App\Http\Controllers\Pitchfiles\PitchfilesController::class, 'index'])->name('pitchfiles');
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function() {
-
+//Route::middleware(['auth:sanctum', 'verified'])->group(function() {
+Route::middleware('auth', 'verified')->group(function() {
     /** SITE ADMINISTRATOR */
     Route::get('sa/', [App\Http\Controllers\Siteadministration\SiteadministratorController::class, 'index'])->name('siteadministrator.index');
+    Route::post('impersonation/{user_id}', [App\Http\Controllers\Siteadministration\ImpersonationController::class, 'index'])->name('impersonate.login');
+    Route::get('impersonation/destroy', [App\Http\Controllers\Siteadministration\ImpersonationController::class, 'destroy']);
 
     /** DASHBOARD */
     Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'show'])->name('dashboard');
