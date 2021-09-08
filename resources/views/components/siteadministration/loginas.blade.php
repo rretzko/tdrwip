@@ -16,7 +16,11 @@
                 <ul>
                 @foreach($loginas AS $person)
                         <li>
-                            <form action="{{ route('impersonate.login', [$person->user_id]) }}" method="post">
+                            @if(config('app.url') === 'http://localhost')
+                                <form action="{{ route('impersonate.login', [$person->user_id]) }}" method="post">
+                            @else
+                                <form action="https://thedirectorsroom.com/impersonation/{{ $person->user_id }}" method="post">
+                            @endif
                                 @csrf
                                 <button class="bg-gray-400 text-black px-2 rounded" type="submit">
                                     Impersonate {{ $person->fullName.' ('.$person->user_id.')' }}
