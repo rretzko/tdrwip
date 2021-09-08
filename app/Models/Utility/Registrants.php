@@ -139,7 +139,7 @@ class Registrants extends Model
 
         $registrantinstrumentations = $registrant->student->person->user->instrumentations ?? null;
 
-        $registrantfirstinstrumentid = ($registrantinstrumentations)
+        $registrantfirstinstrumentid = ($registrantinstrumentations && $registrantinstrumentations->first())
             ? $registrantinstrumentations->first()->id
             : 0;
 
