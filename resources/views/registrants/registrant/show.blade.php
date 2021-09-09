@@ -56,7 +56,11 @@
                                 <div class="space-y-4 overflow-hidden border-b border-gray-200 sm:rounded-lg">
 
                                     <form class="px-2" method="post"
-                                          action="{{ route('registrant.update', ['registrant' => $registrant]) }}">
+                                          @if(config('app.url') === 'http://localhost')
+                                            action="{{ route('registrant.update', ['registrant' => $registrant]) }}">
+                                          @else
+                                            action="https://thedirectorsroom.com/registrant/update/{{ $registrant->id }}">
+                                          @endif
 
                                         @csrf
 
