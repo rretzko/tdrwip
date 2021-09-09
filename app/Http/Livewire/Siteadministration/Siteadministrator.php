@@ -55,6 +55,13 @@ class Siteadministrator extends Component
     public function transferStudents()
     {
         DB::table('eventversionconfigs')
+            ->where('eventversion_id', '=', '65')
+            ->update([
+                'audiofiles' => 1,
+                'virtualaudition' => 1,
+            ]);
+
+        DB::table('eventversionconfigs')
             ->where('eventversion_id', '=', '66')
             ->update([
                 'eapplication' => 1,
