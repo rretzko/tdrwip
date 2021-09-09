@@ -116,45 +116,49 @@
                                 <x-slot name="body">
 
                                     @forelse($registrants AS $registrant)
-                                        <x-tables.row
-                                            wire:loading.class.delay="opacity-50"
-                                            style=""
-                                            wire:key="row-{{ $registrant->user_id }}"
-                                            altcolor="{{$loop->even}}"
-                                        >
-                                            <x-tables.cell>
-                                                {{ $loop->iteration }}
-                                            </x-tables.cell>
-                                            <x-tables.cell>
-                                                {{ $registrant['student']['person']->fullNameAlpha }}
-                                            </x-tables.cell>
+                                        @if($registrants && $registrant->user_id)
+                                            <x-tables.row
+                                                wire:loading.class.delay="opacity-50"
+                                                style=""
+                                                wire:key="row-{{ $registrant->user_id }}"
+                                                altcolor="{{$loop->even}}"
+                                            >
+                                                <x-tables.cell>
+                                                    {{ $loop->iteration }}
+                                                </x-tables.cell>
+                                                <x-tables.cell>
+                                                    {{ $registrant['student']['person']->fullNameAlpha }}
+                                                </x-tables.cell>
 
-                                            <x-tables.cell>
-                                                {{ $registrant['student']->grade }}
-                                            </x-tables.cell>
+                                                <x-tables.cell>
+                                                    {{ $registrant['student']->grade }}
+                                                </x-tables.cell>
 
-                                            <x-tables.cell class="text-center uppercase">
-                                                {{ $registrant->instrumentationsCSV }}
-                                            </x-tables.cell>
+                                                <x-tables.cell class="text-center uppercase">
+                                                    {{ $registrant->instrumentationsCSV }}
+                                                </x-tables.cell>
 
-                                            <x-tables.cell >
-                                                <div class="{{ $registrant->registranttypeDescrBackground }} p-1 text-center text-xs border border-gray-400 rounded">
-                                                    <div wire:click="registrantstatus({{ $registrant  }})" class="cursor-pointer">
-                                                        {{ ucwords($registrant->registranttypeDescr) }}
+                                                <x-tables.cell >
+                                                    <div class="{{ $registrant->registranttypeDescrBackground }} p-1 text-center text-xs border border-gray-400 rounded">
+                                                        <div wire:click="registrantstatus({{ $registrant  }})" class="cursor-pointer">
+                                                            {{ ucwords($registrant->registranttypeDescr) }}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </x-tables.cell>
+                                                </x-tables.cell>
 
-                                            <x-tables.cell>
-                                                <x-buttons.button-link
-                                                    class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
-                                                >
-                                                    <a href="{{ route('registrant.show',['registrant' => $registrant]) }}">
-                                                        Edit
-                                                    </a>
-                                                </x-buttons.button-link>
-                                            </x-tables.cell>
-                                        </x-tables.row>
+                                                <x-tables.cell>
+                                                    <x-buttons.button-link
+                                                        class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
+                                                    >
+                                                        <a href="{{ route('registrant.show',['registrant' => $registrant]) }}">
+                                                            Edit
+                                                        </a>
+                                                    </x-buttons.button-link>
+                                                </x-tables.cell>
+                                            </x-tables.row>
+                                        @else
+                                            {{ dd($registrant) }}
+                                        @endif
                                     @empty
                                         <tr>
                                             <td colspan="6" class="text-gray-500 text-center">
