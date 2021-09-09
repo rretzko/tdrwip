@@ -116,7 +116,7 @@
                                 <x-slot name="body">
 
                                     @forelse($registrants AS $registrant)
-                                        @if($registrants && $registrant->user_id)
+                                        @if($registrant && $registrant->user_id)
                                             <x-tables.row
                                                 wire:loading.class.delay="opacity-50"
                                                 style=""
