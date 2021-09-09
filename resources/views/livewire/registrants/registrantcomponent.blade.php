@@ -95,7 +95,7 @@
 
                         {{-- STUDENT PAYPAL OPTION --}}
                         <div >
-                            @if(auth()->id() == 368)
+
                                 @if($event->eventversionconfigs->paypalstudent)
                                     <div class="text-white px-1 rounded text-center
 
@@ -127,7 +127,7 @@
 
                                     </div>
                                 @endif
-                            @endif
+
                         </div>
 
                         {{-- REGISTRATION STATE --}}
@@ -194,6 +194,7 @@
                                                 </x-tables.cell>
                                             </x-tables.row>
                                         @else
+
                                             <x-tables.row
                                                 wire:loading.class.delay="opacity-50"
                                                 style=""

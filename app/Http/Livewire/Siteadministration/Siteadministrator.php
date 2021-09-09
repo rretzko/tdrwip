@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Siteadministration;
 
+use App\Models\Membership;
 use App\Models\Person;
 use App\Models\School;
 use Illuminate\Support\Facades\Auth;
@@ -55,12 +56,41 @@ class Siteadministrator extends Component
     public function transferStudents()
     {
         //2021-09-09
+        //add instrumentation for jr high chorus (ssaatb)
+        $ids = [63,64,65,66,6,3];
+        foreach($ids AS $key => $id) {
+            DB::table('eventensembletype_instrumentation')
+                ->insert([
+                    'eventensembletype_id' => 18,
+                    'instrumentation_id' => $id,
+                    'order_by' => ($key + 1),
+                    'created_at' => '2021-09-09 16:16:16',
+                    'updated_at' => '2021-09-09 16:16:16'
+                ]);
+        }
+        //add domain owner to SJCDA
+        Membership::updateOrCreate(
+            [
+                'user_id' => 368,
+                'organization_id' => 8,
+
+            ],
+            [
+                'membershiptype_id' => 1,
+                'membership_id' => 'sjcda',
+                'expiration' => '2021-09-09',
+                'grade_levels' => 'Secondary',
+                'subject' => 'chorus',
+            ]
+        );
+        /*
         DB::table('eventversionconfigs')
             ->where('eventversion_id', '=', '65')
             ->update([
                 'paypalteacher' => 0,
                 'paypalstudent' => 0,
             ]);
+        */
 /*
         DB::table('eventversionconfigs')
             ->where('eventversion_id', '=', '65')
