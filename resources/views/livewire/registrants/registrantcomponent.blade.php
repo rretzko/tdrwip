@@ -116,7 +116,7 @@
                                                 </a>
 
                                         @else
-                                            <a href="https://thedirectorsroom.com/registrants/configs/{{ $event }}">
+                                            <a href="https://thedirectorsroom.com/registrants/configs/{{ $event->id }}">
                                                 @if($event->eventversionteacherconfigs->count() && $event->eventversionteacherconfigs->where('user_id', auth()->id())->first()->paypalstudent)
                                                     Currently, my students can pay through PayPal.
                                                 @else
