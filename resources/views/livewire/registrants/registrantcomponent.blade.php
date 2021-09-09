@@ -194,7 +194,16 @@
                                                 </x-tables.cell>
                                             </x-tables.row>
                                         @else
-                                            {{ dd($registrant) }}
+                                            <x-tables.row
+                                                wire:loading.class.delay="opacity-50"
+                                                style=""
+                                                wire:key="row-{{ $registrant->user_id }}"
+                                            >
+                                                <x-tables.cell>
+                                                    registrant {{ $registrant->id.' ('.$registrant->user_id.')' }} found
+                                                </x-tables.cell>
+                                            </x-tables.row>
+
                                         @endif
                                     @empty
                                         <tr>
