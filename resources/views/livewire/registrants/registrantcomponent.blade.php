@@ -95,31 +95,33 @@
 
                         {{-- STUDENT PAYPAL OPTION --}}
                         <div >
-                            @if($event->eventversionconfigs->paypalstudent)
-                                <div class="text-white px-1 rounded text-center
-                                    @if($event->eventversionteacherconfigs->where('user_id', auth()->id())->first()->paypalstudent)
-                                        bg-green-700
-                                    @else
-                                        bg-blue-700
-                                    @endif
-                                    ">
-                                    @if(config('app.url') === 'http://localhost')
+                            @if(auth()->id() == 368)
+                                @if($event->eventversionconfigs->paypalstudent)
+                                    <div class="text-white px-1 rounded text-center
+                                        @if($event->eventversionteacherconfigs->where('user_id', auth()->id())->first()->paypalstudent)
+                                            bg-green-700
+                                        @else
+                                            bg-blue-700
+                                        @endif
+                                        ">
+                                        @if(config('app.url') === 'http://localhost')
 
-                                            <a href=" {{ route('eventversionteacherconfig.update', ['eventversion' => $event]) }}" >
-                                                @if($event->eventversionteacherconfigs->where('user_id', auth()->id())->first()->paypalstudent)
-                                                    Currently, my students can pay through PayPal.
-                                                @else
-                                                    Allow my students to pay via PayPal
-                                                @endif
+                                                <a href=" {{ route('eventversionteacherconfig.update', ['eventversion' => $event]) }}" >
+                                                    @if($event->eventversionteacherconfigs->where('user_id', auth()->id())->first()->paypalstudent)
+                                                        Currently, my students can pay through PayPal.
+                                                    @else
+                                                        Allow my students to pay via PayPal
+                                                    @endif
+                                                </a>
+
+                                        @else
+                                            <a href="https://thedirectorsroom.com/registrants/configs/{{ $event }}">
+                                                Allow my students to pay via PayPal
                                             </a>
+                                        @endif
 
-                                    @else
-                                        <a href="https://thedirectorsroom.com/registrants/configs/{{ $event }}">
-                                            Allow my students to pay via PayPal
-                                        </a>
-                                    @endif
-
-                                </div>
+                                    </div>
+                                @endif
                             @endif
                         </div>
 
