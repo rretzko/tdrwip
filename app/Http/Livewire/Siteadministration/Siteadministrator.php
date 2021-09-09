@@ -54,6 +54,14 @@ class Siteadministrator extends Component
 
     public function transferStudents()
     {
+        //2021-09-09
+        DB::table('eventversionconfigs')
+            ->where('eventversion_id', '=', '65')
+            ->update([
+                'paypalteacher' => 0,
+                'paypalstudent' => 0,
+            ]);
+/*
         DB::table('eventversionconfigs')
             ->where('eventversion_id', '=', '65')
             ->update([
@@ -91,6 +99,7 @@ class Siteadministrator extends Component
                 'audiofiles' => 1,
                 'virtualaudition' => 1,
             ]);
+*/
 
         /*$studentuserids = [3610,3639,3583,3568,1267,3628,3561,2817];
 
