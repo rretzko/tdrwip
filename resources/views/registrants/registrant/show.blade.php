@@ -260,9 +260,15 @@
                                                             Signatures confirmed at: {{ $registrant->signatureconfirmation }}
                                                         </div>
                                                     @endif
-                                                    <a href="{{ route('registrant.signatures', ['registrant' => $registrant]) }}"
-                                                        class="rounded"
-                                                    >
+                                                    @if(config('app.url') === 'http://localhost')
+                                                        <a href="{{ route('registrant.signatures', ['registrant' => $registrant]) }}"
+                                                            class="rounded"
+                                                        >
+                                                    @else
+                                                        <a href="https://thedirectorsroom.com/registrant/{{ $registrant->id }}/signatures"
+                                                           class="rounded"
+                                                        >
+                                                    @endif
                                                         <button class="bg-gray-500 mt-2 py-1 px-2 rounded">
                                                             @if($registrant->hasSignatures)
                                                                 Remove my signature
