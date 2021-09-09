@@ -98,7 +98,7 @@
                             @if(auth()->id() == 368)
                                 @if($event->eventversionconfigs->paypalstudent)
                                     <div class="text-white px-1 rounded text-center
-                                        @if($event->eventversionteacherconfigs->where('user_id', auth()->id())->first()->paypalstudent)
+                                        @if($event->eventversionteacherconfigs && $event->eventversionteacherconfigs->where('user_id', auth()->id())->first()->paypalstudent)
                                             bg-green-700
                                         @else
                                             bg-blue-700
@@ -107,7 +107,7 @@
                                         @if(config('app.url') === 'http://localhost')
 
                                                 <a href=" {{ route('eventversionteacherconfig.update', ['eventversion' => $event]) }}" >
-                                                    @if($event->eventversionteacherconfigs->where('user_id', auth()->id())->first()->paypalstudent)
+                                                    @if($event->eventversionteacherconfigs && $event->eventversionteacherconfigs->where('user_id', auth()->id())->first()->paypalstudent)
                                                         Currently, my students can pay through PayPal.
                                                     @else
                                                         Allow my students to pay via PayPal
