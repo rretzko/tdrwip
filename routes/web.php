@@ -136,5 +136,9 @@ Route::middleware('auth', 'verified')->group(function() {
     /** SCHOOLS */
     Route::get('/schools', [App\Http\Controllers\Schools\SchoolController::class, 'index'])->name('schools');
     Route::get('/schools/remove/{school}', [App\Http\Controllers\Schools\SchoolController::class, 'destroy'])->name('schools.destroy');
+
+    /** TEACHER EVENTVERSION CONFIGURATIONS */
+    Route::get('/registrants/configs/{eventversion}',[App\Http\Controllers\Eventversions\EventversionteacherconfigsController::class,'update'])->name('eventversionteacherconfig.update');
+
 });
 
