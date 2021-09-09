@@ -23,8 +23,8 @@ class Eventversion extends Model
 
         //ex: Mon, Jul 19,2021 08:30
         return ($dt)
-            ? Carbon::parse()
-                ->format('D, M d,Y H:i')
+            ? Carbon::parse($dt)
+                ->format('D, M d,Y H:i',$dt)
             : 'not found';
     }
 
