@@ -44,11 +44,19 @@
                                 {{-- MEMBERSHIP CARD FORM --}}
                                 <div class="overflow-x-auto lg:w-6/12 md:w-8/12 w-11/12 ">
 
-                                    <form method="post" action="{{ ($membership && $membership->id)
-                                        ? route('organization.membershipcard.update', ['membership' => $membership])
-                                        : route('organization.membershipcard.create')}}"
-                                          enctype="multipart/form-data"
-                                    >
+                                    @if(config('app.url') === 'http://localhost')
+                                        <form method="post" action="{{ ($membership && $membership->id)
+                                            ? route('organization.membershipcard.update', ['membership' => $membership])
+                                            : route('organization.membershipcard.create')}}"
+                                              enctype="multipart/form-data"
+                                        >
+                                    @else
+                                        <form method="post" action="{{ ($membership && $membership->id)
+                                            ? 'https://thedirectorsroom.com/organization/membershipcard/'.$membership->id.'/update'
+                                            : 'https://thedirectorsroom.com/organization/membershipcard/create' }}"
+                                              enctype="multipart/form-data"
+                                        >
+                                    @endif
 
                                         @csrf
 
