@@ -46,7 +46,7 @@ class Profilecomponent extends Component
         $this->pronouns = Pronoun::all()->sortBy('order_by');
         $this->shirtsizes = Shirtsize::all()->sortBy('order_by');
         $this->birthday = Carbon::now();
-        $this->classof = date('Y');
+        $this->classof = $this->calcClassof();
     }
 
     public function render()
@@ -172,5 +172,14 @@ class Profilecomponent extends Component
 
         //sync student to teacher
         $user->schools()->sync(Userconfig::getValue('school', auth()->id()));
+    }
+
+    private function calcClassof()
+    {
+        if($this->student){
+
+            return $this->student->classof;
+        }
+        return date('Y');
     }
 }

@@ -9,8 +9,13 @@
         </x-inputs.group>
 
         <x-inputs.group label="Grade/Class of" for="classof">
-            <x-inputs.select label="" :options="$classofs" for="classof"
-                 currentvalue="{{ ($student && $student->user_id) ? $student->classof :  12  }}"/>
+            <select name="classof" wire:model.defer="classof">
+                @foreach($classofs AS $key => $classof)
+                    <option value="{{ $key }}"
+
+                    >{{ $classof }}</option>
+                @endforeach
+            </select>
         </x-inputs.group>
 
         <x-inputs.group label="Preferred Pronoun" for="pronoun_id">
