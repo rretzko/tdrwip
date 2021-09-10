@@ -32,18 +32,30 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                           d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                                 </svg>
-                                <a href="{{ route('registrant.show',['registrant' => $registrant]) }}"
-                                   class="text-red-700 ml-2 pb-4">
-                                    Return to Registrant Edit
-                                </a>
+                                @if(config('app.url') === 'http://localhost')
+                                    <a href="{{ route('registrant.show',['registrant' => $registrant]) }}"
+                                       class="text-red-700 ml-2 pb-4">
+                                        Return to Registrant Edit
+                                    </a>
+                                @else
+                                    <a href="https://thedirectorsroom.com/registrant/{{ $registrant->id }}"
+                                       class="text-red-700 ml-2 pb-4">
+                                        Return to Registrant Edit
+                                    </a>
+                                @endif
                             </div>
 
                             {{-- BUTTON TO DOWNLOAD PDF --}}
                             <div class="bg-blue-400 text-xs pt-3 border rounded-2xl text-white px-2">
-                                <a href="{{ route('registrant.application.download', ['registrant' => $registrant]) }}">
-                                    Download Application For Signing
-                                </a>
-                            </div>
+                                @if(config('app.url') === 'http://localhost')
+                                    <a href="{{ route('registrant.application.download', ['registrant' => $registrant]) }}">
+                                        Download Application For Review
+                                    </a>
+                                @else
+                                    <a href="https://thedirectorsroom.com/registrant/{{ $registrant->id }}/download">
+                                        Download Application For Review
+                                    </a>
+                                @endif
                         </div>
 
                         <style>
