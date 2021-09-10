@@ -134,8 +134,9 @@ class RegistrantController extends Controller
         $cntr = 0;
 
         $eapplication = Eapplication::find($registrant->id);
-        $cntr += $eapplication->signatureguardian;
-        $cntr += $eapplication->signaturestudent;
+
+        $cntr += $eapplication ? $eapplication->signatureguardian : 0;
+        $cntr += $eapplication ? $eapplication->signaturestudent : 0;
 
         return $cntr;
     }
