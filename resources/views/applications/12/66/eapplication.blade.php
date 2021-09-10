@@ -66,7 +66,7 @@
                                     </div>
 
                                     {{-- STUDENT DETAIL DECLARATION --}}
-                                    <div style="mb-4">
+                                    <div class="mb-4">
                                         <style>
                                             .detail-row{display:flex; width: 90%;}
                                             .detail-row label{width: 25%;}
