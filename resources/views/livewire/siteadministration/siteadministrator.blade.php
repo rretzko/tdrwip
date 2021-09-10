@@ -11,6 +11,8 @@
 --}} -->
     <x-siteadministration.loginas :loginas="$loginas" />
 
+    <x-siteadministration.resetpassword :users="$users"/>
+
     <div class="mt-1">
         <span class="bg-black text-white rounded px-1" wire:click="transferStudents" >Workaround</span>
     </div>

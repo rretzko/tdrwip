@@ -5,15 +5,20 @@ namespace App\Http\Livewire\Siteadministration;
 use App\Models\Membership;
 use App\Models\Person;
 use App\Models\School;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 
 class Siteadministrator extends Component
 {
+    public $resetpasswordusername='';
+    public $resetpasswordpassword='';
     public $search='';
     public $searchloginas='';
     public $searchschool='';
+    public $searchuser='';
     //public $selectedschool=NULL;
     public $selectedschoolname='';
     public $students=NULL;
@@ -37,6 +42,7 @@ class Siteadministrator extends Component
                     'persons' => $this->persons(),
                     'schools' => $this->schools(),
                     'loginas' => $this->loginas(),
+                    'users' => $this->users(),
                 ]);
         }
 
@@ -157,6 +163,14 @@ class Siteadministrator extends Component
         */
     }
 
+    public function updatePassword()
+    {
+        $user = User::where('username', $this->resetpasswordusername)->first();
+        $user->forceFill([
+            'password' => Hash::make($this->resetpasswordpassword),
+        ])->save();
+    }
+
     public function updateSchool($value)
     {
         $this->selectedschool = School::find($value);
@@ -230,4 +244,19 @@ class Siteadministrator extends Component
             ->get()
             ->sortBy(['name', 'city']);
     }
+
+    private function users()
+    {
+        //early exit
+        if(! strlen($this->searchuser)){ return collect(); }
+
+        $likevalue = '%'.$this->searchuser.'%';
+
+        return User::where('username','LIKE', $likevalue)
+            ->limit(25)
+            ->get()
+            ->sortBy(['username']);
+    }
+
+
 }
