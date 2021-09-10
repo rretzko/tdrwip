@@ -61,8 +61,30 @@ class Siteadministrator extends Component
 
     public function transferStudents()
     {
+        //2021-09-10
+        //add filetypes for SJCDA, All-Shore
+        $eventversions = [66,67,69];
+        $filecontenttypes = [1,5,3]; //scales, solo, quartet
+        $titles = [NULL,'solo','quartet'];
+
+        foreach($eventversions AS $evid){
+
+            foreach($filecontenttypes AS $key => $fctid){
+
+                DB::table('eventversion_filecontenttype')
+                    ->insert([
+                        'eventversion_id' => $evid,
+                        'filecontenttype_id' => $fctid,
+                        'title' => $titles[$key],
+                        'created_at' => '2021-09-10 17:50:50',
+                        'updated_at' => '2021-09-10 17:50:50',
+                    ]);
+            }
+        }
+
         //2021-09-09
         //add instrumentation for jr high chorus (ssaatb)
+        /*
         $ids = [63,64,65,66,6,3];
         foreach($ids AS $key => $id) {
             DB::table('eventensembletype_instrumentation')
@@ -89,6 +111,8 @@ class Siteadministrator extends Component
                 'subject' => 'chorus',
             ]
         );
+        */
+
         /*
         DB::table('eventversionconfigs')
             ->where('eventversion_id', '=', '65')
