@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Fileservers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Eapplication;
 use App\Models\Eventversion;
 use App\Models\Filecontenttype;
 use App\Models\Fileserver;
@@ -77,6 +78,7 @@ class FileserverController extends Controller
         'fileserver' => $fileserver,
         'folders' => $folders,
         'registrant' => $registrant,
+        'countsignatures' => $eventversion->eventversionconfigs->eapplication ? $this->countSignatures($eventversion, $registrant) : 0,
     ]);
 
     }
@@ -125,4 +127,22 @@ class FileserverController extends Controller
     {
         //
     }
+
+/** END OF PUBLIC FUNCTIONS **************************************************/
+
+    private function countSignatures(Eventversion $eventversion, Registrant $registrant)
+    {
+        //early exit
+        if(! $eventversion->eventversionconfigs->eapplication){ return 0;}
+
+        $cntr = 0;
+
+        $eapplication = Eapplication::find($registrant->id);
+
+        $cntr += $eapplication ? $eapplication->signatureguardian : 0;
+        $cntr += $eapplication ? $eapplication->signaturestudent : 0;
+
+        return $cntr;
+    }
+
 }
