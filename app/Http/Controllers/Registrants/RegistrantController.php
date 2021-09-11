@@ -112,6 +112,7 @@ class RegistrantController extends Controller
         return view('registrants.registrant.show', [
             'eventversion' => Eventversion::find($registrant->eventversion_id),
             'registrant' => $registrant,
+            'countsignatures' => $this->countSignatures($registrant->eventversion, $registrant),
         ]);
     }
 
