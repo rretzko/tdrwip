@@ -300,8 +300,6 @@
                                         through {{ $eventversion->dates('videos_student_close') }}.
                                     </div>
 
-
-
                                     {{-- FILE UPLOADS --}}
                                     <div class=" mx-2 p-2">
                                         @if($eventversion->eventversionconfigs->virtualaudition)
