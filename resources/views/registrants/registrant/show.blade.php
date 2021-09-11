@@ -315,7 +315,7 @@
                                                 </div>
 
                                             @else
-File content types: {{ $eventversion->filecontenttypes->count() }}
+
                                                 @foreach($eventversion->filecontenttypes AS $filecontenttype)
 
                                                     <div class="shadow-lg rounded border-2 mb-4">

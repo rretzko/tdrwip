@@ -67,6 +67,7 @@ class Siteadministrator extends Component
 
         //2021-09-10
         //add filetypes for SJCDA, All-Shore
+        /*
         $eventversions = [66,67,69];
         $filecontenttypes = [1,5,3]; //scales, solo, quartet
         $titles = [NULL,'solo','quartet'];
@@ -76,24 +77,17 @@ class Siteadministrator extends Component
             foreach($filecontenttypes AS $key => $fctid){
 
                 //insert record if record not found
-               // if(! DB::table('eventversion_filecontenttype')
-              //      ->where('eventversion_id', '=', $evid)
-              //      ->where('filecontenttype_id', '=', $fctid)
-               //     ->where('title', '=', $titles[$key])
-               //     ->get() ?? 0){
-
-                    DB::table('eventversion_filecontenttype')
-                        ->insert([
-                            'eventversion_id' => $evid,
-                            'filecontenttype_id' => $fctid,
-                            'title' => $titles[$key],
-                            'created_at' => '2021-09-10 17:50:50',
-                            'updated_at' => '2021-09-10 17:50:50',
-                        ]);
-               // }
+                DB::table('eventversion_filecontenttype')
+                    ->insert([
+                        'eventversion_id' => $evid,
+                        'filecontenttype_id' => $fctid,
+                        'title' => $titles[$key],
+                        'created_at' => '2021-09-10 17:50:50',
+                        'updated_at' => '2021-09-10 17:50:50',
+                    ]);
             }
         }
-
+        */
         //2021-09-09
         //add instrumentation for jr high chorus (ssaatb)
         /*
