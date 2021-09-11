@@ -299,7 +299,20 @@
                                     <!-- {{-- and ends on {{ Carbon\Carbon::parse($eventversion->eventversiondates->where('datetype_id', \App\Datetype::where('descr', 'videos_student_close')->first()->id)->first()->dt)->format('F jS') }} --}} -->
                                         through {{ $eventversion->dates('videos_student_close') }}.
                                     </div>
-
+<div>
+    <div>
+        <label>Virtual Audition</label>
+        <div>{{ $eventversion->eventversionconfigs->virtualaudition }}</div>
+    </div>
+    <div>
+        <label>registrant->hasApplication</label>
+        <div>{{ $registrant->hasApplication }}</div>
+    </div>
+    <div>
+        <label>is eapplication</label>
+        <div>{{ $eventversion->eventversioncofigs->eapplication }}</div>
+    </div>
+</div>
                                     {{-- FILE UPLOADS --}}
                                     <div class=" mx-2 p-2">
                                         @if($eventversion->eventversionconfigs->virtualaudition)
