@@ -56,6 +56,7 @@
                                         Download Application For Review
                                     </a>
                                 @endif
+                            </div>
                         </div>
 
                         <style>
@@ -199,7 +200,12 @@
 
                                     {{-- SIGNATURES --}}
                                     <div class="w-4/12 mx-auto">
-                                        <form method="post" action="{{ route('registrant.eapplication', ['registrant' => $registrant]) }}">
+                                        @if(config('app.url') === 'http://localhost')
+                                            <form method="post" action="{{ route('registrant.eapplication', ['registrant' => $registrant]) }}">
+                                        @else
+                                            <form method="post" action="https://thedirectorsroom.com/registrant/{{ $registrant->id }}/eapplication">
+                                        @endif
+
                                             @csrf
                                             <div class="input-group">
                                                 <input type="checkbox" name="signaturestudent" value="1"
