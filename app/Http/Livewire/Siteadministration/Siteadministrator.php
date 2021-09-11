@@ -76,11 +76,11 @@ class Siteadministrator extends Component
             foreach($filecontenttypes AS $key => $fctid){
 
                 //insert record if record not found
-                if(! DB::table('eventversion_filecontenttype')
-                    ->where('eventversion_id', '=', $evid)
-                    ->where('filecontenttype_id', '=', $fctid)
-                    ->where('title', '=', $titles[$key])
-                    ->get() ?? 0){
+               // if(! DB::table('eventversion_filecontenttype')
+              //      ->where('eventversion_id', '=', $evid)
+              //      ->where('filecontenttype_id', '=', $fctid)
+               //     ->where('title', '=', $titles[$key])
+               //     ->get() ?? 0){
 
                     DB::table('eventversion_filecontenttype')
                         ->insert([
@@ -90,7 +90,7 @@ class Siteadministrator extends Component
                             'created_at' => '2021-09-10 17:50:50',
                             'updated_at' => '2021-09-10 17:50:50',
                         ]);
-                }
+               // }
             }
         }
 
