@@ -305,7 +305,7 @@
                                         @if($eventversion->eventversionconfigs->virtualaudition)
                                             <h2 class="font-bold">File Uploads and Reviews</h2>
 
-                                            @if(! $registrant->hasApplication)
+                                            @if((! $registrant->hasApplication) && (! $eventversion->eventversionconfigs->eapplication))
 
                                                 <div class="advisory">
                                                     The student's application must be downloaded before
