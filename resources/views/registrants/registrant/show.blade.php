@@ -300,20 +300,7 @@
                                         through {{ $eventversion->dates('videos_student_close') }}.
                                     </div>
 
-<div>
-    <div>
-        <label>Virtual Audition</label>
-        <div>{{ $eventversion->eventversionconfigs->virtualaudition }}</div>
-    </div>
-    <div>
-        <label>registrant->hasApplication</label>
-        <div>{{ $registrant->hasApplication }}</div>
-    </div>
-    <div>
-        <label>is eapplication</label>
-        <div>{{ $eventversion->eventversionconfigs->eapplication }}</div>
-    </div>
-</div>
+
 
                                     {{-- FILE UPLOADS --}}
                                     <div class=" mx-2 p-2">
@@ -328,7 +315,7 @@
                                                 </div>
 
                                             @else
-
+File content types: {{ $eventversion->filecontenttypes->count() }}
                                                 @foreach($eventversion->filecontenttypes AS $filecontenttype)
 
                                                     <div class="shadow-lg rounded border-2 mb-4">
