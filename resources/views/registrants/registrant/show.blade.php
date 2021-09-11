@@ -187,7 +187,7 @@
                                                         Click here for the current eApplication
                                                     </a>
                                                 @else {{-- no current record or not eApplication eventversion --}}
-                                                <a href="https://thedirectorsroom.com/{{ $registrant->id }}/application"
+                                                <a href="https://thedirectorsroom.com/registrant/{{ $registrant->id }}/application"
                                                    class="text-blue-700">
                                                     Click here for a new eApplication
                                                 </a>
