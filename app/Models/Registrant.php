@@ -189,6 +189,11 @@ class Registrant extends Model
             ->first();
     }
 
+    public function inpersonaudition()
+    {
+        return $this->hasOne(Inpersonaudition::class);
+    }
+
     public function instrumentations()
     {
         return $this->belongsToMany(Instrumentation::class)
