@@ -62,8 +62,18 @@ class Siteadministrator extends Component
 
     public function transferStudents()
     {
+        //2021-09-12
+        //update filecontent type to 2 (arpeggio) from 5 (solo) for eventversion 69 (all-shore)
+        DB::table('eventversion_filecontenttype')
+            ->where('eventversion_id', '=', 69)
+            ->where('filecontenttype_id', '=', 5)
+            ->update([
+                'filecontenttype_id' => 2,
+                'title' => 'arpeggio',
+            ]);
+
         //2021-09-11
-        $this->updateFileuploadfolders();
+        //$this->updateFileuploadfolders();
 
         //2021-09-10
         //add filetypes for SJCDA, All-Shore
