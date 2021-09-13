@@ -115,6 +115,7 @@ Route::middleware('auth', 'verified')->group(function() {
     Route::get('/registrant/{registrant}/application',[App\Http\Controllers\Registrants\RegistrantApplicationController::class, 'create'])->name('registrant.application.create');
     Route::get('/registrant/{registrant}/download',[App\Http\Controllers\Registrants\RegistrantApplicationController::class, 'download'])->name('registrant.application.download');
     Route::post('/registrant/{registrant}/eapplication',[App\Http\Controllers\Registrants\RegistrantApplicationController::class,'update'])->name('registrant.eapplication');
+    Route::get('registrant/profile/{eventversion}/{registrant}/inperson', [App\Http\Controllers\Registrants\InpersonauditionController::class, 'update'])->name('registrant.profile.store.inperson');
 
     Route::get('/registrants/{eventversion}',[App\Http\Controllers\Registrants\RegistrantsController::class, 'index'])->name('registrants.index');
     Route::get('/registrant/{registrant}',[App\Http\Controllers\Registrants\RegistrantController::class, 'show'])->name('registrant.show');

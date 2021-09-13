@@ -302,160 +302,216 @@
 
                                     {{-- FILE UPLOADS --}}
                                     <div class=" mx-2 p-2">
-                                        @if($eventversion->eventversionconfigs->virtualaudition)
-                                            <h2 class="font-bold">File Uploads and Reviews</h2>
-
-                                            @if((! $registrant->hasApplication) && (! $eventversion->eventversionconfigs->eapplication))
-
-                                                <div class="advisory">
-                                                    The student's application must be downloaded before
-                                                    files can be uploaded.
+                                        @if(($eventversion->id === 69) &&
+                                            $registrant->inpersonaudition &&
+                                            $registrant->inpersonaudition->inperson)
+                                                <div class="bg-green-100 text-center px-1 my-1">
+                                                    {{ $registrant->student->person->fullname }} is auditioning in-person.
                                                 </div>
 
-                                            @else
-
-                                                @foreach($eventversion->filecontenttypes AS $filecontenttype)
-
-                                                    <div class="shadow-lg rounded border-2 mb-4">
-                                                        <h3 class="pl-2 pt-1">
-                                                            {{ ucwords($filecontenttype->descr) }}
-                                                            {{-- SOLO/QUARTET/etc have titles (ex. The Siver Swan --}}
-                                                            {{-- SCALES might have NO title --}}
-                                                            @if(strlen($filecontenttype->pivot->title))
-                                                                : <span
-                                                                    class="font-bold">{{ $filecontenttype->pivot->title }}</span>
-                                                            @endif
-                                                        </h3>
-
-                                                        @if($registrant->hasFileUploaded($filecontenttype))
-{{-- START VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT --}}
-                                                            <div class="w-full">
-                                                                <div class="flex justify-center">
-                                                                    {!! $registrant->fileviewport($filecontenttype) !!}
-                                                                </div>
-
-                                                                <div class="stats col-lg-4 ml-1">
-<!-- {{--
-                                                                    <div class="items mb-3">
-                                                                        <div class="data_row col-12">
-                                                                            <div
-                                                                                class="registrant">{{ $registrant->auditiondetail->programname }}</div>
-                                                                            <div
-                                                                                class="filenname">{{ $registrant->video($videotype)['title'] }}</div>
-                                                                            <div
-                                                                                class="duration">{{ number_format($registrant->video($videotype)['duration'],0) }}
-                                                                                seconds
-                                                                            </div>
-                                                                            <div
-                                                                                class="approved_at">{{ $registrant->video($videotype)['approved'] }}</div>
-                                                                        <!-- {-- <div class="server_id">{{ $registrant->video($videotype)['id'] }}<div> --} -->
-                                                                        </div>
-                                                                    </div>
---}} -->
-                                                                    <div class="flex mx-2 my-4 justify-around">
-                                                                        @if($registrant->fileuploadapproved($filecontenttype))
-                                                                            <div class="text-green-700 text-xs font-bold bg-green-100 p-2">
-                                                                                Approved: {{ $registrant->fileuploadapprovaltimestamp($filecontenttype) }}
-                                                                            </div>
-                                                                        @else
-                                                                            <a href="{{ route('fileupload.approve',['registrant' => $registrant, 'filecontenttype' => $filecontenttype]) }}">
-                                                                                <button
-                                                                                    type="button"
-                                                                                    class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                                                                                >
-                                                                                    Approve
-                                                                                </button>
-                                                                            </a>
-                                                                        @endif
-                                                                        @if(config('app.url') === 'http://localhost')
-                                                                            <a href="{{ route('fileupload.reject',['registrant' => $registrant, 'filecontenttype' => $filecontenttype]) }}">
-                                                                        @else
-                                                                            <a href="https://thedirectorsroom.com/registrant/reject/{{ $registrant->id }}/{{ $filecontenttype->id }}">
-                                                                        @endif
-                                                                            <button
-                                                                                type="button"
-                                                                                class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                                                                                >
-                                                                                Reject
-                                                                            </button>
-                                                                        </a>
-<!-- {{--
-                                                                        <div class="approved col-7">
-                                                                            <input type="checkbox"
-                                                                                   class="form-check-input approved"
-                                                                                   name="approved"
-                                                                                   id="approved_{{$filecontenttype->id}}"
-                                                                                   value="approved"
-                                                                                   server_id="{{ $registrant->fileuploads->where('filecontenttype_id', $filecontenttype->id)->first()->server_id }}"
-                                                                                {{ $registrant->fileuploads->where('filecontenttype_id',$filecontenttype->id)->first()->approved ? "CHECKED" : '' }}
-                                                                            />
-                                                                            <label
-                                                                                class="form-check-label">Approved</label>
-                                                                        </div>
-
-                                                                        <div class="rejected col-11 ml-1 "
-                                                                             server_id="{{ $registrant->video($videotype)['id'] }}">
-                                                        <span class="text-danger"
-                                                              style="font-size: .8rem; cursor:pointer;"
-                                                              title="Reject this video"
-                                                        >
-                                                            Reject
-                                                        </span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                --}} -->
+                                                <div style="background-color: {{ $registrant->inpersonaudition && $registrant->inpersonaudition->inperson ? 'darkgreen' : 'darkred' }}; border-radius: .5rem; margin:auto; width: 66%;display: flex; ">
+                                                    <div style="margin: auto;">
+                                                        @if(config('app.url') === 'http://localhost')
+                                                            <div class="w-full px-2">
+                                                                <a href="{{ route('registrant.profile.store.inperson',['eventversion' => $eventversion, 'registrant' => $registrant]) }}" style="color: white; align-self: center;">
+                                                                    @if($registrant->inpersonaudition && $registrant->inpersonaudition->inperson)
+                                                                        Click here to submit a virtual audition for {{ $registrant->student->person->fullName }}
+                                                                    @else
+                                                                        Click here if you wish {{ $registrant->student->person->fullName }} to audition in person.
+                                                                    @endif
+                                                                </a>
                                                             </div>
-{{-- END VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT --}}
                                                         @else
-                                                            <form action='https://api.sproutvideo.com/v1/videos'
-                                                                  method='post'
-                                                                  enctype='multipart/form-data'
-                                                                  class="p-3 "
-                                                            >
-
-                                                                @csrf
-
-                                                                <input type="hidden" name="token"
-                                                                       value="{{ $fileserver->token($filecontenttype) }}"/>
-                                                                <input type="hidden" name="download_sd" value="true"/>
-                                                                <input type="hidden" name="download_hd" value="true"/>
-                                                                <input type="hidden" name="title"
-                                                                       value="{{ $filename.$filecontenttype->descr}}.mp3"/>
-                                                                <input type="hidden" name="folder_id"
-                                                                       value="{{ $folders->where('filecontenttype_id',$filecontenttype->id)->first()->folder_id }}">
-
-                                                                <div class="form-group">
-                                                                    <input type="file"
-                                                                           id="filecontenttype_{{ $filecontenttype->id }}"
-                                                                           name="audio" accept="audio/mp3"/>
-                                                                    <div class="text-small text-muted">
-                                                                        @if($eventversion->eventversionconfigs->audiofiles)
-                                                                            <span
-                                                                                class="hint">ONLY .mp3 files accepted</span>
-                                                                        @elseif($eventversion->eventversionconfigs->videofiles)
-                                                                            <span class="hint">ONLY .mp4/.mov files accepted</span>
-                                                                        @else
-                                                                            <span
-                                                                                class="hint">No file uploads accepted{{$eventversion->eventversionconfigs->audiofiles}}</span>
-                                                                        @endif
-                                                                    </div>
-                                                                </div>
-
-                                                                {{-- SAVE BUTTON --}}
-                                                                <div class="flex justify-end">
-                                                                    <input
-                                                                        class="bg-black text-white border rounded px-4 cursor-pointer"
-                                                                        type="submit" name="submit"
-                                                                        value="Upload {{ ucwords($filecontenttype->descr) }}"
-                                                                    />
-                                                                </div>
-
-                                                            </form>
+                                                            <div>
+                                                                <a href="https://thedirectorsroom.com/registrant/profile/{{ $eventversion->id }}/{{ $registrant->id }}/inperson" style="color: white; align-self: center;">
+                                                                    @if($registrant->inpersonaudition && $registrant->inpersonaudition->inperson)
+                                                                        Click here if you wish to submit a virtual audition
+                                                                    @else
+                                                                        Click here if you wish to audition in person.
+                                                                    @endif
+                                                                </a>
+                                                            </div>
                                                         @endif
                                                     </div>
+                                                </div>
+                                        @else
+                                            @if($eventversion->eventversionconfigs->virtualaudition)
+                                                <h2 class="font-bold">File Uploads and Reviews</h2>
 
-                                                @endforeach
+                                                @if($eventversion->id === 69)
+                                                    <div class="{{ $registrant->inpersonaudition && $registrant->inpersonaudition->inperson ? 'bg-green-600' : 'bg-red-800' }} text-white my-1 rounded w-9/12 text-center m-auto">
+                                                        @if(config('app.url') === 'http://localhost')
+                                                            <a href="{{ route('registrant.profile.store.inperson',['eventversion' => $eventversion, 'registrant' => $registrant]) }}" style="color: white; align-self: center;">
+                                                                @if($registrant->inpersonaudition && $registrant->inpersonaudition->inperson)
+                                                                    Click here if you wish {{ $registrant->student->person->fullName }} to submit a virtual audition
+                                                                @else
+                                                                    Click here if you wish {{ $registrant->student->person->fullName }} to audition in person.
+                                                                @endif
+                                                            </a>
+                                                        @else
+                                                            <a href="https://thedirectorsroom.com/registrant/profile/{{ $eventversion->id }}/{{ $registrant->id }}/inperson" style="color: white; align-self: center;">
+                                                                @if($registrant->inpersonaudition && $registrant->inpersonaudition->inperson)
+                                                                    Click here if you wish {{ $registrant->student->person->fullName }} to submit a virtual audition
+                                                                @else
+                                                                    Click here if you wish {{ $registrant->student->person->fullName }} to audition in person.
+                                                                @endif
+                                                            </a>
+                                                        @endif
+                                                    </div>
+                                                @endif
+
+                                                @if((! $registrant->hasApplication) && (! $eventversion->eventversionconfigs->eapplication))
+
+                                                    <div class="advisory">
+                                                        The student's application must be downloaded before
+                                                        files can be uploaded.
+                                                    </div>
+
+                                                @else
+
+                                                    @foreach($eventversion->filecontenttypes AS $filecontenttype)
+
+                                                        <div class="shadow-lg rounded border-2 mb-4">
+                                                            <h3 class="pl-2 pt-1">
+                                                                {{ ucwords($filecontenttype->descr) }}
+                                                                {{-- SOLO/QUARTET/etc have titles (ex. The Siver Swan --}}
+                                                                {{-- SCALES might have NO title --}}
+                                                                @if(strlen($filecontenttype->pivot->title))
+                                                                    : <span
+                                                                        class="font-bold">{{ $filecontenttype->pivot->title }}</span>
+                                                                @endif
+                                                            </h3>
+
+                                                            @if($registrant->hasFileUploaded($filecontenttype))
+    {{-- START VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT --}}
+                                                                <div class="w-full">
+                                                                    <div class="flex justify-center">
+                                                                        {!! $registrant->fileviewport($filecontenttype) !!}
+                                                                    </div>
+
+                                                                    <div class="stats col-lg-4 ml-1">
+    <!-- {{--
+                                                                        <div class="items mb-3">
+                                                                            <div class="data_row col-12">
+                                                                                <div
+                                                                                    class="registrant">{{ $registrant->auditiondetail->programname }}</div>
+                                                                                <div
+                                                                                    class="filenname">{{ $registrant->video($videotype)['title'] }}</div>
+                                                                                <div
+                                                                                    class="duration">{{ number_format($registrant->video($videotype)['duration'],0) }}
+                                                                                    seconds
+                                                                                </div>
+                                                                                <div
+                                                                                    class="approved_at">{{ $registrant->video($videotype)['approved'] }}</div>
+                                                                            <!-- {-- <div class="server_id">{{ $registrant->video($videotype)['id'] }}<div> --} -->
+                                                                            </div>
+                                                                        </div>
+    --}} -->
+                                                                        <div class="flex mx-2 my-4 justify-around">
+                                                                            @if($registrant->fileuploadapproved($filecontenttype))
+                                                                                <div class="text-green-700 text-xs font-bold bg-green-100 p-2">
+                                                                                    Approved: {{ $registrant->fileuploadapprovaltimestamp($filecontenttype) }}
+                                                                                </div>
+                                                                            @else
+                                                                                <a href="{{ route('fileupload.approve',['registrant' => $registrant, 'filecontenttype' => $filecontenttype]) }}">
+                                                                                    <button
+                                                                                        type="button"
+                                                                                        class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                                                                    >
+                                                                                        Approve
+                                                                                    </button>
+                                                                                </a>
+                                                                            @endif
+                                                                            @if(config('app.url') === 'http://localhost')
+                                                                                <a href="{{ route('fileupload.reject',['registrant' => $registrant, 'filecontenttype' => $filecontenttype]) }}">
+                                                                            @else
+                                                                                <a href="https://thedirectorsroom.com/registrant/reject/{{ $registrant->id }}/{{ $filecontenttype->id }}">
+                                                                            @endif
+                                                                                <button
+                                                                                    type="button"
+                                                                                    class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                                                                                    >
+                                                                                    Reject
+                                                                                </button>
+                                                                            </a>
+    <!-- {{--
+                                                                            <div class="approved col-7">
+                                                                                <input type="checkbox"
+                                                                                       class="form-check-input approved"
+                                                                                       name="approved"
+                                                                                       id="approved_{{$filecontenttype->id}}"
+                                                                                       value="approved"
+                                                                                       server_id="{{ $registrant->fileuploads->where('filecontenttype_id', $filecontenttype->id)->first()->server_id }}"
+                                                                                    {{ $registrant->fileuploads->where('filecontenttype_id',$filecontenttype->id)->first()->approved ? "CHECKED" : '' }}
+                                                                                />
+                                                                                <label
+                                                                                    class="form-check-label">Approved</label>
+                                                                            </div>
+
+                                                                            <div class="rejected col-11 ml-1 "
+                                                                                 server_id="{{ $registrant->video($videotype)['id'] }}">
+                                                            <span class="text-danger"
+                                                                  style="font-size: .8rem; cursor:pointer;"
+                                                                  title="Reject this video"
+                                                            >
+                                                                Reject
+                                                            </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    --}} -->
+                                                                </div>
+    {{-- END VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT --}}
+                                                            @else
+                                                                <form action='https://api.sproutvideo.com/v1/videos'
+                                                                      method='post'
+                                                                      enctype='multipart/form-data'
+                                                                      class="p-3 "
+                                                                >
+
+                                                                    @csrf
+
+                                                                    <input type="hidden" name="token"
+                                                                           value="{{ $fileserver->token($filecontenttype) }}"/>
+                                                                    <input type="hidden" name="download_sd" value="true"/>
+                                                                    <input type="hidden" name="download_hd" value="true"/>
+                                                                    <input type="hidden" name="title"
+                                                                           value="{{ $filename.$filecontenttype->descr}}.mp3"/>
+                                                                    <input type="hidden" name="folder_id"
+                                                                           value="{{ $folders->where('filecontenttype_id',$filecontenttype->id)->first()->folder_id }}">
+
+                                                                    <div class="form-group">
+                                                                        <input type="file"
+                                                                               id="filecontenttype_{{ $filecontenttype->id }}"
+                                                                               name="audio" accept="audio/mp3"/>
+                                                                        <div class="text-small text-muted">
+                                                                            @if($eventversion->eventversionconfigs->audiofiles)
+                                                                                <span
+                                                                                    class="hint">ONLY .mp3 files accepted</span>
+                                                                            @elseif($eventversion->eventversionconfigs->videofiles)
+                                                                                <span class="hint">ONLY .mp4/.mov files accepted</span>
+                                                                            @else
+                                                                                <span
+                                                                                    class="hint">No file uploads accepted{{$eventversion->eventversionconfigs->audiofiles}}</span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+
+                                                                    {{-- SAVE BUTTON --}}
+                                                                    <div class="flex justify-end">
+                                                                        <input
+                                                                            class="bg-black text-white border rounded px-4 cursor-pointer"
+                                                                            type="submit" name="submit"
+                                                                            value="Upload {{ ucwords($filecontenttype->descr) }}"
+                                                                        />
+                                                                    </div>
+
+                                                                </form>
+                                                            @endif
+                                                        </div>
+
+                                                    @endforeach
+                                                @endif
                                             @endif
                                         @endif
                                     </div>
