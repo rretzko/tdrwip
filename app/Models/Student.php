@@ -28,6 +28,33 @@ class Student extends Model
         parent::__construct($attributes);
     }
 
+    public function getCurrentSchoolAttribute()
+    {
+        $teacherschools = $this->teachers->first()->person->user->schools;
+
+        $schools = $this->person->user->schools;
+
+        foreach($schools AS $school){
+
+            if($teacherschools->contains($school)){
+
+                return $school;
+            }
+        }
+
+        return new School;
+    }
+
+    public function getCurrentSchoolnameAttribute()
+    {
+        return $this->getCurrentSchoolAttribute()->name;
+    }
+
+    public function getCurrentTeachernameAttribute()
+    {
+        return $this->teachers->first()->person->fullName;
+    }
+
     public function getEmailPersonalAttribute()
     {
         return Nonsubscriberemail::where('user_id',$this->user_id)
@@ -42,6 +69,21 @@ class Student extends Model
                 ->where('emailtype_id', Emailtype::where('descr', 'email_student_school')->first()->id)
                 ->first()
                 ?? new Nonsubscriberemail;
+    }
+
+    public function getEmailsCsvAttribute()
+    {
+        $emails = [];
+
+        if($this->getEmailPersonalAttribute()->id){
+            $emails[] = $this->getEmailPersonalAttribute()->email;
+        }
+
+        if($this->getEmailSchoolAttribute()->id){
+            $emails[] = $this->getEmailSchoolAttribute()->email;
+        }
+
+        return implode(', ',$emails);
     }
 
     /**
@@ -157,7 +199,9 @@ class Student extends Model
     public function teachers()
     {
         return $this->belongsToMany(Teacher::class,'student_teacher','student_user_id', 'teacher_user_id')
-            ->withPivot('studenttype_id');
+            ->withPivot('studenttype_id')
+            ->withTimestamps()
+            ->orderBy('updated_at','desc');
     }
 
     public function user()

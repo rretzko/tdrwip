@@ -129,8 +129,17 @@ class RegistrantApplicationController extends Controller
     public function update(Request $request, Registrant $registrant)
     {
         $data = $request->validate([
-            'signatureguardian' => ['nullable', 'numeric'],
-            'signaturestudent' => ['nullable', 'numeric'],
+            'absences' => ['nullable', 'boolean'],
+            'courtesy' => ['nullable', 'boolean'],
+            'dressrehearsal' => ['nullable', 'boolean'],
+            'eligibility' => ['nullable', 'boolean'],
+            'imageuse' => ['nullable', 'boolean'],
+            'lates' => ['nullable', 'boolean'],
+            'parentread' => ['nullable', 'boolean'],
+            'rulesandregs' => ['nullable', 'boolean'],
+            'signatureguardian' => ['nullable', 'boolean'],
+            'signaturestudent' => ['nullable', 'boolean'],
+            'videouse' => ['nullable', 'boolean'],
         ]);
 
         Application::create([
@@ -144,8 +153,17 @@ class RegistrantApplicationController extends Controller
                 'eventversion_id' => $registrant->eventversion->id,
             ],
             [
+                'absences' => ($data['absences'] ?? 0),
+                'courtesy' => ($data['courtesy'] ?? 0),
+                'dressrehearsal' => ($data['dressrehearsal'] ?? 0),
+                'eligibility' => ($data['eligibility'] ?? 0),
+                'imageuse' => ($data['imageuse'] ?? 0),
+                'lates' => ($data['lates'] ?? 0),
+                'parentread' => ($data['parentread'] ?? 0),
+                'rulesandregs' => ($data['rulesandregs'] ?? 0),
                 'signatureguardian' => ($data['signatureguardian'] ?? 0),
                 'signaturestudent' => ($data['signaturestudent'] ?? 0),
+                'videouse' => ($data['videouse'] ?? 0),
             ],
         );
 
