@@ -63,6 +63,7 @@ class Siteadministrator extends Component
     public function transferStudents()
     {
         //2021-09-13
+        /*
         DB::table('eventversiondates')
             ->where('eventversion_id', '=', 69)
             ->where('datetype_id', '=', 5)
@@ -80,6 +81,7 @@ class Siteadministrator extends Component
                 'dt' => '2021-10-01 00:00:01',
                 'updated_at' => '2021-09-13 14:35:45'
             ]);
+        */
 
         //2021-09-12
         //update filecontent type to 2 (arpeggio) from 5 (solo) for eventversion 69 (all-shore)
