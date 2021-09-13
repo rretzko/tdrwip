@@ -62,15 +62,36 @@ class Siteadministrator extends Component
 
     public function transferStudents()
     {
+        //2021-09-13
+        DB::table('eventversiondates')
+            ->where('eventversion_id', '=', 69)
+            ->where('datetype_id', '=', 5)
+            ->update(
+                [
+                    'dt' => '2021-10-01 00:00:01',
+                    'updated_at' => '2021-09-13 14:35:45'
+                ]);
+
+        DB::table('eventversiondates')
+            ->where('eventversion_id', '=', 69)
+            ->where('datetype_id', '=', 19)
+            ->update(
+            [
+                'dt' => '2021-10-01 00:00:01',
+                'updated_at' => '2021-09-13 14:35:45'
+            ]);
+
         //2021-09-12
         //update filecontent type to 2 (arpeggio) from 5 (solo) for eventversion 69 (all-shore)
-        DB::table('eventversion_filecontenttype')
+        /*
+         DB::table('eventversion_filecontenttype')
             ->where('eventversion_id', '=', 69)
             ->where('filecontenttype_id', '=', 5)
             ->update([
                 'filecontenttype_id' => 2,
                 'title' => 'arpeggio',
             ]);
+        */
 
         //2021-09-11
         //$this->updateFileuploadfolders();
