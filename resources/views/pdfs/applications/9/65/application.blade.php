@@ -218,7 +218,7 @@
 <table>
     <tr>
         <th style="text-align: right; font-size: small;">
-            THE AUDITION FEE IS: $25.00
+            THE AUDITION FEE IS: ${{ number_format($eventversion->eventversionconfigs->registrationfee,2) }}
         </th>
     </tr>
 </table>
