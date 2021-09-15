@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/tdr.iml" filepath="$PROJECT_DIR$/.idea/tdr.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/stdr.iml" filepath="$PROJECT_DIR$/.idea/stdr.iml" />
     </modules>
   </component>
 </project>

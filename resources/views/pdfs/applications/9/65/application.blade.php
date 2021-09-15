@@ -218,7 +218,7 @@
 <table>
     <tr>
         <th style="text-align: right; font-size: small;">
-            THE AUDITION FEE IS: $20.00
+            THE AUDITION FEE IS: $25.00
         </th>
     </tr>
 </table>
