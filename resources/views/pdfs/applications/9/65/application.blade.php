@@ -201,7 +201,7 @@
             {{ $registrant->student->person->fullName }}
         </td>
         <td style="width: 15%; color: red;">
-            {{ $registrant->instrumentationsCSV }}
+            {{ strtoupper($registrant->instrumentationsCSV) }}
         </td>
         <td style="width: 15%;">
             Grade: {{ $registrant->student->gradeClassof }}
