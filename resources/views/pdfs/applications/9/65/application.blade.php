@@ -115,7 +115,7 @@
     </tr>
     <tr class="sectionSignaturesSubscript">
         <td colspan="2" style="font-size: .8rem; padding-left: 7rem;">
-            PARENT/LEGAL GUARDIAN CELL: {{ $registrant->student->guardians->first()->person->phoneMobile }}
+            PARENT/LEGAL GUARDIAN CELL: {{ $registrant->student->guardians->count() ? $registrant->student->guardians->first()->person->phoneMobile : '' }}
         </td>
     </tr>
 </table>
