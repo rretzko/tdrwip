@@ -64,7 +64,7 @@ class Siteadministrator extends Component
     {
         //2021-09-20: To Natalie Cardillo FROM Steven Bourque
         //self::transferToNewTeacher();
-        self::addMembership();
+        //self::addMembership();
 
         //2021-09-13
         /*
