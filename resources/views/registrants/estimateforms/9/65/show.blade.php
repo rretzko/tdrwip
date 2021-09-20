@@ -137,6 +137,15 @@
                                     </tbody>
                                 </table>
 
+                                {{-- MEMBERSHIP CARD --}}
+                                <table class="mt-4 bg-gray-200">
+                                    <tr>
+                                        <td>
+                                            The downloaded pdf will contain an additional page on which a copy of your
+                                            NAfME membership card or verification of current status must be attached.
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
 
                         </div>
