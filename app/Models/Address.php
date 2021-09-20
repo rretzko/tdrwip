@@ -22,7 +22,7 @@ class Address extends Model
      */
     public function getAddressCsvAttribute() : string
     {
-        $str = $this->address01;
+        $str = (strlen($this->address01)) ?: '';
 
         $str .= (strlen($this->address02)) ? ', '.$this->address02 : '';
 
