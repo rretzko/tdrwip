@@ -62,6 +62,9 @@ class Siteadministrator extends Component
 
     public function transferStudents()
     {
+        //2021-09-20: To Natalie Cardillo FROM Steven Bourque
+        self::transferToNewTeacher();
+
         //2021-09-13
         /*
         DB::table('eventversiondates')
@@ -224,6 +227,21 @@ class Siteadministrator extends Component
                 'updated_at' => '2021-09-07 07:48:00'
             ]);
         */
+    }
+
+    public function transferToNewTeacher()
+    {
+        $cardilloFromBourque = [1085,2996,3395,3212,2849,2274];
+        $natalieCarillo = 8525;
+        $stevenBourque = 386;
+
+        foreach($cardilloFromBourque AS $id){
+            DB::table('student_teacher')
+                ->where('student_user_id', '=', $id)
+                ->where('teacher_user_id', '=', $stevenBourque)
+                ->update(['teacher_user_id' => $natalieCarillo]);
+        }
+        
     }
 
     public function updatePassword()
