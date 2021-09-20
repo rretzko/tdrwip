@@ -9,6 +9,7 @@
             margin-bottom: 1rem;
             width: 96%;
         }
+        .page_break{page-break-before: always;}
     </style>
     <title></title>
 </head>
@@ -18,7 +19,7 @@
 <table>
     <tr>
         <td style="width: 10%;">
-            <img src="assets\images\njmea_logo_state.jpg" alt="NJMEA Logo"/>
+            <img src="https://thedirectorsroom.com/assets/images/njmea_logo_state.jpg" alt="NJMEA Logo"/>
         </td>
         <td style="width: 72%;text-align: right;">
             <div style="font-weight: bold; text-align: right; ">{{ strtoupper($eventversion->name) }}</div>
@@ -102,15 +103,15 @@
     </tbody>
 </table>
 
-{{-- SPACER --}}
-<table>
-    <tr><td></td></tr>
-    <tr><td></td></tr>
-</table>
+{{-- PAGE BREAK --}}
+<div class="page_break"></div>
 
+{{-- MEMBERSHIP CARD --}}
 <table>
     <tr>
-        <td style="width: 25%;">NAfME logo</td>
+        <td style="width: 10%;">
+            <img src="https://thedirectorsroom.com/assets/images/nafme_cropped.jpg" alt="NAfME Logo"/>
+        </td>
         <td style="font-size: 2rem; font-weight: bold; text-align: center;">National Association<br /><i>for</i> Music Education</td>
     </tr>
 </table>
@@ -124,8 +125,10 @@
     </tr>
     <tr>
         <td style="font-size: 1.25rem; font-weight: bold; text-align: center">
-            Note: If you uploaded a copy of your membership card into
-            TheDirectorsRoom.com, it will be printed below.
+            <span style="color: white">
+                Note: If you uploaded a copy of your membership card into
+                TheDirectorsRoom.com, it will be printed below.
+            </span>
         </td>
     </tr>
 </table>

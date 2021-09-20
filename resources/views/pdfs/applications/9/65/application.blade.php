@@ -28,6 +28,7 @@
         tr.sectionSignatures td{
             padding-top: 1rem;
         }
+        .page_break{page-break-before: always;}
     </style>
     <title></title>
 </head>
@@ -169,6 +170,8 @@
 
 
 {{-- PAGE BREAK ---------------------------------------------------------- --}}
+<div class="page_break"></div>
+
 {{-- PAGE HEADER --}}
 <table>
     <tr>
@@ -320,5 +323,6 @@
 
     </tr>
 </table>
+
 </body>
 </html>
