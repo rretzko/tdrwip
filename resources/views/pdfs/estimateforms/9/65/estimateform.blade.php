@@ -109,10 +109,9 @@
 {{-- MEMBERSHIP CARD --}}
 <table>
     <tr>
-        <td style="width: 10%;">
-            <img src="https://thedirectorsroom.com/assets/images/nafme_cropped.jpg" alt="NAfME Logo"/>
+        <td style="width: 10%; text-align: center;">
+            <img src="https://thedirectorsroom.com/assets/images/NAfME_cropped.jpg" width="600px" alt="NAfME Logo"/>
         </td>
-        <td style="font-size: 2rem; font-weight: bold; text-align: center;">National Association<br /><i>for</i> Music Education</td>
     </tr>
 </table>
 
