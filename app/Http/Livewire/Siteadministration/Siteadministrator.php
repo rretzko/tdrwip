@@ -63,7 +63,8 @@ class Siteadministrator extends Component
     public function transferStudents()
     {
         //2021-09-20: To Natalie Cardillo FROM Steven Bourque
-        self::transferToNewTeacher();
+        //self::transferToNewTeacher();
+        self::addMembership();
 
         //2021-09-13
         /*
@@ -229,7 +230,30 @@ class Siteadministrator extends Component
         */
     }
 
-    public function transferToNewTeacher()
+    private function addMembership()
+    {
+        $sjcda = ['id' => 8,'label' => 'sjcda'];
+        $njmea = ['id' => 3,'label' => 'njmea'];
+        $cardilloNatalie = 8525;
+
+        //add domain owner to organization
+        Membership::updateOrCreate(
+            [
+                'user_id' => $cardilloNatalie,
+                'organization_id' => $njmea['id'],
+
+            ],
+            [
+                'membershiptype_id' => 1,
+                'membership_id' => $njmea['label'],
+                'expiration' => '2021-09-09',
+                'grade_levels' => 'Secondary',
+                'subject' => 'chorus',
+            ]
+        );
+    }
+
+    private function transferToNewTeacher()
     {
         $cardilloFromBourque = [1085,2996,3395,3212,2849,2274];
         $natalieCarillo = 8525;
@@ -241,7 +265,7 @@ class Siteadministrator extends Component
                 ->where('teacher_user_id', '=', $stevenBourque)
                 ->update(['teacher_user_id' => $natalieCarillo]);
         }
-        
+
     }
 
     public function updatePassword()
