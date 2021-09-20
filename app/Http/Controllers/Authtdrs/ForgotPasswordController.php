@@ -18,7 +18,7 @@ class ForgotPasswordController extends Controller
         $found = false;
         foreach(Subscriberemail::all() AS $email){
 
-            if($email->email === $data['email']){
+            if(strtolower($email->email) === strtolower($data['email'])){
 
                 $found = true;
                 event(new SubscriberPasswordResetEvent($email));
