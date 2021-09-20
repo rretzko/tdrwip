@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Registrants;
 
 use App\Http\Controllers\Controller;
 use App\Models\Application;
+use App\Models\County;
 use App\Models\Estimateform;
 use App\Models\Eventversion;
 use App\Models\Registrant;
@@ -38,6 +39,8 @@ class RegistrantEstimateFormController extends Controller
         $rbi = new RegistrantsByInstrumentation;
         $registrantsbyinstrumentation = $rbi->getArray();
 
+        $sendto = $this->sendTo($school->county_id);
+
         //ex. pages.pdfs.applications.12.64.application
         $pdf = PDF::loadView('pdfs.estimateforms.'//9.65.2021_22_application',
             . $eventversion->event->id
@@ -45,7 +48,7 @@ class RegistrantEstimateFormController extends Controller
             . $eventversion->id
             . '.estimateform',
             //.applicationTest',
-            compact('eventversion', 'teacher', 'school', 'me', 'registrants', 'registrantsbyinstrumentation'));
+            compact('eventversion', 'teacher', 'school', 'me', 'registrants', 'registrantsbyinstrumentation', 'sendto'));
 
         //log application printing
         Estimateform::create([
@@ -65,12 +68,43 @@ class RegistrantEstimateFormController extends Controller
     {
         $registrantsbyinstrumentation = new RegistrantsByInstrumentation;
 
+        $counties = ($eventversion->id === 65) ? County::all() : collect();
+
+        $school = School::find(Userconfig::getValue('school', auth()->id()));
+
         return view('registrants.estimateforms.'.$eventversion->event->id.'.'.$eventversion->id.'.show',
         [
             'eventversion' => $eventversion,
             'registrants' => Registrants::registered(),
             'registrantsbyinstrumentation' => $registrantsbyinstrumentation->getArray(),
+            'school' => $school,
+            'counties' => $counties,
+            'updated' => false,
+            'sendto' => $this->sendTo($school->county_id),
         ]);
+    }
+
+    public function update(Request $request)
+    {
+        $registrantsbyinstrumentation = new RegistrantsByInstrumentation;
+
+        $school = School::find(Userconfig::getValue('school', auth()->id()));
+        $school->county_id = $request['county_id'];
+        $school->save();
+
+        $eventversion = Eventversion::find(Userconfig::getValue('eventversion', auth()->id()));
+        $counties = ($eventversion->id === 65) ? County::all() : collect();
+
+        return view('registrants.estimateforms.'.$eventversion->event->id.'.'.$eventversion->id.'.show',
+            [
+                'eventversion' => $eventversion,
+                'registrants' => Registrants::registered(),
+                'registrantsbyinstrumentation' => $registrantsbyinstrumentation->getArray(),
+                'school' => $school->fresh(),
+                'counties' => $counties,
+                'updated' => true,
+                'sendto' => $this->sendTo($school->county_id),
+            ]);
     }
 
 
@@ -92,6 +126,40 @@ class RegistrantEstimateFormController extends Controller
             . '.pdf';
     }
 
+    private function registrationManagers()
+    {
+        return [
+            [
+                'name' => 'BARBARA RETZKO',
+                'address01' => '45 Dayton Crescent',
+                'address02' => 'Bernardsville, NJ 07924',
+                'address03' => '',
+                'email' => '<a href="mailto:barbararetzko@hotmail.com" class="text-blue-600">Barbararetzko@hotmail.com</a>'
+            ],
+            [
+                'name' => 'CHERYL BREITZMAN',
+                'address01' => '332 N. Leipzig Avenue',
+                'address02' => 'Egg Harbor City, NJ 08215',
+                'address03' => '',
+                'email' => '<a href="mailto:cherylbreitzman@gmail.com" class="text-blue-600">Cherylbreitzman@gmail.com</a>',
+            ],
+            [
+                'name' => 'KRISTEN MARKOWSKI',
+                'address01' => '562 Parsippany Blvd',
+                'address02' => 'Booton, NJ 07005',
+                'address03' => '',
+                'email' => '<a href="mailto:kristen.markowski@montville.net" class="text-blue-600">Kristen.markowski@montville.net</a>',
+            ],
+            [
+                'name' => 'VIRAJ LAL',
+                'address01' => 'NEWARK ACADEMY',
+                'address02' => '91 South Orange Avenue',
+                'address03' => 'Livingston, NJ 07039',
+                'email' => '<a href="mailto:vlal@newarka.edu" class="text-blue-600">Vlal@newarka.edu</a>',
+            ],
+        ];
+    }
+
     private function pathApplication(Registrant $registrant)
     {
         return $path='applications/'
@@ -99,5 +167,29 @@ class RegistrantEstimateFormController extends Controller
             .'/'
             .$registrant->eventversion->id
             .'/application';
+    }
+
+    private function sendTo($county_id)
+    {
+        $registrationmanagers = $this->registrationManagers();
+
+        //counties by registration manager
+        $rm_counties = [
+            0 => [1,6,7,9,15,17,19],
+            1 => [4,11,12,16,20],
+            2 => [5,8,10,13,21],
+            3 => [2,3,14,18],
+        ];
+
+        foreach($rm_counties AS $rm => $counties){
+
+            if(in_array($county_id, $counties)){
+
+                return $registrationmanagers[$rm];
+            }
+        }
+
+        //default
+        return $registrationmanagers[0];
     }
 }

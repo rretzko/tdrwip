@@ -15,6 +15,36 @@
 </head>
 <body style="border: 1px solid white; padding: 1rem; ">
 
+{{-- SEND TO INSTRUCTIONS --}}
+{{-- SEND TO --}}
+<table>
+    <tr>
+        <td>The pages below should be sent to: </td>
+    </tr>
+    <tr>
+        <td>
+            <b>{{ $sendto['name'] }}</b>
+        </td>
+    </tr>
+    <tr>
+        <td>{{ $sendto['address01'] }}</td>
+    </tr>
+    <tr>
+        <td>{{ $sendto['address02'] }}</td>
+    </tr>
+    @if(strlen($sendto['address03']))
+        <tr>
+            <td>{{ $sendto['address03'] }}</td>
+        </tr>
+    @endif
+    <tr>
+        <td>{!! $sendto['email'] !!}</td>
+    </tr>
+</table>
+
+{{-- PAGE BREAK --}}
+<div class="page_break"></div>
+
 {{-- PAGE HEADER --}}
 <table>
     <tr>

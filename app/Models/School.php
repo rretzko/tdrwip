@@ -14,7 +14,7 @@ class School extends Model
 {
     use HasFactory,MailingAddressTrait,SenioryearTrait, SoftDeletes;
 
-    protected $fillable = ['name', 'address01', 'address02', 'city', 'geostate_id', 'postalcode'];
+    protected $fillable = ['name', 'address01', 'address02', 'city', 'county_id', 'geostate_id', 'postalcode'];
 
     public function ensembles()
     {

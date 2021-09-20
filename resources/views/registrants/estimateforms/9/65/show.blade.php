@@ -66,6 +66,33 @@
                                 </div>
                             </header>
 
+                            {{-- COUNTY SELECTION for NJ All-State --}}
+                            <div class="border border-black p-2 bg-gray-200">
+                                @if($counties->count())
+                                    <form method="post" action="{{ route('school.county') }}" >
+                                        @csrf
+                                        The county for <b>{{ $school->shortName }}</b> is:
+                                        <select name="county_id" class="@if($updated) bg-green-100 @endif">
+                                            @foreach($counties AS $county)
+                                                <option value="{{ $county->id }}"
+                                                    @if($school->county_id === $county->id) SELECTED @endif
+                                                >{{ $county->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <input class="ml-2 bg-blue-100 px-4" type="submit" name="submit" id="submit" value="Update" >
+                                    </form>
+
+                                    <div>
+                                        Send this pdf to:
+                                        <div><b>{{ $sendto['name'] }}</b></div>
+                                        <div>{{ $sendto['address01'] }}</div>
+                                        <div>{{ $sendto['address02'] }}</div>
+                                        @if(strlen($sendto['address03']))<div>{{ $sendto['address03'] }}</div> @endif
+                                        <div>{!! $sendto['email'] !!}</div>
+                                    </div>
+                                @endif
+                            </div>
+
                             {{-- REGISTRANT ROSTER --}}
                             <div class="flex flex-col">
 
