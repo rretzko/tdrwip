@@ -62,12 +62,27 @@ class Siteadministrator extends Component
 
     public function transferStudents()
     {
+
+        //2021-09-21: Add Casey Shields membership, delete second profile for Casey Shields
         //2021-09-20: To Natalie Cardillo FROM Steven Bourque
-        //2021-09-21: Add Casey Shields membership
+
+
 
         //self::transferToNewTeacher();
         //self::addToNewTeacher();
-        self::addMembership();
+        //self::addMembership();
+        $this->deleteDirectorWithPrejudice();
+
+        //2021-09-20
+        County::create([
+            'descr' => 'Unknown',
+        ]);
+
+        DB::table('schools')
+            ->where('county_id', '=', 1)
+            ->update([
+                'county_id' => 22,
+            ]);
 
         //2021-09-13
         /*
@@ -288,6 +303,103 @@ class Siteadministrator extends Component
                     'updated_at' => '2021-09-21 08:40:40',
                 ]);
         }
+
+    }
+
+    /**
+     * Francis,Maureen mfrancismfrancis567 8712
+     */
+    private function deleteDirectorWithPrejudice()
+    {
+        $id_user = 8712;
+
+        DB::table('userconfigs')
+            ->where('user_id', '=',$id_user)
+            ->delete();
+
+        DB::table('tenures')
+            ->where('user_id', '=',$id_user)
+            ->delete();
+
+        DB::table('teachers')
+            ->where('user_id', '=',$id_user)
+            ->delete();
+
+        DB::table('signatures')
+            ->where('confirmed', '=',$id_user)
+            ->delete();
+
+        DB::table('student_teacher')
+            ->where('teacher_user_id', '=',$id_user)
+            ->delete();
+
+        DB::table('subscriberemails')
+            ->where('user_id', '=',$id_user)
+            ->delete();
+
+        DB::table('school_user')
+            ->where('user_id', '=',$id_user)
+            ->delete();
+
+        DB::table('roles')
+            ->where('user_id', '=',$id_user)
+            ->delete();
+
+        DB::table('phones')
+            ->where('user_id', '=',$id_user)
+            ->delete();
+
+        DB::table('people')
+            ->where('user_id', '=',$id_user)
+            ->delete();
+
+        DB::table('payments')
+            ->where('updated_by', '=',$id_user)
+            ->delete();
+
+        DB::table('organization_user')
+            ->where('user_id', '=',$id_user)
+            ->delete();
+
+        DB::table('obligations')
+            ->where('user_id', '=',$id_user)
+            ->delete();
+
+        DB::table('memberships')
+            ->where('user_id', '=',$id_user)
+            ->delete();
+
+        DB::table('instrumentation_user')
+            ->where('user_id', '=',$id_user)
+            ->delete();
+
+        DB::table('guardian_student')
+            ->where('guardian_user_id', '=',$id_user)
+            ->delete();
+
+        DB::table('guardians')
+            ->where('user_id', '=',$id_user)
+            ->delete();
+
+        DB::table('gradetype_school_user')
+            ->where('user_id', '=',$id_user)
+            ->delete();
+
+        DB::table('eventversionteacherconfigs')
+            ->where('user_id', '=',$id_user)
+            ->delete();
+
+        DB::table('applications')
+            ->where('updated_by', '=',$id_user)
+            ->delete();
+
+        DB::table('addresses')
+            ->where('user_id', '=',$id_user)
+            ->delete();
+
+        DB::table('users')
+            ->where('id', '=',$id_user)
+            ->delete();
 
     }
 
