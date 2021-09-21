@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Siteadministration;
 
+use App\Models\County;
 use App\Models\Fileuploadfolder;
 use App\Models\Membership;
 use App\Models\Person;
@@ -71,7 +72,7 @@ class Siteadministrator extends Component
         //self::transferToNewTeacher();
         //self::addToNewTeacher();
         //self::addMembership();
-        $this->deleteDirectorWithPrejudice();
+        //$this->deleteDirectorWithPrejudice();
 
         //2021-09-20
         County::create([
