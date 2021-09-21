@@ -63,8 +63,11 @@ class Siteadministrator extends Component
     public function transferStudents()
     {
         //2021-09-20: To Natalie Cardillo FROM Steven Bourque
+        //2021-09-21: Add Casey Shields membership
+
         //self::transferToNewTeacher();
-        //self::addMembership();
+        //self::addToNewTeacher();
+        self::addMembership();
 
         //2021-09-13
         /*
@@ -232,14 +235,16 @@ class Siteadministrator extends Component
 
     private function addMembership()
     {
+        $allshore = ['id' => 9,'label' => 'allshore'];
         $sjcda = ['id' => 8,'label' => 'sjcda'];
         $njmea = ['id' => 3,'label' => 'njmea'];
         $cardilloNatalie = 8525;
+        $shieldsCasey = 8708;
 
         //add domain owner to organization
         Membership::updateOrCreate(
             [
-                'user_id' => $cardilloNatalie,
+                'user_id' => $shieldsCasey,
                 'organization_id' => $njmea['id'],
 
             ],
@@ -251,6 +256,39 @@ class Siteadministrator extends Component
                 'subject' => 'chorus',
             ]
         );
+
+        Membership::updateOrCreate(
+            [
+                'user_id' => $shieldsCasey,
+                'organization_id' => $allshore['id'],
+
+            ],
+            [
+                'membershiptype_id' => 1,
+                'membership_id' => $allshore['label'],
+                'expiration' => '2021-09-09',
+                'grade_levels' => 'Secondary',
+                'subject' => 'chorus',
+            ]
+        );
+    }
+
+    private function addToNewTeacher()
+    {
+        $studentids = [1604,2160]; //howell high school
+        $shieldsCasey = 8708;
+
+        foreach($studentids AS $id){
+            DB::table('student_teacher')
+                ->insert([
+                    'student_user_id' => $id,
+                    'teacher_user_id' => $shieldsCasey,
+                    'studenttype_id' => 7, //active
+                    'created_at' => '2021-09-21 08:40:40',
+                    'updated_at' => '2021-09-21 08:40:40',
+                ]);
+        }
+
     }
 
     private function transferToNewTeacher()
