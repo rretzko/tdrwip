@@ -6,7 +6,11 @@
 
 <div class="border border-black {{ ($payer && $payer->id) ? 'block' : 'hidden'}}" >
     <header class="bg-gray-200 text-center font-bold">Add Payment</header>
-    <form method="post" action="{{ route('registrant.payments.store') }}" class="px-2 pb-3">
+    @if(config('app.url') === 'http://localhost')
+        <form method="post" action="{{ route('registrant.payments.store') }}" class="px-2 pb-3">
+    @else
+        <form method="post" action="https://thedirectorsroom.com/registrant/payment/new" class="px-2 pb-3">
+    @endif
 
         @csrf
 
