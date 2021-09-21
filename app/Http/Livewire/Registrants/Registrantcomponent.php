@@ -21,6 +21,7 @@ class Registrantcomponent extends Component
     public $membershipmanagers = [];
     public $perpage = 0; //pagination
     public $population = ''; //ALL members count
+    public $schoolcurrent=0;
     public $search = '';
     public $selectall = false;
     public $selected = [];
@@ -44,6 +45,7 @@ class Registrantcomponent extends Component
 
     public function mount()
     {
+        $this->schoolcurrent = Userconfig::getValue('school',auth()->id());
         $this->event = Eventversion::find(Userconfig::getValue('eventversion', auth()->id()));
         $this->perpage = Userconfig::getValue('pagination', auth()->id());
         $this->population = Userconfig::getValue('registrantpopulation', auth()->id());
@@ -54,7 +56,14 @@ class Registrantcomponent extends Component
         return view('livewire.registrants.registrantcomponent',[
             'registrants' => $this->registrants(),
             'schoolregistrationstatus' => Schoolregistrationstatus::horizontalBarChart(),
+            'schools' => $this->schools(),
         ]);
+    }
+
+    public function changeSchool($value)
+    {
+        Userconfig::setValue('school', auth()->id(), $value);
+        $this->schoolcurrent = $value;
     }
 
     public function registrantstatus(Registrant $registrant)
@@ -158,5 +167,9 @@ class Registrantcomponent extends Component
 
     }
 
+    private function schools()
+    {
+        return (auth()->user()->schools) ?: collect();
+    }
 
 }

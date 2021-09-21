@@ -50,7 +50,7 @@ class Teacher extends Model
     /**
      * @return Students of $this
      */
-    public function myStudents($search = '', $first='', $instrumentation_id=0, $classof=0)
+    public function myStudents($search = '', $first='', $instrumentation_id=0, $classof=0, $school=false)
     {
         $query = Student::with('person', 'person.user.instrumentations','person.ensembles')
             ->whereHas('teachers', function($query){
@@ -75,6 +75,14 @@ class Teacher extends Model
         if($classof){
 
             $query->where('classof', '=', $classof);
+        }
+
+        if($school){
+            $school_id = Userconfig::getValue('school', auth()->id());
+
+            $query->whereHas('person.user.schools', function($query) use ($school_id){
+               return $query->where('school_id', '=', $school_id);
+            });
         }
 
         return $query->get()

@@ -41,6 +41,12 @@
                 <x-buttons.button-add toggle="showstudentmodal" />
             </div>
 
+            {{-- School Selector --}}
+            @if($schools->count())
+                <x-inputs.schoolselector currentid="{{ $schoolcurrent }}" :schools="$schools" />
+            @endif
+
+
             {{-- beginning of tailwindui table --}}
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 ">
                 <div class="py-2 align-middle inline-block min-w sm:px-6 lg:px-8">

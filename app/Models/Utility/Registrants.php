@@ -180,8 +180,13 @@ class Registrants extends Model
         AND d.teacher_user_id=28
         ORDER BY fullNameAlpha
          */
+        $school_id = Userconfig::getValue('school', auth()->id());
+
         return Student::with('person','person.user.schools','registrants')
             ->whereIn('classof', $classofs)
+            ->whereHas('person.user.schools', function(Builder $query) use ($school_id) {
+                $query->where('school_id','=' , $school_id);
+            })
             ->whereHas('teachers', function(Builder $query){
                 $query->where('teacher_user_id','=' , auth()->id());
             })

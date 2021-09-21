@@ -61,7 +61,7 @@
                                         {{ auth()->user()->person->fullName }}
                                     </div>
                                     <div class=" text-center">
-                                        {{ auth()->user()->schools->first()->name }}
+                                        {{ $school->shortName }}
                                     </div>
                                 </div>
                             </header>

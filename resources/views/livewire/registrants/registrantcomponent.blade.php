@@ -47,6 +47,11 @@
                     {{ $event->name }}  Registration Status Roster
                 </div>
 
+                {{-- SCHOOL SELECTOR --}}
+                @if($schools->count())
+                    <x-inputs.schoolselector currentid="{{ $schoolcurrent }}" :schools="$schools" />
+                @endif
+
                 {{-- beginning of tailwindui table --}}
 
                 <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 ">

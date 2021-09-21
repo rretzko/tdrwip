@@ -31,6 +31,7 @@ class Studentscomponent extends Component
     public $instrumentations = [];
     public $perpage = 0;
     public $population = 'all';
+    public $schoolcurrent = 1;
     public $search = '';
     public $selectall = false;
     public $selected = [];
@@ -52,6 +53,7 @@ class Studentscomponent extends Component
 
     public function mount()
     {
+        $this->schoolcurrent = Userconfig::getValue('school', auth()->id());
         $this->perpage = Userconfig::getValue('pagination', auth()->id());
         $this->population = Userconfig::getValue('studentpopulation', auth()->id());
         $this->tab = Userconfig::getValue('studenttab', auth()->id());
@@ -64,7 +66,14 @@ class Studentscomponent extends Component
                 'students' => $this->students(),
                 'sortedclassofs' => $this->classofsArray(),
                 'sortedinstrumentations' => $this->instrumentationsArray(),
+                'schools' => $this->schools(),
             ]);
+    }
+
+    public function changeSchool($value)
+    {
+        Userconfig::setValue('school', auth()->id(), $value);
+        $this->schoolcurrent = $value;
     }
 
     public function deleteSelected()
@@ -260,6 +269,11 @@ class Studentscomponent extends Component
         return $a;
     }
 
+    private function schools()
+    {
+        return (auth()->user()->schools) ?: collect();
+    }
+
     private function students()
     {
         //pull this teacher's students
@@ -267,7 +281,8 @@ class Studentscomponent extends Component
             $this->search,
             $this->filters['first'],
             $this->filters['instrumentation_id'],
-            $this->filters['classof']
+            $this->filters['classof'],
+            true,
         );
 
         //filter and sort student population

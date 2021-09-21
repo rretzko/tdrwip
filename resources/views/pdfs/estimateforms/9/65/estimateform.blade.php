@@ -58,7 +58,7 @@
                 {{ $me->person->fullName }}
             </div>
             <div>
-                {{ $me->schools->first()->name }}
+                {{ $school->shortName }}
             </div>
         </td>
     </tr>
