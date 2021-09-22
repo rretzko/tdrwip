@@ -67,9 +67,9 @@ class Siteadministrator extends Component
         //2021-09-21: Add Casey Shields membership, delete second profile for Casey Shields
         //2021-09-20: To Natalie Cardillo FROM Steven Bourque
 
-        //self::transferToNewTeacher();
+        self::transferToNewTeacher();
         //self::addToNewTeacher();
-        //self::addMembership();
+        self::addMembership();
         //$this->deleteDirectorWithPrejudice();
 
         //2021-09-20
@@ -253,13 +253,16 @@ class Siteadministrator extends Component
         $sjcda = ['id' => 8,'label' => 'sjcda'];
         $njmea = ['id' => 3,'label' => 'njmea'];
         $cardilloNatalie = 8525;
+        $johnsonCaela = 8496;
         $shieldsCasey = 8708;
         $scireCiera = 8495;
+
+        $user_id = $johnsonCaela;
 
         //add domain owner to organization
         Membership::updateOrCreate(
             [
-                'user_id' => $scireCiera,
+                'user_id' => $user_id,
                 'organization_id' => $njmea['id'],
 
             ],
@@ -274,13 +277,13 @@ class Siteadministrator extends Component
 
         Membership::updateOrCreate(
             [
-                'user_id' => $shieldsCasey,
-                'organization_id' => $allshore['id'],
+                'user_id' => $user_id,
+                'organization_id' => $sjcda['id'],
 
             ],
             [
                 'membershiptype_id' => 1,
-                'membership_id' => $allshore['label'],
+                'membership_id' => $sjcda['label'],
                 'expiration' => '2021-09-09',
                 'grade_levels' => 'Secondary',
                 'subject' => 'chorus',
