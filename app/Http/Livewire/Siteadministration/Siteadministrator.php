@@ -69,7 +69,7 @@ class Siteadministrator extends Component
 
         //self::transferToNewTeacher();
         //self::addToNewTeacher();
-        self::addMembership();
+        //self::addMembership();
         //$this->deleteDirectorWithPrejudice();
 
         //2021-09-20
