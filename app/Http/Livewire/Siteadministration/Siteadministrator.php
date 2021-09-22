@@ -413,21 +413,37 @@ class Siteadministrator extends Component
     {
         $beadleFromRetzko = [3492,1752,2676,3519,524,840];
         $cardilloFromBourque = [1085,2996,3395,3212,2849,2274];
+        $johnsonFromKnight = [7539,7538,1751,1044];
+        $johnsonFromTkachenko = [1155,2482,2639,2847,472,7488,3079,813,1657,7949,711,990,919,1921,3167,1005,2284,1137,7489,585,7512,7490,7491,2352,1858,2868];
 
         $beadleCarol = 8454;
+        $johnsonCaela = 8496;
+        $knightHope = 164;
         $natalieCarillo = 8525;
         $retzkoBarbara = 45;
         $stevenBourque = 386;
+        $tkachenkoSergi = 411;
 
-        $studentids = $beadleFromRetzko;
-        $from_teacher_user_id = $retzkoBarbara;
-        $to_teacher_user_id = $beadleCarol;
+        $studentids = $johnsonFromKnight;
+        $from_teacher_user_id = $knightHope;
+        $to_teacher_user_id = $johnsonCaela;
 
         foreach($studentids AS $id){
             DB::table('student_teacher')
                 ->where('student_user_id', '=', $id)
                 ->where('teacher_user_id', '=', $from_teacher_user_id)
                 ->update(['teacher_user_id' => $to_teacher_user_id]);
+        }
+
+        $studentids2 = $johnsonFromTkachenko;
+        $from_teacher_user_id2 = $tkachenkoSergi;
+        $to_teacher_user_id2 = $johnsonCaela;
+
+        foreach($studentids2 AS $id){
+            DB::table('student_teacher')
+                ->where('student_user_id', '=', $id)
+                ->where('teacher_user_id', '=', $from_teacher_user_id2)
+                ->update(['teacher_user_id' => $to_teacher_user_id2]);
         }
 
     }
