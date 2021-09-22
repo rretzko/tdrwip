@@ -67,9 +67,9 @@ class Siteadministrator extends Component
         //2021-09-21: Add Casey Shields membership, delete second profile for Casey Shields
         //2021-09-20: To Natalie Cardillo FROM Steven Bourque
 
-        self::transferToNewTeacher();
+        //self::transferToNewTeacher();
         //self::addToNewTeacher();
-        self::addMembership();
+        //self::addMembership();
         //$this->deleteDirectorWithPrejudice();
 
         //2021-09-20
