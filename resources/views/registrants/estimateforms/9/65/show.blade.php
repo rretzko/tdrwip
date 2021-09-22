@@ -69,7 +69,11 @@
                             {{-- COUNTY SELECTION for NJ All-State --}}
                             <div class="border border-black p-2 bg-gray-200">
                                 @if($counties->count())
-                                    <form method="post" action="{{ route('school.county') }}" >
+                                    @if(config('app.url') === 'http://localhost')
+                                        <form method="post" action="{{ route('school.county') }}" >
+                                    @else
+                                        <form method="post" action="https://thedirectorsroom.com/registrant/estimateform/county" >
+                                    @endif
                                         @csrf
                                         The county for <b>{{ $school->shortName }}</b> is:
                                         <select name="county_id" class="@if($updated) bg-green-100 @endif">
