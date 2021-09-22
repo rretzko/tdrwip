@@ -67,23 +67,21 @@ class Siteadministrator extends Component
         //2021-09-21: Add Casey Shields membership, delete second profile for Casey Shields
         //2021-09-20: To Natalie Cardillo FROM Steven Bourque
 
-
-
         //self::transferToNewTeacher();
         //self::addToNewTeacher();
-        //self::addMembership();
+        self::addMembership();
         //$this->deleteDirectorWithPrejudice();
 
         //2021-09-20
-        County::create([
-            'name' => 'Unknown',
-        ]);
+        //County::create([
+        //    'name' => 'Unknown',
+        //]);
 
-        DB::table('schools')
-            ->where('county_id', '=', 1)
-            ->update([
-                'county_id' => 22,
-            ]);
+        //DB::table('schools')
+        //    ->where('county_id', '=', 1)
+        //    ->update([
+        //        'county_id' => 22,
+        //    ]);
 
         //2021-09-13
         /*
@@ -256,11 +254,12 @@ class Siteadministrator extends Component
         $njmea = ['id' => 3,'label' => 'njmea'];
         $cardilloNatalie = 8525;
         $shieldsCasey = 8708;
+        $scireCiera = 8495;
 
         //add domain owner to organization
         Membership::updateOrCreate(
             [
-                'user_id' => $shieldsCasey,
+                'user_id' => $scireCiera,
                 'organization_id' => $njmea['id'],
 
             ],
