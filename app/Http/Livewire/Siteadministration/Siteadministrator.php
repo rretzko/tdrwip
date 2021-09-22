@@ -67,7 +67,7 @@ class Siteadministrator extends Component
         //2021-09-21: Add Casey Shields membership, delete second profile for Casey Shields
         //2021-09-20: To Natalie Cardillo FROM Steven Bourque
 
-        //self::transferToNewTeacher();
+        self::transferToNewTeacher();
         //self::addToNewTeacher();
         //self::addMembership();
         //$this->deleteDirectorWithPrejudice();
@@ -290,14 +290,20 @@ class Siteadministrator extends Component
 
     private function addToNewTeacher()
     {
-        $studentids = [1604,2160]; //howell high school
+        $howellhs = [1604,2160]; //howell high school
+        $ridgehs = [3492,1752,2676,3519,524,840];
+
         $shieldsCasey = 8708;
+        $beadleCarol = 8454;
+
+        $studentids = $ridgehs;
+        $teacher_user_id = $beadleCarol;
 
         foreach($studentids AS $id){
             DB::table('student_teacher')
                 ->insert([
                     'student_user_id' => $id,
-                    'teacher_user_id' => $shieldsCasey,
+                    'teacher_user_id' => $teacher_user_id,
                     'studenttype_id' => 7, //active
                     'created_at' => '2021-09-21 08:40:40',
                     'updated_at' => '2021-09-21 08:40:40',
@@ -405,15 +411,23 @@ class Siteadministrator extends Component
 
     private function transferToNewTeacher()
     {
+        $beadleFromRetzko = [3492,1752,2676,3519,524,840];
         $cardilloFromBourque = [1085,2996,3395,3212,2849,2274];
+
+        $beadleCarol = 8454;
         $natalieCarillo = 8525;
+        $retzkoBarbara = 45;
         $stevenBourque = 386;
 
-        foreach($cardilloFromBourque AS $id){
+        $studentids = $beadleFromRetzko;
+        $from_teacher_user_id = $retzkoBarbara;
+        $to_teacher_user_id = $beadleCarol;
+
+        foreach($studentids AS $id){
             DB::table('student_teacher')
                 ->where('student_user_id', '=', $id)
-                ->where('teacher_user_id', '=', $stevenBourque)
-                ->update(['teacher_user_id' => $natalieCarillo]);
+                ->where('teacher_user_id', '=', $from_teacher_user_id)
+                ->update(['teacher_user_id' => $to_teacher_user_id]);
         }
 
     }
