@@ -76,7 +76,7 @@ class Siteadministrator extends Component
 
         //2021-09-20
         County::create([
-            'descr' => 'Unknown',
+            'name' => 'Unknown',
         ]);
 
         DB::table('schools')
