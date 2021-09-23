@@ -107,10 +107,12 @@ class Profilecomponent extends Component
         }
 
         //classofs starting with the $startyear of user/teacher for current school
+        //WORKAROUND: DEFAULT TO PREVIOUS YEAR IF NO startyear FOUND
+        /** @todo  Tenure::startyear should default to previous year upon School creation */
         $startyear = Tenure::where('user_id', auth()->id())
             ->where('school_id', Userconfig::getValue('school', auth()->id()))
             ->first()
-            ->value('startyear');
+            ->value('startyear') ?: (date('Y')-1);
 
         for($i = ($this->senioryear() - 1); $i >= $startyear; $i--){
 
