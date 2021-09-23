@@ -19,6 +19,21 @@
                     Welcome email
                 </a>
             </li>
+            <li>
+                <b><u>Amended Files</u></b>
+                <ul>
+                    <li>
+                        <a href="../assets/docs/1.Director's Packet NJASC Sept 22 2021.pdf" class="text-blue-700" target="_BLANK">
+                            Directors Packet
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../assets/docs/3. Student Audition Requirements Sept 21 2021.pdf" class="text-blue-700" target="_BLANK">
+                            Student Audition Requirements
+                        </a>
+                    </li>
+                </ul>
+            </li>
         </ul>
     </div>
 </div>
