@@ -40,12 +40,12 @@ class Address extends Model
     {
         return $this->hasMany(User::class);
     }
-    
+
     public function resolveNullAddressFields($user_id)
     {
         $address = $this->where('user_id', $user_id)->first();
 
-        if(is_null($address)){
+        if($user_id && is_null($address)){
             Address::create([
                 'user_id' => $user_id,
                 'address01' => '',
