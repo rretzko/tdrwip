@@ -33,7 +33,7 @@ class Homeaddresscomponent extends Component
 
     public function mount()
     {
-        $address = $this->student->person->user->address ?? new Address;
+        $address = $this->student->person->user->address ?? $this->resolveNullAddressFields();
         if ($address && $address->user_id){
             $this->address01 = $address->address01 ?? '';
             $this->address02 = $address->address02 ?? '';
@@ -74,5 +74,13 @@ class Homeaddresscomponent extends Component
         }
 
         return $a;
+    }
+
+    private function resolveNullAddressFields()
+    {
+        $address = new Address();
+        $address->resolveNullAddressFields($this->student->user_id);
+
+        return $this->student->person->address;
     }
 }

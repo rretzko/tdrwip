@@ -73,6 +73,7 @@ class Profilecomponent extends Component
             $person->first = $this->first;
             $person->middle = $this->middle;
             $person->last = $this->last;
+            $person->pronoun_id = $this->pronoun_id;
 
             $person->save();
         }
