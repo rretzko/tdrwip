@@ -18,7 +18,7 @@
 
                 <option value="communication">Email & Phone</option>
 
-                <option value="homeaddress">Home Address</option>
+                 <option value="homeaddress">Home Address</option>
 
                 <option value="guardian">Parent & Guardian</option>
             @endif
@@ -127,7 +127,7 @@
                             <span aria-hidden="true" class="tabsettings @if($tab === 'communication') tabon @endif"></span>
                         </div>
                     </a>
-
+<!-- {{--
                     <a href="#"
                         wire:click="$set('tab','homeaddress')"
                         class="tab text-gray-500 hover:text-gray-700 group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-4 text-sm font-medium text-center hover:bg-gray-50 focus:z-10"
@@ -143,7 +143,7 @@
                             <span aria-hidden="true" class="tabsettings @if($tab === 'homeaddress') tabon @endif"></span>
                         </div>
                     </a>
-
+--}} -->
                     <a href="#"
                         wire:click="$set('tab','guardian')"
                         class="tab text-gray-500 hover:text-gray-700 group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-4 text-sm font-medium text-center hover:bg-gray-50 focus:z-10"
