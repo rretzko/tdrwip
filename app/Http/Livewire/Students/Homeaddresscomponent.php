@@ -35,11 +35,11 @@ class Homeaddresscomponent extends Component
     {
         $address = $this->student->person->user->address ?? new Address;
         if ($address && $address->user_id){
-            $this->address01 = $address->address01;
-            $this->address02 = $address->address02;
-            $this->city = $address->city;
-            $this->geostate_id = $address->geostate_id;
-            $this->postalcode = $address->postalcode;
+            $this->address01 = $address->address01 ?? '';
+            $this->address02 = $address->address02 ?? '';
+            $this->city = $address->city ?? '';
+            $this->geostate_id = $address->geostate_id ?? 37;
+            $this->postalcode = $address->postalcode ?? '';
         }
 
         $this->geostates = $this->geostates();
