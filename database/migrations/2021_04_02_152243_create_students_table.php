@@ -15,7 +15,7 @@ class CreateStudentsTable extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained();
-            $table->smallInteger('classof')->default(0);
+            $table->smallInteger('classof')->default(10);
             $table->integer('height')->default(30);
             $table->date('birthday')->nullable();
             $table->foreignId('shirtsize_id')->default(1)->constrained();
