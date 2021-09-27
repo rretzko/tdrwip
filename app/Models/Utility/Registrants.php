@@ -116,6 +116,11 @@ class Registrants extends Model
             }
         }
 
+        /**
+         * Workaround to ensure that newly created registrant objects are loaded into the student models
+         */
+        $students = self::eligibleStudents($search, $classofs);
+
         return $students;
     }
 
