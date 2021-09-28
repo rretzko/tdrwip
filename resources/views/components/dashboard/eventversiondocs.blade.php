@@ -28,7 +28,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="../assets/docs/3. Student Audition Requirements Sept 21 2021.pdf" class="text-blue-700" target="_BLANK">
+                        <a href="../assets/docs/3. Student Audition Requirements Sept 28 2021.pdf" class="text-blue-700" target="_BLANK">
                             Student Audition Requirements
                         </a>
                     </li>
