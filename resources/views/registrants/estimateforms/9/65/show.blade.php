@@ -35,7 +35,11 @@
 
                             {{-- BUTTON TO DOWNLOAD PDF --}}
                             <div class="bg-blue-400 text-xs pt-3 border rounded-2xl text-white px-2">
-                                <a href="{{ route('registrant.estimateform.download', ['eventversion' => $eventversion]) }}">
+                                @if(config('app.url') === 'http://localhost')
+                                    <a href="{{ route('registrant.estimateform.download', ['eventversion' => $eventversion]) }}">
+                                @else
+                                    <a href="https://thedirectorsroom.com/registrant/estimateform/{{ $eventversion->id }}/download">
+                                @endif
                                     Download Estimate Form
                                 </a>
                             </div>
