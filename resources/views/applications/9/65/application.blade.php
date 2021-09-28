@@ -176,8 +176,8 @@
                                                 <li>
                                                     I, <b>{{ $registrant->student->person->fullName }}</b>, agree to accept the decision of the
                                                     judges and conductors as binding.  If selected, I will accept membership in the {{ $eventversion->name }}
-                                                    for which I have auditioned.  I also agree to pay $80.00 as a participation fee
-                                                    for music and rehearsal tracks.  I understand that membership in this organization may be
+                                                    for which I have auditioned.  I also agree to pay the participation fee - $80.00
+                                                    for Mixed Chorus and $100.00 for Treble Chorus - for the ensemble into which I am placed.  I understand that membership in this organization may be
                                                     terminated by the endorsers of my application if I fail to comply with the rules set forth or if
                                                     I fail to learn my music.
                                                 </li>
