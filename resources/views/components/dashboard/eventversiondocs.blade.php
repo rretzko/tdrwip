@@ -23,7 +23,7 @@
                 <b><u>Amended Files</u></b>
                 <ul>
                     <li>
-                        <a href="../assets/docs/1.Director's Packet NJASC Sept 22 2021.pdf" class="text-blue-700" target="_BLANK">
+                        <a href="../assets/docs/1.Director's Packet NJASC Sept 28 2021.pdf" class="text-blue-700" target="_BLANK">
                             Directors Packet
                         </a>
                     </li>
