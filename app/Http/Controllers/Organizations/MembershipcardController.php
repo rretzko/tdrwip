@@ -17,7 +17,7 @@ class MembershipcardController extends Controller
         $data = $this->validateRequest($request);
 
         //store membership card
-        $path = $request->file('membershipcard')->store('membershipcards');
+        //$path = $request->file('membershipcard')->store('membershipcards');
 
         Membership::create([
             'user_id' => auth()->id(),
@@ -27,8 +27,10 @@ class MembershipcardController extends Controller
             'expiration' => $data['expiration'],
             'grade_levels' => $data['grade_levels'],
             'subjects' => $data['subjects'],
-            'membership_card_path' => $path,
+            'membership_card_path' => '',//$path,
         ]);
+
+        return back();
 
     }
 
