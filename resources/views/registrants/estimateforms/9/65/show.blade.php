@@ -109,9 +109,9 @@
                                     {{ $eventversion->eventversionconfigs->max_count }} STUDENTS MAXIMUM
                                 </h2>
 
-                                <h3 class="text-center w-full border-b">
-                                   YOUR REGISTERED STUDENTS WILL BE AUTOMATICALLY DISPLAYED BELOW<br />
-                                    HANDWRITTEN ENTRIES WILL NOT BE ACCEPTED
+                                <h3 class="text-center w-full border-b" style="color: darkred; font-weight: bold;">
+                                   YOUR REGISTERED STUDENTS WILL BE AUTOMATICALLY DISPLAYED BELOW.<br />
+                                    HANDWRITTEN ENTRIES WILL <u>NOT</u> BE ACCEPTED.
                                 </h3>
 
                                 {{-- ROSTER TABLE --}}
