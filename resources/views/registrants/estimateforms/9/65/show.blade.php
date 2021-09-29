@@ -109,6 +109,11 @@
                                     {{ $eventversion->eventversionconfigs->max_count }} STUDENTS MAXIMUM
                                 </h2>
 
+                                <h3 class="text-center w-full border-b">
+                                   YOUR REGISTERED STUDENTS WILL BE AUTOMATICALLY DISPLAYED BELOW<br />
+                                    HANDWRITTEN ENTRIES WILL NOT BE ACCEPTED
+                                </h3>
+
                                 {{-- ROSTER TABLE --}}
                                 <style>
                                     table{border-collapse: collapse;}
