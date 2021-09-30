@@ -54,14 +54,6 @@ class CreateNewUser implements CreatesNewUsers
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
         ])->validate();
 
-        //test for duplicate email
-        foreach(Subscriberemail::all() AS $email){
-            if(strtolower($email->email) === strtolower($clean['email'])){
-
-                return redirect('register');
-            }
-        }
-
         $user = $this->createUser($input);
 
         $this->createPerson($input, $user);
