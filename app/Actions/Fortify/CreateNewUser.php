@@ -15,6 +15,7 @@ use App\Models\Tenure;
 use App\Models\User;
 use App\Models\Username;
 use App\Rules\FirstnameLastnameRule;
+use App\Rules\UniqueSubscriberemail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -46,12 +47,20 @@ class CreateNewUser implements CreatesNewUsers
          */
         $this->requireUppercase = true;
 
-        Validator::make($input, [
+        $clean = Validator::make($input, [
             'name' => ['required', 'string', 'min:4','max:255',new FirstnameLastnameRule()],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:subscriberemails'],
+            'email' => ['required', 'string', 'email', 'max:255', new UniqueSubscriberemail],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
         ])->validate();
+
+        //test for duplicate email
+        foreach(Subscriberemail::all() AS $email){
+            if(strtolower($email->email) === strtolower($clean['email'])){
+
+                return redirect('register');
+            }
+        }
 
         $user = $this->createUser($input);
 
