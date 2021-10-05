@@ -37,9 +37,6 @@
             <td>{{ $sendto['address03'] }}</td>
         </tr>
     @endif
-    <tr>
-        <td>{!! $sendto['email'] !!}</td>
-    </tr>
 </table>
 
 {{-- PAGE BREAK --}}
