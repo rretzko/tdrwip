@@ -73,6 +73,12 @@ class Eventversion extends Model
         return $this->eventensembles->first()->eventensembletype()->instrumentations;
     }
 
+    public function isOpenForMembers()
+    {
+        //datetype_id of 4 = membership_close
+        return Carbon::now() < $this->eventversiondates()->where('datetype_id', 4)->first()->dt ;
+    }
+
     public function obligationMet($user_id)
     {
         return (bool)Obligation::where('user_id',$user_id)

@@ -146,8 +146,12 @@
                                             >
                                                 {{ isset($message) ? $message : ''}}
                                             </div>
-                                            <x-buttons.button type="submit">
-                                                Update {{ $registrant->student->person->first }} </x-buttons.button>
+                                            @if($eventversion->isOpenForMembers())
+                                                <x-buttons.button type="submit">
+                                                    Update {{ $registrant->student->person->first }} </x-buttons.button>
+                                            @else
+                                                Event is closed for updates
+                                            @endif
 
                                         </footer>
 
@@ -269,13 +273,17 @@
                                                            class="rounded"
                                                         >
                                                     @endif
-                                                        <button class="bg-gray-500 mt-2 py-1 px-2 rounded">
-                                                            @if($registrant->hasSignatures)
-                                                                Remove my signature
-                                                            @else
-                                                                I confirm that the application has all required signatures.
-                                                            @endif
-                                                        </button>
+                                                        @if($eventversion->isOpenForMembers())
+                                                            <button class="bg-gray-500 mt-2 py-1 px-2 rounded">
+                                                                @if($registrant->hasSignatures)
+                                                                    Remove my signature
+                                                                @else
+                                                                    I confirm that the application has all required signatures.
+                                                                @endif
+                                                            </button>
+                                                        @else
+                                                                <span style="color: black;">Event is closed for updates</span>
+                                                        @endif
                                                     </a>
                                                 @endif
                                             @else
@@ -413,26 +421,31 @@
                                                                                     Approved: {{ $registrant->fileuploadapprovaltimestamp($filecontenttype) }}
                                                                                 </div>
                                                                             @else
-                                                                                <a href="{{ route('fileupload.approve',['registrant' => $registrant, 'filecontenttype' => $filecontenttype]) }}">
-                                                                                    <button
-                                                                                        type="button"
-                                                                                        class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                                                                                    >
-                                                                                        Approve
-                                                                                    </button>
-                                                                                </a>
+                                                                                @if($eventversion->isOpenForMembers())
+                                                                                    <a href="{{ route('fileupload.approve',['registrant' => $registrant, 'filecontenttype' => $filecontenttype]) }}">
+                                                                                        <button
+                                                                                            type="button"
+                                                                                            class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                                                                        >
+                                                                                            Approve
+                                                                                        </button>
+                                                                                    </a>
+                                                                                @endif
                                                                             @endif
                                                                             @if(config('app.url') === 'http://localhost')
                                                                                 <a href="{{ route('fileupload.reject',['registrant' => $registrant, 'filecontenttype' => $filecontenttype]) }}">
                                                                             @else
                                                                                 <a href="https://thedirectorsroom.com/registrant/reject/{{ $registrant->id }}/{{ $filecontenttype->id }}">
                                                                             @endif
+
+                                                                            @if($eventversion->isOpenForMembers())
                                                                                 <button
                                                                                     type="button"
                                                                                     class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                                                                                     >
                                                                                     Reject
                                                                                 </button>
+                                                                            @endif
                                                                             </a>
     <!-- {{--
                                                                             <div class="approved col-7">
