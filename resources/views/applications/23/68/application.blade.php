@@ -39,11 +39,14 @@
                             </div>
 
                             {{-- BUTTON TO DOWNLOAD PDF --}}
+                            {{-- Request that this be hidden: Amy Melson, 05-Oct-21 --}}
+                            <!-- {{--
                             <div class="bg-blue-400 text-xs pt-3 border rounded-2xl text-white px-2">
                                 <a href="{{ route('registrant.application.download', ['registrant' => $registrant]) }}">
                                     Download Application For Signing
                                 </a>
                             </div>
+                            --}} -->
                         </div>
 
                         <style>

@@ -46,6 +46,8 @@
                             </div>
 
                             {{-- BUTTON TO DOWNLOAD PDF --}}
+                            {{-- Request that this be hidden: Amy Melson, 05-Oct-21 --}}
+                            <!-- {{--
                             <div class="bg-blue-400 text-xs pt-3 border rounded-2xl text-white px-2">
                                 @if(config('app.url') === 'http://localhost')
                                     <a href="{{ route('registrant.application.download', ['registrant' => $registrant]) }}">
@@ -57,6 +59,7 @@
                                     </a>
                                 @endif
                             </div>
+                            --}} -->
                         </div>
 
                         <style>
