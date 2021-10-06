@@ -57,6 +57,7 @@ class Eventversion extends Model
     {
         return $this->belongsToMany(Filecontenttype::class)
             ->withPivot('title')
+            ->orderByPivot('order_by')
             ->withTimestamps();
     }
 
