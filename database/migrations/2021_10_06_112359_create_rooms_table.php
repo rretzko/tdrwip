@@ -16,7 +16,7 @@ class CreateRoomsTable extends Migration
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
             $table->foreignId('eventversion_id')->index()->constrained();
-            $table->string('name', 60);
+            $table->string('descr', 60);
             $table->integer('order_by')->default(1);
             $table->timestamps();
             $table->softDeletes();
