@@ -63,7 +63,7 @@
                                             />
                                         </div>
                                         <div class="justify-self-center w-full">
-                                            <div class="font-bold text-center">{{ $registrant->student->person->user->schools->first()->name }}</div>
+                                            <div class="font-bold text-center">{{ $registrant->student->currentSchoolName }}</div>
                                             <div class="text-center">NJ ALL-STATE CHORUS</div>
                                             <div class="text-center text-sm">Student Application</div>
                                         </div>
@@ -81,7 +81,7 @@
                                             Grade: {{ $registrant->student->gradeClassof }}
                                         </div>
                                         <div class="border border-black px-2">
-                                            {{ $registrant->student->person->user->schools->first()->shortName }}
+                                            {{ $registrant->student->currentSchoolName }}
                                         </div>
                                     </div>
 
@@ -131,7 +131,7 @@
                                             We recommend <b>{{ $registrant->student->person->fullName }}</b> for participation in the {{ $eventversion->name }}.
                                             <b>{{ $registrant->student->person->first_name }}</b> is a qualified candidate in good
                                             standing in {{ $registrant->student->person->pronoun->possessive }} Choral Department and is presently
-                                            enrolled in grade {{ $registrant->student->gradeClassof }} at {{ $registrant->student->person->user->schools->first()->name }}.
+                                            enrolled in grade {{ $registrant->student->gradeClassof }} at {{ $registrant->student->currentSchoolName }}.
                                             We understand that <b>{{ $me->first_name }}</b>, who is sponsoring <b>{{ $registrant->student->person->fullName }}</b>,
                                             is to be a current (paid) member of the National Association for Music Educators (NAfME), and is required to
                                             participate as a JUDGE FOR VIRTUAL AUDITIONS, as described in the Directors's Packet, from October 14-16, 2021.
