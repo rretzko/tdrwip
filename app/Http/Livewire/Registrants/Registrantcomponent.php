@@ -16,6 +16,7 @@ class Registrantcomponent extends Component
     use WithPagination;
 
     //common contract properties for pages
+    public $xadjudicator=false;
     public $allowimports = true; //allow user to import ensemble members
     public $confirmingdelete = 0;
     public $membershipmanagers = [];
@@ -54,6 +55,7 @@ class Registrantcomponent extends Component
     public function render()
     {
         return view('livewire.registrants.registrantcomponent',[
+            'adjudicator' => $this->setAdjudicatorState(),
             'registrants' => $this->registrants(),
             'schoolregistrationstatus' => Schoolregistrationstatus::horizontalBarChart(),
             'schools' => $this->schools(),
@@ -165,6 +167,13 @@ class Registrantcomponent extends Component
         //paginate identified students
         return CollectionHelper::paginate($this->populationregistrants, Userconfig::getValue('pagination', auth()->id()));
 
+    }
+
+    private function setAdjudicatorState()
+    {
+        return \App\Models\Adjudicator::where('user_id', auth()->id())
+            ->where('eventversion_id', Userconfig::getValue('eventversion', auth()->id()))
+            ->first();
     }
 
     private function schools()

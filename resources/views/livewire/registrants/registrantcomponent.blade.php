@@ -96,6 +96,19 @@
                                      </svg>
                                  </a>
                              </div>
+
+                             {{-- EVENTVERSION ROLES --}}
+                             <div class="pt-3">
+                                 @if($adjudicator)
+                                     <a href="{{ route('registrant.payments',['eventversion' => $event]) }}"
+                                        class=" bg-black text-white font-bold border border-green-700 rounded px-2"
+                                        title="Student Payments"
+                                     >
+                                         Judge
+                                     </a>
+                                 @endif
+                             </div>
+
                         </div>
 
                         {{-- STUDENT PAYPAL OPTION --}}

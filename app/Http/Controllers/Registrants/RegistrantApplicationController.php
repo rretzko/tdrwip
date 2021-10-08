@@ -168,7 +168,22 @@ class RegistrantApplicationController extends Controller
         );
 
         //update registrant status
-        $registrant->resetRegistrantType('applied');
+        /** @todo Candidate for a separate model for default definitions of Registant status
+         *  plus methods to deal with customized definitions
+         */
+        //SJCDA eApplication is considered registered if both esignatures are made.
+        if (
+            (($registrant->eventversion->event->id === 11) ||
+                ($registrant->eventversion->event->id === 12)) &&
+                (array_key_exists('signatureguardian', $data) &&
+                    array_key_exists('signaturestudent', $data))){
+
+            $registrant->resetRegistrantType('registered');
+
+        }else {
+
+            $registrant->resetRegistrantType('applied');
+        }
 
         return view('registrants.index');
     }
