@@ -121,6 +121,10 @@ Route::middleware('auth', 'verified')->group(function() {
     Route::get('/registrant/{registrant}',[App\Http\Controllers\Registrants\RegistrantController::class, 'show'])->name('registrant.show');
     Route::post('/registrant/update/{registrant}',[App\Http\Controllers\Registrants\RegistrantController::class, 'update'])->name('registrant.update');
 
+    Route::get('/registrants/adjudication/{eventversion}',[App\Http\Controllers\Registrants\RegistrantAdjudicationController::class, 'index'])
+        ->name('registrants.adjudication');
+
+
     Route::get('/registrant/approve/{registrant}/{filecontenttype}', [FileapprovalController::class,'approve'])->name('fileupload.approve');
     Route::get('/registrant/reject/{registrant}/{filecontenttype}', [FileapprovalController::class,'reject'])->name('fileupload.reject');
 
@@ -129,7 +133,7 @@ Route::middleware('auth', 'verified')->group(function() {
     Route::get('/registrant/estimateform/{eventversion}', [App\Http\Controllers\Registrants\RegistrantEstimateFormController::class,'show'])->name('registrant.estimateform');
     Route::get('/registrant/estimateform/{eventversion}/download', [App\Http\Controllers\Registrants\RegistrantEstimateFormController::class,'download'])->name('registrant.estimateform.download');
     Route::post('/registrant/estimateform/county', [App\Http\Controllers\Registrants\RegistrantEstimateFormController::class, 'update'])->name('school.county');
-    
+
     Route::get('/registrant/payments/{eventversion}', [App\Http\Controllers\Registrants\RegistrantPaymentsController::class,'index'])->name('registrant.payments');
     Route::get('/registrant/payments/for/{registrant}', [App\Http\Controllers\Registrants\RegistrantPaymentsController::class,'show'])->name('registrant.payments.show');
     Route::post('/registrant/payment/new', [App\Http\Controllers\Registrants\RegistrantPaymentsController::class,'store'])->name('registrant.payments.store');
