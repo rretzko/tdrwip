@@ -142,6 +142,20 @@ class Person extends Model
         return $this->hasMany(Subscriberemail::class, 'user_id');
     }
 
+    public function getSubscriberemailsStackedAttribute()
+    {
+        $str = '<ul>';
+
+        foreach($this->subscriberemails()->get() AS $email){
+
+            $str .= '<li>'.$email->email.'</li>';
+        }
+
+        $str .= '</ul>';
+
+        return $str;
+    }
+
     public function getSubscriberemailworkAttribute()
     {
         return $this->subscriberemails->where('emailtype_id', Emailtype::WORK)->first()->email ?? '';

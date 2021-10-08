@@ -66,7 +66,7 @@
                             {{-- ADVISORY 1/2 --}}
                             <div class="border border-black p-2 text-center mb-1">
                                 Voice part changes may not be made after the <b>November 8, 2021</b>.<br />
-                                ALL changes must be sent in writing (preceded by a phone call) and MUST be signed
+                                ALL changes must be sent in writing (preceeded by a phone call) and MUST be signed
                                 by the student & choral director.
                             </div>
 
@@ -205,13 +205,13 @@
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <th>Voice Part Totals</th>
+                                        <td>Voice Part Totals</td>
                                         @foreach($eventversion->instrumentations() AS $instrumentation)
                                             <th class="{{ (! $registrantsbyinstrumentation[$instrumentation->id]) ? 'text-gray-300' : '' }}">
                                                 {{ $registrantsbyinstrumentation[$instrumentation->id] }}
                                             </th>
                                         @endforeach
-                                        <th class="text-center">${{ array_sum($registrantsbyinstrumentation) * $eventversion->eventversionconfigs->registrationfee }}</th>
+                                        <td class="text-center">${{ array_sum($registrantsbyinstrumentation) * $eventversion->eventversionconfigs->registrationfee }}</td>
                                     </tr>
                                     </tbody>
                                 </table>

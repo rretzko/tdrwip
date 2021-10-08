@@ -39,7 +39,12 @@ class RegistrantEstimateFormController extends Controller
         $rbi = new RegistrantsByInstrumentation;
         $registrantsbyinstrumentation = $rbi->getArray();
 
+        //used for NJ All-State Chorus
         $sendto = $this->sendTo($school->county_id);
+
+        $landscapeportrait = (($eventversion->event->id === 11) || ($eventversion->event->id === 12)) //SJCDA
+            ? 'landscape'
+            : 'portrait';
 
         //ex. pages.pdfs.applications.12.64.application
         $pdf = PDF::loadView('pdfs.estimateforms.'//9.65.2021_22_application',
@@ -47,8 +52,9 @@ class RegistrantEstimateFormController extends Controller
             .'.'
             . $eventversion->id
             . '.estimateform',
-            //.applicationTest',
-            compact('eventversion', 'teacher', 'school', 'me', 'registrants', 'registrantsbyinstrumentation', 'sendto'));
+            compact('eventversion', 'teacher', 'school', 'me', 'registrants',
+                'registrantsbyinstrumentation', 'sendto')
+            )->setPaper('letter', $landscapeportrait);
 
         //log application printing
         Estimateform::create([
