@@ -23,6 +23,8 @@ class Person extends Model
 
     protected $primaryKey = 'user_id';
 
+    protected $with = ['subscriberemails'];
+
     /**
      * Resulting sql:
      * select `ensembles`.*, `ensemblemembers`.`user_id` as `laravel_through_key`
@@ -161,6 +163,10 @@ class Person extends Model
         return $this->subscriberemails->where('emailtype_id', Emailtype::WORK)->first()->email ?? '';
     }
 
+    /**
+     * @todo refactor this to: return implode(', ', $this->getSubscriberPhoneArrayAttribute());
+     * @return string
+     */
     public function getSubscriberPhoneCsvAttribute()
     {
         $phones = [];
@@ -182,6 +188,29 @@ class Person extends Model
         if($work){$phones[] = $work->phone.' (w)';}
 
         return implode(', ', $phones);
+    }
+
+    public function getSubscriberPhoneArrayAttribute()
+    {
+        $phones = [];
+
+        $home = Phone::where('user_id', $this->user_id)
+            ->where('phonetype_id', Phonetype::HOME)
+            ->first();
+
+        $mobile = Phone::where('user_id', $this->user_id)
+            ->where('phonetype_id', Phonetype::MOBILE)
+            ->first();
+
+        $work = Phone::where('user_id', $this->user_id)
+            ->where('phonetype_id', Phonetype::WORK)
+            ->first();
+
+        if($mobile){$phones[] = $mobile->phone.' (c)';}
+        if($home){$phones[] = $home->phone.' (h)';}
+        if($work){$phones[] = $work->phone.' (w)';}
+
+        return $phones;
     }
 
     public function teacher()

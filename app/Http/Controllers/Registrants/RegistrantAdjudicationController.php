@@ -15,13 +15,15 @@ class RegistrantAdjudicationController extends Controller
      */
     public function index(Eventversion $eventversion)
     {
-        $adjudicator = \App\Models\Adjudicator::where('user_id', auth()->id())
+        $adjudicator = \App\Models\Adjudicator::with('user','user.person')
+            ->where('user_id', auth()->id())
             ->where('eventversion_id', $eventversion->id)
             ->first();
 
         return view('registrants.adjudication.index', [
             'eventversion' => $eventversion,
-            'room' => \App\Models\Room::find($adjudicator->room_id),
+            'room' => \App\Models\Room::with('adjudicators')->where('id', $adjudicator->room_id)->first(),
+            'registrants' => $adjudicator->registrants,
         ]);
     }
 
