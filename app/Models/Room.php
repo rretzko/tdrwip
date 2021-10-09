@@ -18,7 +18,7 @@ class Room extends Model
 
     public function filecontenttypes()
     {
-        return $this->belongsTo(Filecontenttype::class);
+        return $this->belongsToMany(Filecontenttype::class);
     }
 
     public function instrumentations()

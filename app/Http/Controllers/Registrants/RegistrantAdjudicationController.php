@@ -25,6 +25,7 @@ class RegistrantAdjudicationController extends Controller
             'room' => \App\Models\Room::with('adjudicators')->where('id', $adjudicator->room_id)->first(),
             'registrants' => $adjudicator->registrants,
             'auditioner' => null,
+            'scoringcomponents' => null,
         ]);
     }
 
@@ -65,11 +66,14 @@ class RegistrantAdjudicationController extends Controller
             ->where('eventversion_id', $eventversion->id)
             ->first();
 
+        $scoringcomponents = \App\Models\Scoringcomponent::where('eventversion_id', $eventversion->id)->get();
+
         return view('registrants.adjudication.index', [
             'eventversion' => $eventversion,
             'room' => \App\Models\Room::with('adjudicators')->where('id', $adjudicator->room_id)->first(),
             'registrants' => $adjudicator->registrants,
             'auditioner' => $auditioner,
+            'scoringcomponents' => $scoringcomponents,
         ]);
     }
 
@@ -93,7 +97,30 @@ class RegistrantAdjudicationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $inputs = $request->validate([
+           'components' => ['required', 'array'],
+           'components.*' => ['required', 'numeric'],
+        ]);
+
+        $eventversion = Eventversion::find(\App\Models\Userconfig::getValue('eventversion', auth()->id()));
+
+        foreach($inputs['components'] AS $component_id => $score) {
+
+            \App\Models\Score::updateOrCreate(
+                [
+                    'eventversion_id' => $eventversion->id,
+                    'filecontenttype_id' => $component_id,
+                    'registrant_id' => $id,
+                    'user_id' => auth()->id(),
+                ],
+                [
+                    'proxy_id' => auth()->id(),
+                    'score' => $score,
+                ]
+            );
+        }
+
+        return $this->index($eventversion);
     }
 
     /**

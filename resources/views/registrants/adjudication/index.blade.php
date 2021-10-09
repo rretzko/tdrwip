@@ -69,13 +69,28 @@
                                 </a>
                             </div>
                         </div>
+
+                        <div id="scoring">
+                            <form method="post" action="{{ route('registrants.adjudication.update', ['registrant' => $auditioner->id]) }}" >
+
+                                @csrf
+                                
+                                <x-adjudication.scoresheets.index
+                                    :eventversion="$eventversion"
+                                    :room="$room"
+                                    :scoringcomponents="$scoringcomponents"
+                                />
+                                <div class="mt-2 text-center">
+                                    <input class="bg-black text-white rounded px-2" type="submit" name="submit" id="submit" value="Submit" />
+                                </div>
+                            </form>
+                        </div>
+
                     @endif
                 </div>
             </div>
 
-            <div id="scoring">
-                scoring
-            </div>
+
 
         </div>
     </div>
