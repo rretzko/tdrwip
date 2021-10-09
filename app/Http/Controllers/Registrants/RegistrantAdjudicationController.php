@@ -24,6 +24,7 @@ class RegistrantAdjudicationController extends Controller
             'eventversion' => $eventversion,
             'room' => \App\Models\Room::with('adjudicators')->where('id', $adjudicator->room_id)->first(),
             'registrants' => $adjudicator->registrants,
+            'auditioner' => null,
         ]);
     }
 
@@ -51,12 +52,25 @@ class RegistrantAdjudicationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $id //registrant->id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+        $auditioner = \App\Models\Registrant::find($id);
+        $eventversion = Eventversion::find(\App\Models\Userconfig::getValue('eventversion', auth()->id()));
+
+        $adjudicator = \App\Models\Adjudicator::with('user','user.person')
+            ->where('user_id', auth()->id())
+            ->where('eventversion_id', $eventversion->id)
+            ->first();
+
+        return view('registrants.adjudication.index', [
+            'eventversion' => $eventversion,
+            'room' => \App\Models\Room::with('adjudicators')->where('id', $adjudicator->room_id)->first(),
+            'registrants' => $adjudicator->registrants,
+            'auditioner' => $auditioner,
+        ]);
     }
 
     /**

@@ -9,6 +9,8 @@ class Room extends Model
 {
     use HasFactory;
 
+    protected $with = ['adjudicators'];
+
     public function adjudicators()
     {
         return $this->hasMany(\App\Models\Adjudicator::class);

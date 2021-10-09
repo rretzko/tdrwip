@@ -27,12 +27,56 @@
         </div>
 
         {{-- REGISTRANT IDS --}}
-        <div class="flex flex-wrap space-x-1 space-y-1 text-sm">
-            @foreach($registrants AS $registrant)
-                <div class="border border-gray-700">
-                    {{ $registrant->id }}
+        <div class="flex flex-col pb-1 mb-3 border-b border-gray-300">
+            <div class="flex flex-wrap">
+                @foreach($registrants AS $registrant)
+                    <div class="border border-gray-700 text-sm mb-1 mr-1">
+                        @if(config('app.url') === 'http://localhost')
+                            <a href="{{ route('registrants.adjudication.show', ['registrant' => $registrant]) }}" class="text-black">
+                                {{ $registrant->id }}
+                            </a>
+                        @else
+                            <a href="">
+                                {{ $registrant->id }}
+                            </a>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+            <div id="legend" class="flex flex-row justify-center my-1 text-xs">
+                <div class="border border-black px-2">Unauditioned</div>
+                <div class="border border-black px-2 bg-yellow-100">Partial</div>
+                <div class="border border-black px-2 bg-green-100">Completed</div>
+                <div class="border border-black px-2 bg-red-100">Tolerance</div>
+            </div>
+        </div>
+
+        {{-- VIEWPORT & SCORING --}}
+        <div id="viewport-scoring" class="flex flex-row flex-wrap space-x-2">
+            <div id="viewport">
+                <div class="flex justify-center">
+                    @if($auditioner)
+                        <div class="flex flex-col">
+                            <div class="text-center bg-indigo-100 border border-indigo-700">
+                                Now adjudicating: {{ $auditioner->id }}: {{ strtoupper($auditioner->instrumentations->first()->abbr) }}
+                            </div>
+                            <div class=" mb-1">
+                                {!! $auditioner->fileviewport(\App\Models\Filecontenttype::find(1)) !!}
+                            </div>
+                            <div class="text-center border border-black rounded bg-gray-100">
+                                <a href="/registrants/adjudication/{{ $eventversion->id }}" class="text-black">
+                                    Cancel
+                                </a>
+                            </div>
+                        </div>
+                    @endif
                 </div>
-            @endforeach
+            </div>
+
+            <div id="scoring">
+                scoring
+            </div>
+
         </div>
     </div>
 

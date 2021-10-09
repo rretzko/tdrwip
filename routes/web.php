@@ -123,6 +123,8 @@ Route::middleware('auth', 'verified')->group(function() {
 
     Route::get('/registrants/adjudication/{eventversion}',[App\Http\Controllers\Registrants\RegistrantAdjudicationController::class, 'index'])
         ->name('registrants.adjudication');
+    Route::get('registrants/adjudication/registrant/{registrant}',[App\Http\Controllers\Registrants\RegistrantAdjudicationController::class, 'show'])
+        ->name('registrants.adjudication.show');
 
 
     Route::get('/registrant/approve/{registrant}/{filecontenttype}', [FileapprovalController::class,'approve'])->name('fileupload.approve');

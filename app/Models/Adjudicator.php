@@ -10,7 +10,7 @@ class Adjudicator extends Model
 {
     use HasFactory;
 
-    protected $with = ['user','room'];
+    protected $with = ['user'];
 
     public function getBioBlockAttribute()
     {
