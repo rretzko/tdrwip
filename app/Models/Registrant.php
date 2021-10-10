@@ -73,14 +73,14 @@ class Registrant extends Model
         return $viewport->viewport();
     }
 
-    public function getAdjudicatedStatusAttribute()
+    public function adjudicatedStatus(\App\Models\Room $room)
     {
-        $status = new \App\Models\Utility\Adjudicatedstatus(['registrant' => $this]);
+        $status = new \App\Models\Utility\Adjudicatedstatus(['registrant' => $this, 'room' => $room]);
         
         return $status->status();
     }
 
-    public function getAdjudicationStatusBackgroundColorAttribute()
+    public function adjudicationStatusBackgroundColor(\App\Models\Room $room)
     {
         $colors = [
             'completed' => 'bg-green-100',
@@ -89,7 +89,7 @@ class Registrant extends Model
             'unauditioned' => 'bg-white',
         ];
 
-        return $colors[$this->getAdjudicatedStatusAttribute()];
+        return $colors[$this->adjudicatedStatus($room)];
     }
 
     public function getFilesApprovedCountAttribute(): int

@@ -13,15 +13,18 @@ class Adjudicatedstatus extends Model
     private $countscores;
     private $registrant;
     private $registrantscores;
+    private $room;
+    private $scores;
     private $status;
 
-    protected $fillable = ['registrant'];
+    protected $fillable = ['registrant','room'];
 
     public function __construct(array $attributes)
     {
         parent::__construct($attributes);
 
         $this->registrant = $attributes['registrant'];
+        $this->room = $attributes['room'];
         $this->eventversion = $this->registrant->eventversion;
         $this->status = 'unauditioned';
 
@@ -48,9 +51,18 @@ class Adjudicatedstatus extends Model
 
     private function init()
     {
+        //Count of  component scores possible for $this->eventversion
         $this->countscores = \App\Models\Scoringcomponent::where('eventversion_id', $this->eventversion->id)->count();
-        $scores = new \App\Models\Utility\Registrantscores([ 'registrant' => $this->registrant]);
-        $this->registrantscores = $scores->componentscores()->count();
+
+        //Object to access all scores for $this->registrant
+        $this->scores = new \App\Models\Utility\Registrantscores([ 'registrant' => $this->registrant]);
+
+        //Count of component scores registered for $this->registrant
+        $this->registrantscores = $this->scores->componentscores()->count();
+
+        //Adjudicators registered for $this->registrant
+        $this->adjudicators = $this->room->adjudicators;
+
     }
 
     private function completed()
@@ -68,9 +80,25 @@ class Adjudicatedstatus extends Model
         return $this->registrantscores < $this->countscores;
     }
 
+    /**
+     * Return true if OUT of tolerance
+     * @todo TEST FOR ADJUDICATOR ASSIGNED TO TWO ROOMS with SAME and DIFFERENT REGISTRANT POOLS
+     * @return bool
+     */
     private function tolerance()
     {
-        return false;
+        //container for total scores
+        $scores = [];
+
+        //iterate through each of the room's adjudicators to determine their total ROOM score
+        foreach($this->adjudicators AS $adjudicator){
+
+            $scores[] = \App\Models\Score::where('registrant_id', $this->registrant->id)
+                ->where('user_id', $adjudicator->user_id)
+                ->sum('score');
+        }
+
+        return ((max($scores) - min($scores)) > $this->room->tolerance);
     }
 
     private function unauditioned()
