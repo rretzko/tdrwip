@@ -21,6 +21,11 @@ class Room extends Model
         return $this->belongsToMany(Filecontenttype::class);
     }
 
+    public function getAdjudicatedCountAttribute()
+    {
+        return __LINE__;
+    }
+
     public function instrumentations()
     {
         return $this->belongsToMany(Instrumentation::class);

@@ -20,9 +20,12 @@
             <div>This room has:</div>
             <ul class="ml-5">
                 <li>Registrants: {{ $registrants->count() }}</li>
-                <li>Adjudicated: ###</li>
+                <li>Room tolerance: {{ $room->tolerance }}</li>
+           <!-- {{--
+                <li>Adjudicated: {{ $room->adjudicatedCount }}</li>
                 <li>Remaining: ###</li>
                 <li>Partial adjudications: ###</li>
+            --}} -->
             </ul>
         </div>
 
