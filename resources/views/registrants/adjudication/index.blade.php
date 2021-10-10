@@ -36,7 +36,7 @@
                     <div class="border border-gray-700 text-sm mb-1 mr-1">
                         @if(config('app.url') === 'http://localhost')
                             <a href="{{ route('registrants.adjudication.show', ['registrant' => $registrant]) }}"
-                               class="text-black {{ $registrant->adjudicationStatusBackgroundColor($room) }}">
+                               class="text-black {{ $registrant->adjudicationStatusBackgroundColor($room) }} {{ $registrant->judgeScoresEntered(auth()->id()) }}">
                                 {{ $registrant->id }}
                             </a>
                         @else

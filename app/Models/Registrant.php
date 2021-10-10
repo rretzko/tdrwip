@@ -220,6 +220,20 @@ class Registrant extends Model
             ->orderBy('abbr','asc');
     }
 
+    /**
+     * Return 'font-bold' if $user_id has entered any scores.
+     * This is desiged to help the judges identify which registrants they have adjudicated
+     * @param $user_id
+     */
+    public function judgeScoresEntered($user_id)
+    {
+        return (\App\Models\Score::where('registrant_id', $this->id)
+                ->where('user_id', $user_id)
+                ->first())
+                ? 'font-bold'
+                : '';
+    }
+
     public function paid()
     {
         $amount = 0;
