@@ -73,6 +73,25 @@ class Registrant extends Model
         return $viewport->viewport();
     }
 
+    public function getAdjudicatedStatusAttribute()
+    {
+        $status = new \App\Models\Utility\Adjudicatedstatus(['registrant' => $this]);
+        
+        return $status->status();
+    }
+
+    public function getAdjudicationStatusBackgroundColorAttribute()
+    {
+        $colors = [
+            'completed' => 'bg-green-100',
+            'partial' => 'bg-yellow-100',
+            'tolerance' => 'bg-red-100',
+            'unauditioned' => 'bg-white',
+        ];
+
+        return $colors[$this->getAdjudicatedStatusAttribute()];
+    }
+
     public function getFilesApprovedCountAttribute(): int
     {
         return $this->fileuploads->whereNotNull('approved')->count();

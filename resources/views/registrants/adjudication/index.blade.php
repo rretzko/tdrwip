@@ -32,7 +32,8 @@
                 @foreach($registrants AS $registrant)
                     <div class="border border-gray-700 text-sm mb-1 mr-1">
                         @if(config('app.url') === 'http://localhost')
-                            <a href="{{ route('registrants.adjudication.show', ['registrant' => $registrant]) }}" class="text-black">
+                            <a href="{{ route('registrants.adjudication.show', ['registrant' => $registrant]) }}"
+                               class="text-black {{ $registrant->adjudicationStatusBackgroundColor }}">
                                 {{ $registrant->id }}
                             </a>
                         @else
@@ -44,10 +45,12 @@
                 @endforeach
             </div>
             <div id="legend" class="flex flex-row justify-center my-1 text-xs">
-                <div class="border border-black px-2">Unauditioned</div>
-                <div class="border border-black px-2 bg-yellow-100">Partial</div>
-                <div class="border border-black px-2 bg-green-100">Completed</div>
-                <div class="border border-black px-2 bg-red-100">Tolerance</div>
+                <div class="border border-black px-2" title="No scores found">Unauditioned</div>
+                <div class="border border-black px-2 bg-yellow-100" title="Incomplete set of scores found">Partial</div>
+                <div class="border border-black px-2 bg-green-100" title="Complete set of scores found">Completed</div>
+                <div class="border border-black px-2 bg-red-100" title="Scores are out of tolerance">Tolerance</div>
+                <div class="border border-black px-2 bg-blue-100" title="More than expected number of scores found">Excess</div>
+                <div class="border border-black px-2 bg-gray-300" title="Something unexpected has occurred">Error</div>
             </div>
         </div>
 
@@ -74,7 +77,7 @@
                             <form method="post" action="{{ route('registrants.adjudication.update', ['registrant' => $auditioner->id]) }}" >
 
                                 @csrf
-                                
+
                                 <x-adjudication.scoresheets.index
                                     :eventversion="$eventversion"
                                     :room="$room"
