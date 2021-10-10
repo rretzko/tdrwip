@@ -54,6 +54,18 @@ class Adjudicator extends Model
             })->get();
     }
 
+    public function person()
+    {
+        return $this->belongsTo(Person::class, 'user_id', 'user_id');
+    }
+
+    public function registrantScore(\App\Models\Registrant $registrant)
+    {
+        return \App\Models\Score::where('registrant_id', $registrant->id)
+            ->where('user_id', $this->user_id)
+            ->sum('score') ?? 0;
+    }
+
     public function room()
     {
         return $this->belongsTo(Room::class);

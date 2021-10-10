@@ -15,11 +15,16 @@
             <h3 class="uppercase text-lg">{{ $filecontenttype->descr }}</h3>
             <div class="flex flex-row">
             @foreach($scoringcomponents->where('filecontenttype_id', $filecontenttype->id)->sortBy('order_by') AS $scoringcomponent)
+
                 <div class="flex flex-col">
                     <label class="box" for="" title="{{ $scoringcomponent->descr }}">{{ $scoringcomponent->abbr }}</label>
-                    <select class="box" id="box{{ $scoringcomponent->order_by }}" name="components[{{$scoringcomponent->id}}]" onchange="recalcScore()">
+                    <select class="box" id="box{{ $scoringcomponent->order_by }}" name="scoringcomponents[{{$scoringcomponent->id}}]" onchange="recalcScore()">
                         @for($i=$scoringcomponent->bestscore; $i<=$scoringcomponent->worstscore; $i=$i+$scoringcomponent->interval)
-                            <option value="{{ $i }}">{{$i}}</option>
+                            <option value="{{ $i }}"
+                                @if($auditioner->scoringcomponentScore($useradjudicator, $scoringcomponent) === $i) SELECTED @endif
+                            >
+                                {{$i}}
+                            </option>
                         @endfor
                     </select>
 
@@ -32,6 +37,7 @@
     @endforeach
 
     <script>
+        window.onload = recalcScore();
         function recalcScore(){
             var $e1 = (document.getElementById('box1')) ? document.getElementById('box1').value : 0;
             var $e2 = (document.getElementById('box2')) ? document.getElementById('box2').value : 0;

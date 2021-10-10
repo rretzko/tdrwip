@@ -76,7 +76,7 @@ class Registrant extends Model
     public function adjudicatedStatus(\App\Models\Room $room)
     {
         $status = new \App\Models\Utility\Adjudicatedstatus(['registrant' => $this, 'room' => $room]);
-        
+
         return $status->status();
     }
 
@@ -263,6 +263,14 @@ class Registrant extends Model
                 $this->registranttype_id = $newtype->id;
                 $this->save();
         }
+    }
+
+    public function scoringcomponentScore(\App\Models\Adjudicator $adjudicator, \App\Models\Scoringcomponent $scoringcomponent)
+    {
+        return \App\Models\Score::where('registrant_id', $this->id)
+            ->where('user_id', $adjudicator->user_id)
+            ->where('scoringcomponent_id', $scoringcomponent->id)
+            ->value('score') ?? 0;
     }
 
     public function signatures()

@@ -90,7 +90,7 @@ class Adjudicatedstatus extends Model
         //container for total scores
         $scores = [];
 
-        //iterate through each of the room's adjudicators to determine their total ROOM score
+        //iterate through each of the room's adjudicators to determine their total ROOM score FOR $this->registrant
         foreach($this->adjudicators AS $adjudicator){
 
             $scores[] = \App\Models\Score::where('registrant_id', $this->registrant->id)
@@ -98,6 +98,7 @@ class Adjudicatedstatus extends Model
                 ->sum('score');
         }
 
+        //Return true if OUT of tolerance
         return ((max($scores) - min($scores)) > $this->room->tolerance);
     }
 

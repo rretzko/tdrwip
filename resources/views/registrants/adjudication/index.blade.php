@@ -55,7 +55,7 @@
         </div>
 
         {{-- VIEWPORT & SCORING --}}
-        <div id="viewport-scoring" class="flex flex-row flex-wrap space-x-2">
+        <div id="viewport-scoring" class=" space-x-2 mb-4 m-auto border-b border-gray-300 pb-3">
             <div id="viewport">
                 <div class="flex justify-center">
                     @if($auditioner)
@@ -79,6 +79,8 @@
                                 @csrf
 
                                 <x-adjudication.scoresheets.index
+                                    :useradjudicator="$useradjudicator"
+                                    :auditioner="$auditioner"
                                     :eventversion="$eventversion"
                                     :room="$room"
                                     :scoringcomponents="$scoringcomponents"
@@ -92,8 +94,48 @@
                     @endif
                 </div>
             </div>
+        </div>
 
-
+        {{-- ADJUDICATOR RESULTS TABLE --}}
+        <div id="adjudicators-table" style="">
+            @if($auditioner)
+                <style>
+                    td,th{border: 1px solid black; padding:0 .25rem;}
+                </style>
+                <table style="margin: auto;">
+                    <thead>
+                        <tr>
+                            <th style="border-top: 0; border-left: 0;"></th>
+                            @foreach($room->filecontenttypes AS $filecontenttype)
+                                <th colspan="{{ $filecontenttype->scoringcomponents->count() }}">{{ $filecontenttype->descr }}</th>
+                            @endforeach
+                            <th style="border-top: 0; border-right: 0;"></th>
+                        </tr>
+                        <tr>
+                            <th>Adjudicator</th>
+                            @foreach($room->filecontenttypes AS $filecontenttype)
+                                @foreach($filecontenttype->scoringcomponents AS $scoringcomponent)
+                                    <td>{{ $scoringcomponent->abbr }}</td>
+                                @endforeach
+                            @endforeach
+                            <td>Total</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($room->adjudicators AS $adjudicator)
+                            <tr>
+                                <td>{{ $adjudicator->person->fullnameAlpha }}</td>
+                                @foreach($room->filecontenttypes AS $filecontenttype)
+                                    @foreach($filecontenttype->scoringcomponents AS $scoringcomponent)
+                                        <td>{{ $auditioner->scoringcomponentScore($adjudicator, $scoringcomponent) }}</td>
+                                    @endforeach
+                                @endforeach
+                                <td>{{$adjudicator->registrantScore($auditioner)}}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
 
         </div>
     </div>

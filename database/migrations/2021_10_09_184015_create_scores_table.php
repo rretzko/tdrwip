@@ -18,7 +18,7 @@ class CreateScoresTable extends Migration
             $table->foreignId('registrant_id')->constrained();
             $table->foreignId('eventversion_id')->constrained();
             $table->foreignId('user_id')->comment('adjucdicator')->constrained();
-            $table->foreignId('filecontenttype_id')->constrained();
+            $table->foreignId('scoringcomponent_id')->constrained();
             $table->tinyInteger('score');
             $table->unsignedBigInteger('proxy_id')->comment('user acting as judge');
             $table->timestamps();

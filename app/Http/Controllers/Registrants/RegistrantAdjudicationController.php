@@ -26,6 +26,7 @@ class RegistrantAdjudicationController extends Controller
             'registrants' => $adjudicator->registrants,
             'auditioner' => null,
             'scoringcomponents' => null,
+            'useradjudicator' => \App\Models\Adjudicator::find(auth()->id()),
         ]);
     }
 
@@ -61,7 +62,7 @@ class RegistrantAdjudicationController extends Controller
         $auditioner = \App\Models\Registrant::find($id);
         $eventversion = Eventversion::find(\App\Models\Userconfig::getValue('eventversion', auth()->id()));
 
-        $adjudicator = \App\Models\Adjudicator::with('user','user.person')
+        $useradjudicator = \App\Models\Adjudicator::with('user','user.person')
             ->where('user_id', auth()->id())
             ->where('eventversion_id', $eventversion->id)
             ->first();
@@ -70,10 +71,11 @@ class RegistrantAdjudicationController extends Controller
 
         return view('registrants.adjudication.index', [
             'eventversion' => $eventversion,
-            'room' => \App\Models\Room::with('adjudicators')->where('id', $adjudicator->room_id)->first(),
-            'registrants' => $adjudicator->registrants,
+            'room' => \App\Models\Room::with('adjudicators')->where('id', $useradjudicator->room_id)->first(),
+            'registrants' => $useradjudicator->registrants,
             'auditioner' => $auditioner,
             'scoringcomponents' => $scoringcomponents,
+            'useradjudicator' => $useradjudicator,
         ]);
     }
 
@@ -98,18 +100,18 @@ class RegistrantAdjudicationController extends Controller
     public function update(Request $request, $id)
     {
         $inputs = $request->validate([
-           'components' => ['required', 'array'],
-           'components.*' => ['required', 'numeric'],
+           'scoringcomponents' => ['required', 'array'],
+           'scoringcomponents.*' => ['required', 'numeric'],
         ]);
 
         $eventversion = Eventversion::find(\App\Models\Userconfig::getValue('eventversion', auth()->id()));
 
-        foreach($inputs['components'] AS $component_id => $score) {
+        foreach($inputs['scoringcomponents'] AS $scoringcomponent_id => $score) {
 
             \App\Models\Score::updateOrCreate(
                 [
                     'eventversion_id' => $eventversion->id,
-                    'filecontenttype_id' => $component_id,
+                    'scoringcomponent_id' => $scoringcomponent_id,
                     'registrant_id' => $id,
                     'user_id' => auth()->id(),
                 ],
