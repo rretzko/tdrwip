@@ -176,7 +176,7 @@ class Registrantcomponent extends Component
 
         $dt_open = $eventversion->eventversiondates->where('datetype_id', \App\Models\Datetype::SCORE_OPEN)->first()->dt;
         $dt_close = $eventversion->eventversiondates->where('datetype_id', \App\Models\Datetype::SCORE_CLOSE)->first()->dt;
-$novalue = 'no value';
+
         if((Carbon::now() > $dt_open) && (Carbon::now() < $dt_close)) {
 
             return \App\Models\Adjudicator::where('user_id', auth()->id())
