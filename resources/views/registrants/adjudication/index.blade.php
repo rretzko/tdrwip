@@ -78,7 +78,11 @@
                         </div>
 
                         <div id="scoring">
-                            <form method="post" action="{{ route('registrants.adjudication.update', ['registrant' => $auditioner->id]) }}" >
+                            @if(config('app.url') === 'http://localhost')
+                                <form method="post" action="{{ route('registrants.adjudication.update', ['registrant' => $auditioner->id]) }}" >
+                            @else
+                                <form method="post" action="https://thedirectorsroom.com/registrants/adjudication/registrant/update/{{ $auditioner->id }}" >
+                            @endif
 
                                 @csrf
 
