@@ -8,6 +8,7 @@ use App\Models\Registrant;
 use App\Models\Userconfig;
 use App\Models\Utility\Registrants;
 use App\Models\Utility\Schoolregistrationstatus;
+use Carbon\Carbon;
 use Livewire\WithPagination;
 use Livewire\Component;
 
@@ -171,9 +172,20 @@ class Registrantcomponent extends Component
 
     private function setAdjudicatorState()
     {
-        return \App\Models\Adjudicator::where('user_id', auth()->id())
-            ->where('eventversion_id', Userconfig::getValue('eventversion', auth()->id()))
-            ->first();
+        $eventversion = Eventversion::find(Userconfig::getValue('eventversion', auth()->id()));
+
+        $dt_open = $eventversion->eventversiondates->where('datetype_id', \App\Models\Datetype::SCORE_OPEN)->first()->dt;
+        $dt_close = $eventversion->eventversiondates->where('datetype_id', \App\Models\Datetype::SCORE_CLOSE)->first()->dt;
+
+        if((Carbon::now() > $dt_open) && (Carbon::now() < $dt_close)) {
+
+            return \App\Models\Adjudicator::where('user_id', auth()->id())
+                ->where('eventversion_id', Userconfig::getValue('eventversion', auth()->id()))
+                ->first();
+        }else{
+
+            return false;
+        }
     }
 
     private function schools()
