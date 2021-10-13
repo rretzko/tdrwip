@@ -296,16 +296,18 @@
 
                                     {{-- FILE UPLOAD ADVISORY --}}
                                     <div id="advisory"
-                                         class="text-center bg-gray-50 border border-gray-800 text-info mx-2 p-2 mb-2">
-                                        <b>Teachers</b> may upload audition recordings
-                                        from:<br/> {{ $eventversion->dates('videos_membership_open') }}
-                                    <!-- {{-- and ends on {{ Carbon\Carbon::parse($eventversion->eventversiondates->where('datetype_id', \App\Datetype::where('descr', 'videos_membership_close')->first()->id)->first()->dt )->format('F jS') }}. --}} -->
-                                        through {{ $eventversion->dates('videos_membership_close') }}.
-                                        <br/>
-                                        <b>Students</b> may upload audition recordings
-                                        from:<br/>{{ $eventversion->dates('videos_student_open') }}
-                                    <!-- {{-- and ends on {{ Carbon\Carbon::parse($eventversion->eventversiondates->where('datetype_id', \App\Datetype::where('descr', 'videos_student_close')->first()->id)->first()->dt)->format('F jS') }} --}} -->
-                                        through {{ $eventversion->dates('videos_student_close') }}.
+                                         class="@if($eventversion->eventversionconfigs->virtualaudition)text-center bg-gray-50 border border-gray-800 text-info mx-2 p-2 mb-2 @endif">
+                                        @if($eventversion->eventversionconfigs->virtualaudition)
+                                            <b>Teachers</b> may upload audition recordings
+                                            from:<br/> {{ $eventversion->dates('videos_membership_open') }}
+                                        <!-- {{-- and ends on {{ Carbon\Carbon::parse($eventversion->eventversiondates->where('datetype_id', \App\Datetype::where('descr', 'videos_membership_close')->first()->id)->first()->dt )->format('F jS') }}. --}} -->
+                                            through {{ $eventversion->dates('videos_membership_close') }}.
+                                            <br/>
+                                            <b>Students</b> may upload audition recordings
+                                            from:<br/>{{ $eventversion->dates('videos_student_open') }}
+                                        <!-- {{-- and ends on {{ Carbon\Carbon::parse($eventversion->eventversiondates->where('datetype_id', \App\Datetype::where('descr', 'videos_student_close')->first()->id)->first()->dt)->format('F jS') }} --}} -->
+                                            through {{ $eventversion->dates('videos_student_close') }}.
+                                        @endif
                                     </div>
 
                                     {{-- FILE UPLOADS --}}
