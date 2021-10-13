@@ -312,6 +312,7 @@
 
                                     {{-- FILE UPLOADS --}}
                                     <div class=" mx-2 p-2">
+                                    <!-- {{---
                                         @if(($eventversion->id === 69) &&
                                             $registrant->inpersonaudition &&
                                             $registrant->inpersonaudition->inperson)
@@ -344,10 +345,11 @@
                                                         @endif
                                                     </div>
                                                 </div>
-                                        @else
+
+                                        @else --}} -->
                                             @if($eventversion->eventversionconfigs->virtualaudition)
                                                 <h2 class="font-bold">File Uploads and Reviews</h2>
-
+<!-- {{--
                                                 @if($eventversion->id === 69)
                                                     <div class="{{ $registrant->inpersonaudition && $registrant->inpersonaudition->inperson ? 'bg-green-600' : 'bg-red-800' }} text-white my-1 rounded w-9/12 text-center m-auto">
                                                         @if(config('app.url') === 'http://localhost')
@@ -369,7 +371,7 @@
                                                         @endif
                                                     </div>
                                                 @endif
-
+--}} -->
                                                 @if((! $registrant->hasApplication) && (! $eventversion->eventversionconfigs->eapplication))
 
                                                     <div class="advisory">
@@ -528,7 +530,7 @@
                                                     @endforeach
                                                 @endif
                                             @endif
-                                        @endif
+                                       <!-- {{-- @endif --}} -->
                                     </div>
 
                                 </div>
