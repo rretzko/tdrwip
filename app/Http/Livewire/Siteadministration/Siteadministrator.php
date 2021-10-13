@@ -620,7 +620,7 @@ class Siteadministrator extends Component
 
         return Person::where('last','LIKE', $likevalue)
             ->orWhere('first', 'LIKE', $likevalue)
-            ->limit(25)
+            ->limit(40)
             ->get()
             ->sortBy(['person.last','person.first']);
     }
@@ -634,7 +634,7 @@ class Siteadministrator extends Component
 
         return Person::where('last','LIKE', $likevalue)
             ->orWhere('first', 'LIKE', $likevalue)
-            ->limit(25)
+            ->limit(40)
             ->get()
             ->sortBy(['person.last','person.first']);
     }
@@ -647,7 +647,7 @@ class Siteadministrator extends Component
         $likevalue = '%'.$this->searchschool.'%';
 
         return School::where('name','LIKE', $likevalue)
-            ->limit(25)
+            ->limit(40)
             ->get()
             ->sortBy(['name', 'city']);
     }
@@ -660,7 +660,7 @@ class Siteadministrator extends Component
         $likevalue = '%'.$this->searchuser.'%';
 
         return User::where('username','LIKE', $likevalue)
-            ->limit(25)
+            ->limit(40)
             ->get()
             ->sortBy(['username']);
     }
