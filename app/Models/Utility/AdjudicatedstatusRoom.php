@@ -52,11 +52,11 @@ class AdjudicatedstatusRoom extends Model
 
     private function init()
     {
-        //Count of  component scores possible for $this->eventversion in $this->room
-        $this->countscores = $this->countScores();
-
         //Adjudicators registered for $this->registrant
         $this->adjudicators = $this->room->adjudicators;
+
+        //Count of  component scores possible for $this->eventversion in $this->room
+        $this->countscores = ($this->countScores() * $this->adjudicators->count());
 
         //Object to access all scores for $this->registrant in $this->room
         $this->scores = $this->roomScores();
