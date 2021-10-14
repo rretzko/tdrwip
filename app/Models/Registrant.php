@@ -84,6 +84,8 @@ class Registrant extends Model
     {
         $colors = [
             'completed' => 'bg-green-100',
+            'error' => 'bg-gray-100',
+            'excess' => 'bg-blue-100',
             'partial' => 'bg-yellow-100',
             'tolerance' => 'bg-red-100',
             'unauditioned' => 'bg-white',
