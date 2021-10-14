@@ -62,11 +62,25 @@ class Siteadministrator extends Component
         $_SESSION['loginas'] = true;
     }
 
+    private function nonsubscriberEmailLookup($lookup)
+    {
+        foreach(\App\Models\NonsubscriberEmail::all() AS $email){
+
+            if(strtolower($email->email) === strtolower($lookup)){
+
+                dd($email);
+            }
+        }
+
+        dd('Not Found');
+    }
+
     public function transferStudents()
     {
         //2021-09-21: Add Casey Shields membership, delete second profile for Casey Shields
         //2021-09-20: To Natalie Cardillo FROM Steven Bourque
 
+        //$this->nonsubscriberEmailLookup('maddiegymnastic67@gmail.com');
         //$this->updateAddress(8980);
         //self::transferToNewTeacher();
         //self::addToNewTeacher();
