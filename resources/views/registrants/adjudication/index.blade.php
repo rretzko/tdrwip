@@ -68,7 +68,11 @@
                                 Now adjudicating: {{ $auditioner->id }}: {{ strtoupper($auditioner->instrumentations->first()->abbr) }}
                             </div>
                             <div class=" mb-1">
-                                {!! $auditioner->fileviewport(\App\Models\Filecontenttype::find(1)) !!}
+                                @if($room->filecontenttypes->count() === 1)
+                                    {!! $auditioner->fileviewport($room->filecontenttypes->first()) !!}
+                                @else{
+                                    {!! $auditioner->fileviewport(\App\Models\Filecontenttype::find(1)) !!}
+                                @endif
                             </div>
                             <div class="text-center border border-black rounded bg-gray-100">
                                 <a href="/registrants/adjudication/{{ $eventversion->id }}" class="text-black">
