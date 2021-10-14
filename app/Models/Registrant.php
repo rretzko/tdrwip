@@ -143,7 +143,7 @@ class Registrant extends Model
 
     public function getHasSignaturesAttribute() : bool
     {
-        if($this->eventversion->eventversionconfigs->eapplication){
+        if($this->eventversion->eventversionconfigs->eapplication && $this->eapplication){
             $cntr = 0;
 
             $cntr += $this->eapplication->signatureguardian;
