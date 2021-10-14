@@ -75,7 +75,7 @@ class Registrant extends Model
 
     public function adjudicatedStatus(\App\Models\Room $room)
     {
-        $status = new \App\Models\Utility\Adjudicatedstatus(['registrant' => $this, 'room' => $room]);
+        $status = new \App\Models\Utility\AdjudicatedstatusRoom(['registrant' => $this, 'room' => $room]);
 
         return $status->status();
     }

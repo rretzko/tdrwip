@@ -5,7 +5,7 @@ namespace App\Models\Utility;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Adjudicatedstatus extends Model
+class AdjudicatedstatusRoom extends Model
 {
     use HasFactory;
 
@@ -52,22 +52,35 @@ class Adjudicatedstatus extends Model
 
     private function init()
     {
-        //Count of  component scores possible for $this->eventversion
-        $this->countscores = \App\Models\Scoringcomponent::where('eventversion_id', $this->eventversion->id)->count();
-
-        //Object to access all scores for $this->registrant
-        $this->scores = new \App\Models\Utility\Registrantscores([ 'registrant' => $this->registrant]);
-
-        //Count of component scores registered for $this->registrant
-        $this->countregistrantscores = $this->scores->componentscores()->count();
+        //Count of  component scores possible for $this->eventversion in $this->room
+        $this->countscores = $this->countScores();
 
         //Adjudicators registered for $this->registrant
         $this->adjudicators = $this->room->adjudicators;
+
+        //Object to access all scores for $this->registrant in $this->room
+        $this->scores = $this->roomScores();
+
+        //Count of component scores registered for $this->registrant in $this->room
+        $this->countregistrantscores = $this->scores->count();
     }
 
     private function completed()
     {
         return $this->countregistrantscores === $this->countscores;
+    }
+
+    private function countScores()
+    {
+        $cntr = 0;
+        $filecontenttypeids = $this->room->filecontenttypes->modelKeys();
+
+        foreach(\App\Models\Scoringcomponent::where('eventversion_id', $this->eventversion->id)->get() AS $scoringcomponent){
+
+            $cntr += (in_array($scoringcomponent->filecontenttype_id, $filecontenttypeids));
+        }
+
+        return $cntr;
     }
 
     private function excess()
@@ -78,6 +91,35 @@ class Adjudicatedstatus extends Model
     private function partial()
     {
         return $this->countregistrantscores < $this->countscores;
+    }
+
+    /**
+     * Return a collection of scores specific to $this->room
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    private function roomScores()
+    {
+        $roomscores = collect();
+        $registrantscores = new \App\Models\Utility\Registrantscores([ 'registrant' => $this->registrant]);
+        $scores = $registrantscores->componentscores();
+
+        //early exit
+        if(! $scores){ return $roomscores;}
+
+        foreach($scores AS $score){
+
+            if($this->adjudicators->contains(
+                \App\Models\Adjudicator::where('user_id',$score->user_id)
+                    ->where('eventversion_id', \App\Models\Userconfig::getValue('eventversion', auth()->id()))
+                    ->where('room_id', $this->room->id)
+                    ->first())){
+
+                $roomscores->push($score);
+            }
+        }
+
+        return $roomscores;
     }
 
     /**
