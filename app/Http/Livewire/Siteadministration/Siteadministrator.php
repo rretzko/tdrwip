@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Siteadministration;
 
+use App\Models\Address;
 use App\Models\County;
 use App\Models\Fileuploadfolder;
 use App\Models\Membership;
@@ -63,10 +64,10 @@ class Siteadministrator extends Component
 
     public function transferStudents()
     {
-
         //2021-09-21: Add Casey Shields membership, delete second profile for Casey Shields
         //2021-09-20: To Natalie Cardillo FROM Steven Bourque
 
+        $this->updateAddress(8980);
         //self::transferToNewTeacher();
         //self::addToNewTeacher();
         //self::addMembership();
@@ -449,6 +450,19 @@ class Siteadministrator extends Component
                 ->update(['teacher_user_id' => $to_teacher_user_id2]);
         }
 
+    }
+
+    public function updateAddress($user_id)
+    {
+        $address = Address::find($user_id);
+        
+        $address->update([
+            'address01' => '',
+            'address02' => '',
+            'city' => '',
+            'geostate_id' => 37,
+            'postalcode' => '',
+        ]);
     }
 
     public function updatePassword()
