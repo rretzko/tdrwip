@@ -17,7 +17,7 @@ class CreateEventensemblecutofflocksTable extends Migration
             $table->id();
             $table->foreignId('eventversion_id')->constrained();
             $table->foreignId('eventensemble_id')->constrained();
-            $table->binary('locked')->default(0);
+            $table->tinyInteger('locked')->default(0);
             $table->foreignId('user_id')->comment('updating user')->constrained();
             $table->timestamps();
             $table->unique(['eventversion_id','eventensemble_id']);
