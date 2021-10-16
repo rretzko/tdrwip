@@ -4,12 +4,14 @@ namespace App\Providers;
 
 use App\Events\FileuploadRejectionEvent;
 use App\Events\MembershipRequestEvent;
+use App\Events\UpdateScoreSummaryEvent;
 use App\Events\SubscriberPasswordResetEvent;
 use App\Events\UpdateRegistrantStatusEvent;
 use App\Listeners\FileuploadRejectionStudentEmailListener;
 use App\Listeners\SendMembershipRequestEmailListener;
 use App\Listeners\SubscriberResetPasswordEmailListener;
 use App\Listeners\UpdateRegistrantStatusListener;
+use App\Listeners\UpdateScoreSummaryListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -37,6 +39,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         SubscriberPasswordResetEvent::class =>[
             SubscriberResetPasswordEmailListener::class,
+        ],
+        UpdateScoreSummaryEvent::class => [
+          UpdateScoreSummaryListener::class,
         ],
 
     ];

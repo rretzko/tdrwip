@@ -122,6 +122,8 @@ class RegistrantAdjudicationController extends Controller
             );
         }
 
+        event(new \App\Events\UpdateScoreSummaryEvent($id));
+
         return $this->index($eventversion);
     }
 

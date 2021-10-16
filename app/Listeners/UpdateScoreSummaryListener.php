@@ -23,8 +23,11 @@ class UpdateScoreSummaryListener
      * @param  object  $event
      * @return void
      */
-    public function handle(UpdateScoreSummaryEvent $event)
+    public function handle(\App\Events\UpdateScoreSummaryEvent $event)
     {
-        dd($event->registrant_id);
+        //update score total and count
+        $scoresummary = new \App\Models\Scoresummary;
+        $scoresummary->registrant_id = $event->registrant_id;
+        $scoresummary->updateStats();
     }
 }

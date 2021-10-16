@@ -140,7 +140,7 @@ class Schoolcomponent extends Component
         $this->school = School::find($id);
 
         $this->tenure = Tenure::where('user_id', auth()->id())->where('school_id', $this->school->id)->first();
-
+//dd(auth()->id().': '.$this->school->id); //8460,955
         $this->setGrades();
 
         $this->name = $this->school->name;
