@@ -32,7 +32,11 @@ class EventversionsController extends Controller
             Userconfig::setValue('event', auth()->id(), $eventversion->event->id);
             Userconfig::setValue('organization', auth()->id(), $eventversion->event->organization->id);
 
-            if($eventversion->obligationMet(auth()->id())){
+            if($eventversion->dates('results_release') !== 'not found'){
+
+                return redirect(route('auditionresults.index', [$eventversion]));
+
+            }elseif($eventversion->obligationMet(auth()->id())){
 
                 return $this->show($eventversion);
 

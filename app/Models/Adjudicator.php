@@ -52,6 +52,22 @@ class Adjudicator extends Model
             ->whereHas('instrumentations', function($query) use($roominstrumentation){
                 $query->whereIn('id',$roominstrumentation);
             })->get();
+/*
+
+        $x = Registrant::where('eventversion_id', Userconfig::getValue('eventversion', auth()->id()))
+            ->where('registranttype_id', Registranttype::REGISTERED)
+            ->whereHas('instrumentations', function($query) use($roominstrumentation){
+                $query->whereIn('id',$roominstrumentation);
+            })->get();
+
+        foreach($x AS $y){
+            if($y->id === 656923){
+
+                dd($y->instrumentations);
+            }
+        }
+        return $x;
+*/
     }
 
     public function person()

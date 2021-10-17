@@ -137,7 +137,14 @@
                                             altcolor="{{$loop->even}}"
                                         >
                                             <x-tables.cell>
-                                                <a href="{{ route('registrants.index',['eventversion' => $event]) }}" class="text-blue-700 hover:underline hover:text-red-700">
+                                                <a href="
+                                                    @if($event->dates('results_release') === 'not found')
+                                                        {{ route('registrants.index',['eventversion' => $event]) }}
+                                                    @else
+                                                        {{ route('auditionresults.index',['eventversion' => $event]) }}
+                                                    @endif "
+                                                   class="text-blue-700 hover:underline hover:text-red-700"
+                                                >
                                                     {{ $event->name }}
                                                 </a>
                                             </x-tables.cell>

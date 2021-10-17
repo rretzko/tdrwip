@@ -60,6 +60,17 @@ class Scoresummary extends Model
         $this->instrumentation_id = $registrant->instrumentations()->first()->id;
     }
 
+    public function registrantScore(\App\Models\Registrant $registrant)
+    {
+        return $this->where('registrant_id', $registrant->id)
+            ->value('score_total');
+    }
+
+    public function registrantResult(\App\Models\Registrant $registrant)
+    {
+        return $this->where('registrant_id', $registrant->id)
+            ->value('result');
+    }
 
     private function updateRow()
     {
