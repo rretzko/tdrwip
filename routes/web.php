@@ -52,6 +52,12 @@ Route::middleware('auth', 'verified')->group(function() {
     Route::get('sa/teachertable', [App\Http\Controllers\Siteadministration\TeachertableController::class, 'index'])->name('siteadministration.teachertable.index');
     Route::get('sa/teachertable/email', [App\Http\Controllers\Siteadministration\TeachertablebyemailController::class, 'index'])->name('siteadministration.teachertable.byemail.index');
 
+    /** AUDITION RESULTS */
+    Route::get('auditionresults/{eventversion}', [App\Http\Controllers\Auditionresults\AuditionresultsController::class, 'index'])
+        ->name('auditionresults.index');
+    Route::get('auditionresults/detail/{registrant}', [App\Http\Controllers\Auditionresults\AuditionresultsController::class, 'show'])
+        ->name('auditionresults.detail.show');
+
     /** DASHBOARD */
     Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'show'])->name('dashboard');
     Route::get('dashboard/gettingstarted', [App\Http\Controllers\DashboardController::class, 'update'])
