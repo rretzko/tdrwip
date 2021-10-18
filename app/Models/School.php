@@ -48,6 +48,17 @@ class School extends Model
 
         return $grades;
     }
+
+    public function getCurrentGradesAllUsersAttribute()
+    {
+        $grades = DB::table('gradetype_school_user')
+            ->where('school_id', '=', $this->id)
+            ->pluck('gradetype_id')
+            ->toArray();
+
+        return $grades;
+    }
+
     public function getGeostateAbbrAttribute()
     {
         return ($this->geostate_id) ? Geostate::where('id', $this->geostate_id)->first()->abbr : 'ZZ';

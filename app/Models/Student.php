@@ -52,6 +52,34 @@ class Student extends Model
         return new School;
     }
 
+    /**
+     * Use this function when calling for NOT auth()->id()
+     * @return School|mixed
+     */
+    public function getCurrentSchoolAllUsersAttribute()
+    {
+        foreach($this->person->user->schools AS $school){
+
+            if($school->currentGradesAllUsers &&
+                in_array($this->getGradeAttribute(), $school->currentGradesAllUsers)){
+
+                return $school;
+            }
+        }
+        //$teacherschools = $this->teachers->first()->person->user->schools;
+        //$schools = $this->person->user->schools;
+
+        //foreach($schools AS $school){
+
+        //    if($teacherschools->contains($school)){
+
+        //        return $school;
+        //    }
+        //}
+
+        return new School;
+    }
+
     public function getCurrentSchoolnameAttribute()
     {
         return $this->getCurrentSchoolAttribute()->name;

@@ -213,6 +213,39 @@ class Person extends Model
         return $phones;
     }
 
+    public function phoneHome()
+    {
+        $phone = Phone::where('user_id', $this->user_id)
+            ->where('phonetype_id', Phonetype::HOME)
+            ->first();
+
+        if($phone){ return $phone->phone.' (h)'; }
+
+        return '';
+    }
+
+    public function phoneMobile()
+    {
+        $phone = Phone::where('user_id', $this->user_id)
+            ->where('phonetype_id', Phonetype::MOBILE)
+            ->first();
+
+        if($phone){ return $phone->phone.' (c)'; }
+
+        return '';
+    }
+
+    public function phoneWork()
+    {
+        $phone = Phone::where('user_id', $this->user_id)
+            ->where('phonetype_id', Phonetype::WORK)
+            ->first();
+
+        if($phone){ return $phone->phone.' (w)'; }
+
+        return '';
+    }
+
     public function teacher()
     {
         return $this->hasOne(Teacher::class,'user_id', 'user_id');

@@ -18,7 +18,11 @@
     </div>
 
     <div class="mt-1">
-        <a href="{{ route('siteadministration.teachertable.index') }}" class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">TeachersTable</a>
+        <a href="{{ route('siteadministration.teachertable.index') }}" class="bg-blue-500 text-white px-2 space-y-1 rounded hover:bg-blue-600">TeachersTable</a>
+    </div>
+
+    <div class="mt-1">
+        <a href="{{ route('siteadministration.participatingstudentstable.index') }}" class="bg-yellow-500 text-black px-2 space-y-1 rounded hover: bg-yellow-500">Participating Students</a>
     </div>
 
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auditionresults;
 
 use App\Http\Controllers\Controller;
+use App\Models\Userconfig;
 use Illuminate\Http\Request;
 
 class AuditionresultsController extends Controller
@@ -14,6 +15,10 @@ class AuditionresultsController extends Controller
      */
     public function index(\App\Models\Eventversion $eventversion)
     {
+        Userconfig::setValue('eventversion', auth()->id(), $eventversion->id);
+        Userconfig::setValue('event', auth()->id(), $eventversion->event->id);
+        Userconfig::setValue('organization', auth()->id(), $eventversion->event->organization->id);
+
         $registrants = \App\Models\Registrant::where('school_id', \App\Models\Userconfig::getValue('school', auth()->id()))
             ->where('registranttype_id', \App\Models\Registranttype::REGISTERED)
             ->where('eventversion_id', $eventversion->id)

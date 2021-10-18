@@ -49,6 +49,7 @@ Route::middleware('auth', 'verified')->group(function() {
     Route::get('sa/', [App\Http\Controllers\Siteadministration\SiteadministratorController::class, 'index'])->name('siteadministrator.index');
     Route::post('impersonation/{user_id}', [App\Http\Controllers\Siteadministration\ImpersonationController::class, 'index'])->name('impersonate.login');
     Route::get('impersonation/destroy', [App\Http\Controllers\Siteadministration\ImpersonationController::class, 'destroy']);
+    Route::get('sa/participatingstudents', [App\Http\Controllers\Siteadministration\ParticipatingstudentstableController::class, 'index'])->name('siteadministration.participatingstudentstable.index');
     Route::get('sa/teachertable', [App\Http\Controllers\Siteadministration\TeachertableController::class, 'index'])->name('siteadministration.teachertable.index');
     Route::get('sa/teachertable/email', [App\Http\Controllers\Siteadministration\TeachertablebyemailController::class, 'index'])->name('siteadministration.teachertable.byemail.index');
 
