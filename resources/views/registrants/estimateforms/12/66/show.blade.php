@@ -33,6 +33,13 @@
                                 </a>
                             </div>
 
+                            {{-- PAYPAL BUTTON --}}
+                            <div class="bg-yellow-300 px-2 pt-3 rounded-2xl font-bold">
+                                <a href="{{ route('registrant.paypal') }}" class="bg-yellow-300 text-blue-700">
+                                    Pay via PayPal
+                                </a>
+                            </div>
+
                             {{-- BUTTON TO DOWNLOAD PDF --}}
                             <div class="bg-blue-400 text-xs pt-3 border rounded-2xl text-white px-2">
                                 @if(config('app.url') === 'http://localhost')
@@ -42,7 +49,9 @@
                                 @endif
                                     Download Estimate Form
                                 </a>
+
                             </div>
+
                         </div>
 
                         {{-- ESTIMATE FORM --}}
