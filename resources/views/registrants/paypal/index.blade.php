@@ -120,9 +120,9 @@
                                             <tr>
                                                 <td class="text-center">{{ ($i + 1) }}</td>
                                                 <td class="">{{ $registrants[$i]->student->person->fullNameAlpha }}</td>
-                                                <td class="text-center">{{ $paypalregister->registrationfeePaidByRegistrant($registrants[$i]) }}</td>
-                                                <td class="text-center">{{ $paypalregister->overpaymentByRegistrant($registrants[$i]) }}</td>
-                                                <td class="text-center">${{ $paypalregister->registrationfeeDueByRegistrant($eventversion, $registrants[$i]) }}</td>
+                                                <td class="text-center">${{ number_format($paypalregister->registrationfeePaidByRegistrant($registrants[$i],2)) }}</td>
+                                                <td class="text-center">${{ number_format($paypalregister->overpaymentByRegistrant($registrants[$i]),2) }}</td>
+                                                <td class="text-center">${{ number_format($paypalregister->registrationfeeDueByRegistrant($eventversion, $registrants[$i]),2) }}</td>
                                             </tr>
                                         @else
                                             <tr>
