@@ -70,8 +70,8 @@
 
                                         {{-- HEADER TEXT --}}
                                         <div class="">
-                                            <div class="font-bold text-center">2022 Region Chorus Application</div>
-                                            <div class="font-bold text-center">{{ $eventversion->name }}</div>
+                                            <div class="font-bold text-center">{{ $eventversion->short_name }}</div>
+                                            <div class="font-bold text-center">Student Application</div>
                                             <div class="text-center">ENDORSEMENTS/SIGNATURES</div>
                                         </div>
 

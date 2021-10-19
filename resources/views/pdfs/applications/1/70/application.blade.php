@@ -47,8 +47,8 @@
         </td>
         <td style="width: 72%;">
             <div style="font-weight: bold;">
+                <div style="text-align: right;">{{ $eventversion->short_name }}</div>
                 <div style=" text-align: right;">2022 Student Application</div>
-                <div style="text-align: right;">{{ $eventversion->name }}</div>
             </div>
         </td>
     </tr>
@@ -267,9 +267,8 @@
         </td>
         <td style="width: 72%;">
             <div style="font-weight: bold;">
-                <div style=" text-align: right;">2022 Region Chorus Application</div>
-                <div style="text-align: right;">{{ $eventversion->name }}</div>
-                <div style="text-align: right;">ENDORSEMENTS/SIGNATURES</div>
+                <div style="text-align: right;">{{ $eventversion->short_name }}</div>
+                <div style=" text-align: right;">2022 Student Application</div>
             </div>
         </td>
     </tr>
