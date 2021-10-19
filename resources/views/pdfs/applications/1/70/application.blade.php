@@ -123,7 +123,7 @@
                 @endif
             </td>
             <td style="text-align: center; font-weight: normal;">
-                @if($registrant->student->guardians->count() && $registrant->student->guardians->first()->id)
+                @if($registrant->student->guardians->count() && $registrant->student->guardians->first()->user_id)
                     {{ $registrant->student->guardians->first()->phoneMobile->phone }}
                 @else
                     No Parent Phone
@@ -351,7 +351,7 @@
                 @endif
             </td>
             <td style="text-align: center; font-weight: normal;">
-                @if($registrant->student->guardians->count() && $registrant->student->guardians->first()->id)
+                @if($registrant->student->guardians->count() && $registrant->student->guardians->first()->user_id)
                     {{ $registrant->student->guardians->first()->phoneMobile->phone }}
                 @else
                     No Parent Phone
