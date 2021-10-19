@@ -10,7 +10,7 @@
         }
 
         table.endorsements{
-            font-size: .75rem;
+            font-size: .7rem;
             margin: 0;
         }
 
@@ -123,7 +123,7 @@
                 @endif
             </td>
             <td style="text-align: center; font-weight: normal;">
-                @if($registrant->student->guardians->first()->id)
+                @if($registrant->student->guardians->count() && $registrant->student->guardians->first()->id)
                     {{ $registrant->student->guardians->first()->phoneMobile->phone }}
                 @else
                     No Parent Phone
@@ -141,7 +141,7 @@
         </th>
     </tr>
     <tr>
-        <td>
+        <td style="text-align: justify;">
                 I agree to accept the decision of the judges as binding and if selected I
                 will accept membership in this organization. I understand that membership
                 in this organization may be terminated by anyone that has endorsed this
@@ -180,7 +180,7 @@
         </th>
     </tr>
     <tr>
-        <td>
+        <td style="text-align: justify;">
             As a parent or legal guardian of {{$registrantfullname}}, I give permission for {{$registrantfirstname}} to
             be an applicant for this organization. I understand that neither {{$schoolname}} nor CJMEA assumes responsibility
             for illness or accident.  I further attest to the statement signed by {{$registrantfullname}} and will assist
@@ -190,13 +190,19 @@
         </td>
     </tr>
     <tr>
+        <td style="text-align: justify;">
+            I have read and acknowledged the rehearsal and concert schedule and I will make arrangements to pick up
+            {{ $registrantfirstname }} on or within twenty-minutes after posted rehearsal dismissal time.
+        </td>
+    </tr>
+    <tr>
         <td>
             <table>
                 <tr>
-                    <td style="padding-top: 1rem;">
+                    <td style="padding-top: .5rem;">
                         Parent Signature ______________________________________
                     </td>
-                    <td style="padding-top: 1rem;">
+                    <td style="padding-top: .5rem;">
                         Date: _________________
                     </td>
                 </tr>
@@ -214,7 +220,7 @@
         </th>
     </tr>
     <tr>
-        <td>
+        <td style="text-align: justify;">
             We, the undersigned, recommend {{$registrantfullname}} for participation in the CJMEA sponsored activity.
             {{$registrantfirstname}} is a qualified candidate for this activity and is presently enrolled in grade
             {{$registrant->student->grade}} at {{$schoolname}}.  We understand, in order to audition, that {{$registrantfirstname}}:
@@ -230,6 +236,7 @@
                     where they attend but that we know this student and will attest to their ability and character.
                 </li>
             </ol>
+            <p style="text-align: justify;">
             A CJMEA Region II Chorus member must remain an active member, in good standing, of the school performing
             organization throughout the CJMEA Region I Chorus experience.  We understand that
             {{$registrant->student->currentTeachername}} sponsoring this student is a paid member of NAfME and will be
@@ -238,6 +245,7 @@
             correctly.  In the event that {{$registrantfullname}} is accepted into the group, we will use our influence
             to see that {{$registrantfirstname}} is properly prepared and that {{$registrantfirstname}} adheres to the
             rules, regulations, and policies printed on this application and set forth by the performing groups.
+            </p>
         </td>
     </tr>
     <tr>
@@ -343,7 +351,7 @@
                 @endif
             </td>
             <td style="text-align: center; font-weight: normal;">
-                @if($registrant->student->guardians->first()->id)
+                @if($registrant->student->guardians->count() && $registrant->student->guardians->first()->id)
                     {{ $registrant->student->guardians->first()->phoneMobile->phone }}
                 @else
                     No Parent Phone
@@ -362,7 +370,7 @@
         </th>
     </tr>
     <tr>
-        <td>
+        <td style="text-align: justify;">
             A student will not be excused for any types of performances other than one school performance with the
             corresponding type of CJMEA organization.   For example: If the student is in the CJMEA Region II Chorus, the
             student may be excused from a CJMEA Region II Chorus rehearsal (excluding the dress rehearsal) to perform with
@@ -370,10 +378,10 @@
         </td>
     </tr>
     <tr>
-        <td>
+        <td style="text-align: justify;">
             All students who successfully audition will be charged a $20 acceptance fee which must be paid in full at
             or before the first rehearsal.  This fee will cover the cost involved in the purchase of music.  All fees must
-            be paid in cash or by a School or Director's check only.  No parent/guardian checkes will be accepted.
+            be paid in cash or by a School or Director's check only.  No parent/guardian checks will be accepted.
         </td>
     </tr>
 </table>
@@ -386,7 +394,7 @@
         </th>
     </tr>
     <tr>
-        <td>
+        <td style="text-align: justify;">
             Please read the special Home School Instructions included in the information section of the Director's Packet
             BEFORE you complete this form.
         </td>
@@ -401,7 +409,7 @@
         </th>
     </tr>
     <tr>
-        <td style="padding: .5rem;">
+        <td style="text-align: justify; padding: .5rem;">
             By registering for/attending this event, I acknowledge that I fully understand the nature and extent of the
             risks presented by COVID-19 due to my in-person attendance at this event, including the risk that COVID-19 may
             lead to severe illness or death. I also understand and acknowledge that there are risks of exposure to COVID-19,
@@ -413,7 +421,7 @@
         </td>
     </tr>
     <tr>
-        <td style="padding: .5rem;">
+        <td style="text-align: justify; padding: .5rem;">
             With full knowledge of the risks involved, therefore, I hereby release, waive, and discharge CJMEA, its officers,
             directors, employees, contractors, and agents, from any and all liability, loss, damage, claims, demands, actions,
             and causes of action whatsoever, including reasonable attorneys' fees, directly or indirectly arising out of

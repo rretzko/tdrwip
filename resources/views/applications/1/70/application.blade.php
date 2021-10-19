@@ -134,7 +134,7 @@
                                                     @endif
                                                 </th>
                                                 <th>
-                                                    @if($registrant->student->guardians->first()->id)
+                                                    @if($registrant->student->guardians->count() && $registrant->student->guardians->first()->user_id)
                                                         {{ $registrant->student->guardians->first()->phoneMobile->phone }}
                                                     @else
                                                         No Parent Phone
@@ -180,7 +180,8 @@
                                             PARENT ENDORSEMENT
                                         </header>
                                         <div class="text">
-                                            As a parent or legal guardian of {{$registrant->student->person->fullName}},
+                                            <p>
+                                                As a parent or legal guardian of {{$registrant->student->person->fullName}},
                                             I give permission for {{$registrant->student->person->first}} to be an
                                             applicant for this organization. I understand that neither
                                             {{$registrant->student->currentSchool->shortName}} nor CJMEA assumes
@@ -191,6 +192,12 @@
                                             complying with the attendance policy as set forth in this document.
                                             I also give permission to CJMEA to use {{$registrant->student->person->first}}'s
                                             photograph for publicity publication in print and online.
+                                            </p>
+                                            <p>
+                                                I have read and acknowledged the rehearsal and concert schedule and I will make
+                                            arrangements to pick up {{ $registrant->student->person->first }} on or within twenty-minutes
+                                            after posted rehearsal dismissal time.
+                                            </p>
                                         </div>
 
                                         <div class="signatureline flex flex-row justify-between mt-8">
