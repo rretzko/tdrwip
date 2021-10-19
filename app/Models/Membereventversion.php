@@ -38,7 +38,7 @@ class Membereventversion extends Model
     {
         //identify organization_id to which auth()->id() belongs
         $organizations = Membership::where('user_id', auth()->id())->pluck('organization_id')->toArray();
-;
+
         //identify eventversions with open or admin status
         self::$eventversions = Eventversion::with('event', 'event.organization')
             ->where('eventversiontype_id', Eventversiontype::OPEN)
@@ -49,7 +49,7 @@ class Membereventversion extends Model
             ->filter(function( $eventversion) use ($organizations){
                 return in_array($eventversion['event']['organization']->id, $organizations);
             });
-        
+
     }
 
     private static function filterForAdmin()

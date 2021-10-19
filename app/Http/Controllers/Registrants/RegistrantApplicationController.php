@@ -68,6 +68,10 @@ class RegistrantApplicationController extends Controller
         $eventversion = $registrant->eventversion;
         $filename = self::build_Filename($eventversion, $registrant); //ex: "2021_NJASC_2021_BhargavaV.pdf"
         $me = auth()->user();
+        
+        $registrantfullname = $registrant->student->person->fullName;
+        $registrantfirstname = $registrant->student->person->first;
+        $schoolname = $registrant->student->currentSchool->shortName;
 
         //ex. pages.pdfs.applications.12.64.application
         $pdf = PDF::loadView('pdfs.applications.'//9.65.2021_22_application',
@@ -76,7 +80,8 @@ class RegistrantApplicationController extends Controller
             . $eventversion->id
             . '.application',
             //.applicationTest',
-            compact('registrant','eventversion', 'teacher', 'school','me'));
+            compact('registrant','eventversion', 'teacher', 'school','me',
+            'registrantfullname','registrantfirstname','schoolname'));
 
         //log application printing
         Application::create([
