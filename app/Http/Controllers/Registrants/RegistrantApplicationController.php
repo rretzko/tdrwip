@@ -60,7 +60,7 @@ class RegistrantApplicationController extends Controller
      * @return Response
      */
     public function download(Registrant $registrant)
-    {if($registrant->id > 699999){ dd(__METHOD__);}
+    {
         //$registrant->auditiondetail->applied();
         $teacher = Teacher::find(auth()->id());
         $school = $registrant->student->person->user->schools->first();

@@ -273,7 +273,8 @@
                                             </p>
 
                                             <p>
-                                                All students who successfully audition will be charged a $20.00 acceptance
+                                                All students who successfully audition will be charged a
+                                                ${{ $eventversion->eventversionconfig->registration_fee }} acceptance
                                                 fee which must be paid in full at or before the first rehearsal.  This
                                                 fee will cover the cost involved in the purchase of music.  All fees must
                                                 be paid in cash or by a School or Director's check only.  No
