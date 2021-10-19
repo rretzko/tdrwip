@@ -60,7 +60,7 @@ class RegistrantApplicationController extends Controller
      * @return Response
      */
     public function download(Registrant $registrant)
-    {
+    {if($registrant->id > 699999){ dd(__METHOD__);}
         //$registrant->auditiondetail->applied();
         $teacher = Teacher::find(auth()->id());
         $school = $registrant->student->person->user->schools->first();
@@ -68,7 +68,7 @@ class RegistrantApplicationController extends Controller
         $eventversion = $registrant->eventversion;
         $filename = self::build_Filename($eventversion, $registrant); //ex: "2021_NJASC_2021_BhargavaV.pdf"
         $me = auth()->user();
-        
+
         $registrantfullname = $registrant->student->person->fullName;
         $registrantfirstname = $registrant->student->person->first;
         $schoolname = $registrant->student->currentSchool->shortName;
