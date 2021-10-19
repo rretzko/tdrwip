@@ -33,6 +33,13 @@
                                 </a>
                             </div>
 
+                            {{-- PAYPAL BUTTON --}}
+                            <div class="bg-yellow-300 px-2 pt-3 rounded-2xl font-bold">
+                                <a href="{{ route('registrant.paypal') }}" class="bg-yellow-300 text-blue-700">
+                                    Pay via PayPal
+                                </a>
+                            </div>
+
                             {{-- BUTTON TO DOWNLOAD PDF --}}
                             <div class="bg-blue-400 text-xs pt-3 border rounded-2xl text-white px-2">
                                 @if(config('app.url') === 'http://localhost')
@@ -200,6 +207,7 @@
                                         @foreach($eventversion->instrumentations() AS $instrumentation)
                                             <th class="uppercase">{{ $instrumentation->abbr }}</th>
                                         @endforeach
+                                        <th>PayPal</th>
                                         <th>Total Enclosed</th>
                                     </tr>
                                     </thead>
@@ -211,7 +219,8 @@
                                                 {{ $registrantsbyinstrumentation[$instrumentation->id] }}
                                             </th>
                                         @endforeach
-                                        <th class="text-center">${{ array_sum($registrantsbyinstrumentation) * $eventversion->eventversionconfigs->registrationfee }}</th>
+                                        <th>${{ $paypalcollected }}</th>
+                                        <th class="text-center">${{ $amountduenet }}</th>
                                     </tr>
                                     </tbody>
                                 </table>

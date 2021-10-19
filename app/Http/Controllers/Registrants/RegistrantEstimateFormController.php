@@ -11,6 +11,7 @@ use App\Models\Registrant;
 use App\Models\School;
 use App\Models\Teacher;
 use App\Models\Userconfig;
+use App\Models\Utility\Paypalregister;
 use App\Models\Utility\Registrants;
 use App\Models\Utility\RegistrantsByInstrumentation;
 use Barryvdh\DomPDF\Facade AS PDF;
@@ -46,6 +47,13 @@ class RegistrantEstimateFormController extends Controller
             ? 'landscape'
             : 'portrait';
 
+        $paypalregister = new Paypalregister;
+        $paypalregister->setEventversion($eventversion);
+        $paypalcollected = $paypalregister->paymentsBySchool($school);
+
+        $amountduegross = ($registrants->count() * $eventversion->eventversionconfigs->registrationfee);
+        $amountduenet = ($paypalcollected < $amountduegross) ? ($amountduegross - $paypalcollected) : 0;
+
         //ex. pages.pdfs.applications.12.64.application
         $pdf = PDF::loadView('pdfs.estimateforms.'//9.65.2021_22_application',
             . $eventversion->event->id
@@ -53,7 +61,7 @@ class RegistrantEstimateFormController extends Controller
             . $eventversion->id
             . '.estimateform',
             compact('eventversion', 'teacher', 'school', 'me', 'registrants',
-                'registrantsbyinstrumentation', 'sendto')
+                'registrantsbyinstrumentation', 'sendto','paypalcollected', 'amountduenet')
             )->setPaper('letter', $landscapeportrait);
 
         //log application printing
@@ -72,21 +80,31 @@ class RegistrantEstimateFormController extends Controller
      */
     public function show(Eventversion $eventversion)
     {
+        $registrants = Registrants::registered();
         $registrantsbyinstrumentation = new RegistrantsByInstrumentation;
 
         $counties = ($eventversion->id === 65) ? County::all() : collect();
 
         $school = School::find(Userconfig::getValue('school', auth()->id()));
 
+        $paypalregister = new Paypalregister;
+        $paypalregister->setEventversion($eventversion);
+        $paypalcollected = $paypalregister->paymentsBySchool($school);
+
+        $amountduegross = ($registrants->count() * $eventversion->eventversionconfigs->registrationfee);
+        $amountduenet = ($paypalcollected < $amountduegross) ? ($amountduegross - $paypalcollected) : 0;
+
         return view('registrants.estimateforms.'.$eventversion->event->id.'.'.$eventversion->id.'.show',
         [
+            'amountduenet' => $amountduenet,
             'eventversion' => $eventversion,
-            'registrants' => Registrants::registered(),
+            'registrants' => $registrants,
             'registrantsbyinstrumentation' => $registrantsbyinstrumentation->getArray(),
             'school' => $school,
             'counties' => $counties,
             'updated' => false,
             'sendto' => $this->sendTo($school->county_id),
+            'paypalcollected' => $paypalcollected,
         ]);
     }
 

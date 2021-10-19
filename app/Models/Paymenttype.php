@@ -11,6 +11,8 @@ class Paymenttype extends Model
 
     protected $fillable = ['descr'];
 
+    const PAYPAL = 3;
+
     public function payments()
     {
         return $this->hasMany(Payment::class);

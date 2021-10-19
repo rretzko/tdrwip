@@ -129,6 +129,7 @@
                     @foreach($eventversion->instrumentations() AS $instrumentation)
                         <th >{{ strtoupper($instrumentation->abbr) }}</th>
                     @endforeach
+                    <th>PayPal</th>
                     <th>Total Enclosed</th>
                 </tr>
                 </thead>
@@ -140,7 +141,8 @@
                             {{ $registrantsbyinstrumentation[$instrumentation->id] }}
                         </th>
                     @endforeach
-                    <th style="text-align: center;">${{ array_sum($registrantsbyinstrumentation) * $eventversion->eventversionconfigs->registrationfee }}</th>
+                    <th style="text-align: center;">${{ $paypalcollected }}</th>
+                    <th style="text-align: center;">${{ $amountduenet }}</th>
                 </tr>
                 </tbody>
             </table>
