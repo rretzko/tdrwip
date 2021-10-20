@@ -12,6 +12,7 @@ use App\Models\Userconfig;
 use App\Traits\UpdateRegistrantStatusTrait;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Carbon\Carbon;
 
 class RegistrantController extends Controller
 {
@@ -59,8 +60,9 @@ class RegistrantController extends Controller
         $eventversion = Eventversion::find(Userconfig::getValue('eventversion',auth()->id()));
         $fileserver = new Fileserver($registrant);
 
-
         $folders = $this->getFolders($eventversion, $registrant);
+
+        $sjcdaeapplicationshutdown = Carbon::now() > '2021-10-19 23:59:59';
 
         return view('registrants.registrant.show', [
             'eventversion' => $eventversion,
@@ -69,6 +71,7 @@ class RegistrantController extends Controller
             'folders' => $folders,
             'registrant' => $registrant,
             'countsignatures' => $this->countSignatures($eventversion, $registrant),
+            'sjcdaeapplicationshutdown' => $sjcdaeapplicationshutdown,
         ]);
     }
 

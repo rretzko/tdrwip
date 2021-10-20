@@ -159,53 +159,57 @@
 
                                     {{-- APPLICATION --}}
                                     <div class="bg-red-50 text-center mx-2 py-2 border border-red-200">
-
-                                        @if(config('app.url') === 'http://localhost') {{-- working in dev --}}
-                                            @if($eventversion['eventversionconfigs']->eapplication) {{-- is an eApplication eventversion --}}
-                                                @if($registrant->hasApplication) {{-- eApplication is on file --}}
+                                        @if(($eventversion->id === 66 || $eventversion->id === 67) &&
+                                            $sjcdaeapplicationshutdown)
+                                            Director eApplication deadline has passed
+                                        @else
+                                            @if(config('app.url') === 'http://localhost') {{-- working in dev --}}
+                                                @if($eventversion['eventversionconfigs']->eapplication) {{-- is an eApplication eventversion --}}
+                                                    @if($registrant->hasApplication) {{-- eApplication is on file --}}
+                                                        <a href="{{ route('registrant.application.create',['registrant' => $registrant]) }}"
+                                                           class="text-blue-700">
+                                                            Click here for the current eApplication
+                                                        </a>
+                                                    @else {{-- no current record or not eApplication eventversion --}}
+                                                        <a href="{{ route('registrant.application.create',['registrant' => $registrant]) }}"
+                                                           class="text-blue-700">
+                                                            Click here for a new eApplication
+                                                        </a>
+                                                    @endif
+                                                @else {{-- eventversion is NOT an eApplication eventversion --}}
                                                     <a href="{{ route('registrant.application.create',['registrant' => $registrant]) }}"
                                                        class="text-blue-700">
-                                                        Click here for the current eApplication
+                                                        Click here for the Application pdf
+                                                        @if($registrant->applications->count())
+                                                            <span title="Applications downloaded">
+                                                                ({{ $registrant->applications->count() }})
+                                                            </span>
+                                                        @endif
                                                     </a>
-                                                @else {{-- no current record or not eApplication eventversion --}}
-                                                    <a href="{{ route('registrant.application.create',['registrant' => $registrant]) }}"
+                                                @endif
+                                            @else {{-- working in prod --}}
+                                                @if($eventversion['eventversionconfigs']->eapplication) {{-- is an eApplication eventversion --}}
+                                                    @if($registrant->hasApplication) {{-- eApplication is on file --}}
+                                                        <a href="https://thedirectorsroom.com/registrant/{{ $registrant->id }}/application/show" class="text-blue-700">
+                                                            Click here for the current eApplication
+                                                        </a>
+                                                    @else {{-- no current record or not eApplication eventversion --}}
+                                                    <a href="https://thedirectorsroom.com/registrant/{{ $registrant->id }}/application"
                                                        class="text-blue-700">
                                                         Click here for a new eApplication
                                                     </a>
-                                                @endif
-                                            @else {{-- eventversion is NOT an eApplication eventversion --}}
-                                                <a href="{{ route('registrant.application.create',['registrant' => $registrant]) }}"
-                                                   class="text-blue-700">
-                                                    Click here for the Application pdf
-                                                    @if($registrant->applications->count())
-                                                        <span title="Applications downloaded">
-                                                            ({{ $registrant->applications->count() }})
-                                                        </span>
                                                     @endif
-                                                </a>
-                                            @endif
-                                        @else {{-- working in prod --}}
-                                            @if($eventversion['eventversionconfigs']->eapplication) {{-- is an eApplication eventversion --}}
-                                                @if($registrant->hasApplication) {{-- eApplication is on file --}}
-                                                    <a href="https://thedirectorsroom.com/registrant/{{ $registrant->id }}/application/show" class="text-blue-700">
-                                                        Click here for the current eApplication
+                                                @else {{-- eventversion is NOT an eApplication eventversion --}}
+                                                    <a href="https://thedirectorsroom.com/registrant/{{ $registrant->id }}/application"
+                                                       class="text-blue-700">
+                                                        Click here for the Application pdf
+                                                        @if($registrant->applications->count())
+                                                            <span title="Applications downloaded">
+                                                                    ({{ $registrant->applications->count() }})
+                                                                </span>
+                                                        @endif
                                                     </a>
-                                                @else {{-- no current record or not eApplication eventversion --}}
-                                                <a href="https://thedirectorsroom.com/registrant/{{ $registrant->id }}/application"
-                                                   class="text-blue-700">
-                                                    Click here for a new eApplication
-                                                </a>
                                                 @endif
-                                            @else {{-- eventversion is NOT an eApplication eventversion --}}
-                                                <a href="https://thedirectorsroom.com/registrant/{{ $registrant->id }}/application"
-                                                   class="text-blue-700">
-                                                    Click here for the Application pdf
-                                                    @if($registrant->applications->count())
-                                                        <span title="Applications downloaded">
-                                                                ({{ $registrant->applications->count() }})
-                                                            </span>
-                                                    @endif
-                                                </a>
                                             @endif
                                         @endif
                                             <!-- {{--
