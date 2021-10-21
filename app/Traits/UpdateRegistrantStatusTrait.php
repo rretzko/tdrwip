@@ -20,6 +20,7 @@ trait UpdateRegistrantStatusTrait
     {
         $eventversion = Eventversion::find($registrant->eventversion_id);
         $signature = new Signature();
+        $eapplication = new \App\Models\Eapplication;
 
         if(
             $registrant->hasApplication &&
@@ -27,6 +28,12 @@ trait UpdateRegistrantStatusTrait
             ($eventversion->requiredSignaturesCount == $signature->countForRegistrant($registrant)) &&
             $registrant->hasFileuploads
         ){
+            $registranttype_id = Registranttype::REGISTERED;
+
+        }elseif(
+            (($eventversion->id === 66) || ($eventversion->id === 67)) &&
+            ($eventversion->requiredSignaturesCount == $eapplication->countSignatures($registrant))){
+
             $registranttype_id = Registranttype::REGISTERED;
 
         }elseif($registrant->hasApplication){

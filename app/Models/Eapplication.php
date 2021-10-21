@@ -18,4 +18,17 @@ class Eapplication extends Model
     {
         return $this->belongsTo(Registrant::class);
     }
+
+    public function countSignatures(Registrant $registrant)
+    {
+        $count = 0;
+
+        $eapplication = $this::where('registrant_id', $registrant->id)
+            ->first();
+
+        $count += $eapplication->signatureguardian;
+        $count += $eapplication->signaturestudent;
+
+        return $count;
+    }
 }

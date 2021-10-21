@@ -62,7 +62,7 @@ class RegistrantController extends Controller
 
         $folders = $this->getFolders($eventversion, $registrant);
 
-        $sjcdaeapplicationshutdown = Carbon::now() > '2021-10-19 23:59:59';
+        $sjcdaeapplicationshutdown = (Carbon::now() > '2021-10-19 23:59:59');
 
         return view('registrants.registrant.show', [
             'eventversion' => $eventversion,
@@ -112,10 +112,20 @@ class RegistrantController extends Controller
 
         $this->updateRegistrantStatus($registrant);
 
+        $sjcdaeapplicationshutdown = (Carbon::now() > '2021-10-19 23:59:59');
+
+        $eventversion = Eventversion::find($registrant->eventversion_id);
+        $fileserver = new Fileserver($registrant);
+        $folders = $this->getFolders($eventversion, $registrant);
+
         return view('registrants.registrant.show', [
-            'eventversion' => Eventversion::find($registrant->eventversion_id),
+            'eventversion' => $eventversion,
+            'filename' => $fileserver->buildFilename($registrant),
+            'fileserver' => $fileserver,
+            'folders' => $folders,
             'registrant' => $registrant,
             'countsignatures' => $this->countSignatures($registrant->eventversion, $registrant),
+            'sjcdaeapplicationshutdown' => $sjcdaeapplicationshutdown,
         ]);
     }
 
