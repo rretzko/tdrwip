@@ -77,7 +77,7 @@
                                             {!! $school->mailingAddress !!}
                                         </x-tables.cell>
                                         <x-tables.cell>
-                                            {{ auth()->user()->person->teacher->tenureYearsAtSchool($school->id) }}
+                                            {{ auth()->user()->person->teacher->tenureYearsAtSchool($school->id) ?? 0 }}
                                         </x-tables.cell>
                                         <x-tables.cell>
                                             @if(strpos($school->name, 'Studio'))
