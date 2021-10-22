@@ -160,7 +160,8 @@
                                     {{-- APPLICATION --}}
                                     <div class="bg-red-50 text-center mx-2 py-2 border border-red-200">
                                         @if(($eventversion->id === 66 || $eventversion->id === 67) &&
-                                            $sjcdaeapplicationshutdown)
+                                            $sjcdaeapplicationshutdown &&
+                                            (auth()->id() !== 8460))
                                             Director eApplication deadline has passed
                                         @else
                                             @if(config('app.url') === 'http://localhost') {{-- working in dev --}}
