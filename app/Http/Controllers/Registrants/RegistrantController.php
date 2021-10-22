@@ -72,6 +72,7 @@ class RegistrantController extends Controller
             'registrant' => $registrant,
             'countsignatures' => $this->countSignatures($eventversion, $registrant),
             'sjcdaeapplicationshutdown' => $sjcdaeapplicationshutdown,
+            'exception' => $this->exceptions(),
         ]);
     }
 
@@ -126,6 +127,7 @@ class RegistrantController extends Controller
             'registrant' => $registrant,
             'countsignatures' => $this->countSignatures($registrant->eventversion, $registrant),
             'sjcdaeapplicationshutdown' => $sjcdaeapplicationshutdown,
+            'exception' => $this->exceptions(),
         ]);
     }
 
@@ -153,6 +155,23 @@ class RegistrantController extends Controller
         $cntr += $eapplication ? $eapplication->signaturestudent : 0;
 
         return $cntr;
+    }
+
+    /**
+     * Return boolean true if auth()->id() meets exception
+     */
+    private function exceptions()
+    {
+        $exception = false;
+
+        if((auth()->id() === 8460) &&
+            (Carbon::now() > '2021-10-25 00:00:01') &&
+            (Carbon::now() < '2021-10-26 23:59:59')){
+
+            $exception = true;
+        }
+
+        return $exception;
     }
 
     private function getFolders(Eventversion $eventversion, Registrant $registrant)
