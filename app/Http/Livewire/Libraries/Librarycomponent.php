@@ -6,9 +6,12 @@ use App\Models\Composition;
 use App\Models\Compositioncollectiontype;
 use App\Models\Compositiontype;
 use App\Models\Geostate;
+use App\Models\Library;
 use App\Models\Publisher;
+use App\Models\Userconfig;
 use Livewire\Component;
 use Livewire\WithPagination;
+
 
 class Librarycomponent extends Component
 {
@@ -71,6 +74,8 @@ class Librarycomponent extends Component
         return view('livewire.libraries.librarycomponent',
             [
               'compositions' => $this->compositions(),
+                'library' => $this->library(),
+                'libraries' => $this->libraries(),
             ]
         );
     }
@@ -88,6 +93,7 @@ class Librarycomponent extends Component
         $this->editcomposition = Composition::updateOrCreate([
             'title' => $this->editcompositiontitle,
             'subtitle' => $this->editcompositionsubtitle,
+            'from' => $this->editcompositionfrom,
             'compositiontype_id' => $this->editcompositioncompositiontype_id,
             'compositioncollectiontype_id' => $this->editcompositioncompositioncollectiontype_id,
         ]);
@@ -197,6 +203,16 @@ class Librarycomponent extends Component
         }
 
         return $a;
+    }
+
+    private function libraries()
+    {
+        return Library::where('user_id', auth()->id())->get();
+    }
+
+    private function library()
+    {
+        return Library::find(Userconfig::getValue('library', auth()->id()));
     }
 
     private function refreshPublishersList()

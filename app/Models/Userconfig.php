@@ -44,6 +44,30 @@ class Userconfig extends Model
         self::defaultSave($descr, $user_id, 'all');
     }
 
+    /**
+     * @param $descr
+     * @param $user_id
+     */
+    private static function defaultLibrary($descr, $user_id)
+    {
+        //find the first library for auth()->id()
+       $library = \App\Models\Library::where('user_id', auth()->id())->first();
+
+       // if none found, create libraries for all schools assigned to auth()->id()
+       if(! $library){
+           foreach(auth()->user()->schools AS $school){
+
+               \App\Models\Library::create([
+                   'user_id' => auth()->id(),
+                   'school_id' => $school->id,
+               ]);
+           }
+       }
+
+       //assign the config value to the first library found for auth()->id()
+       self::defaultSave($descr, $user_id, \App\Models\Library::where('user_id', auth()->id())->first()->id);
+    }
+
     private static function defaultPagedef_students($descr, $user_id)
     {
         self::defaultSave($descr, $user_id, 1); //display

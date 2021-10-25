@@ -68,9 +68,9 @@
                   d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
         </svg>
     </a>
-    <a href="{{ route('library.index') }}"
+    <a href="{{ route('libraries.index') }}"
        class="border border-gray-500 rounded px-2 py-1 ml-0.5
-        {{ (strpos(Route::currentRouteName(), 'library')) === 0 ? 'active' : ''  }} "
+        {{ (strpos(Route::currentRouteName(), 'libraries')) === 0 ? 'active' : ''  }} "
        title="Library"
     >
         <!-- heroicon book-open -->
@@ -158,9 +158,9 @@
                 ? 'active' : ''  }}">
         Ensembles
     </a>
-    <a href="{{ route('library.index') }}"
+    <a href="{{ route('libraries.index') }}"
        class="border border-gray-500 rounded px-2 py-1 ml-0.5
-        {{ (strpos(Route::currentRouteName(), 'library')) === 0 ? 'active' : ''  }}">
+        {{ (strpos(Route::currentRouteName(), 'libraries')) === 0 ? 'active' : ''  }}">
         Library
     </a>
     <a href="{{ route('organizations.index') }}"
@@ -277,9 +277,9 @@
         </svg>
         <div class="ml-1">Ensembles</div>
     </a>
-    <a href="{{ route('library.index') }}"
+    <a href="{{ route('libraries.index') }}"
        class="flex flex-row border border-blue-300 rounded px-2 py-1 ml-0.5
-        {{ (strpos(Route::currentRouteName(), 'library')) === 0 ? 'active' : ''  }}">
+        {{ (strpos(Route::currentRouteName(), 'libraries')) === 0 ? 'active' : ''  }}">
         <!-- heroicon book-open -->
         <svg xmlns="http://www.w3.org/2000/svg"
              width="20px" height="20px"

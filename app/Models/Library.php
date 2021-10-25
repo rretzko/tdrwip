@@ -9,9 +9,17 @@ class Library extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['school_id', 'user_id'];
+    protected $with=['school'];
+
     public function compositions()
     {
         return $this->belongsToMany(Composition::class)
             ->with('publisher');
+    }
+
+    public function school()
+    {
+        return $this->belongsTo(School::class);
     }
 }

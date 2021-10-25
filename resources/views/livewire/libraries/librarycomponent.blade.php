@@ -17,7 +17,13 @@
             <div class="flex justify-end pr-6 space-x-2">
                 <x-inputs.dropdowns.perpage />
                 <x-inputs.dropdowns.bulkactions :selected="$selected" />
-                <x-buttons.button-add toggle="showaddmodal" />
+                <a href="{{ route('compositions.create') }}" class="px-2">
+                    <button class="bg-green-200 px-0.5 shadow-lg border border-green-600 rounded-md text-center cursor-pointer p-2 color text-black"
+                     style="max-width: 4rem;"
+                    >
+                    Add
+                    </button>
+                </a>
             </div>
 
             {{-- beginning of tailwindui table --}}
@@ -25,12 +31,14 @@
                 <div class="py-2 align-middle inline-block min-w sm:px-6 lg:px-8">
                     <div class="space-y-4 overflow-hidden border-b border-gray-200 sm:rounded-lg">
 
+                        <x-libraries.radioselector :library="$library" :libraries="$libraries" />
+
                         <div class="flex space-x-4">
                             <div class="flex">
                                 <x-inputs.text wire:model.debounce.1s="search"
                                                for="search"
                                                label=""
-                                               placeholder="Search ensemble name..."/>
+                                               placeholder="Search composition name..."/>
                             </div>
                         <!-- {{-- SUPPRESS ADVANCED FILTERS
                             <div class="flex text-sm text-gray-600">
