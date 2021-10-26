@@ -17,7 +17,7 @@
             <div class="flex justify-end pr-6 space-x-2">
                 <x-inputs.dropdowns.perpage />
                 <x-inputs.dropdowns.bulkactions :selected="$selected" />
-                <a href="{{ route('compositions.create') }}" class="px-2">
+                <a href="{{ route('librarymedia.index') }}" class="px-2">
                     <button class="bg-green-200 px-0.5 shadow-lg border border-green-600 rounded-md text-center cursor-pointer p-2 color text-black"
                      style="max-width: 4rem;"
                     >

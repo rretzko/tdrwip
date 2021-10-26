@@ -47,6 +47,7 @@ class DatabaseSeeder extends Seeder
          $this->call(StudenttypeSeeder::class);
          $this->call(ShirtsizeSeeder::class);
          $this->call(CountySeeder::class);
+         $this->call(LibrarymediatypeSeeder::class);
 
          //DATA TABLES
          $this->call(SchoolSeeder::class);

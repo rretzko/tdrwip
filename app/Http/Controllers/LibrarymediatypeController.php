@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Compositions;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Library;
 use App\Models\Librarymediatype;
-use App\Models\Userconfig;
+use Illuminate\Http\Request;
 
-class CompositionController extends Controller
+class LibrarymediatypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +14,7 @@ class CompositionController extends Controller
      */
     public function index()
     {
-        $library = Library::find(Userconfig::getValue('library', auth()->id()));
+        //
     }
 
     /**
@@ -27,15 +24,7 @@ class CompositionController extends Controller
      */
     public function create()
     {
-        $library = Library::find(Userconfig::getValue('library', auth()->id()));
-        $libraries = Library::where('user_id', auth()->id())->get();
-
-        return view('compositions.create', [
-            'libraries' => $libraries,
-            'library' => $library,
-            'librarymediatype_id' => Librarymediatype::SHEET_MUSIC,
-            'librarymediatypes' => Librarymediatype::orderBy('order_by')->get(),
-        ]);
+        //
     }
 
     /**
@@ -52,10 +41,10 @@ class CompositionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Librarymediatype  $librarymediatype
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Librarymediatype $librarymediatype)
     {
         //
     }
@@ -63,10 +52,10 @@ class CompositionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Librarymediatype  $librarymediatype
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Librarymediatype $librarymediatype)
     {
         //
     }
@@ -75,10 +64,10 @@ class CompositionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Librarymediatype  $librarymediatype
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Librarymediatype $librarymediatype)
     {
         //
     }
@@ -86,10 +75,10 @@ class CompositionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Librarymediatype  $librarymediatype
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Librarymediatype $librarymediatype)
     {
         //
     }

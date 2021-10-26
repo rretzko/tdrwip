@@ -279,7 +279,12 @@
     </a>
     <a href="{{ route('libraries.index') }}"
        class="flex flex-row border border-blue-300 rounded px-2 py-1 ml-0.5
-        {{ (strpos(Route::currentRouteName(), 'libraries')) === 0 ? 'active' : ''  }}">
+        {{ 
+            (
+                (strpos(Route::currentRouteName(), 'libraries') === 0) ||
+                (strpos(Route::currentRouteName(), 'composition') === 0)
+            )
+                ? 'active' : ''  }}">
         <!-- heroicon book-open -->
         <svg xmlns="http://www.w3.org/2000/svg"
              width="20px" height="20px"

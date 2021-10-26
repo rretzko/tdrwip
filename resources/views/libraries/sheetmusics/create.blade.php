@@ -6,10 +6,11 @@
             <x-libraries.radioselector :library="$library" :libraries="$libraries" />
 
             <x-libraries.librarymediatypes
-                :librarymediatypeid="$librarymediatype_id"
                 :librarymediatypes="$librarymediatypes"
+                librarymediatypeid="{{ $librarymediatype_id }}"
             />
 
+            @livewire('libraries.sheetmusics.sheetmusiccomponent')
 
         </div>
     </div>

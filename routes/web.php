@@ -78,8 +78,10 @@ Route::middleware('auth', 'verified')->group(function() {
 
     /** LIBRARY */
     Route::get('/libraries', [App\Http\Controllers\Libraries\LibraryController::class,'index'])->name('libraries.index');
-
-    Route::get('/composition/new', [App\Http\Controllers\Compositions\CompositionController::class,'create'])->name('compositions.create');
+    
+    /** LIBRARY MEDIA (defaults to sheetmusic) */
+    Route::get('/sheetmusic/new', [App\Http\Controllers\Libraries\Librarymedia\SheetmusicController::class,'index'])->name('librarymedia.index');
+    //Route::get('/composition/new', [App\Http\Controllers\Compositions\CompositionController::class,'create'])->name('compositions.create');
 
     /** ENSEMBLES */
     Route::get('/ensembles', [App\Http\Controllers\Ensembles\EnsembleController::class,'index'])->name('ensembles.index');
