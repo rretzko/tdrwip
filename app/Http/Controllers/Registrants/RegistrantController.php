@@ -164,9 +164,18 @@ class RegistrantController extends Controller
     {
         $exception = false;
 
+        //Patrick Carpenter
         if((auth()->id() === 8460) &&
             (Carbon::now() > '2021-10-25 00:00:01') &&
             (Carbon::now() < '2021-10-26 23:59:59')){
+
+            $exception = true;
+        }
+
+        //Katherine Teall
+        if((auth()->id() === 252) &&
+            (Carbon::now() > '2021-10-27 13:30:01') &&
+            (Carbon::now() < '2021-10-29 23:59:59')){
 
             $exception = true;
         }
