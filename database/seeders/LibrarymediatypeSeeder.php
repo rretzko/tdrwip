@@ -21,6 +21,6 @@ class LibrarymediatypeSeeder extends Seeder
             ['descr' => 'vinyl', 'order_by' => 4],
             ['descr' => 'DVD', 'order_by' => 5],
             ['descr' => 'cassette', 'order_by' => 6],
-        ]);
+        ]); 
     }
 }

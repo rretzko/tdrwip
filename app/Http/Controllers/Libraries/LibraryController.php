@@ -15,8 +15,9 @@ class LibraryController extends Controller
      * @return Response
      */
     public function index()
-    {
+    { 
         $libraries = \App\Models\Library::where('user_id', auth()->id())->get();
+
         $library = \App\Models\Library::find(\App\Models\Userconfig::getValue('library', auth()->id()));
 
         return view('libraries.index', []);
