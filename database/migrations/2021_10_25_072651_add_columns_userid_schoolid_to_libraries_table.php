@@ -12,7 +12,7 @@ class AddColumnsUseridSchoolidToLibrariesTable extends Migration
      * @return void
      */
     public function up()
-    { 
+    {  
         Schema::table('libraries', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained();
             $table->foreignId('school_id')->constrained();
