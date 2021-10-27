@@ -59,10 +59,12 @@ class Registrants extends Model
         $registrants = collect();
         $students = self::confirmEligibleStudentsAreRegistrants($search, $classofs);
         $eventversion_id = self::$eventversion_id;
+        $school_id = Userconfig::getValue('school', auth()->id());
 
-        $applieds = $students->filter(function($student) use ($eventversion_id){
+        $applieds = $students->filter(function($student) use ($eventversion_id, $school_id){
            return (bool)Registrant::where('user_id', $student->user_id)
                ->where('eventversion_id', $eventversion_id)
+               ->where('school_id', $school_id)
                ->where('registranttype_id', Registranttype::APPLIED)
                ->first();
         });
@@ -163,11 +165,14 @@ class Registrants extends Model
     {
         $registrants = collect();
         $students = self::confirmEligibleStudentsAreRegistrants($search, $classofs);
+        $schoolid = Userconfig::getValue('school', auth()->id());
 
         foreach($students AS $student) {
 
             $registrants->push($student->registrants
-                ->where('eventversion_id', self::$eventversion_id)->first());
+                ->where('eventversion_id', self::$eventversion_id)
+                ->where('school_id', $schoolid)
+                ->first());
         }
 
         return $registrants;
@@ -242,9 +247,11 @@ class Registrants extends Model
         $registrants = collect();
         $students = self::confirmEligibleStudentsAreRegistrants($search, $classofs);
         $eventversion_id = self::$eventversion_id;
+        $school_id = Userconfig::getValue('school', auth()->id());
 
-        $registereds = $students->filter(function($student) use ($eventversion_id){
+        $registereds = $students->filter(function($student) use ($eventversion_id, $school_id){
             return (bool)Registrant::where('user_id', $student->user_id)
+                ->where ('school_id', $school_id)
                 ->where('eventversion_id', $eventversion_id)
                 ->where('registranttype_id', Registranttype::REGISTERED)
                 ->first();
