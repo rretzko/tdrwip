@@ -181,9 +181,13 @@ class RegistrantApplicationController extends Controller
             (($registrant->eventversion->event->id === 11) ||
                 ($registrant->eventversion->event->id === 12)) &&
                 (array_key_exists('signatureguardian', $data) &&
-                    array_key_exists('signaturestudent', $data))){
+                    array_key_exists('signaturestudent', $data))) {
 
             $registrant->resetRegistrantType('registered');
+
+        }elseif($registrant->eventversion->event->id === 19) {
+
+            $registrant->resetRegistrantType($this->allshoreRules($data));
 
         }else {
 
@@ -202,6 +206,24 @@ class RegistrantApplicationController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function allshoreRules(array $data)
+    {
+        $status = 'eligible';
+
+        $tests = ['absences', 'eligibility','imageuse', 'lates', 'rulesandregs', 'signatureguardian', 'signaturestudent'];
+
+        foreach($tests AS $test){
+
+            if(! (array_key_exists($test, $data) && $data[$test] )){
+
+                return $status;
+            }
+        }
+
+        //passed all tests
+        return 'applied';
     }
 
     /**
