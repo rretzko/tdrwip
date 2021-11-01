@@ -72,7 +72,7 @@
 
                             <div id="titles" class="flex flex-col text-center">
                                 <div>
-                                    INVOICE
+                                    ALL-SHORE INVOICE
                                 </div>
                                 <div>
                                     {{ $eventversion->name }}
