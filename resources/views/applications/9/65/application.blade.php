@@ -115,7 +115,7 @@
                                                 </div>
                                             </div>
                                             <div class="font-bold">
-                                                PARENT/LEGAL GUARDIAN CELL: {{ $registrant->student->guardians->first() ? $registrant->student->guardians->first()->person->phoneMobile : ''}}
+                                                PARENT/LEGAL GUARDIAN CELL: {{ $registrant->student->guardians->first() ? $registrant->student->guardians->first()->person->phoneMobile() : ''}}
                                             </div>
                                         </div>
                                     </div>
