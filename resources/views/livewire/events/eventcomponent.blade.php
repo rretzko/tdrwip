@@ -138,7 +138,7 @@
                                         >
                                             <x-tables.cell>
                                                 <a href="
-                                                    @if($event->dates('results_release') === 'not found')
+                                                    @if(($event->dates('results_release') === 'not found') || (auth()->id() === 368))
                                                         {{ route('registrants.index',['eventversion' => $event]) }}
                                                     @else
                                                         {{ route('auditionresults.index',['eventversion' => $event]) }}
