@@ -73,7 +73,11 @@
                                     class=" bg-yellow-200 text-blue-700 font-bold border border-blue-700 rounded px-2"
                                     title="{{ $event->name }} estimate form"
                                  >
-                                     Estimate
+                                     @if($event->event->id === 19)
+                                         Invoice
+                                     @else
+                                        Estimate
+                                     @endif
                                  </a>
                              </div>
 

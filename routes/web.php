@@ -77,7 +77,7 @@ Route::middleware('auth', 'verified')->group(function() {
     Route::get('/xstudents', [App\Http\Controllers\Students\StudentTabbedController::class, 'show'])->name('xstudents');
 
     /** LIBRARY */
-    Route::get('/libraries', [App\Http\Controllers\Libraries\LibraryController::class,'index'])->name('library.index');
+    Route::get('/libraries', [App\Http\Controllers\Libraries\LibraryController::class,'index'])->name('library.index'); 
 
     /** ENSEMBLES */
     Route::get('/ensembles', [App\Http\Controllers\Ensembles\EnsembleController::class,'index'])->name('ensembles.index');

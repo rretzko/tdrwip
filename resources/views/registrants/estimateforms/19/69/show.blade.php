@@ -8,12 +8,12 @@
                 <x-livewire-table-with-modal-forms>
 
                     <x-slot name="title">
-                        {{ __('Estimate Form') }}
+                        {{ __('Invoice Form') }}
                     </x-slot>
 
                     <x-slot name="description">
 
-                        <x-sidebar-blurb blurb="Estimate form for: {{ $eventversion->name }}"/>
+                        <x-sidebar-blurb blurb="Invoice form for: {{ $eventversion->name }}"/>
 
                     </x-slot>
 
@@ -40,7 +40,7 @@
                                 @else
                                     <a href="https://thedirectorsroom.com/registrant/estimateform/{{ $eventversion->id }}/download">
                                 @endif
-                                    Download Estimate Form
+                                    Download Invoice Form
                                 </a>
                             </div>
                         </div>
@@ -49,145 +49,76 @@
                         <div class="my-2 overflow-x-auto sm:mx-2 lg:mx-2 ">
 
                             {{-- BANNER --}}
-                            <header class="flex justify-between">
-                                <div>
-                                    <img src="\assets\images\njmea_logo_state.jpg" alt="NJMEA logo"/>
+                            <div class="flex flex-col">
+                                <div class="uppercase border-b text-center font-bold mb-4">
+                                    {{ $eventversion->name }}
                                 </div>
-
-                                <div class="flex flex-col">
-                                    <div class="uppercase border-b text-center">
-                                        {{ $eventversion->name }}
+                                <div class="text-sm">
+                                    <div class="uppercase text-center">
+                                        Mail to: Emily Kneuer, Treasurer
                                     </div>
                                     <div class="uppercase text-center">
-                                        2021-2022 TEACHER ESTIMATE FORM
+                                        Raritan High School
                                     </div>
-                                    <div class=" text-center">
-                                        {{ auth()->user()->person->fullName }}
+                                    <div class="uppercase text-center">
+                                        419 Middle Road
                                     </div>
-                                    <div class=" text-center">
-                                        {{ $school->shortName }}
+                                    <div class="uppercase text-center">
+                                        Hazlet, NJ 07730
                                     </div>
                                 </div>
-                            </header>
-
-                            {{-- COUNTY SELECTION for NJ All-State --}}
-                            <div class="border border-black p-2 bg-gray-200">
-                                @if($counties->count())
-                                    @if(config('app.url') === 'http://localhost')
-                                        <form method="post" action="{{ route('school.county') }}" >
-                                    @else
-                                        <form method="post" action="https://thedirectorsroom.com/registrant/estimateform/county" >
-                                    @endif
-                                        @csrf
-                                        The county for <b>{{ $school->shortName }}</b> is:
-                                        <select name="county_id" class="@if($updated) bg-green-100 @endif">
-                                            @foreach($counties AS $county)
-                                                <option value="{{ $county->id }}"
-                                                    @if($school->county_id === $county->id) SELECTED @endif
-                                                >{{ $county->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <input class="ml-2 bg-blue-100 px-4" type="submit" name="submit" id="submit" value="Update" >
-                                    </form>
-
-                                    <div>
-                                        Send this pdf to:
-                                        <div><b>{{ $sendto['name'] }}</b></div>
-                                        <div>{{ $sendto['address01'] }}</div>
-                                        <div>{{ $sendto['address02'] }}</div>
-                                        @if(strlen($sendto['address03']))<div>{{ $sendto['address03'] }}</div> @endif
-                                        <div>{!! $sendto['email'] !!}</div>
-                                    </div>
-                                @endif
                             </div>
+                            <hr class="my-4"/>
 
-                            {{-- REGISTRANT ROSTER --}}
-                            <div class="flex flex-col">
-
-                                {{-- HEADER --}}
-                                <h2 class="text-center w-full border-b">
-                                    {{ $eventversion->eventversionconfigs->max_count }} STUDENTS MAXIMUM
-                                </h2>
-
-                                <h3 class="text-center w-full border-b" style="color: darkred; font-weight: bold;">
-                                   YOUR REGISTERED STUDENTS WILL BE AUTOMATICALLY DISPLAYED BELOW.<br />
-                                    HANDWRITTEN ENTRIES WILL <u>NOT</u> BE ACCEPTED.
-                                </h3>
-
-                                {{-- ROSTER TABLE --}}
-                                <style>
-                                    table{border-collapse: collapse;}
-                                    td,th{border: 1px solid black; padding: 0 .25rem;}
-                                </style>
-                                <table class="mb-4">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Name</th>
-                                        <th>Voice Part</th>
-                                        <th>Grade</th>
-                                        <th>Fee</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @for($i=0;$i<$eventversion->eventversionconfigs->max_count;$i++)
-                                        @if(isset($registrants[$i]))
-                                            <tr>
-                                                <td class="text-center">{{ ($i + 1) }}</td>
-                                                <td class="">{{ $registrants[$i]->student->person->fullNameAlpha }}</td>
-                                                <td class="text-center">{{ $registrants[$i]->instrumentations->first()->descr }}</td>
-                                                <td class="text-center">{{ $registrants[$i]->student->grade }}</td>
-                                                <td class="text-center">${{ $eventversion->eventversionconfigs->registrationfee * ($i + 1) }}</td>
-                                            </tr>
-                                        @else
-                                            <tr>
-                                                <td class="text-center">{{ ($i + 1) }}</td>
-                                                <td class="text-center"></td>
-                                                <td class="text-center"></td>
-                                                <td class="text-center"></td>
-                                                <td class="text-center">${{ $eventversion->eventversionconfigs->registrationfee * ($i + 1) }}</td>
-                                            </tr>
-                                        @endif
-
-                                    @endfor
-                                    </tbody>
-                                </table>
-
-                                {{-- SUMMARY TABLE --}}
-                                <table>
-                                    <thead>
-                                    <tr>
-                                        <th class="border-l-0 border-t-0 "></th>
-                                        @foreach($eventversion->instrumentations() AS $instrumentation)
-                                            <th class="uppercase">{{ $instrumentation->abbr }}</th>
-                                        @endforeach
-                                        <th>Total Enclosed</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>Voice Part Totals</td>
-                                        @foreach($eventversion->instrumentations() AS $instrumentation)
-                                            <th class="{{ (! $registrantsbyinstrumentation[$instrumentation->id]) ? 'text-gray-300' : '' }}">
-                                                {{ $registrantsbyinstrumentation[$instrumentation->id] }}
-                                            </th>
-                                        @endforeach
-                                        <td class="text-center">${{ array_sum($registrantsbyinstrumentation) * $eventversion->eventversionconfigs->registrationfee }}</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-
-                                {{-- MEMBERSHIP CARD --}}
-                                <table class="mt-4 bg-gray-200">
-                                    <tr>
-                                        <td>
-                                            The downloaded pdf will contain an additional page on which a copy of your
-                                            NAfME membership card or verification of current status must be attached.
-                                        </td>
-                                    </tr>
-                                </table>
+                            <div id="titles" class="flex flex-col text-center">
+                                <div>
+                                    INVOICE
+                                </div>
+                                <div>
+                                    {{ $eventversion->name }}
+                                </div>
+                                <div>
+                                    STUDENT AUDITION FEES INVOICE
+                                </div>
+                                <div class="my-4">
+                                    $15.00 Per Student
+                                </div>
+                                <div class="mb-4">
+                                    Due: November 3<sup>rd</sup>, 2021
+                                </div>
+                                <div>
+                                    Please send one check for all students auditioning at your school.<br />
+                                    Please make out all checks to "All-Shore Chorus Inc".
+                                </div>
                             </div>
+                            <hr class="my-4"/>
 
+                            <style>
+                                label{width: 25rem;}
+                                .data{font-weight: bold;}
+                            </style>
+                            <div id="invoice_data">
+                                <div class="flex flex-row">
+                                    <label>School</label>
+                                    <div class="data">{{ $school->shortName }}</div>
+                                </div>
+                                <div class="flex flex-row">
+                                    <label>Date</label>
+                                    <div class="data">{{ \Carbon\Carbon::now()->format('d-M-Y') }}</div>
+                                </div>
+                                <div class="flex flex-row">
+                                    <label>Number of Students Auditioning</label>
+                                    <div class="data">{{ $registrants->count() }}</div>
+                                </div>
+                                <div class="flex flex-row">
+                                    <label>Choral Director</label>
+                                    <div class="data">{{ auth()->user()->person->fullName }}</div>
+                                </div>
+                                <div class="flex flex-row">
+                                    <label>Total amount enclosed: (# of students x $15.00)</label>
+                                    <div class="data">${{ number_format(($registrants->count() * $eventversion->eventversionconfigs->registrationfee), 2) }}</div>
+                                </div>
+                            </div>
                         </div>
 
                     </x-slot>
