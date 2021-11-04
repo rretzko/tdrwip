@@ -70,14 +70,14 @@
                             <div class=" mb-1 space-x-2">
                                 @if(config('app.url') === 'http://localhost')
                                     @foreach($room->filecontenttypes->sortBY('order_by') AS $filecontenttype)
-                                        <div>
+                                        <div  class="flex flex-row flex-wrap mb-1 space-2">
                                             {{ $filecontenttype->descr }} file viewport here
                                         </div>
                                     @endforeach
                                 @else
                                     @foreach($room->filecontenttypes->sortBY('order_by') AS $filecontenttype)
-                                        <div>
-                                            {!! $auditioner->fileviewport($room->filecontenttypes->first()) !!}
+                                        <div class="flex flex-row flex-wrap mb-1 space-2">
+                                            {!! $auditioner->fileviewport($room->filecontenttype) !!}
                                         </div>
                                     @endforeach
                                    <!-- {{--
