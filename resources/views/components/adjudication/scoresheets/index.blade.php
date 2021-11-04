@@ -10,11 +10,12 @@
         <div id="judgeTotal" class="ml-2 " ></div>
     </div>
 
-    @foreach($room->filecontenttypes AS $filecontenttype)
+    @foreach($room->filecontenttypes->sortBy('order_by') AS $filecontenttype)
         <div>
             <h3 class="uppercase text-lg">{{ $filecontenttype->descr }}</h3>
             <div class="flex flex-row">
-            @foreach($scoringcomponents->where('filecontenttype_id', $filecontenttype->id)->sortBy('order_by') AS $scoringcomponent)
+
+            @foreach($filecontenttype->scoringcomponents->sortBy('order_by') AS $scoringcomponent)
 
                 <div class="flex flex-col">
                     <label class="box" for="" title="{{ $scoringcomponent->descr }}">{{ $scoringcomponent->abbr }}</label>
