@@ -67,11 +67,26 @@
                             <div class="text-center bg-indigo-100 border border-indigo-700">
                                 Now adjudicating: {{ $auditioner->id }}: {{ strtoupper($auditioner->instrumentations->first()->abbr) }}
                             </div>
-                            <div class=" mb-1">
-                                @if($room->filecontenttypes->count() === 1)
-                                    {!! $auditioner->fileviewport($room->filecontenttypes->first()) !!}
-                                @else{
-                                    {!! $auditioner->fileviewport(\App\Models\Filecontenttype::find(1)) !!}
+                            <div class=" mb-1 space-x-2">
+                                @if(config('app.url') === 'http://localhost')
+                                    @foreach($room->filecontenttypes->sortBY('order_by') AS $filecontenttype)
+                                        <div>
+                                            {{ $filecontenttype->descr }} file viewport here
+                                        </div>
+                                    @endforeach
+                                @else
+                                    @foreach($room->filecontenttypes->sortBY('order_by') AS $filecontenttype)
+                                        <div>
+                                            {!! $auditioner->fileviewport($room->filecontenttypes->first()) !!}
+                                        </div>
+                                    @endforeach
+                                   <!-- {{--
+                                    @if($room->filecontenttypes->count() === 1)
+                                        {!! $auditioner->fileviewport($room->filecontenttypes->first()) !!}
+                                    @else{
+                                        {!! $auditioner->fileviewport(\App\Models\Filecontenttype::find(1)) !!}
+                                    @endif
+                                    --}} -->
                                 @endif
                             </div>
                             <div class="text-center border border-black rounded bg-gray-100">
@@ -118,15 +133,15 @@
                     <thead>
                         <tr>
                             <th style="border-top: 0; border-left: 0;"></th>
-                            @foreach($room->filecontenttypes AS $filecontenttype)
+                            @foreach($room->filecontenttypes->sortBy('order_by') AS $filecontenttype)
                                 <th colspan="{{ $filecontenttype->scoringcomponents->count() }}">{{ $filecontenttype->descr }}</th>
                             @endforeach
                             <th style="border-top: 0; border-right: 0;"></th>
                         </tr>
                         <tr>
                             <th>Adjudicator</th>
-                            @foreach($room->filecontenttypes AS $filecontenttype)
-                                @foreach($filecontenttype->scoringcomponents AS $scoringcomponent)
+                            @foreach($room->filecontenttypes->sortBy('order_by') AS $filecontenttype)
+                                @foreach($filecontenttype->scoringcomponents->sortBY('order_by') AS $scoringcomponent)
                                     <td>{{ $scoringcomponent->abbr }}</td>
                                 @endforeach
                             @endforeach
@@ -137,8 +152,8 @@
                         @foreach($room->adjudicators AS $adjudicator)
                             <tr>
                                 <td>{{ $adjudicator->person->fullnameAlpha }}</td>
-                                @foreach($room->filecontenttypes AS $filecontenttype)
-                                    @foreach($filecontenttype->scoringcomponents AS $scoringcomponent)
+                                @foreach($room->filecontenttypes->sortBy('order_by') AS $filecontenttype)
+                                    @foreach($filecontenttype->scoringcomponents->sortBy('order_by') AS $scoringcomponent)
                                         <td>{{ $auditioner->scoringcomponentScore($adjudicator, $scoringcomponent) }}</td>
                                     @endforeach
                                 @endforeach
