@@ -182,6 +182,10 @@ class Registrantcomponent extends Component
             return \App\Models\Adjudicator::where('user_id', auth()->id())
                 ->where('eventversion_id', Userconfig::getValue('eventversion', auth()->id()))
                 ->first();
+        }elseif(auth()->id() === 368){//domain owner
+            return \App\Models\Adjudicator::where('user_id', auth()->id())
+                ->where('eventversion_id', Userconfig::getValue('eventversion', auth()->id()))
+                ->first();
         }else{
 
             return false;
