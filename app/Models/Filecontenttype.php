@@ -14,6 +14,7 @@ class Filecontenttype extends Model
     public function scoringcomponents()
     {
         return $this->hasMany(\App\Models\Scoringcomponent::class)
+            ->where('eventversion_id', Userconfig::getValue('eventversion', auth()->id()))
             ->orderBy('order_by');
     }
 }
