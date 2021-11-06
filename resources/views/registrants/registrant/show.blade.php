@@ -160,7 +160,7 @@
                                     {{-- APPLICATION --}}
                                     <div class="bg-red-50 text-center mx-2 py-2 border border-red-200">
                                         @if(($eventversion->id === 66 || $eventversion->id === 67) &&
-                                            $sjcdaeapplicationshutdown &&
+                                            ($sjcdaeapplicationshutdown || (! isset($sjcdaeapplicationshutdown))) &&
                                             (! $exception))
                                             Director eApplication deadline has passed
                                         @else
