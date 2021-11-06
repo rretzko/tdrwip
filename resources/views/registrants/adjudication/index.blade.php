@@ -77,7 +77,7 @@
                                 @else
                                     @foreach($room->filecontenttypes->sortBY('order_by') AS $filecontenttype)
                                         <div class="flex flex-row flex-wrap mb-1 space-2">
-                                            {!! $auditioner->fileviewport($room->filecontenttype) !!}
+                                            {!! $auditioner->fileviewport($filecontenttype) !!}
                                         </div>
                                     @endforeach
                                    <!-- {{--
