@@ -71,7 +71,7 @@
                                 @if(config('app.url') === 'http://localhost')
                                     @foreach($room->filecontenttypes->sortBY('order_by') AS $filecontenttype)
                                         <div  class="flex flex-row flex-wrap mb-1 ">
-                                            @if($auditioner->hasFileUploaded($filecontenttype))
+                                            @if($auditioner->hasFileUploadedAndApproved($filecontenttype))
                                                 {!! $auditioner->fileviewport($filecontenttype) !!}
                                                 {{-- $filecontenttype->descr  file viewport here --}}
                                             @else
@@ -82,7 +82,7 @@
                                 @else
                                     @foreach($room->filecontenttypes->sortBY('order_by') AS $filecontenttype)
                                         <div class="flex flex-row flex-wrap mb-1 ">
-                                            @if($auditioner->hasFileUploaded($filecontenttype))
+                                            @if($auditioner->hasFileUploadedAndApproved($filecontenttype))
                                                 {!! $auditioner->fileviewport($filecontenttype) !!}
                                             @else
                                                 Missing {{ $filecontenttype->descr }} file.
