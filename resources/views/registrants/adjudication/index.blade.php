@@ -32,7 +32,7 @@
         {{-- REGISTRANT IDS --}}
         <div class="flex flex-col pb-1 mb-3 border-b border-gray-300">
             <div class="flex flex-wrap">
-                @foreach($registrants AS $registrant)
+                @foreach($registrants->sortBy('id') AS $registrant)
                     <div class="border border-gray-700 text-sm mb-1 mr-1">
                         @if(config('app.url') === 'http://localhost')
                             <a href="{{ route('registrants.adjudication.show', ['registrant' => $registrant]) }}"
@@ -67,17 +67,26 @@
                             <div class="text-center bg-indigo-100 border border-indigo-700">
                                 Now adjudicating: {{ $auditioner->id }}: {{ strtoupper($auditioner->instrumentations->first()->abbr) }}
                             </div>
-                            <div class=" mb-1 space-x-2">
+                            <div class=" mb-1">
                                 @if(config('app.url') === 'http://localhost')
                                     @foreach($room->filecontenttypes->sortBY('order_by') AS $filecontenttype)
-                                        <div  class="flex flex-row flex-wrap mb-1 space-2">
-                                            {{ $filecontenttype->descr }} file viewport here
+                                        <div  class="flex flex-row flex-wrap mb-1 ">
+                                            @if($auditioner->hasFileUploaded($filecontenttype))
+                                                {!! $auditioner->fileviewport($filecontenttype) !!}
+                                                {{-- $filecontenttype->descr  file viewport here --}}
+                                            @else
+                                                Missing {{ $filecontenttype->descr }} file.
+                                            @endif
                                         </div>
                                     @endforeach
                                 @else
                                     @foreach($room->filecontenttypes->sortBY('order_by') AS $filecontenttype)
-                                        <div class="flex flex-row flex-wrap mb-1 space-2">
-                                            {!! $auditioner->fileviewport($filecontenttype) !!}
+                                        <div class="flex flex-row flex-wrap mb-1 ">
+                                            @if($auditioner->hasFileUploaded($filecontenttype))
+                                                {!! $auditioner->fileviewport($filecontenttype) !!}
+                                            @else
+                                                Missing {{ $filecontenttype->descr }} file.
+                                            @endif
                                         </div>
                                     @endforeach
                                    <!-- {{--

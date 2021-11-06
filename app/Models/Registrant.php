@@ -203,10 +203,16 @@ class Registrant extends Model
             ->format('M d, Y g:i a');
     }
 
+    /**
+     * @since 06-Nov-21 added 'approved' property
+     * @param Filecontenttype $filecontenttype
+     * @return bool
+     */
     public function hasFileUploaded(Filecontenttype $filecontenttype): bool
     {
         return (bool)Fileupload::where('registrant_id', $this->id)
             ->where('filecontenttype_id', $filecontenttype->id)
+            ->whereNotNull('approved')
             ->first();
     }
 
