@@ -19,7 +19,7 @@
         <div class="my-4 flex justify-center border-b border-gray-300">
             <div>This room has:</div>
             <ul class="ml-5">
-                <li>Registrants: {{ $registrants->count() }}</li>
+                <li>Registrants: {{ $registrantscount }}</li>
                 <li>Room tolerance: {{ $room->tolerance }}</li>
            <!-- {{--
                 <li>Adjudicated: {{ $room->adjudicatedCount }}</li>
@@ -31,23 +31,29 @@
 
         {{-- REGISTRANT IDS --}}
         <div class="flex flex-col pb-1 mb-3 border-b border-gray-300">
-            <div class="flex flex-wrap">
-                @foreach($registrants->sortBy('id') AS $registrant)
-                    <div class="border border-gray-700 text-sm mb-1 mr-1">
-                        @if(config('app.url') === 'http://localhost')
-                            <a href="{{ route('registrants.adjudication.show', ['registrant' => $registrant]) }}"
-                               class="text-black {{ $registrant->adjudicationStatusBackgroundColor($room) }} {{ $registrant->judgeScoresEntered(auth()->id()) }}">
-                                {{ $registrant->id }}
-                            </a>
-                        @else
-                            <a href="https://thedirectorsroom.com/registrants/adjudication/registrant/{{ $registrant->id }}"
-                               class="text-black {{ $registrant->adjudicationStatusBackgroundColor($room) }} {{ $registrant->judgeScoresEntered(auth()->id()) }}">
-                                {{ $registrant->id }}
-                            </a>
-                        @endif
+            @foreach($registrants AS $id => $registrantsbyinstrumentation)
+                <div class="flex flex-col">
+                    <header class="font-bold">{{ $id }}</header>
+                    <div class="flex flex-wrap">
+                        @foreach($registrantsbyinstrumentation->sortBy('id') AS $registrant)
+                            <div class="border border-gray-700 text-sm mb-1 mr-1">
+                                @if(config('app.url') === 'http://localhost')
+                                    <a href="{{ route('registrants.adjudication.show', ['registrant' => $registrant]) }}"
+                                       class="text-black {{ $registrant->adjudicationStatusBackgroundColor($room) }} {{ $registrant->judgeScoresEntered(auth()->id()) }}">
+                                        {{ $registrant->id }}
+                                    </a>
+                                @else
+                                    <a href="https://thedirectorsroom.com/registrants/adjudication/registrant/{{ $registrant->id }}"
+                                       class="text-black {{ $registrant->adjudicationStatusBackgroundColor($room) }} {{ $registrant->judgeScoresEntered(auth()->id()) }}">
+                                        {{ $registrant->id }}
+                                    </a>
+                                @endif
+                            </div>
+                        @endforeach
                     </div>
+                </div>
                 @endforeach
-            </div>
+
             <div id="legend" class="flex flex-row justify-center my-1 text-xs">
                 <div class="border border-black px-2" title="No scores found">Unauditioned</div>
                 <div class="border border-black px-2 bg-yellow-100" title="Incomplete set of scores found">Partial</div>

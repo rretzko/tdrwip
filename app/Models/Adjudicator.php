@@ -45,13 +45,26 @@ class Adjudicator extends Model
 
     public function getRegistrantsAttribute()
     {
-        $roominstrumentation = $this['room']->instrumentations->modelKeys();
+        $rs = [];
+        $roominstrumentations = $this['room']->instrumentations->modelKeys();
 
-        return Registrant::where('eventversion_id', Userconfig::getValue('eventversion', auth()->id()))
+        $registrants =  Registrant::where('eventversion_id', Userconfig::getValue('eventversion', auth()->id()))
             ->where('registranttype_id', Registranttype::REGISTERED)
-            ->whereHas('instrumentations', function($query) use($roominstrumentation){
-                $query->whereIn('id',$roominstrumentation);
+            ->whereHas('instrumentations', function($query) use($roominstrumentations){
+                $query->whereIn('id',$roominstrumentations);
             })->get();
+
+        foreach($roominstrumentations AS $roominstrumentation){
+            $rs[Instrumentation::find($roominstrumentation)->formattedDescr()] = Registrant::where('eventversion_id', Userconfig::getValue('eventversion', auth()->id()))
+                ->where('registranttype_id', Registranttype::REGISTERED)
+                ->whereHas('instrumentations', function($query) use($roominstrumentation){
+                    $query->whereIn('id',[$roominstrumentation]);
+                })->get();
+        }
+
+        return $rs;
+
+        //return $registrants;
 /*
 
         $x = Registrant::where('eventversion_id', Userconfig::getValue('eventversion', auth()->id()))
