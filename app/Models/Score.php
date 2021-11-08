@@ -9,6 +9,13 @@ class Score extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['eventversion_id', 'scoringcomponent_id', 'proxy_id', 'registrant_id','score', 'user_id'];
+    protected $with = ['scoringcomponent'];
+
+    protected $fillable = ['eventversion_id', 'scoringcomponent_id', 'multiplier', 'proxy_id', 'registrant_id','score', 'user_id'];
+
+    public function scoringcomponent()
+    {
+        return $this->belongsTo(Scoringcomponent::class);
+    }
 
 }
