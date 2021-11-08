@@ -81,7 +81,7 @@
                                                 {!! $auditioner->fileviewport($filecontenttype) !!}
                                                 {{-- $filecontenttype->descr  file viewport here --}}
                                             @else
-                                                Missing {{ $filecontenttype->descr }} file.
+                                                Missing @if($auditioner->hasFileUploaded($filecontenttype)) approved @endif {{ $filecontenttype->descr }} file.
                                             @endif
                                         </div>
                                     @endforeach
