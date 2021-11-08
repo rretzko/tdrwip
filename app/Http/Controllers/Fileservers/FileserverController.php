@@ -12,6 +12,7 @@ use App\Models\Fileuploadfolder;
 use App\Models\Person;
 use App\Models\Registrant;
 use App\Models\Userconfig;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -71,6 +72,10 @@ class FileserverController extends Controller
             //->whereIn('instrumentation_id', $registrant->instrumentations)
             ->where('instrumentation_id', $registrant->instrumentations->first()->id)
             ->get();
+        /**
+         * @todo remove hard-coded sjcdaeapplicationshutdown value
+         */
+        $sjcdaeapplicationshutdown = (Carbon::now() > '2021-10-19 23:59:59');
 
         return view('registrants.registrant.show', [
         'eventversion' => Eventversion::find($registrant->eventversion_id),
@@ -79,6 +84,7 @@ class FileserverController extends Controller
         'folders' => $folders,
         'registrant' => $registrant,
         'countsignatures' => $eventversion->eventversionconfigs->eapplication ? $this->countSignatures($eventversion, $registrant) : 0,
+        'sjcdaeapplicationshutdown' => $sjcdaeapplicationshutdown,
     ]);
 
     }
