@@ -54,6 +54,26 @@ class RegistrantEstimateFormController extends Controller
         $amountduegross = ($registrants->count() * $eventversion->eventversionconfigs->registrationfee);
         $amountduenet = ($paypalcollected < $amountduegross) ? ($amountduegross - $paypalcollected) : 0;
 
+        $maxcount = $eventversion->eventversionconfigs->max_count ?: array_sum($registrantsbyinstrumentation);
+
+        $maxcounterror = (! $eventversion->eventversionconfigs->max_count)
+            ? false
+            : (array_sum($registrantsbyinstrumentation->getArray()) > $eventversion->eventversionconfigs->max_count);
+
+        $uppervoices = [63,64,65,66]; //Soprano I, II, Alto I, II
+        $uppervoicecount = 0;
+        foreach($registrantsbyinstrumentation AS $key => $value){
+
+            if(in_array($key, $uppervoices)){
+
+                $uppervoicecount += $registrantsbyinstrumentation[$key];
+            }
+        }
+
+        $maxuppervoiceerror = (! $eventversion->eventversionconfigs->max_uppervoice_count)
+            ? false
+            : ($uppervoicecount > $eventversion->eventversionconfigs->max_uppervoice_count);
+
         //ex. pages.pdfs.applications.12.64.application
         $pdf = PDF::loadView('pdfs.estimateforms.'//9.65.2021_22_application',
             . $eventversion->event->id
@@ -61,8 +81,9 @@ class RegistrantEstimateFormController extends Controller
             . $eventversion->id
             . '.estimateform',
             compact('eventversion', 'teacher', 'school', 'me', 'registrants',
-                'registrantsbyinstrumentation', 'sendto','paypalcollected', 'amountduenet')
-            )->setPaper('letter', $landscapeportrait);
+                'registrantsbyinstrumentation', 'sendto','paypalcollected', 'amountduenet',
+                'maxcount', 'maxcounterror','maxuppervoiceerror')
+        )->setPaper('letter', $landscapeportrait);
 
         //log application printing
         Estimateform::create([
@@ -82,6 +103,7 @@ class RegistrantEstimateFormController extends Controller
     {
         $registrants = Registrants::registered();
         $registrantsbyinstrumentation = new RegistrantsByInstrumentation;
+        $registrantsbyinstrumentationarray = $registrantsbyinstrumentation->getArray();
 
         $counties = ($eventversion->id === 65) ? County::all() : collect();
 
@@ -94,18 +116,39 @@ class RegistrantEstimateFormController extends Controller
         $amountduegross = ($registrants->count() * $eventversion->eventversionconfigs->registrationfee);
         $amountduenet = ($paypalcollected < $amountduegross) ? ($amountduegross - $paypalcollected) : 0;
 
+        $maxcounterror = (! $eventversion->eventversionconfigs->max_count)
+            ? false
+            : (array_sum($registrantsbyinstrumentation->getArray()) > $eventversion->eventversionconfigs->max_count);
+
+        $uppervoices = [63,64,65,66]; //Soprano I, II, Alto I, II
+        $uppervoicecount = 0;
+        foreach($registrantsbyinstrumentationarray AS $key => $value){
+
+            if(in_array($key, $uppervoices)){
+
+                $uppervoicecount += $registrantsbyinstrumentationarray[$key];
+            }
+        }
+
+        $maxuppervoiceerror = (! $eventversion->eventversionconfigs->max_uppervoice_count)
+            ? false
+            : ($uppervoicecount > $eventversion->eventversionconfigs->max_uppervoice_count);
+
         return view('registrants.estimateforms.'.$eventversion->event->id.'.'.$eventversion->id.'.show',
-        [
-            'amountduenet' => $amountduenet,
-            'eventversion' => $eventversion,
-            'registrants' => $registrants,
-            'registrantsbyinstrumentation' => $registrantsbyinstrumentation->getArray(),
-            'school' => $school,
-            'counties' => $counties,
-            'updated' => false,
-            'sendto' => $this->sendTo($school->county_id),
-            'paypalcollected' => $paypalcollected,
-        ]);
+            [
+                'amountduenet' => $amountduenet,
+                'eventversion' => $eventversion,
+                'registrants' => $registrants,
+                'registrantsbyinstrumentation' => $registrantsbyinstrumentationarray,
+                'school' => $school,
+                'counties' => $counties,
+                'updated' => false,
+                'sendto' => $this->sendTo($school->county_id),
+                'paypalcollected' => $paypalcollected,
+                'maxcounterror' => $maxcounterror,
+                'maxuppervoiceerror' => $maxuppervoiceerror,
+                'maxcount' => $eventversion->eventversionconfigs->max_count ?: array_sum($registrantsbyinstrumentationarray),
+            ]);
     }
 
     public function update(Request $request)
