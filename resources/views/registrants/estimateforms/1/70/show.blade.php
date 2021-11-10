@@ -37,11 +37,11 @@
                             <div class="bg-blue-400 text-xs pt-3 border rounded-2xl text-white px-2">
                                 @if(config('app.url') === 'http://localhost')
                                     <a href="{{ route('registrant.estimateform.download', ['eventversion' => $eventversion]) }}">
-                                @else
-                                    <a href="https://thedirectorsroom.com/registrant/estimateform/{{ $eventversion->id }}/download">
-                                @endif
-                                    Download Estimate Form
-                                </a>
+                                        @else
+                                            <a href="https://thedirectorsroom.com/registrant/estimateform/{{ $eventversion->id }}/download">
+                                                @endif
+                                                Download Estimate Form
+                                            </a>
                             </div>
                         </div>
 
@@ -51,7 +51,7 @@
                             {{-- BANNER --}}
                             <header class="flex justify-between">
                                 <div>
-                                    <img src="\assets\images\njmea_logo_state.jpg" alt="NJMEA logo"/>
+                                    <img src="\assets\images\cjmealogo.png" alt="CJMEA logo"/>
                                 </div>
 
                                 <div class="flex flex-col">
@@ -75,30 +75,30 @@
                                 @if($counties->count())
                                     @if(config('app.url') === 'http://localhost')
                                         <form method="post" action="{{ route('school.county') }}" >
-                                    @else
-                                        <form method="post" action="https://thedirectorsroom.com/registrant/estimateform/county" >
-                                    @endif
-                                        @csrf
-                                        The county for <b>{{ $school->shortName }}</b> is:
-                                        <select name="county_id" class="@if($updated) bg-green-100 @endif">
-                                            @foreach($counties AS $county)
-                                                <option value="{{ $county->id }}"
-                                                    @if($school->county_id === $county->id) SELECTED @endif
-                                                >{{ $county->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <input class="ml-2 bg-blue-100 px-4" type="submit" name="submit" id="submit" value="Update" >
-                                    </form>
+                                            @else
+                                                <form method="post" action="https://thedirectorsroom.com/registrant/estimateform/county" >
+                                                    @endif
+                                                    @csrf
+                                                    The county for <b>{{ $school->shortName }}</b> is:
+                                                    <select name="county_id" class="@if($updated) bg-green-100 @endif">
+                                                        @foreach($counties AS $county)
+                                                            <option value="{{ $county->id }}"
+                                                                    @if($school->county_id === $county->id) SELECTED @endif
+                                                            >{{ $county->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <input class="ml-2 bg-blue-100 px-4" type="submit" name="submit" id="submit" value="Update" >
+                                                </form>
 
-                                    <div>
-                                        Send this pdf to:
-                                        <div><b>{{ $sendto['name'] }}</b></div>
-                                        <div>{{ $sendto['address01'] }}</div>
-                                        <div>{{ $sendto['address02'] }}</div>
-                                        @if(strlen($sendto['address03']))<div>{{ $sendto['address03'] }}</div> @endif
-                                        <div>{!! $sendto['email'] !!}</div>
-                                    </div>
-                                @endif
+                                                <div>
+                                                    Send this pdf to:
+                                                    <div><b>{{ $sendto['name'] }}</b></div>
+                                                    <div>{{ $sendto['address01'] }}</div>
+                                                    <div>{{ $sendto['address02'] }}</div>
+                                                    @if(strlen($sendto['address03']))<div>{{ $sendto['address03'] }}</div> @endif
+                                                    <div>{!! $sendto['email'] !!}</div>
+                                                </div>
+                                    @endif
                             </div>
 
                             {{-- REGISTRANT ROSTER --}}
@@ -106,12 +106,26 @@
 
                                 {{-- HEADER --}}
                                 <h2 class="text-center w-full border-b">
-                                    {{ $eventversion->eventversionconfigs->max_count }} STUDENTS MAXIMUM
+                                    @if($eventversion->eventversionconfigs->max_count)
+                                        {{ $eventversion->eventversionconfigs->max_count }} STUDENTS MAXIMUM
+                                    @endif
                                 </h2>
 
                                 <h3 class="text-center w-full border-b" style="color: darkred; font-weight: bold;">
-                                   YOUR REGISTERED STUDENTS WILL BE AUTOMATICALLY DISPLAYED BELOW.<br />
+                                    YOUR REGISTERED STUDENTS WILL BE AUTOMATICALLY DISPLAYED BELOW.<br />
                                     HANDWRITTEN ENTRIES WILL <u>NOT</u> BE ACCEPTED.
+                                    @if($maxcounterror)
+                                        <div style="margin-top: 1rem;">
+                                            YOU HAVE APPROVED MORE THAN THE MAXIMUM NUMBER OF
+                                            ALLOWABLE REGISTRANTS ({{ $eventversion->eventversionconfigs->max_count }}
+                                        </div>
+                                    @endif
+                                    @if($maxuppervoiceerror)
+                                        <div style="margin-top: 1rem;">
+                                            YOU HAVE APPROVED MORE THAN THE MAXIMUM NUMBER OF
+                                            ALLOWABLE UPPER-VOICE REGISTRANTS ({{ $eventversion->eventversionconfigs->max_uppervoice_count }}
+                                        </div>
+                                    @endif
                                 </h3>
 
                                 {{-- ROSTER TABLE --}}
@@ -130,7 +144,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @for($i=0;$i<$eventversion->eventversionconfigs->max_count;$i++)
+                                    @for($i=0;$i<$maxcount;$i++)
                                         @if(isset($registrants[$i]))
                                             <tr>
                                                 <td class="text-center">{{ ($i + 1) }}</td>
