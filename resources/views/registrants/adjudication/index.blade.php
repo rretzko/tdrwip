@@ -19,7 +19,7 @@
         <div class="my-4 flex justify-center border-b border-gray-300">
             <div>This room has:</div>
             <ul class="ml-5">
-                <li>Registrants: {{ $registrants->count() }}</li>
+                <li>Registrants: {{ $registrantscount }}</li>
                 <li>Room tolerance: {{ $room->tolerance }}</li>
            <!-- {{--
                 <li>Adjudicated: {{ $room->adjudicatedCount }}</li>
@@ -31,23 +31,29 @@
 
         {{-- REGISTRANT IDS --}}
         <div class="flex flex-col pb-1 mb-3 border-b border-gray-300">
-            <div class="flex flex-wrap">
-                @foreach($registrants AS $registrant)
-                    <div class="border border-gray-700 text-sm mb-1 mr-1">
-                        @if(config('app.url') === 'http://localhost')
-                            <a href="{{ route('registrants.adjudication.show', ['registrant' => $registrant]) }}"
-                               class="text-black {{ $registrant->adjudicationStatusBackgroundColor($room) }} {{ $registrant->judgeScoresEntered(auth()->id()) }}">
-                                {{ $registrant->id }}
-                            </a>
-                        @else
-                            <a href="https://thedirectorsroom.com/registrants/adjudication/registrant/{{ $registrant->id }}"
-                               class="text-black {{ $registrant->adjudicationStatusBackgroundColor($room) }} {{ $registrant->judgeScoresEntered(auth()->id()) }}">
-                                {{ $registrant->id }}
-                            </a>
-                        @endif
+            @foreach($registrants AS $id => $registrantsbyinstrumentation)
+                <div class="flex flex-col">
+                    <header class="font-bold">{{ $id }}</header>
+                    <div class="flex flex-wrap">
+                        @foreach($registrantsbyinstrumentation->sortBy('id') AS $registrant)
+                            <div class="border border-gray-700 text-sm mb-1 mr-1">
+                                @if(config('app.url') === 'http://localhost')
+                                    <a href="{{ route('registrants.adjudication.show', ['registrant' => $registrant]) }}"
+                                       class="text-black {{ $registrant->adjudicationStatusBackgroundColor($room) }} {{ $registrant->judgeScoresEntered(auth()->id()) }}">
+                                        {{ $registrant->id }}
+                                    </a>
+                                @else
+                                    <a href="https://thedirectorsroom.com/registrants/adjudication/registrant/{{ $registrant->id }}"
+                                       class="text-black {{ $registrant->adjudicationStatusBackgroundColor($room) }} {{ $registrant->judgeScoresEntered(auth()->id()) }}">
+                                        {{ $registrant->id }}
+                                    </a>
+                                @endif
+                            </div>
+                        @endforeach
                     </div>
+                </div>
                 @endforeach
-            </div>
+
             <div id="legend" class="flex flex-row justify-center my-1 text-xs">
                 <div class="border border-black px-2" title="No scores found">Unauditioned</div>
                 <div class="border border-black px-2 bg-yellow-100" title="Incomplete set of scores found">Partial</div>
@@ -68,10 +74,34 @@
                                 Now adjudicating: {{ $auditioner->id }}: {{ strtoupper($auditioner->instrumentations->first()->abbr) }}
                             </div>
                             <div class=" mb-1">
-                                @if($room->filecontenttypes->count() === 1)
-                                    {!! $auditioner->fileviewport($room->filecontenttypes->first()) !!}
-                                @else{
-                                    {!! $auditioner->fileviewport(\App\Models\Filecontenttype::find(1)) !!}
+                                @if(config('app.url') === 'http://localhost')
+                                    @foreach($room->filecontenttypes->sortBY('order_by') AS $filecontenttype)
+                                        <div  class="flex flex-row flex-wrap mb-1 ">
+                                            @if($auditioner->hasFileUploadedAndApproved($filecontenttype))
+                                                {!! $auditioner->fileviewport($filecontenttype) !!}
+                                                {{-- $filecontenttype->descr  file viewport here --}}
+                                            @else
+                                                Missing @if($auditioner->hasFileUploaded($filecontenttype)) approved @endif {{ $filecontenttype->descr }} file.
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                @else
+                                    @foreach($room->filecontenttypes->sortBY('order_by') AS $filecontenttype)
+                                        <div class="flex flex-row flex-wrap mb-1 ">
+                                            @if($auditioner->hasFileUploadedAndApproved($filecontenttype))
+                                                {!! $auditioner->fileviewport($filecontenttype) !!}
+                                            @else
+                                                Missing {{ $filecontenttype->descr }} file.
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                   <!-- {{--
+                                    @if($room->filecontenttypes->count() === 1)
+                                        {!! $auditioner->fileviewport($room->filecontenttypes->first()) !!}
+                                    @else{
+                                        {!! $auditioner->fileviewport(\App\Models\Filecontenttype::find(1)) !!}
+                                    @endif
+                                    --}} -->
                                 @endif
                             </div>
                             <div class="text-center border border-black rounded bg-gray-100">
@@ -118,15 +148,15 @@
                     <thead>
                         <tr>
                             <th style="border-top: 0; border-left: 0;"></th>
-                            @foreach($room->filecontenttypes AS $filecontenttype)
+                            @foreach($room->filecontenttypes->sortBy('order_by') AS $filecontenttype)
                                 <th colspan="{{ $filecontenttype->scoringcomponents->count() }}">{{ $filecontenttype->descr }}</th>
                             @endforeach
                             <th style="border-top: 0; border-right: 0;"></th>
                         </tr>
                         <tr>
                             <th>Adjudicator</th>
-                            @foreach($room->filecontenttypes AS $filecontenttype)
-                                @foreach($filecontenttype->scoringcomponents AS $scoringcomponent)
+                            @foreach($room->filecontenttypes->sortBy('order_by') AS $filecontenttype)
+                                @foreach($filecontenttype->scoringcomponents->sortBY('order_by') AS $scoringcomponent)
                                     <td>{{ $scoringcomponent->abbr }}</td>
                                 @endforeach
                             @endforeach
@@ -137,8 +167,8 @@
                         @foreach($room->adjudicators AS $adjudicator)
                             <tr>
                                 <td>{{ $adjudicator->person->fullnameAlpha }}</td>
-                                @foreach($room->filecontenttypes AS $filecontenttype)
-                                    @foreach($filecontenttype->scoringcomponents AS $scoringcomponent)
+                                @foreach($room->filecontenttypes->sortBy('order_by') AS $filecontenttype)
+                                    @foreach($filecontenttype->scoringcomponents->sortBy('order_by') AS $scoringcomponent)
                                         <td>{{ $auditioner->scoringcomponentScore($adjudicator, $scoringcomponent) }}</td>
                                     @endforeach
                                 @endforeach

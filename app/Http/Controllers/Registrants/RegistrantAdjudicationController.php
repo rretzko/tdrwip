@@ -20,10 +20,18 @@ class RegistrantAdjudicationController extends Controller
             ->where('eventversion_id', $eventversion->id)
             ->first();
 
+        $registrants = $adjudicator->registrants;
+
+        $registrantscount = 0;
+        foreach($registrants AS $collection){
+            $registrantscount += $collection->count();
+        }
+
         return view('registrants.adjudication.index', [
             'eventversion' => $eventversion,
             'room' => \App\Models\Room::with('adjudicators')->where('id', $adjudicator->room_id)->first(),
-            'registrants' => $adjudicator->registrants,
+            'registrants' => $registrants,
+            'registrantscount' => $registrantscount,
             'auditioner' => null,
             'scoringcomponents' => null,
             'useradjudicator' => \App\Models\Adjudicator::find(auth()->id()),
@@ -69,10 +77,18 @@ class RegistrantAdjudicationController extends Controller
 
         $scoringcomponents = \App\Models\Scoringcomponent::where('eventversion_id', $eventversion->id)->get();
 
+        $registrants = $useradjudicator->registrants;
+
+        $registrantscount = 0;
+        foreach($registrants AS $collection){
+            $registrantscount += $collection->count();
+        }
+
         return view('registrants.adjudication.index', [
             'eventversion' => $eventversion,
             'room' => \App\Models\Room::with('adjudicators')->where('id', $useradjudicator->room_id)->first(),
-            'registrants' => $useradjudicator->registrants,
+            'registrants' => $registrants,
+            'registrantscount' => $registrantscount,
             'auditioner' => $auditioner,
             'scoringcomponents' => $scoringcomponents,
             'useradjudicator' => $useradjudicator,

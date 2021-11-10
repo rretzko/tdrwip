@@ -50,7 +50,12 @@ class Scoresummary extends Model
 
     private function calcTotal()
     {
-        $this->total = $this->scores->sum('score');
+        $this->total = 0;
+
+        foreach($this->scores->get() AS $score){
+
+            $this->total += ($score->score * $score['scoringcomponent']->multiplier);
+        }
     }
 
     private function findInstrumentationId()
