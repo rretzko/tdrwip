@@ -11,7 +11,8 @@ class Scoresummary extends Model
 
     public $registrant_id;
 
-    protected $fillable = ['eventversion_id', 'instrumentation_id','registrant_id', 'score_count', 'score_total'];
+    protected $fillable = ['eventversion_id', 'instrumentation_id','registrant_id', 'result',
+        'score_count', 'score_total'];
 
     private $count;
     private $instrumentation_id;
@@ -24,6 +25,7 @@ class Scoresummary extends Model
 
         $this->count = 0;
         $this->instrumentation_id;
+        $this->result = 'inc'; //default
         $this->scores = NULL;
         $this->total = 0;
     }
@@ -38,6 +40,8 @@ class Scoresummary extends Model
 
         $this->findInstrumentationId();
 
+        $this->calcResult();
+
         $this->updateRow();
     }
 
@@ -46,6 +50,19 @@ class Scoresummary extends Model
     private function calcCount()
     {
         $this->count = $this->scores->count();
+    }
+
+    private function calcResult()
+    {
+        $this->result = 'inc'; //default
+
+        $registrant = Registrant::find($this->registrant_id);
+        $eventversion = Eventversion::find($registrant->eventversion_id);
+        $countscoringcomponents = ($eventversion->scoringcomponents->count() * $eventversion->eventversionconfigs->judge_count);
+
+        if($this->count == $countscoringcomponents){
+            $this->result = 'pend';
+        }
     }
 
     private function calcTotal()
@@ -88,6 +105,7 @@ class Scoresummary extends Model
            [
                'score_total' => $this->total,
                'score_count' => $this->count,
+               'result' => $this->result,
            ],
         );
     }
