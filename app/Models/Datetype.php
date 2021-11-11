@@ -11,6 +11,7 @@ class Datetype extends Model
 
     const SCORE_OPEN=11;
     const SCORE_CLOSE=12;
+    const VIDEOS_CLOSE_MEMBERSHIP=18;
 
     protected $fillable = ['id','descr'];
 }
