@@ -64,7 +64,7 @@ class RegistrantController extends Controller
 
         $sjcdaeapplicationshutdown = (Carbon::now() > '2021-10-19 23:59:59');
 
-        $uploadspermitted = (Carbon::now() < $eventversion->eventversiondates->where('datetype_id', \App\Models\Datetype::VIDEOS_CLOSE_MEMBERSHIP)->first()->dt);
+        $uploadspermitted = true;//(Carbon::now() < $eventversion->eventversiondates->where('datetype_id', \App\Models\Datetype::VIDEOS_CLOSE_MEMBERSHIP)->first()->dt);
 
         return view('registrants.registrant.show', [
             'eventversion' => $eventversion,
@@ -122,7 +122,7 @@ class RegistrantController extends Controller
         $fileserver = new Fileserver($registrant);
         $folders = $this->getFolders($eventversion, $registrant);
 
-        $uploadspermitted = (Carbon::now() < $eventversion->eventversiondates->where('datetype_id', \App\Models\Datetype::VIDEOS_CLOSE_MEMBERSHIP)->first()->dt);
+        $uploadspermitted = true; //(Carbon::now() < $eventversion->eventversiondates->where('datetype_id', \App\Models\Datetype::VIDEOS_CLOSE_MEMBERSHIP)->first()->dt);
 
         return view('registrants.registrant.show', [
             'eventversion' => $eventversion,
