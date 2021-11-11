@@ -64,7 +64,9 @@ class RegistrantController extends Controller
 
         $sjcdaeapplicationshutdown = (Carbon::now() > '2021-10-19 23:59:59');
 
-        $uploadspermitted = true;//(Carbon::now() < $eventversion->eventversiondates->where('datetype_id', \App\Models\Datetype::VIDEOS_CLOSE_MEMBERSHIP)->first()->dt);
+        $uploadspermitted = !(($eventversion->id === 66) || ($eventversion->id === 67));
+
+        //$uploadspermitted = true;//(Carbon::now() < $eventversion->eventversiondates->where('datetype_id', \App\Models\Datetype::VIDEOS_CLOSE_MEMBERSHIP)->first()->dt);
 
         return view('registrants.registrant.show', [
             'eventversion' => $eventversion,
@@ -122,7 +124,13 @@ class RegistrantController extends Controller
         $fileserver = new Fileserver($registrant);
         $folders = $this->getFolders($eventversion, $registrant);
 
-        $uploadspermitted = true; //(Carbon::now() < $eventversion->eventversiondates->where('datetype_id', \App\Models\Datetype::VIDEOS_CLOSE_MEMBERSHIP)->first()->dt);
+        /**
+         * @todo fix this to repair the commented code.
+         * When moved into production, it produced a fatal error on hitting a null eventversiondates value
+         */
+        $uploadspermitted = !(($eventversion->id === 66) || ($eventversion->id === 67));
+
+        //$uploadspermitted = true; //(Carbon::now() < $eventversion->eventversiondates->where('datetype_id', \App\Models\Datetype::VIDEOS_CLOSE_MEMBERSHIP)->first()->dt);
 
         return view('registrants.registrant.show', [
             'eventversion' => $eventversion,
