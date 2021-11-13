@@ -78,11 +78,11 @@
                                     @foreach($room->filecontenttypes->sortBY('order_by') AS $filecontenttype)
                                         <div  class="flex flex-row flex-wrap mb-1 ">
                                             @if($auditioner->hasFileUploadedAndApproved($filecontenttype))
-                                                @if(in_array(auth()->id(), $viewers))
+                                                <!-- {{-- @if(in_array(auth()->id(), $viewers)) --}} -->
                                                     {!! $auditioner->fileviewport($filecontenttype) !!}
-                                                @else
+                                            <!-- {{-- @else
                                                     Judging only
-                                                @endif
+                                                @endif --}} -->
                                                 {{-- $filecontenttype->descr  file viewport here --}}
                                             @else
                                                 Missing @if($auditioner->hasFileUploaded($filecontenttype)) approved @endif {{ $filecontenttype->descr }} file.
@@ -93,11 +93,11 @@
                                     @foreach($room->filecontenttypes->sortBY('order_by') AS $filecontenttype)
                                         <div class="flex flex-row flex-wrap mb-1 ">
                                             @if($auditioner->hasFileUploadedAndApproved($filecontenttype))
-                                                @if(in_array(auth()->id(),$viewers))
+                                                <!-- {{-- @if(in_array(auth()->id(),$viewers)) --}} -->
                                                     {!! $auditioner->fileviewport($filecontenttype) !!}
-                                                @else
+                                                <!-- {{-- @else
                                                     Judging only
-                                                @endif
+                                                @endif --}} -->
                                             @else
                                                 Missing {{ $filecontenttype->descr }} file.
                                             @endif
