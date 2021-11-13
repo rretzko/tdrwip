@@ -78,7 +78,11 @@
                                     @foreach($room->filecontenttypes->sortBY('order_by') AS $filecontenttype)
                                         <div  class="flex flex-row flex-wrap mb-1 ">
                                             @if($auditioner->hasFileUploadedAndApproved($filecontenttype))
-                                                {!! $auditioner->fileviewport($filecontenttype) !!}
+                                                @if(in_array(auth()->id(), $viewers))
+                                                    {!! $auditioner->fileviewport($filecontenttype) !!}
+                                                @else
+                                                    Judging only
+                                                @endif
                                                 {{-- $filecontenttype->descr  file viewport here --}}
                                             @else
                                                 Missing @if($auditioner->hasFileUploaded($filecontenttype)) approved @endif {{ $filecontenttype->descr }} file.
@@ -89,7 +93,11 @@
                                     @foreach($room->filecontenttypes->sortBY('order_by') AS $filecontenttype)
                                         <div class="flex flex-row flex-wrap mb-1 ">
                                             @if($auditioner->hasFileUploadedAndApproved($filecontenttype))
-                                                {!! $auditioner->fileviewport($filecontenttype) !!}
+                                                @if(in_array(auth()->id(),$viewers))
+                                                    {!! $auditioner->fileviewport($filecontenttype) !!}
+                                                @else
+                                                    Judging only
+                                                @endif
                                             @else
                                                 Missing {{ $filecontenttype->descr }} file.
                                             @endif

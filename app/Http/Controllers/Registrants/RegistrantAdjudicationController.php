@@ -35,6 +35,7 @@ class RegistrantAdjudicationController extends Controller
             'auditioner' => null,
             'scoringcomponents' => null,
             'useradjudicator' => \App\Models\Adjudicator::find(auth()->id()),
+            'viewers' => $this->viewers(),
         ]);
     }
 
@@ -92,6 +93,7 @@ class RegistrantAdjudicationController extends Controller
             'auditioner' => $auditioner,
             'scoringcomponents' => $scoringcomponents,
             'useradjudicator' => $useradjudicator,
+            'viewers' => $this->viewers(),
         ]);
     }
 
@@ -152,5 +154,10 @@ class RegistrantAdjudicationController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function viewers()
+    {
+        return [228,3,43,187,307,55,125,259,200,33,237,265,398,122,222,105,44];
     }
 }
