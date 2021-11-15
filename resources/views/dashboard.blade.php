@@ -54,7 +54,7 @@
 
         </div>
     </div>
-    @if(auth()->id()===368) {{ phpinfo() }} @endif
+
     <script>
         var $toggle=false;
 
