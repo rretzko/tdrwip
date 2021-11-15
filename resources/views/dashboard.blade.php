@@ -15,7 +15,6 @@
 
                         <x-sidebar-blurb blurb="The Dashboard will contain various tabular, graphic and linked data
                             for your general use."/>
-@if(auth()->id()===360) Domain Owner @endif
                         @if($gettingstarted)
                             <x-dashboard.gettingstarted />
                         @else
@@ -55,7 +54,7 @@
 
         </div>
     </div>
-
+    @if(auth()->id()===368) {{ phpinfo() }} @endif
     <script>
         var $toggle=false;
 
