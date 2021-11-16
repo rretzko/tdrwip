@@ -73,7 +73,7 @@
             Address:
         </td>
         <td class="data">
-            {{ $registrant->student->person->user->address->addressCSv }}
+            {{ ($registrant->student->person->user->address) ? $registrant->student->person->user->address->addressCSv : ''}}
         </td>
     </tr>
     <tr>

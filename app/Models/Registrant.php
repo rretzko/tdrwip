@@ -166,6 +166,11 @@ class Registrant extends Model
         return ($descrs) ? implode(',',$descrs) : 'None found';
     }
 
+    public function getIsRegisteredAttribute() : bool
+    {
+        return ($this->registranttype_id === Registranttype::REGISTERED);
+    }
+
     public function getRegistranttypeDescrAttribute()
     {
         return Registranttype::find($this->registranttype_id)->descr;

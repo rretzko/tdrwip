@@ -58,9 +58,9 @@ class RegistrantEstimateFormController extends Controller
 
         $maxcounterror = (! $eventversion->eventversionconfigs->max_count)
             ? false
-            : (array_sum($registrantsbyinstrumentation->getArray()) > $eventversion->eventversionconfigs->max_count);
+            : (array_sum($registrantsbyinstrumentation) > $eventversion->eventversionconfigs->max_count);
 
-        $uppervoices = [63,64,65,66]; //Soprano I, II, Alto I, II
+        $uppervoices = [1,5,63,64,65,66]; //Alto, Soprano, Soprano I, II, Alto I, II
         $uppervoicecount = 0;
         foreach($registrantsbyinstrumentation AS $key => $value){
 

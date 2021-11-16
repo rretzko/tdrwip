@@ -299,6 +299,25 @@
 
                                     </div>
 
+                                    {{-- Director Registration of Registrant: SJCDA Elementary --}}
+                                    <div class="@if($registrant->isRegistered) bg-green-200 @else bg-indigo-400 @endif text-center py-2">
+                                        @if($registrant->isRegistered)
+                                            <a href="{{ route('registrant.register', ['registrant' => $registrant]) }}"
+                                               class="px-4 border border-green-400 rounded"
+                                            >
+                                                <span class="text-green-800">UnRegister this student</span>
+                                            </a>
+                                        @elseif($registrant->hasApplication && $registrant->hasSignatures)
+                                            <a href="{{ route('registrant.register', ['registrant' => $registrant]) }}"
+                                                class="px-4 border border-indigo-200 rounded"
+                                            >
+                                                Register this student
+                                            </a>
+                                        @else
+                                            <span class="px-2">Please complete the eApplication to register this student.</span>
+                                        @endif
+                                    </div>
+
                                     {{-- FILE UPLOAD ADVISORY --}}
                                     <div id="advisory"
                                          class="@if($eventversion->eventversionconfigs->virtualaudition)text-center bg-gray-50 border border-gray-800 text-info mx-2 p-2 mb-2 @endif">

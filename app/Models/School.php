@@ -85,7 +85,11 @@ class School extends Model
             'University' => 'U',
         ];
 
+        //early exit
+        if(is_null($this->name) || (! strlen($this->name))){ return 'No school name found';}
+
         $haystack = $this->name; //avoid repeated downstream calls
+
         $str = $haystack;   //initialize $str value
 
         foreach($abbrs AS $descr => $abbr){

@@ -77,7 +77,7 @@ Route::middleware('auth', 'verified')->group(function() {
     Route::get('/xstudents', [App\Http\Controllers\Students\StudentTabbedController::class, 'show'])->name('xstudents');
 
     /** LIBRARY */
-    Route::get('/libraries', [App\Http\Controllers\Libraries\LibraryController::class,'index'])->name('library.index'); 
+    Route::get('/libraries', [App\Http\Controllers\Libraries\LibraryController::class,'index'])->name('library.index');
 
     /** ENSEMBLES */
     Route::get('/ensembles', [App\Http\Controllers\Ensembles\EnsembleController::class,'index'])->name('ensembles.index');
@@ -125,6 +125,7 @@ Route::middleware('auth', 'verified')->group(function() {
     Route::get('/registrant/{registrant}/download',[App\Http\Controllers\Registrants\RegistrantApplicationController::class, 'download'])->name('registrant.application.download');
     Route::post('/registrant/{registrant}/eapplication',[App\Http\Controllers\Registrants\RegistrantApplicationController::class,'update'])->name('registrant.eapplication');
     Route::get('registrant/profile/{eventversion}/{registrant}/inperson', [App\Http\Controllers\Registrants\InpersonauditionController::class, 'update'])->name('registrant.profile.store.inperson');
+    Route::get('/registrant/register/{registrant}',[App\Http\Controllers\Registrants\RegisterController::class, 'update'])->name('registrant.register');
 
     Route::get('/registrants/{eventversion}',[App\Http\Controllers\Registrants\RegistrantsController::class, 'index'])->name('registrants.index');
     Route::get('/registrant/{registrant}',[App\Http\Controllers\Registrants\RegistrantController::class, 'show'])->name('registrant.show');
