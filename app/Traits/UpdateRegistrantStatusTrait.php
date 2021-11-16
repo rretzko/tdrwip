@@ -32,7 +32,15 @@ trait UpdateRegistrantStatusTrait
 
         }elseif(
             (($eventversion->id === 66) || ($eventversion->id === 67)) &&
-            ($eventversion->requiredSignaturesCount == $eapplication->countSignatures($registrant))){
+            ($eventversion->requiredSignaturesCount == $eapplication->countSignatures($registrant))) {
+
+            $registranttype_id = Registranttype::REGISTERED;
+
+        }elseif(
+            ($eventversion->id === 70) &&
+            $registrant->hasApplication &&
+            $registrant->signatureConfirmation
+            ){
 
             $registranttype_id = Registranttype::REGISTERED;
 
