@@ -100,7 +100,7 @@
                                             Grade: {{ $registrant->student->gradeClassof }}
                                         </div>
                                         <div class="border border-black px-2">
-                                            {{ $registrant->student->person->user->schools->first()->shortName }}
+                                            {{ $registrant->student->currentSchool->shortName }}
                                         </div>
                                     </div>
 
