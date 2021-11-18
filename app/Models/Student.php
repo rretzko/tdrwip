@@ -38,16 +38,6 @@ class Student extends Model
                 return $school;
             }
         }
-        //$teacherschools = $this->teachers->first()->person->user->schools;
-        //$schools = $this->person->user->schools;
-
-        //foreach($schools AS $school){
-
-        //    if($teacherschools->contains($school)){
-
-        //        return $school;
-        //    }
-        //}
 
         return new School;
     }
@@ -87,7 +77,17 @@ class Student extends Model
 
     public function getCurrentTeachernameAttribute()
     {
-        return $this->teachers->first()->person->fullName;
+        $school = $this->getCurrentSchoolAttribute();
+
+        foreach($this->teachers AS $teacher){
+
+            if($teacher->person->user->schools->contains($school)){
+
+                return $teacher->person->fullName;
+            }
+        }
+
+        return 'No teacher found';
     }
 
     public function getEmailPersonalAttribute()
