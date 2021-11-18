@@ -36,7 +36,7 @@
                                     <x-obligations.11.67.obligations />
                             @endif
                             @if($eventversion->id === 68)
-                                    <x-obligations.11.67.obligations />
+                                    <x-obligations.23.68.obligations />
                             @endif
                             @if($eventversion->id === 69)
                                 <x-obligations.19.69.obligations />
@@ -44,9 +44,7 @@
                             @if($eventversion->id === 70)
                                 <x-obligations.1.70.obligations />
                             @endif
-                            @if($eventversion->id === 71)
-                                <x-obligations.23.71.obligations />
-                            @endif
+
 
                             <!-- {{--
                             <ul>
