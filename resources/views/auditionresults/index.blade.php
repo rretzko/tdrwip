@@ -19,9 +19,29 @@
                 </h4>
 
                 <div style="text-align: center;">
-                    <a href="/2021NJASC.pdf" target="_BLANK"
-                        class="text-blue-500"
-                    >
+                    @if($eventversion->id === 65)
+                        <a href="/2021NJASC.pdf" target="_BLANK"
+                            class="text-blue-500"
+                        >
+                    @elseif($eventversion->id === 66)
+                        <a href="/2021SJCDA_Sr.pdf" target="_BLANK"
+                           class="text-blue-500"
+                        >
+                    @elseif($eventversion->id === 67)
+                        <a href="/2021SJCDA_Jr.pdf" target="_BLANK"
+                           class="text-blue-500"
+                        >
+                    @elseif($eventversion->id === 69)
+                        <a href="/2021AllShore.pdf" target="_BLANK"
+                           class="text-blue-500"
+                        >
+                    @elseif($eventversion->id === 70)
+                        <a href="/2021CJMEA.pdf" target="_BLANK"
+                           class="text-blue-500"
+                        >
+                    @else
+                        <a href="" class="tex-blue-500">
+                    @endif
                      Download the full results roster here!
                     </a>
                 </div>
