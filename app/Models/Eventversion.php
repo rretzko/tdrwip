@@ -61,9 +61,14 @@ class Eventversion extends Model
             ->withTimestamps();
     }
 
+    /**
+     * @todo Either: Add this property to eventversionconfigs
+     *       OR : Add this property to eApplications
+     * @return int
+     */
     public function getRequiredSignaturesCountAttribute()
     {
-        if(($this->id === 66) || ($this->id === 67)){ //SJCDA 2021
+        if(($this->id === 66) || ($this->id === 67) || ($this->id === 69)){ //SJCDA 2021
 
             return 2; //signatureguardian and signaturestudent
         }

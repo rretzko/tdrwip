@@ -30,13 +30,20 @@ trait UpdateRegistrantStatusTrait
         ){
             $registranttype_id = Registranttype::REGISTERED;
 
-        }elseif(
+        }elseif( //SJCDA
             (($eventversion->id === 66) || ($eventversion->id === 67)) &&
             ($eventversion->requiredSignaturesCount == $eapplication->countSignatures($registrant))) {
 
             $registranttype_id = Registranttype::REGISTERED;
 
-        }elseif(
+        }elseif( //All-Shore
+            ($eventversion->id === 69) &&
+            ($eventversion->requiredSignaturesCount == $eapplication->countSignatures($registrant)) &&
+            $registrant->hasFileuploads
+        ){
+                $registranttype_id = Registranttype::REGISTERED;
+
+        }elseif(//CJMEA
             ($eventversion->id === 70) &&
             $registrant->hasApplication &&
             $registrant->signatureConfirmation
@@ -44,7 +51,7 @@ trait UpdateRegistrantStatusTrait
 
             $registranttype_id = Registranttype::REGISTERED;
 
-        }elseif($registrant->hasApplication){
+        }elseif($registrant->hasApplication) {
 
             $registranttype_id = Registranttype::APPLIED;
 
