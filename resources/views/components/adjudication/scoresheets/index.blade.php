@@ -65,12 +65,9 @@
             var $e8 = (document.getElementById('box8')) ? document.getElementById('box8').value : 0;
             var $e9 = (document.getElementById('box9')) ? document.getElementById('box9').value : 0;
             var $e10 = (document.getElementById('box10')) ? document.getElementById('box10').value : 0;
-console.log('eid: '+$eventversionid);
-console.log('e6: '+$e6);
-var $chk = (parseInt($e1) + parseInt($e2) + parseInt($e3) + parseInt($e6));
-console.log('chk: '+$chk);
+
             var $tot = (parseInt($e1)+ parseInt($e2) + parseInt($e3) + parseInt($e4) + parseInt($e5) + parseInt($e6) + parseInt($e7) + parseInt($e8) + parseInt($e9) + parseInt($e10));
-console.log('tot: '+$tot);
+
             document.getElementById('judgeTotal').innerHTML = parseInt($tot);
         }
     </script>

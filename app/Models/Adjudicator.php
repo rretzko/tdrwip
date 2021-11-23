@@ -90,9 +90,25 @@ class Adjudicator extends Model
 
     public function registrantScore(\App\Models\Registrant $registrant)
     {
+        /*
         return \App\Models\Score::where('registrant_id', $registrant->id)
             ->where('user_id', $this->user_id)
             ->sum('score') ?? 0;
+        */
+        $totalscore = 0;
+
+        $scores = \App\Models\Score::where('registrant_id', $registrant->id)
+            ->where('user_id', $this->user_id)
+            ->get();
+
+        foreach($scores AS $score){
+
+            $sc = \App\Models\Scoringcomponent::find($score->scoringcomponent_id);
+
+            $totalscore += ($score->score * $sc->multiplier);
+        }
+
+        return $totalscore;
     }
 
     public function room()

@@ -21,11 +21,8 @@
             <ul class="ml-5">
                 <li>Registrants: {{ $registrantscount }}</li>
                 <li>Room tolerance: {{ $room->tolerance }}</li>
-           <!-- {{--
-                <li>Adjudicated: {{ $room->adjudicatedCount }}</li>
-                <li>Remaining: ###</li>
-                <li>Partial adjudications: ###</li>
-            --}} -->
+                <li>Best score is at the top of the drop-down selection.</li>
+                <li>Worst score is at bottom of the drop-down selection.</li>
             </ul>
         </div>
 
