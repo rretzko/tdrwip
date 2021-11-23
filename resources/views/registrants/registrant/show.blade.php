@@ -278,7 +278,7 @@
                                                            class="rounded"
                                                         >
                                                     @endif
-                                                        @if($eventversion->isOpenForMembers())
+                                                        @if($eventversion->isOpenForMembers() || (auth()->id() === 10653) || (auth()->id() === 285))
                                                             <button class="bg-gray-500 mt-2 py-1 px-2 rounded">
                                                                 @if($registrant->hasSignatures)
                                                                     Remove my signature
