@@ -146,7 +146,7 @@
                                             >
                                                 {{ isset($message) ? $message : ''}}
                                             </div>
-                                            @if($eventversion->isOpenForMembers())
+                                            @if($eventversion->isOpenForMembers() || (auth()->id()) === 167)
                                                 <x-buttons.button type="submit">
                                                     Update {{ $registrant->student->person->first }} </x-buttons.button>
                                             @else
@@ -278,7 +278,7 @@
                                                            class="rounded"
                                                         >
                                                     @endif
-                                                        @if($eventversion->isOpenForMembers())
+                                                        @if($eventversion->isOpenForMembers() || (auth()->id() === 167))
                                                             <button class="bg-gray-500 mt-2 py-1 px-2 rounded">
                                                                 @if($registrant->hasSignatures)
                                                                     Remove my signature
@@ -451,7 +451,7 @@
                                                                                     Approved: {{ $registrant->fileuploadapprovaltimestamp($filecontenttype) }}
                                                                                 </div>
                                                                             @else
-                                                                                @if($eventversion->isOpenForMembers())
+                                                                                @if($eventversion->isOpenForMembers() || (auth()->id() === 167))
                                                                                     <a href="{{ route('fileupload.approve',['registrant' => $registrant, 'filecontenttype' => $filecontenttype]) }}">
                                                                                         <button
                                                                                             type="button"
@@ -468,7 +468,7 @@
                                                                                 <a href="https://thedirectorsroom.com/registrant/reject/{{ $registrant->id }}/{{ $filecontenttype->id }}">
                                                                             @endif
 
-                                                                            @if($eventversion->isOpenForMembers())
+                                                                            @if($eventversion->isOpenForMembers() || (auth()->id() === 167))
                                                                                 <button
                                                                                     type="button"
                                                                                     class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
