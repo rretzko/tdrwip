@@ -32,7 +32,7 @@
                            class="text-blue-500"
                         >
                     @elseif($eventversion->id === 69)
-                        <a href="/2021AllShore.pdf" target="_BLANK"
+                        <a href="/2022NJAllShore.pdf" target="_BLANK"
                            class="text-blue-500"
                         >
                     @elseif($eventversion->id === 70)
