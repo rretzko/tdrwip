@@ -85,6 +85,11 @@
 
 
             <table id="roster" style=" vertical-align: top;">
+                <tr style="border: 1px solid black; padding: .25rem;background-color: rgba(0,0,0,.1);">
+                    <th colspan="5" style="text-align: center; font-size: .8rem;">
+                        A mandatory $25 fee is added for the Director's Packet.
+                    </th>
+                </tr>
                 <thead>
                 <tr>
                     <th>#</th>
@@ -127,7 +132,7 @@
                     @foreach($eventversion->instrumentations() AS $instrumentation)
                         <th >{{ strtoupper($instrumentation->abbr) }}</th>
                     @endforeach
-                    <th>Total Enclosed</th>
+                    <th>Total Enclosed<br />(incl. Director's Packet)</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -138,7 +143,7 @@
                             {{ $registrantsbyinstrumentation[$instrumentation->id] }}
                         </th>
                     @endforeach
-                    <th style="text-align: center;">${{ $amountduenet }}</th>
+                    <th style="text-align: center;">${{ ($amountduenet + 25) }}</th>
                 </tr>
                 </tbody>
             </table>

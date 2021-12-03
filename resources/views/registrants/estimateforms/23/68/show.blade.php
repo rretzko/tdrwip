@@ -114,6 +114,10 @@
                                     HANDWRITTEN ENTRIES WILL <u>NOT</u> BE ACCEPTED.
                                 </h3>
 
+                                <div class="text-center w-full" style="border-bottom: 1px solid darkgrey; padding: .5rem; margin-bottom: 1rem; font-weight: bold;">
+                                    A mandatory $25 fee is added for the Director's Packet.
+                                </div>
+
                                 {{-- ROSTER TABLE --}}
                                 <style>
                                     table{border-collapse: collapse;}
@@ -145,7 +149,7 @@
                                                 <td class="text-center"></td>
                                                 <td class="text-center"></td>
                                                 <td class="text-center"></td>
-                                                <td class="text-center">${{ $eventversion->eventversionconfigs->registrationfee * ($i + 1) }}</td>
+                                                <td class="text-center">${{ $eventversion->eventversionconfigs->registrationfee * ($i + 1)}}</td>
                                             </tr>
                                         @endif
 
@@ -161,7 +165,7 @@
                                         @foreach($eventversion->instrumentations() AS $instrumentation)
                                             <th class="uppercase">{{ $instrumentation->abbr }}</th>
                                         @endforeach
-                                        <th>Total Enclosed</th>
+                                        <th>Total Enclosed<br />(incl. Director's Packet)</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -172,7 +176,7 @@
                                                 {{ $registrantsbyinstrumentation[$instrumentation->id] }}
                                             </th>
                                         @endforeach
-                                        <td class="text-center">${{ array_sum($registrantsbyinstrumentation) * $eventversion->eventversionconfigs->registrationfee }}</td>
+                                        <td class="text-center">${{ ((array_sum($registrantsbyinstrumentation) * $eventversion->eventversionconfigs->registrationfee) + 25) }}</td>
                                     </tr>
                                     </tbody>
                                 </table>
