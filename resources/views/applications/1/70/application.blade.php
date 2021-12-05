@@ -77,6 +77,12 @@
 
                                     </div>
 
+                                    {{-- ON-SITE APPLICATION ADVISORY --}}
+                                    {{-- to do: Make this conditional to application close AND on-site registration option --}}
+                                    <div style="text-align: center; border: 1px solid red; color: darkred; margin-bottom: 1rem;">
+                                        ***** ON-SITE APPLICATION *****
+                                    </div>
+
                                     {{-- ADVISORY --}}
                                     <div>
                                         <div class="text-center">

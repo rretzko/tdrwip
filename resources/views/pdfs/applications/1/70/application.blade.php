@@ -54,6 +54,13 @@
     </tr>
 </table>
 
+{{-- ON-SITE APPLICATION ADVISORY --}}
+<table style="font-size: .8rem; margin-top: -1rem;">
+    <tr style="border: 1px solid red;">
+        <td style="color: darkred; text-align: center;border: 1px solid red;">***** ON-SITE APPLICATION *****</td>
+    </tr>
+</table>
+
 {{-- ADVISORY --}}
 <table style="font-size: .8rem; margin-top: -1rem;">
     <tr>
@@ -282,6 +289,13 @@
                 <div style=" text-align: right;">2022 Student Application</div>
             </div>
         </td>
+    </tr>
+</table>
+
+{{-- ON-SITE APPLICATION ADVISORY --}}
+<table style="font-size: .8rem; margin-top: -1rem;">
+    <tr style="border: 1px solid red;">
+        <td style="color: darkred; text-align: center;border: 1px solid red;">***** ON-SITE APPLICATION *****</td>
     </tr>
 </table>
 
