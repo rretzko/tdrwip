@@ -48,7 +48,7 @@
         <td style="width: 72%;">
             <div style="font-weight: bold;">
                 <div style="text-align: right;">{{ $eventversion->short_name }}</div>
-                <div style=" text-align: right;">2022 Student Application</div>
+                <div style=" text-align: right;">2021 On-Site Student Application</div>
             </div>
         </td>
     </tr>
