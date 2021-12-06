@@ -17,7 +17,7 @@ class CreateMassmailingvarsTable extends Migration
             $table->id();
             $table->foreignId('massmailing_id')->constrained();
             $table->text('descr', 40);
-            $table->text('var')->default('none');
+            $table->text('var');
             $table->integer('order_by')->default(1);
             $table->timestamps();
         });
