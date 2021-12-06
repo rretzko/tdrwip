@@ -49,7 +49,7 @@
                                 My Student Audition Details
                             </a>
                         @else
-                            <a href="https://afdc-2021-l3818.ondigitalocean.app/auditionresults/mydetails/pdf/{{$eventversion->id}}"
+                            <a href="https://thedirectorsroom.com/auditionresults/mydetails/pdf/{{$eventversion->id}}"
                                style="color: blue";
                             >
                                 My Student Audition Details
