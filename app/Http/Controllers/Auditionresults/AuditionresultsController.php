@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auditionresults;
 
 use App\Http\Controllers\Controller;
 use App\Models\Userconfig;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 
 class AuditionresultsController extends Controller
@@ -116,6 +117,34 @@ class AuditionresultsController extends Controller
         //
     }
 
+    /**
+     * @param \App\Models\Eventversion $eventversion
+     */
+    public function pdf(\App\Models\Eventversion $eventversion)
+    {
+        $registrants = \App\Models\Registrant::where('eventversion_id', $eventversion->id)
+            ->where('registranttype_id', \App\Models\Registranttype::REGISTERED)
+            ->where('school_id', Userconfig::getValue('school', auth()->id()))
+            ->get()
+            ->sortBy('student.person.last');
+
+        $score = new \App\Models\Score;
+
+        $scoresummary = new \App\Models\Scoresummary;
+
+        //ex. pages.pdfs.applications.12.64.application
+        $pdf = PDF::loadView('pdfs.auditionresults.'//9.65.2021_22_application',
+            . $eventversion->event->id
+            .'.'
+            . $eventversion->id
+            . '.auditionresults',
+            //.applicationTest',
+            compact('eventversion', 'registrants','score','scoresummary'));
+
+
+        return $pdf->download('auditionresults_'.str_replace(' ','_',$eventversion->short_name).'.pdf');
+    }
+
     private function buildScoresTable($eventversion, $registrant)
     {
         $scores = \App\Models\Score::where('registrant_id', $registrant->id)->get();
@@ -135,97 +164,9 @@ class AuditionresultsController extends Controller
         $str .= '</table>';
 
         return $str;
-        /*
-        foreach($eventversion->filecontenttypes AS $filecontenttype){
 
-            $str .= '<table>';
-
-            $str .= '<tr><th colspan="4">'.$filecontenttype->descr.'</th>';
-
-            $str .= '<tr>';
-            foreach($filecontenttype->scoringcomponents AS $scoringcomponent){
-
-                $str .= '<td>'.$scoringcomponent->abbr.'</td>';
-            }
-            $str .= '</tr>';
-
-            $str .= '</table>';
-        }
 
         return $str;
-/*
-        $str = '<table>
-            <thead>
-                <tr>
-                    <th colspan="3" style="border-top: 0; border-bottom: 0; border-left: 0;"></th>';
-                    for ($i = 1; $i <= $eventversion->eventversionconfig->judge_count; $i++){
-                        $str .= '<th colspan=' . $scoringcomponents->count() . '" >';
-                        $str .= 'Judge #' . $i;
-                        $str .= '</th>';
-                    }
-                    $str .= '<th colspan="3" style="border:0; border-left: 1px solid black;"></th>
-                            </tr>';
-
-                    $str .= '<tr>
-                                <th colspan="3" style="border-top: 0; border-left: 0;"></th>';
-                    for($i=1; $i<=$eventversion->eventversionconfig->judge_count; $i++) {
-                        $str .= '<th colspan="4">Scales</th>';
-                        $str .= '<th colspan="3">Solo</th>';
-                        $str .= '<th colspan="3">Swan</th>';
-                    }
-
-                    $str .= '<th colspan="3" style="border-top:0; border-right: 0;"></th>
-                                    </tr>';
-
-
-    @for($i = 1; $i<=$eventversion->eventversionconfig->judge_count; $i++)
-        @foreach($scoringcomponents AS $scoringcomponent)
-                                                <th>{{ $scoringcomponent->abbr }}</th>
-    @endforeach
-                                        @endfor
-                                        <th>Total</th>
-
-                                        <th>Mix</th>
-                                        <th>Tbl</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-    @foreach($registrants AS $registrant)
-                                    <tr>
-                                        <td style="text-align: center;">{{ $loop->iteration }}</td>
-                                        <td style="text-align: center;">
-                                            <span title="{{ $registrant->student->person->fullnameAlpha() }} @ {{ $registrant->student->currentSchool->shortname }}">
-                                                {{ $registrant->id }}
-                                            </span>
-                                        </td>
-                                        <td style="text-align: center;">{{ strtoupper($registrant->instrumentations->first()->abbr) }}</td>
-
-    @foreach($score->registrantScores($registrant) AS $value)
-                                                <td>{{ $value }}</td>
-    @endforeach
-
-                                        <td>
-                                            {{ $scoresummary->registrantScore($registrant) }}
-                                        </td>
-                                        <td>
-    @if($eventversion->event->eventensembles[0]->acceptanceStatus($registrant) === 'TB')
-        -
-        @else
-    {{ $eventversion->event->eventensembles[0]->acceptanceStatus($registrant) }}
-                                            @endif
-                                        </td>
-                                        <td>
-    @if($eventversion->event->eventensembles[1]->acceptanceStatus($registrant) === 'MX')
-        -
-        @else
-    {{ $eventversion->event->eventensembles[1]->acceptanceStatus($registrant) }}
-                                            @endif
-                                        </td>
-                                    </tr>
-    @endforeach
-                                </tbody>
-                            </table>
-*/
     }
 
 }

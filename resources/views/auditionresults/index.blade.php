@@ -41,6 +41,20 @@
                         @endif
                          Download the full results roster here!
                         </a>
+                    @else
+                        @if(config('app.url') === 'http://localhost')
+                            <a href="{{ route('auditionresults.mydetails.pdf',['eventversion' => $eventversion]) }}"
+                                style="color: blue;"
+                            >
+                                My Student Audition Details
+                            </a>
+                        @else
+                            <a href="https://afdc-2021-l3818.ondigitalocean.app/auditionresults/mydetails/pdf/{{$eventversion->id}}"
+                               style="color: blue;
+                            >
+                                My Student Audition Details
+                            </a>
+                        @endif
                     @endif
                 </div>
 

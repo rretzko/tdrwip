@@ -58,6 +58,8 @@ Route::middleware('auth', 'verified')->group(function() {
         ->name('auditionresults.index');
     Route::get('auditionresults/detail/{registrant}', [App\Http\Controllers\Auditionresults\AuditionresultsController::class, 'show'])
         ->name('auditionresults.detail.show');
+    Route::get('auditionresults/mydetails/pdf/{eventversion}', [App\Http\Controllers\Auditionresults\AuditionresultsController::class, 'pdf'])
+        ->name('auditionresults.mydetails.pdf');
 
     /** DASHBOARD */
     Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'show'])->name('dashboard');
