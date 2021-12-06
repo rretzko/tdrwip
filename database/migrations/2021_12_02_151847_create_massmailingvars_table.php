@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateParagraphsTable extends Migration
+class CreateMassmailingvarsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateParagraphsTable extends Migration
      */
     public function up()
     {
-        Schema::create('paragraphs', function (Blueprint $table) {
+        Schema::create('massmailingvars', function (Blueprint $table) {
             $table->id();
             $table->foreignId('massmailing_id')->constrained();
-            $table->longText('paragraph');
+            $table->text('descr', 40);
+            $table->text('var')->default('none');
             $table->integer('order_by')->default(1);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -30,6 +30,6 @@ class CreateParagraphsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('paragraphs');
+        Schema::dropIfExists('massmailingvars');
     }
 }

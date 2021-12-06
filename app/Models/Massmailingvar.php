@@ -5,9 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Paragraph extends Model
+class Massmailingvar extends Model
 {
     use HasFactory;
-    
-    protected $fillable = ['massmailing_id','order_by', 'paragraph'];
 }
