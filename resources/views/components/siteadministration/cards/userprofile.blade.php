@@ -77,6 +77,13 @@
                     @endif
                 </div>
             </div>
+
+            <div class="card-row">
+                <label>Current Teacher</label>
+                <div class="data">
+                    {{ $person->student->sysAdminCurrentTeachername }}
+                </div>
+            </div>
         @endif
     </div>
 

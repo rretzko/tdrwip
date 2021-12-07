@@ -173,6 +173,21 @@ class Student extends Model
         return 'current';
     }
 
+    public function getSysAdminCurrentTeachernameAttribute()
+    {
+        $school = $this->getCurrentSchoolAllUsersAttribute();
+
+        foreach($this->teachers AS $teacher){
+
+            if($teacher->person->user->schools->contains($school)){
+
+                return $teacher->person->fullName;
+            }
+        }
+
+        return 'No teacher found';
+    }
+
     public function guardians()
     {
         return $this->belongsToMany(Guardian::class, 'guardian_student', 'student_user_id', 'guardian_user_id')
