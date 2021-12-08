@@ -84,6 +84,7 @@
                     {{ $person->student->sysAdminCurrentTeachername }}
                 </div>
             </div>
+
         @endif
     </div>
 
@@ -100,7 +101,17 @@
                 @endif
             </div>
         </div>
+    </div>
 
+    <div>
+        <div class="card-row">
+            <label>CJMEA RegId</label>
+            <div class="data">
+                @if($person->user->isStudent())
+                {{ $person->student->registrants->last() ? $person->student->registrants->last()->id : 0}}
+                @endif
+            </div>
+        </div>
     </div>
 
 
