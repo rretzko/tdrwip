@@ -66,7 +66,8 @@
             <div id="viewport">
                 <div class="flex justify-center">
                     @if($auditioner)
-                        <div class="flex flex-col">
+                        @if($eventversion->eventversionconfigs->virtualaudition)
+                            <div class="flex flex-col">
                             <div class="text-center bg-indigo-100 border border-indigo-700">
                                 Now adjudicating: {{ $auditioner->id }}: {{ strtoupper($auditioner->instrumentations->first()->abbr) }}
                             </div>
@@ -115,8 +116,14 @@
                                 </a>
                             </div>
                         </div>
+                        @endif
+                        <div id="scoring" class="my-4">
+                            @if(! $eventversion->eventversionconfigs->virtualaudition)
+                                <div class="text-center bg-indigo-100 border border-indigo-700">
+                                    Now adjudicating: <b>{{ $auditioner->id }}</b>: {{ strtoupper($auditioner->instrumentations->first()->abbr) }}
+                                </div>
+                            @endif
 
-                        <div id="scoring">
                             @if(config('app.url') === 'http://localhost')
                                 <form method="post" action="{{ route('registrants.adjudication.update', ['registrant' => $auditioner->id]) }}" >
                             @else
