@@ -43,10 +43,17 @@
                     <th>{{ $scoringcomponent->abbr }}</th>
                 @endforeach
             @endfor
+
             <th>Total</th>
-            <th>Mix</th>
+
+            @foreach($eventversion->event->eventensembles AS $eventensemble)
+                @if($eventensemble->eventensembletype()->instrumentations->contains($registrant->instrumentations()->first()))
+                    <th>{{ ucwords($eventensemble->acceptance_abbr) }}</th>
+                @endif
+            @endforeach
         </tr>
         </thead>
+
         <tbody>
         <tr>
             <td>{{ $loop->iteration }}</td>
@@ -60,9 +67,21 @@
             <td>
                 {{ $scoresummary->registrantScore($registrant) }}
             </td>
-            <td>
-                {{ $scoresummary->registrantResult($registrant) }}
-            </td>
+            @foreach($eventversion->event->eventensembles AS $eventensemble)
+                @if($eventensemble->eventensembletype()->instrumentations->contains($registrant->instrumentations()->first()))
+                    <th>
+                        @if(! $scoresummary->registrantScore($registrant)) n/s
+                        @elseif( $scoresummary->registrantResult($registrant) === 'n/a') n/a
+                        @elseif( $scoresummary->registrantResult($registrant) === 'inc') inc
+                        @elseif( $scoresummary->registrantResult($registrant) !== $eventensemble->acceptance_abbr) -
+                        @elseif( $scoresummary->registrantResult($registrant) == $eventensemble->acceptance_abbr) {{ $eventensemble->acceptance_abbr }}
+                        @else err
+                        @endif
+
+                    </th>
+                @endif
+            @endforeach
+          
         </tr>
 
         </tbody>

@@ -13,4 +13,9 @@ class Event extends Model
     {
         return $this->belongsTo(Organization::class);
     }
+
+    public function eventensembles()
+    {
+        return $this->hasMany(Eventensemble::class);
+    }
 }
