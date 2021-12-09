@@ -19,6 +19,7 @@
                 </h4>
 
                 <div style="text-align: center;">
+                    Download:
                     @if($eventversion->event->id !== 19){{-- SUPPRESS FOR NJ ALL-SHORE --}}
                         @if($eventversion->id === 65)
                             <a href="/2021NJASC.pdf" target="_BLANK"
@@ -39,14 +40,17 @@
                         @else
                             <a href="" class="tex-blue-500">
                         @endif
-                         Download the full results roster here!
+                         Full results
                         </a>
-                    @else
+                    @endif
+
+                    @if($eventversion->id > 68)
+                        Or 
                         @if(config('app.url') === 'http://localhost')
                             <a href="{{ route('auditionresults.mydetails.pdf',['eventversion' => $eventversion]) }}"
                                 style="color: blue;"
                             >
-                                My Student Audition Details
+                                 My Student Audition Details
                             </a>
                         @else
                             <a href="https://thedirectorsroom.com/auditionresults/mydetails/pdf/{{$eventversion->id}}"
@@ -56,6 +60,7 @@
                             </a>
                         @endif
                     @endif
+
                 </div>
 
                 <style>
