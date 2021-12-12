@@ -34,7 +34,7 @@
                                class="text-blue-500"
                             >
                         @elseif($eventversion->id === 70)
-                            <a href="/2021CJMEA.pdf" target="_BLANK"
+                            <a href="/2022CJMEA.pdf" target="_BLANK"
                                class="text-blue-500"
                             >
                         @else
@@ -45,7 +45,7 @@
                     @endif
 
                     @if($eventversion->id > 68)
-                        Or 
+                        Or
                         @if(config('app.url') === 'http://localhost')
                             <a href="{{ route('auditionresults.mydetails.pdf',['eventversion' => $eventversion]) }}"
                                 style="color: blue;"
