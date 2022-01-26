@@ -170,8 +170,12 @@
 
                                     <th class="px-2" >###</th>
                                     <th class="px-2" title="Student name">Name</th>
-                                    <th class="px-2" title="Open">Grade</th>
                                     <th class="px-2" title="Event voice part">Voice</th>
+                                    <th class="px-2" title="Application downloaded">App</th>
+                                    <th class="px-2" title="Scales mp3 status">Sc</th>
+                                    <th class="px-2" title="Solo mp3 status">So</th>
+                                    <th class="px-2" title="Quintet mp3 status">Qn</th>
+                                    <th class="px-2" title="Registration status">Status</th>
                                     <th class="px-2 cursor-pointer text-blue-700" title="Status"
                                             wire:click='status'>
                                         {{ ucwords($population) }}
@@ -195,14 +199,27 @@
                                                 </x-tables.cell>
                                                 <x-tables.cell>
                                                     {{ $registrant['student']['person']->fullNameAlpha }}
-                                                </x-tables.cell>
-
-                                                <x-tables.cell>
-                                                    {{ $registrant['student']->grade }}
+                                                    ({{ $registrant['student']->grade }})
                                                 </x-tables.cell>
 
                                                 <x-tables.cell class="text-center uppercase">
                                                     {{ $registrant->instrumentationsCSV }}
+                                                </x-tables.cell>
+
+                                                <x-tables.cell class="text-center uppercase">
+                                                    +/-
+                                                </x-tables.cell>
+
+                                                <x-tables.cell class="text-center uppercase">
+                                                    0/+/-
+                                                </x-tables.cell>
+
+                                                <x-tables.cell class="text-center uppercase">
+                                                    0/+/-
+                                                </x-tables.cell>
+
+                                                <x-tables.cell class="text-center uppercase">
+                                                    0/+/-
                                                 </x-tables.cell>
 
                                                 <x-tables.cell >
