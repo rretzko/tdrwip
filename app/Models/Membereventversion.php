@@ -34,6 +34,9 @@ class Membereventversion extends Model
         self::filterForAdmin();
     }
 
+    /**
+     * @todo group by Event and then eventversion in descending order
+     */
     private static function filterForMembership()
     {
         //identify organization_id to which auth()->id() belongs
@@ -43,7 +46,7 @@ class Membereventversion extends Model
         self::$eventversions = Eventversion::with('event', 'event.organization')
             ->where('eventversiontype_id', Eventversiontype::OPEN)
             ->orWhere('eventversiontype_id', Eventversiontype::ADMIN)
-            ->orderBy('name')
+            ->orderByDesc('id')
             ->get()
             //filter-out those open/admin eventversions to which auth()->id() does NOT belong
             ->filter(function( $eventversion) use ($organizations){
