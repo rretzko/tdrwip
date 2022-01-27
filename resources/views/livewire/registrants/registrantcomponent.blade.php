@@ -172,9 +172,11 @@
                                     <th class="px-2" title="Student name">Name</th>
                                     <th class="px-2" title="Event voice part">Voice</th>
                                     <th class="px-2" title="Application downloaded">App</th>
-                                    <th class="px-2" title="Scales mp3 status">Sc</th>
-                                    <th class="px-2" title="Solo mp3 status">So</th>
-                                    <th class="px-2" title="Quintet mp3 status">Qn</th>
+                                    @foreach($event->filecontenttypes AS $filecontenttype)
+                                        <th class="px-2" title="{{ ucwords($filecontenttype->descr) }} mp3 status">
+                                            {{ ucwords(substr($filecontenttype->descr,0,2)) }}
+                                        </th>
+                                    @endforeach
                                     <th class="px-2" title="Registration status">Status</th>
                                     <th class="px-2 cursor-pointer text-blue-700" title="Status"
                                             wire:click='status'>
@@ -207,20 +209,36 @@
                                                 </x-tables.cell>
 
                                                 <x-tables.cell class="text-center uppercase">
-                                                    +/-
+                                                    @if($registrant->hasApplication)
+                                                        {{-- HEROICONS check --}}
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                        </svg>
+                                                    @else
+                                                        -
+                                                    @endif
                                                 </x-tables.cell>
 
-                                                <x-tables.cell class="text-center uppercase">
-                                                    0/+/-
-                                                </x-tables.cell>
+                                                @foreach($event->filecontenttypes AS $filecontenttype)
 
-                                                <x-tables.cell class="text-center uppercase">
-                                                    0/+/-
-                                                </x-tables.cell>
+                                                    <x-tables.cell class="text-center uppercase">
+                                                        @if($registrant->fileuploadapproved($filecontenttype))
+                                                            {{-- HEROICONS check --}}
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                            </svg>
+                                                        @elseif($registrant->hasFileUploaded($filecontenttype))
+                                                            {{-- HEROICONS plus --}}
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                                            </svg>
+                                                        @else
+                                                            -
+                                                        @endif
 
-                                                <x-tables.cell class="text-center uppercase">
-                                                    0/+/-
-                                                </x-tables.cell>
+                                                    </x-tables.cell>
+
+                                                @endforeach
 
                                                 <x-tables.cell >
                                                     <div class="{{ $registrant->registranttypeDescrBackground }} p-1 text-center text-xs border border-gray-400 rounded">

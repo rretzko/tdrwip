@@ -70,6 +70,12 @@ return [
             'url' => env('APP_URL').'/storage/membershipcards',
             'visibility' => 'public',
         ],
+        'njallstate' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/njallstate'),
+            'url' => env('APP_URL').'/storage/njallstate',
+            'visibility' => 'public',
+        ]
 
     ],
 
@@ -89,6 +95,7 @@ return [
         public_path('profile-photos') => storage_path('app/public/profile-photos'),
         public_path('storage/profile-photos') => storage_path('app/public/profile-photos'),
         public_path('storage/membershipcards') => storage_path('app/public/membershipcards'),
+        public_path('storage/njallstate') => storage_path('app/public/njallstate'),
     ],
 
 ];

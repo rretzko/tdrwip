@@ -25,9 +25,9 @@ class RegistrantsController extends Controller
 
         if($eventversion->obligationMet(auth()->id())){
 
-                return $this->show($eventversion);
+            return $this->show($eventversion);
 
-            }else{
+        }else{
 
             return view('eventversions.obligations', ['eventversion' => $eventversion]);
         }

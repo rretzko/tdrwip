@@ -50,12 +50,14 @@ class Registrant extends Model
             ->format('M d, Y g:i a');
     }
 
-    public function fileuploadapproved($filecontenttype) : bool
+    public function fileuploadapproved(Filecontenttype $filecontenttype) : bool
     {
-        return (bool)Fileupload::where('registrant_id', $this->id)
-            ->where('filecontenttype_id', $filecontenttype->id)
-            ->first()
-            ->approved;
+        return Fileupload::where('registrant_id', $this->id)
+                ->where('filecontenttype_id', $filecontenttype->id)
+                ->exists() && (bool)Fileupload::where('registrant_id', $this->id)
+                ->where('filecontenttype_id', $filecontenttype->id)
+                ->first()
+                ->approved;
     }
 
     /**

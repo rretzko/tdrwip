@@ -506,7 +506,11 @@
                                                                 </div>
     {{-- END VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT VIEWPORT --}}
                                                             @else
-                                                                <form action='https://api.sproutvideo.com/v1/videos'
+                                                                <form action='{{ route('registrant.mediaupload.update',
+                                                                    [
+                                                                        'registrant' => $registrant,
+                                                                        'filecontenttype' => $filecontenttype,
+                                                                    ]) }}'
                                                                       method='post'
                                                                       enctype='multipart/form-data'
                                                                       class="p-3 "
@@ -514,19 +518,16 @@
 
                                                                     @csrf
 
-                                                                    <input type="hidden" name="token"
-                                                                           value="{{ $fileserver->token($filecontenttype) }}"/>
-                                                                    <input type="hidden" name="download_sd" value="true"/>
-                                                                    <input type="hidden" name="download_hd" value="true"/>
                                                                     <input type="hidden" name="title"
                                                                            value="{{ $filename.$filecontenttype->descr}}.mp3"/>
-                                                                    <input type="hidden" name="folder_id"
-                                                                           value="{{ $folders->where('filecontenttype_id',$filecontenttype->id)->first()->folder_id }}">
 
                                                                     <div class="form-group">
                                                                         <input type="file"
                                                                                id="filecontenttype_{{ $filecontenttype->id }}"
-                                                                               name="audio" accept="audio/mp3"/>
+                                                                               name="{{ $filecontenttype->descr }}"
+                                                                               accept="audio/mp3"
+                                                                               retitle="{{ $filename.$filecontenttype->descr.'.mp3' }}"
+                                                                        />
                                                                         <div class="text-small text-muted">
                                                                             @if($eventversion->eventversionconfigs->audiofiles)
                                                                                 <span
@@ -552,7 +553,6 @@
                                                                             No uploads permitted at this time
                                                                         @endif
                                                                     </div>
-
                                                                 </form>
                                                             @endif
                                                         </div>

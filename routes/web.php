@@ -150,6 +150,10 @@ Route::middleware('auth', 'verified')->group(function() {
     Route::get('/registrant/estimateform/{eventversion}/download', [App\Http\Controllers\Registrants\RegistrantEstimateFormController::class,'download'])->name('registrant.estimateform.download');
     Route::post('/registrant/estimateform/county', [App\Http\Controllers\Registrants\RegistrantEstimateFormController::class, 'update'])->name('school.county');
 
+    /** MEDIA UPLOADS */
+    Route::post('/registrant/mediaupload/{registrant}/{filecontenttype}', [App\Http\Controllers\Registrants\MediauploadController::class, 'update'])
+        ->name('registrant.mediaupload.update');
+    
     Route::get('/registrant/payments/{eventversion}', [App\Http\Controllers\Registrants\RegistrantPaymentsController::class,'index'])->name('registrant.payments');
     Route::get('/registrant/payments/for/{registrant}', [App\Http\Controllers\Registrants\RegistrantPaymentsController::class,'show'])->name('registrant.payments.show');
     Route::post('/registrant/payment/new', [App\Http\Controllers\Registrants\RegistrantPaymentsController::class,'store'])->name('registrant.payments.store');
