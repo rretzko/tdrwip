@@ -37,12 +37,7 @@ class FileapprovalController extends Controller
             ->first();
 
         $fileupload->delete();
-        /*
-            ->update([
-                'approved' => NULL,
-                'approved_by' => auth()->id()
-            ]);
-*/
+  
         $this->updateRegistrantStatus($registrant);
 
         event(new FileuploadRejectionEvent(

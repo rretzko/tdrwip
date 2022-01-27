@@ -18,7 +18,7 @@
                 <x-sidebar-blurb blurb="As students progress from Eligible to Applied and Registered, the 'Registration
                 Progress' bar will update to keep you aware of that progress." />
 
-                <x-sidebar-blurb blurb="Click the <a class='text-yellow-100' href='{{ route('pitchfiles',['eventversion' => $event]) }}'>eighth-notes</a> icon to access the pitch files." />
+                <x-sidebar-blurb blurb="Click the <a class='text-yellow-100' href='{{ route('pitchfiles',['eventversion' => $event]) }}'>Pitch Files button</a> icon to access the pitch files." />
 
                 <x-sidebar-blurb blurb="Students with a status type of 'Registered' will appear on your
                     <a class='text-yellow-100' href='{{ route('registrant.estimateform',['eventversion' => $event]) }}'>Estimate</a> form
@@ -92,17 +92,15 @@
                              </div>
 
                              {{-- PITCH FILES --}}
-                             <div class="">
-                                 @if($event->event->id !== 23)
-                                     <a href="{{ route('pitchfiles',['eventversion' => $event]) }}" title="Pitch Files" class="text-blue-600">
-                                     {{-- SIXTEENTH NOTES --}}
-                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor">
-                                             <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.37 4.37 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z" />
-                                         </svg>
-                                     </a>
-                                 @endif
+                             <div class="pt-3">
+                                 <a href="{{ route('pitchfiles',['eventversion' => $event]) }}"
+                                    class=" bg-blue-200 text-blue-800 font-bold border border-blue-700 rounded px-2"
+                                    title="Pitch Files"
+                                 >
+                                     Pitch Files
+                                 </a>
                              </div>
-
+                      
                              {{-- EVENTVERSION ROLES --}}
                              <div class="pt-3">
                                  @if($adjudicator)
@@ -211,9 +209,13 @@
                                                 <x-tables.cell class="text-center uppercase">
                                                     @if($registrant->hasApplication)
                                                         {{-- HEROICONS check --}}
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                                        </svg>
+                                                        <span title="An application has been downloaded">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                                 fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                      stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                            </svg>
+                                                        </span>
                                                     @else
                                                         -
                                                     @endif
@@ -224,16 +226,23 @@
                                                     <x-tables.cell class="text-center uppercase">
                                                         @if($registrant->fileuploadapproved($filecontenttype))
                                                             {{-- HEROICONS check --}}
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                                            </svg>
+                                                            <span title="File uploaded and approved">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                                </svg>
+                                                            </span>
                                                         @elseif($registrant->hasFileUploaded($filecontenttype))
                                                             {{-- HEROICONS plus --}}
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                                            </svg>
+                                                            <span title="File uploaded but NOT approved">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                                     fill="none" viewBox="0 0 24 24"
+                                                                     stroke="currentColor">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                                          stroke-width="2" d="M12 4v16m8-8H4"/>
+                                                                </svg>
+                                                            </span>
                                                         @else
-                                                            -
+                                                            <span title="No file upload found">-</span>
                                                         @endif
 
                                                     </x-tables.cell>
