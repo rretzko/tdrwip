@@ -3,15 +3,14 @@
         <x-livewire-table-with-modal-forms>
 
             <x-slot name="title">
-                {{ __('Registrant Information') }}
+                {{ __('Registrant Dashboard') }}
             </x-slot>
 
             <x-slot name="description">
 
                 <x-sidebar-blurb blurb="Add or edit your registrant information here."/>
 
-                <x-sidebar-blurb blurb="Registrants have three status types: Eligible, Applied, Registered, and
-                    Hidden." />
+                <x-sidebar-blurb blurb="Registrants have three status types: Eligible, Applied, and Registered." />
 
                 <x-sidebar-blurb blurb="Click the 'Eligible' column header to toggle the roster for each status type." />
 
@@ -22,13 +21,19 @@
 
                 <x-sidebar-blurb blurb="Students with a status type of 'Registered' will appear on your
                     <a class='text-yellow-100' href='{{ route('registrant.estimateform',['eventversion' => $event]) }}'>Estimate</a> form
-                    located between the Search bar and the Pitch Files icon." />
+                    located between the Search bar and the Pitch Files button." />
 
                 <x-sidebar-blurb blurb="You may keep a record of your student payments by clicking on the
                     <a class='text-yellow-100' href='{{ route('registrant.payments',['eventversion' => $event]) }}'>'Payments'</a> link
-                    located between the Search bar and the Pitch Files icon." />
+                    located between the Search bar and the Pitch Files button." />
 
                 <div class="mb-1.5 text-white">{!! $registrantstatus !!}</div>
+
+                <x-sidebar-blurb blurb="Three status graphics may display as follows:<ul style='margin-left: 1rem;'>
+                <li><b class='text-yellow-100' >Dash:</b> The item has not been found.</li>
+                <li><b class='text-yellow-100' >Plus sign:</b> The item has been found but further action needs to be taken.</li>
+                <li><b class='text-yellow-100' >Checkmark:</b> The item is complete and no further action is needed.</li>
+                </ul>Note: Float over the graphics for additional specific information!" />
 
             </x-slot>
 
@@ -37,9 +42,7 @@
                 {{-- Per Page and Bulk actions are commented out but left for future usage --}}
                 <div class="flex justify-end pr-6 space-x-2">
                     <x-inputs.dropdowns.perpage />
-                    <!-- {{-- <x-inputs.dropdowns.bulkactions :selected="$selected" /> --}} -->
 
-                    <!-- {{-- <x-buttons.button-add toggle="showaddmodal"/> --}} -->
                 </div>
 
                 {{-- HEADER --}}
@@ -100,7 +103,7 @@
                                      Pitch Files
                                  </a>
                              </div>
-                      
+
                              {{-- EVENTVERSION ROLES --}}
                              <div class="pt-3">
                                  @if($adjudicator)
@@ -206,14 +209,25 @@
                                                     {{ $registrant->instrumentationsCSV }}
                                                 </x-tables.cell>
 
+                                                {{-- APPLICATION --}}
                                                 <x-tables.cell class="text-center uppercase">
-                                                    @if($registrant->hasApplication)
+                                                    @if($registrant->hasSignatures)
                                                         {{-- HEROICONS check --}}
-                                                        <span title="An application has been downloaded">
+                                                        <span title="The application signatures are confirmed">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
                                                                  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                                       stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                            </svg>
+                                                        </span>
+                                                    @elseif($registrant->hasApplication)
+                                                        {{-- HEROICONS plus --}}
+                                                        <span title="An application has been downloaded">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                                 fill="none" viewBox="0 0 24 24"
+                                                                 stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                      stroke-width="2" d="M12 4v16m8-8H4"/>
                                                             </svg>
                                                         </span>
                                                     @else
@@ -221,19 +235,20 @@
                                                     @endif
                                                 </x-tables.cell>
 
+                                                {{-- FILE CONTENT TYPES --}}
                                                 @foreach($event->filecontenttypes AS $filecontenttype)
 
                                                     <x-tables.cell class="text-center uppercase">
                                                         @if($registrant->fileuploadapproved($filecontenttype))
                                                             {{-- HEROICONS check --}}
-                                                            <span title="File uploaded and approved">
+                                                            <span title="{{ ucwords($filecontenttype->descr) }} file uploaded and approved">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                                                 </svg>
                                                             </span>
                                                         @elseif($registrant->hasFileUploaded($filecontenttype))
                                                             {{-- HEROICONS plus --}}
-                                                            <span title="File uploaded but NOT approved">
+                                                            <span title="{{ ucwords($filecontenttype->descr) }} file uploaded but NOT approved">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
                                                                      fill="none" viewBox="0 0 24 24"
                                                                      stroke="currentColor">
@@ -242,7 +257,7 @@
                                                                 </svg>
                                                             </span>
                                                         @else
-                                                            <span title="No file upload found">-</span>
+                                                            <span title="No {{ $filecontenttype->descr }} file found">-</span>
                                                         @endif
 
                                                     </x-tables.cell>

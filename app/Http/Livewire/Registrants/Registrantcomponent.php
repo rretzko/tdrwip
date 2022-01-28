@@ -43,7 +43,7 @@ class Registrantcomponent extends Component
     public $registrantstatus = "Click the student's status (Eligible, Applied, Registered) to display their
         status details here...";
 
-    private $populations = ['eligible','applied','registered','hidden'];
+    private $populations = ['eligible','applied','registered',];
 
     public function mount()
     {
@@ -134,8 +134,8 @@ class Registrantcomponent extends Component
         $populations = [
             'eligible' => 'applied',
             'applied' => 'registered',
-            'registered' => 'hidden',
-            'hidden' => 'eligible',
+            'registered' => 'eligible',
+            //'hidden' => 'eligible',
         ];
 
         $this->population = $populations[$this->population];
