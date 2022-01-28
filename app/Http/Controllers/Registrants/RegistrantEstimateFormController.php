@@ -7,6 +7,7 @@ use App\Models\Application;
 use App\Models\County;
 use App\Models\Estimateform;
 use App\Models\Eventversion;
+use App\Models\Membership;
 use App\Models\Registrant;
 use App\Models\School;
 use App\Models\Teacher;
@@ -74,6 +75,10 @@ class RegistrantEstimateFormController extends Controller
             ? false
             : ($uppervoicecount > $eventversion->eventversionconfigs->max_uppervoice_count);
 
+        $membership = Membership::where('user_id', auth()->id())
+            ->where('organization_id', Userconfig::getValue('organization', auth()->id()))
+            ->first();
+
         //ex. pages.pdfs.applications.12.64.application
         $pdf = PDF::loadView('pdfs.estimateforms.'//9.65.2021_22_application',
             . $eventversion->event->id
@@ -82,7 +87,7 @@ class RegistrantEstimateFormController extends Controller
             . '.estimateform',
             compact('eventversion', 'teacher', 'school', 'me', 'registrants',
                 'registrantsbyinstrumentation', 'sendto','paypalcollected', 'amountduenet',
-                'maxcount', 'maxcounterror','maxuppervoiceerror')
+                'maxcount', 'maxcounterror','maxuppervoiceerror','membership')
         )->setPaper('letter', $landscapeportrait);
 
         //log application printing
@@ -134,6 +139,10 @@ class RegistrantEstimateFormController extends Controller
             ? false
             : ($uppervoicecount > $eventversion->eventversionconfigs->max_uppervoice_count);
 
+        $membership = Membership::where('user_id', auth()->id())
+            ->where('organization_id', Userconfig::getValue('organization', auth()->id()))
+            ->first() ?? false;
+
         return view('registrants.estimateforms.'.$eventversion->event->id.'.'.$eventversion->id.'.show',
             [
                 'amountduenet' => $amountduenet,
@@ -148,6 +157,7 @@ class RegistrantEstimateFormController extends Controller
                 'maxcounterror' => $maxcounterror,
                 'maxuppervoiceerror' => $maxuppervoiceerror,
                 'maxcount' => $eventversion->eventversionconfigs->max_count ?: array_sum($registrantsbyinstrumentationarray),
+                'membership' => $membership,
             ]);
     }
 

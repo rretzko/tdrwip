@@ -60,8 +60,6 @@
 
                                         @csrf
 
-
-
                                         {{-- MEMBERSHIP TYPE --}}
                                         <x-inputs.group label="Membership type" for="membershiptype_id">
 
@@ -133,13 +131,13 @@
                                         </x-inputs.group>
 
                                         {{-- MEMBERSHIP CARD --}}
-                                        <!--
+
                                         <x-inputs.group label="Membership card" for="membershipcard" borderless="true" paddingless="true">
 
                                             <input type="file" name="membershipcard">
 
                                         </x-inputs.group>
--->
+
                                         <x-inputs.group for="submit" label="" borderless="true" >
                                             <x-buttons.button-save />
                                         </x-inputs.group>
@@ -148,10 +146,14 @@
                             </section>
 
                             <section class="w-2/12" id="card">
-                                <!--
-                                <h4>Membership Card Image</h4>
-                                <img src="/membershipcards/LxabilADYPk5zg5kiqftqFexZUS9Z1tLVMzE3gs9.png" alt="membership card" />
-                                -->
+
+                                @if(strlen($membership->membership_card_path))
+                                    <h4>Membership Card Image</h4>
+                                    <img src="{{ $membership->membership_card_path }}"
+                                         alt="membership card"
+                                    />
+                                @endif
+
                             </section>
 
                         </section>

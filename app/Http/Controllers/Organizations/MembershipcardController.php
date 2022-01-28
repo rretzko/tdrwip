@@ -52,14 +52,16 @@ class MembershipcardController extends Controller
         ]);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, Membership $membership)
     {
         $data = $this->validateRequest($request);
 
         //store membership card
         $path = ($request->file('membershipcard'))
-                ? $request->file('membershipcard')->store('membershipcards')
+                ? $request->file('membershipcard')->store('public/membershipcards')
                 : '';
+
+        $membership_card_path = '/storage/membershipcards/'.$request->file('membershipcard')->hashName();
 
         foreach(Organization::find(Userconfig::getValue('organization',auth()->id()))
                     ->ancestors([],true) AS $organization) {
@@ -72,7 +74,7 @@ class MembershipcardController extends Controller
                     'expiration' => $data['expiration'],
                     'grade_levels' => $data['grade_levels'],
                     'subjects' => $data['subjects'],
-                    'membership_card_path' => $path,
+                    'membership_card_path' => $membership_card_path,
                 ]);
         }
 

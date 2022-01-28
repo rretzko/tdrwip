@@ -422,9 +422,9 @@
 
 {{-- COVID-19 --}}
 <table class="endorsements" style="margin-top: 1rem; border: 1px solid darkgray;">
-    <tr>
-        <th style="text-align: left;padding: .5rem;">
-            <span style="text-decoration: underline;">COVID-19 ADVISORY</span>
+    <tr style="background-color: rgba(0,0,0,.1);">
+        <th style="text-align: center; padding: .5rem;">
+            COVID-19 ADVISORY
         </th>
     </tr>
     <tr>
