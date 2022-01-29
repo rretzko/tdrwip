@@ -48,7 +48,7 @@ class FileviewportInternal extends Model
     private function mp3player(\App\Models\Fileupload $fileupload)
     {
         $str = '<audio controls>';
-        $str .= '<source src="/storage'.$fileupload->folder_id.'" type="audio/mpeg">';
+        $str .= '<source src="/storage/'.$fileupload->folder_id.'" type="audio/mpeg">';
         $str .= 'Your browser does not support the audio element';
         $str .= '</audio>';
 
