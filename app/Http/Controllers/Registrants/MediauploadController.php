@@ -90,7 +90,7 @@ class MediauploadController extends Controller
                     ],
                     [
                         'server_id' => 'none',
-                        'folder_id' => substr($path,6), //remove 'public/'
+                        'folder_id' => substr($path,7), //remove 'public/'
                         'uploaded_by' => auth()->id(),
                     ]
                 );
