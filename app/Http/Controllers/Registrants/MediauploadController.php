@@ -75,7 +75,17 @@ class MediauploadController extends Controller
 
             if($request->{$filecontenttype->descr}->guessExtension() === 'mp3'){
 
+                //using symbolic links
+                /*
                 $directory = 'public/'
+                    . Userconfig::getValue('event', auth()->id()).'/'
+                    . Userconfig::getValue('eventversion', auth()->id()).'/'
+                    . $registrant->instrumentations->first()->id.'/'
+                    . $filecontenttype->id;
+                */
+
+                //using direct access under /public/assets directory
+                $directory = 'public/assets/mp3s/'
                     . Userconfig::getValue('event', auth()->id()).'/'
                     . Userconfig::getValue('eventversion', auth()->id()).'/'
                     . $registrant->instrumentations->first()->id.'/'
