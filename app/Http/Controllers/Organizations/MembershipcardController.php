@@ -56,12 +56,19 @@ class MembershipcardController extends Controller
     {
         $data = $this->validateRequest($request);
 
-        //store membership card
-        $path = ($request->file('membershipcard'))
-                ? $request->file('membershipcard')->store('public/membershipcards')
-                : '';
+        $membership_card_path = '';
+        if($request->hasFile('membershipcard')) {
 
-        $membership_card_path = '/storage/membershipcards/'.$request->file('membershipcard')->hashName();
+            if(in_array($request->membershipcard->guessExtension(), ['jpg','jpeg','png'])) {
+
+                //store membership card
+                $directory = 'public/membershipcards';
+
+                $path = $request->file('membershipcard')->store($directory);
+
+                $membership_card_path = '/storage/membershipcards/' . $request->file('membershipcard')->hashName();
+            }
+        }
 
         foreach(Organization::find(Userconfig::getValue('organization',auth()->id()))
                     ->ancestors([],true) AS $organization) {
