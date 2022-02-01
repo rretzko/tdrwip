@@ -220,8 +220,9 @@
                                 @endif
 
                                 {{-- COVID ADVISORY --}}
+                                <!-- Decision to exclude covid advisory from estimate form: Barbara Retzko 2022-Feb-01
                                 <x-covid.njacdaadvisory />
-
+                                -->
                             </div>
 
                         </div>

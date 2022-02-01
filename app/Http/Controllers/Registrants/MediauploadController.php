@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Registrants;
 use App\Http\Controllers\Controller;
 use App\Models\Userconfig;
 use Illuminate\Http\Request;
+use function PHPUnit\Framework\directoryExists;
 
 class MediauploadController extends Controller
 {
@@ -85,11 +86,7 @@ class MediauploadController extends Controller
                 */
 
                 //using direct access under /public/assets directory
-                $directory = 'public/assets/mp3s/'
-                    . Userconfig::getValue('event', auth()->id()).'/'
-                    . Userconfig::getValue('eventversion', auth()->id()).'/'
-                    . $registrant->instrumentations->first()->id.'/'
-                    . $filecontenttype->id;
+                $directory = $this->makeDirectories($registrant, $filecontenttype);
 
                 $path = $request->{$filecontenttype->descr}->store($directory);
 
@@ -121,5 +118,75 @@ class MediauploadController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function makeDirectories(\App\Models\Registrant $registrant, \App\Models\Filecontenttype $filecontenttype)
+    {
+        $event = Userconfig::getValue('event', auth()->id());
+        $eventversion = Userconfig::getValue('eventversion', auth()->id());
+        $instrumentation_id = $registrant->instrumentations->first()->id;
+
+        if(is_dir('../public')){
+
+            if(is_dir('../public/assets')){
+
+                if(is_dir('../public/assets/mp3s')){
+
+                    if(is_dir('../public/assets/mp3s/'.Userconfig::getValue('event', auth()->id()))){
+
+                        if(is_dir('../public/assets/mp3s/'.Userconfig::getValue('event', auth()->id()).'/'.Userconfig::getValue('eventversion', auth()->id()))){
+
+                            if(is_dir('../public/assets/'.Userconfig::getValue('event', auth()->id()).'/'.Userconfig::getValue('eventversion', auth()->id()).'/'.$registrant->instrumentations->first()->id)){
+
+                                return '../public/assets/'.$event;
+
+                            }else {
+                                mkdir('../public/assets/mp3s/' . Userconfig::getValue('event', auth()->id()) . '/' . Userconfig::getValue('eventversion', auth()->id()).'/'.$registrant->instrumentations->first()->id);
+
+                                $this->makeDirectories($registrant, $filecontenttype);
+                            }
+                        }else{
+
+                            mkdir('../public/assets/mp3s/'.Userconfig::getValue('event', auth()->id()).'/'.Userconfig::getValue('eventversion', auth()->id()));
+
+                            $this->makeDirectories($registrant, $filecontenttype);
+                        }
+
+                    }else{
+
+                        mkdir('../public/assets/mp3s/'.Userconfig::getValue('event', auth()->id()));
+
+                        $this->makeDirectories($registrant, $filecontenttype);
+                    }
+
+                }else{
+
+                        mkdir('../public/assets/mp3s');
+
+                        $this->makeDirectories($registrant, $filecontenttype);
+                }
+            }else{
+
+                mkdir('../public/assets');
+
+                $this->makeDirectories($registrant, $filecontenttype);
+            }
+
+        }else{
+
+            mkdir('../public');
+
+            $this->makeDirectories($registrant, $filecontenttype);
+        }
+
+        /*
+         * 'public/assets/mp3s/'
+                    . Userconfig::getValue('event', auth()->id()).'/'
+                    . Userconfig::getValue('eventversion', auth()->id()).'/'
+                    . $registrant->instrumentations->first()->id.'/'
+                    . $filecontenttype->id;
+         */
+
+        return false;
     }
 }

@@ -1,3 +1,7 @@
+@props([
+    'orgname' => '[Insert Org Name Here]',
+])
+
 <style>
     #covidadvisory td{text-align: justify; padding: 0.5rem; border: 0px solid white;}
 </style>
@@ -21,7 +25,7 @@
     </tr>
     <tr>
         <td>
-            With full knowledge of the risks involved, therefore, I hereby release, waive, and discharge CJMEA, its officers,
+            With full knowledge of the risks involved, therefore, I hereby release, waive, and discharge {{ $orgname }}, its officers,
             directors, employees, contractors, and agents, from any and all liability, loss, damage, claims, demands, actions,
             and causes of action whatsoever, including reasonable attorneys' fees, directly or indirectly arising out of
             or related to any loss, damage, injury, or death, that may be sustained by me while participating in this event

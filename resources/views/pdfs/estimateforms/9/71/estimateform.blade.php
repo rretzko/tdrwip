@@ -211,7 +211,9 @@
 
 {{-- COVID ADVISORY --}}
 
+
 {{-- COVID-19 --}}
+<!-- {{-- Decision to exclude Covid-19 advisory from estimate form: Barbara Retzko 2022-Feb-01
 <table class="endorsements" style="margin-top: 1rem; border: 1px solid darkgray;">
     <tr style="background-color: rgba(0,0,0,.1);">
         <th style="text-align: center; padding: .5rem;">
@@ -232,7 +234,7 @@
     </tr>
     <tr>
         <td style="text-align: justify; padding: .5rem;">
-            With full knowledge of the risks involved, therefore, I hereby release, waive, and discharge CJMEA, its officers,
+            With full knowledge of the risks involved, therefore, I hereby release, waive, and discharge NJ All-State, its officers,
             directors, employees, contractors, and agents, from any and all liability, loss, damage, claims, demands, actions,
             and causes of action whatsoever, including reasonable attorneys' fees, directly or indirectly arising out of
             or related to any loss, damage, injury, or death, that may be sustained by me while participating in this event
@@ -240,6 +242,7 @@
         </td>
     </tr>
 </table>
+--}} -->
 
 
 </body>
