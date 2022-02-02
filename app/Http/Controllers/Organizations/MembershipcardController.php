@@ -36,18 +36,27 @@ class MembershipcardController extends Controller
 
     public function show(Organization $organization)
     {
+        Userconfig::setValue('organization', auth()->id(), $organization->id);
+
         $membership = Membership::where('user_id', auth()->id())
             ->where('organization_id', $organization->id)
             ->first() ?? new Membership;
 
-        Userconfig::setValue('organization', auth()->id(), $organization->id);
+        if($membership->membership_card_path) {
+
+            $membershipcard = explode('/',$membership->membership_card_path);
+            $membership_card_url = Storage::disk('spaces')->url($membership->membership_card_path.'/'.$membershipcard[1]);
+        }else{
+
+            $membership_card_url = '';
+        }
 
         return view('organizations.membershipcard.show',
         [
             'ancestors' => $this->buildAncestors($organization->ancestors()),
             'membership' => $membership,
             'membershiptypes' => Membershiptype::all(),
-            'membership_card_url' => Storage::url($membership->membership_card_path),
+            'membership_card_url' => $membership_card_url,
             'organization' => $organization,
         ]);
     }
@@ -61,28 +70,28 @@ class MembershipcardController extends Controller
 
             if(in_array($request->membershipcard->guessExtension(), ['jpg','jpeg','png'])) {
 
-                //store membership card
-                $directory = 'public/membershipcards';
+                $file = $request->file('membershipcard');
+                $hashname = $file->hashName();
+                $directory = 'membershipcards/';
+                $path = $directory.$hashname;
 
-                $path = $request->file('membershipcard')->store($directory);
+                $file->storePublicly($path,'spaces');
 
-                $membership_card_path = '/storage/membershipcards/' . $request->file('membershipcard')->hashName();
+                foreach(Organization::find(Userconfig::getValue('organization',auth()->id()))
+                            ->ancestors([],true) AS $organization) {
+
+                    Membership::where('user_id', auth()->id())
+                        ->where('organization_id', $organization->id)
+                        ->update([
+                            'membershiptype_id' => $data['membershiptype_id'],
+                            'membership_id' => $data['membership_id'],
+                            'expiration' => $data['expiration'],
+                            'grade_levels' => $data['grade_levels'],
+                            'subjects' => $data['subjects'],
+                            'membership_card_path' => $path,
+                        ]);
+                }
             }
-        }
-
-        foreach(Organization::find(Userconfig::getValue('organization',auth()->id()))
-                    ->ancestors([],true) AS $organization) {
-
-            Membership::where('user_id', auth()->id())
-                ->where('organization_id', $organization->id)
-                ->update([
-                    'membershiptype_id' => $data['membershiptype_id'],
-                    'membership_id' => $data['membership_id'],
-                    'expiration' => $data['expiration'],
-                    'grade_levels' => $data['grade_levels'],
-                    'subjects' => $data['subjects'],
-                    'membership_card_path' => $membership_card_path,
-                ]);
         }
 
         return back();

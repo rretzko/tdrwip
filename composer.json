@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.4|^8.0",
+        "barryvdh/laravel-dompdf": "dev-master",
         "calebporzio/sushi": "^2.2",
         "coconutcraig/laravel-postmark": "^2.10",
         "fideloper/proxy": "^4.4",
@@ -18,9 +19,9 @@
         "laravel/jetstream": "^2.2",
         "laravel/sanctum": "^2.6",
         "laravel/tinker": "^2.5",
+        "league/flysystem-aws-s3-v3": "~1.0",
         "livewire/livewire": "^2.0",
         "maatwebsite/excel": "^3.1",
-        "barryvdh/laravel-dompdf": "dev-master",
         "sproutvideo/sproutvideo": "dev-master"
     },
     "require-dev": {

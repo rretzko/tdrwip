@@ -146,12 +146,14 @@
                             </section>
 
                             <section class="w-2/12" id="card">
+                                <h4 class="font-bold">Card Image</h4>
 
                                 @if(strlen($membership->membership_card_path))
-                                    <h4>Membership Card Image</h4>
-                                    <img src="{{ $membership->membership_card_path }}"
+
+                                    <img src="{{ $membership_card_url }}"
                                          alt="membership card"
                                     />
+                                @else Card not found
                                 @endif
 
                             </section>
