@@ -47,12 +47,6 @@ class MembershipcardController extends Controller
 
         $membership_card_url = $this->membershipcardurl($membership);
 
-        //if($membership->membership_card_path) {
-
-        //    $membershipcard = explode('/',$membership->membership_card_path);
-        //    $membership_card_url = Storage::disk('spaces')->url($membership->membership_card_path.'/'.$membershipcard[1]);
-        //}
-
         return view('organizations.membershipcard.show',
         [
             'ancestors' => $this->buildAncestors($organization->ancestors()),

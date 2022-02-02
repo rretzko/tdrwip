@@ -76,19 +76,16 @@ class MediauploadController extends Controller
 
             if($request->{$filecontenttype->descr}->guessExtension() === 'mp3'){
 
-                //using symbolic links
-                /*
-                $directory = 'public/'
+                $file = $request->file($filecontenttype->descr);
+                $hashname = $file->hashName();
+                $directory = 'auditions/'
                     . Userconfig::getValue('event', auth()->id()).'/'
                     . Userconfig::getValue('eventversion', auth()->id()).'/'
-                    . $registrant->instrumentations->first()->id.'/'
-                    . $filecontenttype->id;
-                */
+                    . $registrant->instrumentations->first()->abbr.'/'
+                    . $filecontenttype->descr.'/';
+                $path = $directory.$hashname;
 
-                //using direct access under /public/assets directory
-                $directory = $this->makeDirectories($registrant, $filecontenttype);
-
-                $path = $request->{$filecontenttype->descr}->store($directory);
+                $file->storePublicly($path, 'spaces');
 
                 \App\Models\Fileupload::updateOrCreate(
                     [
@@ -96,8 +93,8 @@ class MediauploadController extends Controller
                         'filecontenttype_id' => $filecontenttype->id,
                     ],
                     [
-                        'server_id' => 'none',
-                        'folder_id' => substr($path,7), //remove 'public/'
+                        'server_id' => $directory,
+                        'folder_id' => $hashname, //remove 'public/'
                         'uploaded_by' => auth()->id(),
                     ]
                 );

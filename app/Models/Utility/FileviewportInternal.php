@@ -3,6 +3,7 @@
 namespace App\Models\Utility;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class FileviewportInternal extends Model
 {
@@ -47,9 +48,11 @@ class FileviewportInternal extends Model
 
     private function mp3player(\App\Models\Fileupload $fileupload)
     {
+        $src = Storage::disk('spaces')->url($fileupload->server_id.$fileupload->folder_id.'/'.$fileupload->folder_id);
+
         $str = '<audio controls>';
-        $str .= '<source src="/storage/'.$fileupload->folder_id.'" type="audio/mpeg">';
-        $str .= 'Your browser does not support the audio element';
+            $str .= '<source src="'.$src.'" type="audio/mpeg">';
+            $str .= 'Your browser does not support the audio element';
         $str .= '</audio>';
 
         return $str;
