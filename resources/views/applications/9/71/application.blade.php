@@ -40,8 +40,8 @@
 
                             {{-- BUTTON TO DOWNLOAD PDF --}}
                             <div class="bg-blue-400 text-xs pt-3 border rounded-2xl text-white px-2">
-                                <!-- {{-- <a href="{{ route('registrant.application.download', ['registrant' => $registrant]) }}"> --}} -->
-                                    <a href="https://thedirectorsroom.com/registrant/{{ $registrant->id }}/download">
+                                 <a href="{{ route('registrant.application.download', ['registrant' => $registrant]) }}">
+                                    <!-- {{-- <a href="https://thedirectorsroom.com/registrant/{{ $registrant->id }}/download"> --}} -->
                                     Download Application For Signing
                                 </a>
                             </div>
@@ -83,90 +83,13 @@
                                         </div>
                                     </div>
 
-                                    {{-- AUDITION FEE --}}
-                                    <div class="flex justify-end mb-2 font-bold" >
-                                        <div class="text-xs">THE AUDITION FEE IS: ${{ number_format($eventversion->eventversionconfigs->registrationfee,2) }}</div>
-                                    </div>
-
-                                    {{-- GUARDIAN ENDORSEMENT --}}
-                                    <div class="mb-4">
-                                        <div class="sectionheader" >
-                                            PARENT/LEGAL GUARDIAN ENDORSEMENT - SIGNATURES REQUIRED
-                                        </div>
-                                        <div class="italic justify-self-stretch mx-4 mb-4">
-                                            As the parent or legal guardian of <b>{{ $registrant->student->person->fullName }}</b>, I declare that I have
-                                            read the endorsement, which {{ $registrant->student->person->first_name }} has signed, and I give permission
-                                            for {{ $registrant->student->person->pronoun->possessive }} to audition to become a member of the
-                                            {{ $eventversion->name }}.  I promise to assist {{ $registrant->student->person->first_name }} in
-                                            fulfilling All-State obligations and in meeting any expenses necessary for rehearsals and concerts.  I
-                                            understand it is the policy of NJMEA  that if an All-State student is incapacitated in any way that
-                                            requires additional assistance, it will be the responsibility of the All-State student's parent/guardian/school
-                                            to provide the necessary help at all rehearsals, meals, concerts, etc.  The provided chaperone will be
-                                            housed with the student and will be charged the regular student housing fee.
-                                        </div>
-
-                                        <div>
-                                            <div class="flex justify-between font-bold" >
-                                                <div>
-                                                    PARENT/LEGAL GUARDIAN SIGNATURE: ________________________
-                                                </div>
-                                                <div>
-                                                    DATE: _________
-                                                </div>
-                                            </div>
-                                            <div class="font-bold">
-                                                PARENT/LEGAL GUARDIAN CELL: {{ $registrant->student->guardians->first() ? $registrant->student->guardians->first()->person->phoneMobile() : ''}}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {{-- PRINCIPAL/TEACHER ENDORSEMENT --}}
+                                    {{-- STUDENT ENDORSEMENT & AUDITION FEE--}}
                                     <div class="mb-4">
                                         <div class="sectionheader">
-                                            PRINCIPAL/TEACHER ENDORSEMENT - SIGNATURES REQUIRED
-                                        </div>
-                                        <div class="italic justify-self-stretch mx-4 mb-4" >
-                                            We recommend <b>{{ $registrant->student->person->fullName }}</b> for participation in the {{ $eventversion->name }}.
-                                            <b>{{ $registrant->student->person->first_name }}</b> is a qualified candidate in good
-                                            standing in {{ $registrant->student->person->pronoun->possessive }} Choral Department and is presently
-                                            enrolled in grade {{ $registrant->student->gradeClassof }} at {{ $registrant->student->person->user->schools->first()->name }}.
-                                            We understand that <b>{{ $me->first_name }}</b>, who is sponsoring <b>{{ $registrant->student->person->fullName }}</b>,
-                                            is to be a current (paid) member of the National Association for Music Educators (NAfME), and is required to
-                                            participate as a JUDGE FOR VIRTUAL AUDITIONS, as described in the Directors's Packet, from October 14-16, 2021.
-
-                                            We will review this application to ensure that all parts are complete and accurate.  This application
-                                            will be mailed to the audition chairperson postmarked by the application deadline of <b>October 6th, 2021</b>.
-                                            LATE APPLICATIONS WILL NOT BE ACCEPTED.  If <b>{{ $registrant->student->person->fullName }}</b> is accepted,
-                                            we will ensure that <b>{{ $registrant->student->person->first_name }}</b> is prepared and adheres to
-                                            the rules and regulations set forth by the NJMEA.
-
-                                        </div>
-
-                                        <div>{{-- SIGNATURES --}}
-                                            <div class="flex justify-between font-bold mb-4" >
-                                                <div>
-                                                    HS PRINCIPAL SIGNATURE: ________________________
-                                                </div>
-                                                <div>
-                                                    DATE: _________
-                                                </div>
+                                            <div class="flex justify-between">
+                                                <div> STUDENT ENDORSEMENT - SIGNATURES REQUIRED</div>
+                                                <div>THE AUDITION FEE IS: ${{ number_format($eventversion->eventversionconfigs->registrationfee,2) }}</div>
                                             </div>
-                                            <div style="display: flex; justify-content: space-between; font-weight: bold;  ">
-                                                <div>
-                                                    HS MUSIC TEACHER SIGNATURE: __________________
-                                                </div>
-                                                <div>
-                                                    DATE: _________
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    {{-- STUDENT ENDORSEMENT --}}
-                                    <div class="mb-4">
-                                        <div class="sectionheader">
-                                            STUDENT ENDORSEMENT - SIGNATURES REQUIRED
                                         </div>
                                         <div class="flex flex-col italic justify-self-stretch mx-4 mb-4">
                                             <b>In return for the privilege of participating in an NJMEA sponsored NJ All-State Ensemble, I agree to
@@ -176,8 +99,7 @@
                                                 <li>
                                                     I, <b>{{ $registrant->student->person->fullName }}</b>, agree to accept the decision of the
                                                     judges and conductors as binding.  If selected, I will accept membership in the {{ $eventversion->name }}
-                                                    for which I have auditioned.  I also agree to pay the participation fee - $80.00
-                                                    for Mixed Chorus and $100.00 for Treble Chorus - for the ensemble into which I am placed.  I understand that membership in this organization may be
+                                                    for which I have auditioned.  I also agree to pay the $25.00 participation fee.  I understand that membership in this organization may be
                                                     terminated by the endorsers of my application if I fail to comply with the rules set forth or if
                                                     I fail to learn my music.
                                                 </li>
@@ -185,9 +107,7 @@
                                                     I understand that NJ All-State Mixed Chorus members are expected to attend all rehearsals from
                                                     June through November.  All-State Treble Chorus rehearsals continue until February.  One
                                                     absence will result in testing at the following rehearsal.  An absence is defined as missing any
-                                                    scheduled rehearsal or any part thereof.  I further understand that all activities involving
-                                                    performance weekends, Atlantic City, the NJPAC Concert and the February NJMEA Conferences,
-                                                    including registration sign-in and all rehearsals, must be attended in their entirety.  I understand
+                                                    scheduled rehearsal or any part thereof.  I further understand that all activities must be attended in their entirety.  I understand
                                                     that it is not possible for me to be a member of the NJ All-State Chorus and participate in fall
                                                     activities including Conference/NJSIAA tournament games that may take place before/during the
                                                     completion of my NJ All-State obligations.  Failure to fulfill my NJ All-State obligations will
@@ -256,6 +176,83 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    {{-- GUARDIAN ENDORSEMENT --}}
+                                    <div class="mb-4">
+                                        <div class="sectionheader" >
+                                            PARENT/LEGAL GUARDIAN ENDORSEMENT - SIGNATURES REQUIRED
+                                        </div>
+                                        <div class="italic justify-self-stretch mx-4 mb-4">
+                                            As the parent or legal guardian of <b>{{ $registrant->student->person->fullName }}</b>, I declare that I have
+                                            read the endorsement, which {{ $registrant->student->person->first_name }} has signed, and I give permission
+                                            for {{ $registrant->student->person->pronoun->object }} to audition to become a member of the
+                                            {{ $eventversion->name }}.  I promise to assist {{ $registrant->student->person->first_name }} in
+                                            fulfilling All-State obligations and in meeting any expenses necessary for rehearsals and concerts.  I
+                                            understand it is the policy of NJMEA  that if an All-State student is incapacitated in any way that
+                                            requires additional assistance, it will be the responsibility of the All-State student's parent/guardian/school
+                                            to provide the necessary help at all rehearsals, meals, concerts, etc.  The provided chaperone will be
+                                            housed with the student and will be charged the regular student housing fee.
+                                        </div>
+
+                                        <div>
+                                            <div class="flex justify-between font-bold" >
+                                                <div>
+                                                    PARENT/LEGAL GUARDIAN SIGNATURE: ________________________
+                                                </div>
+                                                <div>
+                                                    DATE: _________
+                                                </div>
+                                            </div>
+                                            <div class="font-bold">
+                                                PARENT/LEGAL GUARDIAN CELL: {{ $registrant->student->guardians->first() ? $registrant->student->guardians->first()->person->phoneMobile() : ''}}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <x-covid.njmeaadvisory orgname="NJMEA and the NJ All-State Chorus organization"/>
+
+                                    {{-- PRINCIPAL/TEACHER ENDORSEMENT --}}
+                                    <div class="mb-4">
+                                        <div class="sectionheader">
+                                            PRINCIPAL/TEACHER ENDORSEMENT - SIGNATURES REQUIRED
+                                        </div>
+                                        <div class="italic justify-self-stretch mx-4 mb-4" >
+                                            We recommend <b>{{ $registrant->student->person->fullName }}</b> for participation in the {{ $eventversion->name }}.
+                                            <b>{{ $registrant->student->person->first }}</b> is a qualified candidate in good
+                                            standing in {{ $registrant->student->person->pronoun->possessive }} Choral Department and is presently
+                                            enrolled in grade {{ $registrant->student->gradeClassof }} at {{ $registrant->student->person->user->schools->first()->name }}.
+                                            We understand that <b>{{ $me->fullname }}</b>, who is sponsoring <b>{{ $registrant->student->person->fullName }}</b>,
+                                            is a current (paid) member of the National Association for Music Educators (NAfME), and is required to
+                                            participate as a JUDGE FOR ONLINE AUDITIONS, as described in the Directors's Packet, from April 28-30, 2022.
+
+                                            We will review this application to ensure that all parts are complete and accurate.  This application
+                                            will be mailed to the Registration Manager postmarked by the application deadline of <b>April 1st, 2022</b>.
+                                            LATE APPLICATIONS WILL NOT BE ACCEPTED.  If <b>{{ $registrant->student->person->fullName }}</b> is accepted,
+                                            we will ensure that <b>{{ $registrant->student->person->first }}</b> is prepared and adheres to
+                                            the rules and regulations set forth by the NJMEA.
+
+                                        </div>
+
+                                        <div>{{-- SIGNATURES --}}
+                                            <div class="flex justify-between font-bold mb-4" >
+                                                <div>
+                                                    HS PRINCIPAL SIGNATURE: ________________________
+                                                </div>
+                                                <div>
+                                                    DATE: _________
+                                                </div>
+                                            </div>
+                                            <div style="display: flex; justify-content: space-between; font-weight: bold;  ">
+                                                <div>
+                                                    HS MUSIC TEACHER SIGNATURE: __________________
+                                                </div>
+                                                <div>
+                                                    DATE: _________
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
 
                                 </div>
