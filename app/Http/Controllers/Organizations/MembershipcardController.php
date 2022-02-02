@@ -7,17 +7,17 @@ use App\Models\Membership;
 use App\Models\Membershiptype;
 use App\Models\Organization;
 use App\Models\Userconfig;
+use App\Traits\MembershipcardUrlTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class MembershipcardController extends Controller
 {
+    use MembershipcardUrlTrait;
+
     public function create(Request $request)
     {
         $data = $this->validateRequest($request);
-
-        //store membership card
-        //$path = $request->file('membershipcard')->store('membershipcards');
 
         Membership::create([
             'user_id' => auth()->id(),
@@ -28,6 +28,7 @@ class MembershipcardController extends Controller
             'grade_levels' => $data['grade_levels'],
             'subjects' => $data['subjects'],
             'membership_card_path' => '',//$path,
+            'membership_card_url' => '',
         ]);
 
         return back();
@@ -38,18 +39,19 @@ class MembershipcardController extends Controller
     {
         Userconfig::setValue('organization', auth()->id(), $organization->id);
 
+        $membership_card_url = '';
+
         $membership = Membership::where('user_id', auth()->id())
             ->where('organization_id', $organization->id)
             ->first() ?? new Membership;
 
-        if($membership->membership_card_path) {
+        $membership_card_url = $this->membershipcardurl($membership);
 
-            $membershipcard = explode('/',$membership->membership_card_path);
-            $membership_card_url = Storage::disk('spaces')->url($membership->membership_card_path.'/'.$membershipcard[1]);
-        }else{
+        //if($membership->membership_card_path) {
 
-            $membership_card_url = '';
-        }
+        //    $membershipcard = explode('/',$membership->membership_card_path);
+        //    $membership_card_url = Storage::disk('spaces')->url($membership->membership_card_path.'/'.$membershipcard[1]);
+        //}
 
         return view('organizations.membershipcard.show',
         [

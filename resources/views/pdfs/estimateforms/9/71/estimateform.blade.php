@@ -181,8 +181,8 @@
 
             <tr>
                 <td colspan="2" style="text-align: center;">
-                    <img src="../public{{ $membership->membership_card_path }}"
-                         alt="membership card image" width="600px"
+                    <img src="{{ $membership_card_url }}"
+                         alt="membership card image" width="240px"
                     />
                 </td>
             </tr>
@@ -192,7 +192,7 @@
 
 </table>
 
-<table>
+<table id="spacer-table">
     <tr>
         <td style="font-size:2rem; color: transparent;">DELIBERATELY BLANK</td>
     </tr>
@@ -206,8 +206,6 @@
         </td>
     </tr>
 </table>
-
-<div class="page_break"></div>
 
 {{-- COVID ADVISORY --}}
 

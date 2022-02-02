@@ -148,7 +148,7 @@
                             <section class="w-2/12" id="card">
                                 <h4 class="font-bold">Card Image</h4>
 
-                                @if(strlen($membership->membership_card_path))
+                                @if(strlen($membership_card_url))
 
                                     <img src="{{ $membership_card_url }}"
                                          alt="membership card"

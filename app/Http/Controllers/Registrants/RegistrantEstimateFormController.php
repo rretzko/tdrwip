@@ -15,12 +15,15 @@ use App\Models\Userconfig;
 use App\Models\Utility\Paypalregister;
 use App\Models\Utility\Registrants;
 use App\Models\Utility\RegistrantsByInstrumentation;
+use App\Traits\MembershipcardUrlTrait;
 use Barryvdh\DomPDF\Facade AS PDF;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class RegistrantEstimateFormController extends Controller
 {
+    use MembershipcardUrlTrait;
+
     /**
      * PDF download of application
      *
@@ -79,6 +82,8 @@ class RegistrantEstimateFormController extends Controller
             ->where('organization_id', Userconfig::getValue('organization', auth()->id()))
             ->first();
 
+        $membership_card_url = $this->membershipcardurl($membership);
+
         //ex. pages.pdfs.applications.12.64.application
         $pdf = PDF::loadView('pdfs.estimateforms.'//9.65.2021_22_application',
             . $eventversion->event->id
@@ -87,7 +92,7 @@ class RegistrantEstimateFormController extends Controller
             . '.estimateform',
             compact('eventversion', 'teacher', 'school', 'me', 'registrants',
                 'registrantsbyinstrumentation', 'sendto','paypalcollected', 'amountduenet',
-                'maxcount', 'maxcounterror','maxuppervoiceerror','membership')
+                'maxcount', 'maxcounterror','maxuppervoiceerror','membership','membership_card_url')
         )->setPaper('letter', $landscapeportrait);
 
         //log application printing
@@ -143,6 +148,8 @@ class RegistrantEstimateFormController extends Controller
             ->where('organization_id', Userconfig::getValue('organization', auth()->id()))
             ->first() ?? false;
 
+        $membership_card_url = $this->membershipcardurl($membership);
+
         return view('registrants.estimateforms.'.$eventversion->event->id.'.'.$eventversion->id.'.show',
             [
                 'amountduenet' => $amountduenet,
@@ -158,6 +165,7 @@ class RegistrantEstimateFormController extends Controller
                 'maxuppervoiceerror' => $maxuppervoiceerror,
                 'maxcount' => $eventversion->eventversionconfigs->max_count ?: array_sum($registrantsbyinstrumentationarray),
                 'membership' => $membership,
+                'membership_card_url' => $membership_card_url,
             ]);
     }
 

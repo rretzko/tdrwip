@@ -201,8 +201,8 @@
                                                 <div class="font-bold ml-1">{{ $membership->expirationMdy() }}</div>
                                             </div>
                                         </div>
-                                        <div id="card_image mt-4">
-                                            <img src="{{ $membership->membership_card_path }}" />
+                                        <div id="mt-4">
+                                            <img src="{{ $membership_card_url }}" width="200" />
                                         </div>
                                     </div>
                                 @else
