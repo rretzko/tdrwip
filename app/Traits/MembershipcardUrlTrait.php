@@ -18,7 +18,9 @@ trait MembershipcardUrlTrait
 
             $membershipcard = explode('/',$membership->membership_card_path);
 
-            return Storage::disk('spaces')->url($membership->membership_card_path.'/'.$membershipcard[1]);
+            return array_key_exists('1',$membershipcard)
+                ? Storage::disk('spaces')->url($membership->membership_card_path.'/'.$membershipcard[1])
+                : '';
         }
 
         return '';
