@@ -100,7 +100,8 @@ class Eventversion extends Model
 
     public function pitchfiles()
     {
-        return $this->hasMany(Pitchfile::class);
+        return $this->hasMany(Pitchfile::class)
+            ->orderBy('order_by');
     }
 
     public function scoringcomponents()
