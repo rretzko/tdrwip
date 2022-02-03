@@ -45,11 +45,11 @@
             <div style="font-weight: bold; text-align: center">{{ $registrant->student->person->user->schools->first()->name }}</div>
             <div style="text-align: center">NJ ALL-STATE CHORUS</div>
             <div style="text-align: center; font-size: 1rem;">
-                Student Application - Page 2/2
+                Student Application - Page 1/2
             </div>
         </td>
         <td style="width: 10%; ">
-            <div style="border: 1px solid black; color: lightgray; text-align: center; padding: 1rem;">
+            <div style="border: 1px solid transparent; color: white; text-align: center; padding: 1rem;">
                 ADMIN<br/>USE<br/>ONLY
             </div>
         </td>
@@ -87,7 +87,7 @@
 </style>
 <table>
     <tr class="sectionHeader">
-        <th style="width: 50%;"> STUDENT ENDORSEMENT - SIGNATURES REQUIRED</th>
+        <th style="width: 50%;"> STUDENT ENDORSEMENT - SIGNATURE REQUIRED</th>
         <th style="text-align: right; ">
             THE AUDITION FEE IS: ${{ number_format($eventversion->eventversionconfigs->registrationfee,2) }}
         </th>
@@ -99,14 +99,14 @@
             <ul>
                 <li>
                     I, <b>{{ $registrant->student->person->fullName }}</b>, agree to accept the decision of the
-                    judges and conductors as binding. If selected, I will accept membership in the 2022-2023 NJ
+                    judges as binding. If selected, I will accept membership in the 2022-2023 NJ
                     All-State Chorus for which I have auditioned. I also agree to pay the $25.00 participation fee.
                     I understand that membership in this organization may be terminated by the endorsers of my application
                     if I fail to comply with the rules set forth or if I fail to learn my music.
                 </li>
                 <li>
                     I understand that NJ All-State Mixed Chorus members are expected to attend all rehearsals
-                    from June through November. All-State Treble Chorus rehearsals continue until February. One
+                    from June through November. NJ All-State Treble Chorus rehearsals continue until February. One
                     absence will result in testing at the following rehearsal. An absence is defined as missing any
                     scheduled rehearsal or any part thereof. I further understand that all activities must be attended
                     in their entirety. I understand that it is not possible for me to be a member of the NJ All-State
@@ -171,7 +171,7 @@
             STUDENT SIGNATURE: ________________________________
         </td>
         <td style="width: 20%;" >
-            DATE: _________
+            DATE: _______________
         </td>
     </tr>
     <tr class="sectionSignaturesSubscript">
@@ -196,13 +196,11 @@
             <div style="font-weight: bold; text-align: center">{{ $registrant->student->person->user->schools->first()->name }}</div>
             <div style="text-align: center">NJ ALL-STATE CHORUS</div>
             <div style="text-align: center; font-size: 1rem;">
-                Student Application - Page 1/2
+                Student Application - Page 2/2
             </div>
         </td>
-        <td style="width: 10%; ">
-            <div style="border: 1px solid black; color: lightgray; text-align: center; padding: 1rem;">
-                ADMIN<br/>USE<br/>ONLY
-            </div>
+        <td style="width: 10%;">
+
         </td>
     </tr>
 </table>
@@ -255,12 +253,12 @@
             PARENT/LEGAL GUARDIAN SIGNATURE: __________________________
         </td>
         <td style="width: 20%;" >
-            DATE: _________
+            DATE: _____________________
         </td>
     </tr>
     <tr class="sectionSignaturesSubscript">
-        <td colspan="2" style="font-size: .8rem; padding-left: 7rem;">
-            PARENT/LEGAL GUARDIAN CELL: {{ $registrant->student->guardians->count() ? $registrant->student->guardians->first()->person->phoneMobile() : '' }}
+        <td colspan="2" style="font-size: .8rem;">
+            PARENT/LEGAL GUARDIAN CELL: {{ $registrant->student->guardians->count() ? $registrant->student->guardians->first()->person->phoneMobile() : 'No number found' }}
         </td>
     </tr>
 </table>
@@ -296,18 +294,18 @@
     </tr>
     <tr class="sectionSignatures" style="font-size: 0.66rem;">
         <td >
-            HS PRINCIPAL SIGNATURE: _____________________________
+            HS PRINCIPAL SIGNATURE: ____________________________________________________
         </td>
         <td style="width: 20%;" >
-            DATE: _________
+            DATE: _________________
         </td>
     </tr>
     <tr class="sectionSignatures" style="font-size: 0.66rem;">
         <td >
-            HS MUSIC TEACHER SIGNATURE: _______________________
+            HS MUSIC TEACHER SIGNATURE: ______________________________________________
         </td>
         <td style="width: 20%;" >
-            DATE: _________
+            DATE: _________________
         </td>
     </tr>
     <tr class="sectionSignaturesSubscript">

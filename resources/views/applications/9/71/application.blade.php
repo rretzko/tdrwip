@@ -87,7 +87,7 @@
                                     <div class="mb-4">
                                         <div class="sectionheader">
                                             <div class="flex justify-between">
-                                                <div> STUDENT ENDORSEMENT - SIGNATURES REQUIRED</div>
+                                                <div> STUDENT ENDORSEMENT - SIGNATURE REQUIRED</div>
                                                 <div>THE AUDITION FEE IS: ${{ number_format($eventversion->eventversionconfigs->registrationfee,2) }}</div>
                                             </div>
                                         </div>
@@ -98,14 +98,14 @@
                                                 <style>li{margin-bottom: .5rem;}</style>
                                                 <li>
                                                     I, <b>{{ $registrant->student->person->fullName }}</b>, agree to accept the decision of the
-                                                    judges and conductors as binding.  If selected, I will accept membership in the {{ $eventversion->name }}
+                                                    judges as binding.  If selected, I will accept membership in the {{ $eventversion->name }}
                                                     for which I have auditioned.  I also agree to pay the $25.00 participation fee.  I understand that membership in this organization may be
                                                     terminated by the endorsers of my application if I fail to comply with the rules set forth or if
                                                     I fail to learn my music.
                                                 </li>
                                                 <li>
                                                     I understand that NJ All-State Mixed Chorus members are expected to attend all rehearsals from
-                                                    June through November.  All-State Treble Chorus rehearsals continue until February.  One
+                                                    June through November.  NJ All-State Treble Chorus rehearsals continue until February.  One
                                                     absence will result in testing at the following rehearsal.  An absence is defined as missing any
                                                     scheduled rehearsal or any part thereof.  I further understand that all activities must be attended in their entirety.  I understand
                                                     that it is not possible for me to be a member of the NJ All-State Chorus and participate in fall
@@ -205,7 +205,7 @@
                                                 </div>
                                             </div>
                                             <div class="font-bold">
-                                                PARENT/LEGAL GUARDIAN CELL: {{ $registrant->student->guardians->first() ? $registrant->student->guardians->first()->person->phoneMobile() : ''}}
+                                                PARENT/LEGAL GUARDIAN CELL: {{ $registrant->student->guardians->first() ? $registrant->student->guardians->first()->person->phoneMobile() : 'No number found'}}
                                             </div>
                                         </div>
                                     </div>
