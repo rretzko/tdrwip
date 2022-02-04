@@ -114,7 +114,7 @@ class Eventversion extends Model
         }
 
         //test for prohibited student condition
-        if(\App\Models\ProhibitedStudent::where('eventversion_id', $this->id)
+        if(\App\Models\Prohibitedstudent::where('eventversion_id', $this->id)
             ->where('user_id', $user->id)
             ->exists()){
 
