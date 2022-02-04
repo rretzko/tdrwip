@@ -44,7 +44,9 @@
                             @if($eventversion->id === 70)
                                 <x-obligations.1.70.obligations />
                             @endif
-
+                            @if($eventversion->id === 71)
+                                <x-obligations.9.71.obligations :eventversion=$eventversion />
+                            @endif
 
                             <!-- {{--
                             <ul>
