@@ -99,7 +99,7 @@
             <ul>
                 <li>
                     I, <b>{{ $registrant->student->person->fullName }}</b>, agree to accept the decision of the
-                    judges as binding. If selected, I will accept membership in the {{ $event->name }} for which I have
+                    judges as binding. If selected, I will accept membership in the {{ $eventversion->name }} for which I have
                     auditioned. I also agree to pay the $25.00 participation fee. I understand that membership in this
                     organization may be terminated by the endorsers of my application if I fail to comply with the rules
                     set forth or if I fail to learn my music.

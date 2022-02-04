@@ -142,7 +142,9 @@ class Profilecomponent extends Component
     }
 
     private function addNewStudent()
-    {
+    {//autoregister student for events
+        $this->eventRegistration(new User);
+
         //add user
         $user = User::create([
             'username' => $this->username($this->first,$this->last),
@@ -175,6 +177,9 @@ class Profilecomponent extends Component
 
         //sync student to teacher
         $user->schools()->sync(Userconfig::getValue('school', auth()->id()));
+
+        //autoregister student for events
+        $this->eventRegistration($user);
     }
 
     private function calcClassof()
@@ -184,5 +189,26 @@ class Profilecomponent extends Component
             return $this->student->classof;
         }
         return date('Y');
+    }
+
+    private function eventRegistration(User $user)
+    {
+        $teacher = Teacher::where('user_id', auth()->id())->first();
+
+        //identify open eventversions for which user is a member
+        $eventversions = $teacher->openEventversions;
+        
+        foreach($eventversions AS $eventversion){
+            
+            if($eventversion->isQualifiedStudent($user) &&
+                (! Registrant::where('user_id', $user->id) 
+                    ->where('eventversion_id', $eventversion->id)
+                    ->exists())){
+                
+                dd('create a new registrant');
+            }    
+            )   
+        }
+        dd($eventversions);
     }
 }
