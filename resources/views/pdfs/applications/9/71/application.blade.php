@@ -99,10 +99,10 @@
             <ul>
                 <li>
                     I, <b>{{ $registrant->student->person->fullName }}</b>, agree to accept the decision of the
-                    judges as binding. If selected, I will accept membership in the 2022-2023 NJ
-                    All-State Chorus for which I have auditioned. I also agree to pay the $25.00 participation fee.
-                    I understand that membership in this organization may be terminated by the endorsers of my application
-                    if I fail to comply with the rules set forth or if I fail to learn my music.
+                    judges as binding. If selected, I will accept membership in the {{ $event->name }} for which I have
+                    auditioned. I also agree to pay the $25.00 participation fee. I understand that membership in this
+                    organization may be terminated by the endorsers of my application if I fail to comply with the rules
+                    set forth or if I fail to learn my music.
                 </li>
                 <li>
                     I understand that NJ All-State Mixed Chorus members are expected to attend all rehearsals
