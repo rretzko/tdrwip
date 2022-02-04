@@ -25,6 +25,25 @@ class Teacher extends Model
                 ->get() ?: 0;
     }
 
+    public function getOpenEventversionsAttribute()
+    {
+        $eventversionids = Eventversiondate::where('datetype_id', Datetype::MEMBERSHIP_CLOSE)
+            ->where('dt','>=',Carbon::now())
+            ->pluck('eventversion_id');
+
+        $potentials = Eventversion::find($eventversionids);
+
+        $eventversions = $potentials->filter(function($eventversion) {
+
+            $organization = Organization::find($eventversion->event->organization_id);
+
+            return $organization->isMember(auth()->id());
+        });
+
+        return $eventversions;
+
+    }
+
     public function hasGradetype(School $school, $gradetype_id) : bool
     {
         return DB::table('gradetype_school_user')

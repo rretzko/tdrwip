@@ -98,6 +98,7 @@ class DatabaseSeeder extends Seeder
          $this->call(FileuploadfolderSeeder::class);
          $this->call(PitchfilesSeeder::class);
          $this->call(AfdcSeeder::class);
+         $this->call(ProhibitionSeeder::class);
 
     }
 }

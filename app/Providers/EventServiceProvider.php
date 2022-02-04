@@ -4,10 +4,12 @@ namespace App\Providers;
 
 use App\Events\FileuploadRejectionEvent;
 use App\Events\MembershipRequestEvent;
+use App\Events\NewStudentNonRegistrantEvent;
 use App\Events\UpdateScoreSummaryEvent;
 use App\Events\SubscriberPasswordResetEvent;
 use App\Events\UpdateRegistrantStatusEvent;
 use App\Listeners\FileuploadRejectionStudentEmailListener;
+use App\Listeners\NewNonStudentNonRegistrantListener;
 use App\Listeners\SendMembershipRequestEmailListener;
 use App\Listeners\SubscriberResetPasswordEmailListener;
 use App\Listeners\UpdateRegistrantStatusListener;
@@ -33,6 +35,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         FileuploadRejectionEvent::class => [
             FileuploadRejectionStudentEmailListener::class,
+        ],
+        NewStudentNonRegistrantEvent::class => [
+            NewNonStudentNonRegistrantListener::class,  
         ],
         UpdateRegistrantStatusEvent::class => [
             UpdateRegistrantStatusListener::class,

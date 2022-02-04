@@ -142,9 +142,7 @@ class Profilecomponent extends Component
     }
 
     private function addNewStudent()
-    {//autoregister student for events
-        $this->eventRegistration(new User);
-
+    {
         //add user
         $user = User::create([
             'username' => $this->username($this->first,$this->last),
@@ -179,7 +177,7 @@ class Profilecomponent extends Component
         $user->schools()->sync(Userconfig::getValue('school', auth()->id()));
 
         //autoregister student for events
-       // $this->eventRegistration($user);
+        $this->eventRegistration($user);
     }
 
     private function calcClassof()
@@ -196,18 +194,35 @@ class Profilecomponent extends Component
         $teacher = Teacher::where('user_id', auth()->id())->first();
 
         //identify open eventversions for which user is a member
-        $eventversions = $teacher->openEventversions;
+        foreach($teacher->openEventversions AS $eventversion){
 
-        foreach($eventversions AS $eventversion){
+            $reasons = $eventversion->isQualifiedStudent($user);
 
-            if($eventversion->isQualifiedStudent($user) &&
-                (! Registrant::where('user_id', $user->id)
+            if( empty($reasons) &&
+                (! \App\Models\Registrant::where('user_id', $user->id)
                     ->where('eventversion_id', $eventversion->id)
                     ->exists())){
 
-                dd('create a new registrant');
+                $registrant = new \App\Models\Registrant;
+                $registrant->user_id = $user->id;
+                $registrant->eventversion_id = Userconfig::getValue('eventversion', auth()->id());
+                $registrant->school_id = Userconfig::getValue('school', auth()->id());
+                $registrant->teacher_user_id = auth()->id();
+                $registrant->programname = $user->person->fullname;
+                $registrant->registranttype_id = \App\Models\Registranttype::ELIGIBLE;
+                $registrant->save();
+
+            }else{
+
+                $mssg = 'Registrant ('.$user->person->fullname.' ('.$user->id.') for: '.$eventversion->name
+                    .' ('.$eventversion->id.') not created as: '
+                    .implode(', ',$reasons);
+
+                event(new \App\Events\NewStudentNonRegistrantEmailEvent($user, $eventversion, $reasons));
+
+                //mail('rick@mfrholdings.com', 'Registrant non-creation', $mssg);
+                info('***** '.$mssg);
             }
         }
-        dd($eventversions);
     }
 }

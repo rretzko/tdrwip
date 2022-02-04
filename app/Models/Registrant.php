@@ -12,7 +12,8 @@ class Registrant extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['eventversion_id', 'id', 'programname', 'registranttype_id', 'school_id', 'user_id'];
+    protected $fillable = ['eventversion_id', 'id', 'programname', 'registranttype_id', 'school_id', 'teacher_user_id',
+        'user_id'];
 
     protected $with = ['student','instrumentations'];
 

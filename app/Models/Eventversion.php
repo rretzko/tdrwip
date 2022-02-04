@@ -90,6 +90,49 @@ class Eventversion extends Model
         return Carbon::now() < $this->eventversiondates()->where('datetype_id', 4)->first()->dt ;
     }
 
+    public function isQualifiedStudent(User $user) : array
+    {
+        $reasons = [];
+        $student = NULL;
+
+        //test for student status
+        if (! \App\Models\Student::where('user_id', $user->id)->exists()) {
+            $reasons[] = 'User is not a student';
+
+        }else{
+
+            $student = Student::where('user_id', $user->id)->first();
+        }
+
+        //test for director obligation acknowledgment
+        if (! \App\Models\Obligation::where('user_id', auth()->id())
+            ->where('eventversion_id', $this->id)
+            ->where('acknowledgment', 1)
+            ->exists()){
+
+            $reasons[] = 'Director obligations are not met';
+        }
+
+        //test for prohibited student condition
+        if(\App\Models\ProhibitedStudent::where('eventversion_id', $this->id)
+            ->where('user_id', $user->id)
+            ->exists()){
+
+            $reasons[] = 'Student is prohibited';
+        }
+
+        //test for grade eligibility condition
+        $grades = explode(',', $this->grades);
+        if($student &&
+            (! in_array($student->grade, $grades))){
+
+            $reasons[] = 'Student is not grade eligible';
+        }
+
+        return $reasons;
+
+    }
+
     public function obligationMet($user_id)
     {
         return (bool)Obligation::where('user_id',$user_id)
