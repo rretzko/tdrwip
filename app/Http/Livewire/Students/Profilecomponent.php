@@ -179,7 +179,7 @@ class Profilecomponent extends Component
         $user->schools()->sync(Userconfig::getValue('school', auth()->id()));
 
         //autoregister student for events
-        $this->eventRegistration($user);
+       // $this->eventRegistration($user);
     }
 
     private function calcClassof()
@@ -197,17 +197,16 @@ class Profilecomponent extends Component
 
         //identify open eventversions for which user is a member
         $eventversions = $teacher->openEventversions;
-        
+
         foreach($eventversions AS $eventversion){
-            
+
             if($eventversion->isQualifiedStudent($user) &&
-                (! Registrant::where('user_id', $user->id) 
+                (! Registrant::where('user_id', $user->id)
                     ->where('eventversion_id', $eventversion->id)
                     ->exists())){
-                
+
                 dd('create a new registrant');
-            }    
-            )   
+            }
         }
         dd($eventversions);
     }
