@@ -2,6 +2,7 @@
     @if($student && $student->user_id) Profile for: {{ $student->person->fullName }} @else New Student Profile @endif
 
     <form wire:submit.prevent="save">
+       
         <x-inputs.group label="Name" for="first" class="flex">
             <x-inputs.text label="" for="first" placeholder="First name..."/>
             <x-inputs.text label="" for="middle" placeholder=""/>
@@ -38,7 +39,7 @@
 
         <footer class="mt-4 bg-gray-200 flex justify-end space-x-2 p-2">
             <x-saves.save-message-without-button message="Profile updated" trigger="profile-saved"/>
-            <x-buttons.button wire:click="save" type="submit">Update
+            <x-buttons.button type="submit">Update
                 @if($student && $student->user_id)
                     {{ ucwords($student->person->fullname) }}
                 @else

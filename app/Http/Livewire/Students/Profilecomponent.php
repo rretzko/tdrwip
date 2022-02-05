@@ -16,6 +16,7 @@ use App\Models\Userconfig;
 use App\Traits\SenioryearTrait;
 use App\Traits\UsernameTrait;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Profilecomponent extends Component
@@ -57,6 +58,7 @@ class Profilecomponent extends Component
     public function save()
     {
         if(is_null($this->student)){
+
             $this->addNewStudent();
 
         }else {
@@ -141,7 +143,7 @@ class Profilecomponent extends Component
         return $a;
     }
 
-    private function addNewStudent()
+    public function addNewStudent()
     {
         //add user
         $user = User::create([
@@ -149,9 +151,10 @@ class Profilecomponent extends Component
             'password' => bcrypt('Password1!'),
         ]);
 
+        $user->fresh();
 
         //add person
-        Person::create([
+        $person = Person::create([
             'user_id' => $user->id,
             'first' => $this->first,
             'middle' => $this->middle,
@@ -160,7 +163,7 @@ class Profilecomponent extends Component
         ]);
 
         //add student
-        $student = Student::create([
+        $this->student = Student::create([
             'user_id' => $user->id,
             'classof' => $this->classof,
             'height' => $this->height,
@@ -168,16 +171,27 @@ class Profilecomponent extends Component
             'shirtsize_id' => $this->shirtsize_id,
         ]);
 
-        $student=Student::find($user->id);
+        //sync student to school
+        DB::table('student_teacher')->insert(
+            [
+                'student_user_id' => $user->id,
+                'teacher_user_id' => auth()->id(),
+                'studenttype_id' => Studenttype::TEACHER_ADDED,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]
+        );
+        //$teacher = Teacher::where('user_id', auth()->id())->first();
+        //$teacher->students()->sync([$user->id => ['studenttype_id' => Studenttype::TEACHER_ADDED]]);
+        //$this->student->teachers()->sync([auth()->id() =>['studenttype_id' => Studenttype::TEACHER_ADDED]]);
 
         //sync student to school
-        $student->teachers()->sync([auth()->id() =>['studenttype_id' => Studenttype::TEACHER_ADDED]]);
-
-        //sync student to teacher
         $user->schools()->sync(Userconfig::getValue('school', auth()->id()));
 
         //autoregister student for events
         $this->eventRegistration($user);
+
+        $this->emit('profile-saved');
     }
 
     private function calcClassof()
