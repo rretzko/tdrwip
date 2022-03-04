@@ -10,7 +10,12 @@
         <subheader>2021-22 NJ All-State Chorus</subheader>
         <ul class="ml-8 list-disc">
             <li>
+                <!--
                 <a class="text-blue-700" href="/assets/docs/20210611_Final_PitchFiles_Conductors.pdf" target="_BLANK">
+                    Pitch Files
+                </a>
+                -->
+                <a class="text-blue-700" href="/assets/docs/pdfs/pitchFileNavigation.pdf" target="_BLANK">
                     Pitch Files
                 </a>
             </li>
