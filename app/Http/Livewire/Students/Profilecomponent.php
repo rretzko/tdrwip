@@ -218,6 +218,7 @@ class Profilecomponent extends Component
                     ->exists())){
 
                 $registrant = new \App\Models\Registrant;
+                $registrant->id = $registrant->createId($eventversion->id);
                 $registrant->user_id = $user->id;
                 $registrant->eventversion_id = Userconfig::getValue('eventversion', auth()->id());
                 $registrant->school_id = Userconfig::getValue('school', auth()->id());
