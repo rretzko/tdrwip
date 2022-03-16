@@ -38,7 +38,14 @@
             <div class="flex justify-end pr-6 space-x-2">
                 <x-inputs.dropdowns.perpage />
                 <x-inputs.dropdowns.bulkactions :selected="$selected" />
-                <x-buttons.button-add toggle="showstudentmodal" />
+                <!-- <x-buttons.button-add toggle="showstudentmodal" /> -->
+                <div
+                    wire:click="buttonAdd()"
+                    class="bg-green-200 px-0.5 shadow-lg border border-green-600 rounded-md text-center cursor-pointer"
+                    style="max-width: 4rem;"
+                >
+                    Add
+                </div>
             </div>
 
             {{-- School Selector --}}
@@ -242,6 +249,7 @@
             {{-- ADD/EDIT STUDENT --}}
             <div>
                 @if($showstudentmodal)
+
                     <x-modals.student :student="$editstudent" tab="{{ $tab }}" />
                 @endif
             </div>

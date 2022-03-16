@@ -70,6 +70,12 @@ class Studentscomponent extends Component
             ]);
     }
 
+    public function buttonAdd()
+    {
+        $this->showstudentmodal = true;
+        $this->reset('editstudent');
+    }
+
     public function changeSchool($value)
     {
         Userconfig::setValue('school', auth()->id(), $value);

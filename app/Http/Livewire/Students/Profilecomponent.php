@@ -13,6 +13,7 @@ use App\Models\Teacher;
 use App\Models\Tenure;
 use App\Models\User;
 use App\Models\Userconfig;
+use App\Traits\FormatPhoneTrait;
 use App\Traits\SenioryearTrait;
 use App\Traits\UsernameTrait;
 use Carbon\Carbon;
@@ -21,17 +22,23 @@ use Livewire\Component;
 
 class Profilecomponent extends Component
 {
-    use SenioryearTrait,UsernameTrait;
+    use SenioryearTrait,UsernameTrait,FormatPhoneTrait;
 
     public $birthday = '';
     public $classof = 0;
     public $classofs = [];
+    public $email='';
     public $first = '';
     public $height = 30;
     public $heights = [];
     public $heightininches = '3\' 0"';
     public $last = '';
     public $middle = '';
+    public $parentfirst='';
+    public $parentlast='';
+    public $parentemail='';
+    public $parentcell='';
+    public $fparentcell='';
     public $pronoun_id = 1;
     public $pronouns = [];
     public $shirtsize_id = 1;
@@ -163,13 +170,15 @@ class Profilecomponent extends Component
         ]);
 
         //add student
-        $this->student = Student::create([
+        Student::create([
             'user_id' => $user->id,
             'classof' => $this->classof,
             'height' => $this->height,
             'birthday' => $this->birthday,
             'shirtsize_id' => $this->shirtsize_id,
         ]);
+
+        $this->student = Student::find($user->id);
 
         //sync student to school
         DB::table('student_teacher')->insert(
@@ -191,7 +200,67 @@ class Profilecomponent extends Component
         //autoregister student for events
         $this->eventRegistration($user);
 
+        //Student Email
+        \App\Models\Nonsubscriberemail::create(
+            [
+                'user_id' => $user->id,
+                'emailtype_id' => 4, //email_student_school
+                'email' => $this->email,
+            ]
+        );
+
+        //Guardian
+        //add guardian-user
+        $guardianuser = User::create([
+            'username' => $this->username($this->first,$this->last),
+            'password' => bcrypt('Password1!'),
+        ]);
+
+        $guardianuser->fresh();
+
+        //add guardian-person
+        \App\Models\Person::create(
+            [
+                'user_id' => $guardianuser->id,
+                'first' => $this->parentfirst,
+                'last' => $this->parentlast,
+                'pronoun_id' => 1, //she/her/etc.
+                'honorific_id' => 1, //Ms.
+            ]
+        );
+
+        //add guardian-email
+        \App\Models\Nonsubscriberemail::create(
+            [
+                'user_id' => $guardianuser->id,
+                'emailtype_id' => 7, //email_guardian_primary
+                'email' => $this->parentemail,
+            ]
+        );
+
+        //add guardian-cell
+        \App\Models\Phone::create(
+            [
+                'user_id' => $guardianuser->id,
+                'phonetype_id' => 6, //phone_guardian_mobile
+                'phone' => $this->formatPhone($this->parentcell),
+            ]
+        );
+
+        //Guardian
+        \App\Models\Guardian::create(['user_id' => $guardianuser->id]);
+        $guardian = \App\Models\Guardian::find($guardianuser->id);
+
+        $guardiansync[$guardian->user_id] = ['guardiantype_id' => 1];
+        //$this->student->guardians()->sync([$guardian => ['guardiantype_id' => 1]]);
+        $this->student->guardians()->sync($guardiansync);
+
         $this->emit('profile-saved');
+    }
+
+    public function updatedParentcell()
+    {
+        $this->fparentcell = $this->parentcell;
     }
 
     private function calcClassof()
