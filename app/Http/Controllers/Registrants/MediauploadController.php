@@ -101,6 +101,9 @@ class MediauploadController extends Controller
             }
 
             return back();
+        }else{
+
+            echo 'File type: "'.$filecontenttype->descr.'" not found.';
         }
 
         echo 'honk';
