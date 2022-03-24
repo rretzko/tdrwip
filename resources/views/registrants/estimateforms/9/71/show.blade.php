@@ -43,6 +43,9 @@
                                     Download Estimate Form
                                 </a>
                             </div>
+                            <div class="bg-blue-400 text-xs pt-3 border rounded-2xl text-white px-2">
+                                <a href="https://thedirectorsroom.com/assets/docs/pdfs/9/71/DirectorAgreementForAudioRecordingMP3Submissions_20220201.pdf">Download Directors Agreement</a>
+                            </div>
                         </div>
 
                         {{-- ESTIMATE FORM --}}
