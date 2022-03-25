@@ -531,7 +531,10 @@
                                                                         <div class="text-small text-muted">
                                                                             @if($eventversion->eventversionconfigs->audiofiles)
                                                                                 <span
-                                                                                    class="hint">ONLY .mp3 files accepted</span>
+                                                                                    class="hint">
+                                                                                    ONLY .mp3 files accepted<br />
+                                                                                    Maximum file size: {{ ini_get('upload_max_filesize') }}
+                                                                                </span>
                                                                             @elseif($eventversion->eventversionconfigs->videofiles)
                                                                                 <span class="hint">ONLY .mp4/.mov files accepted</span>
                                                                             @else
