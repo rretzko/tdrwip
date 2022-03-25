@@ -72,16 +72,26 @@
 
                              {{-- ESTIMATE FORM --}}
                              <div class="pt-3">
-                                 <a href="{{ route('registrant.estimateform',['eventversion' => $event]) }}"
-                                    class=" bg-yellow-200 text-blue-700 font-bold border border-blue-700 rounded px-2"
-                                    title="{{ $event->name }} estimate form"
-                                 >
-                                     @if($event->event->id === 19)
-                                         Invoice
-                                     @else
-                                        Estimate
-                                     @endif
-                                 </a>
+                                 @if($event->emergencyContactsMissing)
+                                    <div class="bg-yellow-200 text-blue-700 font-bold border border-blue-700 rounded px-2 text-center"
+                                        title="Estimate form is disabled until Emergency Contacts are complete">
+                                      Estimate
+                                    </div>
+                                @else
+                                     <a href="{{ route('registrant.estimateform',['eventversion' => $event]) }}"
+                                        class=" bg-yellow-200 text-blue-700 font-bold border border-blue-700 rounded px-2"
+                                        title="{{ $event->name }} estimate form"
+                                     >
+                                         @if($event->event->id === 19)
+                                             Invoice
+                                         @else
+                                            Estimate
+                                         @endif
+                                     </a>
+                                 @endif
+                                 <div style="color: red; font-size: .8rem;">
+                                     @if($event->emergencyContactsMissing) Emergency Contacts missing! @endif
+                                 </div>
                              </div>
 
                              {{-- PAYMENT FORM --}}

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\App;
 
 class Eventversion extends Model
 {
@@ -59,6 +60,24 @@ class Eventversion extends Model
             ->withPivot('title')
             ->orderByPivot('order_by')
             ->withTimestamps();
+    }
+
+    public function getEmergencyContactsMissingAttribute()
+    {
+        $registrants = Registrant::where('school_id', Userconfig::getValue('school', auth()->id()))
+            ->where('eventversion_id', $this->id)
+            ->where('registranttype_id', Registranttype::REGISTERED)
+            ->get();
+
+        foreach($registrants AS $registrant){
+
+            if(! $registrant->student->emergencyContactStatus){
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
