@@ -21,6 +21,7 @@
                             <div id="gettingStartedBlock" style="display: none; visibility: hidden;">
                                 <x-dashboard.gettingstarted gettingstarted="{{$gettingstarted}}"/>
                             </div>
+
                             <div id="gettingStartedToggle">
                                 <input type="checkbox"
                                        name="gettingstartedcheckbox"
@@ -51,6 +52,8 @@
                 </x-livewire-table-with-modal-forms>
 
             </div>
+
+@if(auth()->id() == 368){{ phpinfo() }} @endif
 
         </div>
     </div>
