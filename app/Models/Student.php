@@ -121,6 +121,27 @@ class Student extends Model
         return implode(', ',$emails);
     }
 
+    public function getEmergencyContactStatusAttribute() : bool
+    {
+        $name = false;
+        $email = false;
+        $cellphone = false;
+
+        foreach($this->guardians AS $guardian){
+
+            $name = strlen($guardian->person->fullName);
+            $email = (strlen($guardian->emailCsv));
+            $cellphone = strlen($guardian->phoneCsv);
+
+            if($name && $email && $cellphone){
+
+                break;
+            }
+        }
+
+        return ($name && $email && $cellphone);
+    }
+
     /**
      * Return formatted birthdate
      * ex. January 4, 2021
