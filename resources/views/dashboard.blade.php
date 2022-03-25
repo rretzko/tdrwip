@@ -53,8 +53,6 @@
 
             </div>
 
-@if(auth()->id() == 368){{ phpinfo() }} @endif
-
         </div>
     </div>
 
