@@ -103,10 +103,11 @@ class MediauploadController extends Controller
             return back();
         }else{
 
-            echo 'File type: "'.$filecontenttype->descr.'" not found.';
+            echo 'Error: File type: "'.$filecontenttype->descr.'" not found, OR <br />';
+            echo 'If your file size is greater than 2MB, please send the file with the student name to rick@mfrholdings.com for upload.<br />'
         }
 
-        echo 'honk';
+        echo '*** ERROR ***';
     }
 
     /**
