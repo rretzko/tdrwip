@@ -22,6 +22,11 @@ class School extends Model
             ->with('ensembletype', 'ensembletype.instrumentations');
     }
 
+    public function county()
+    {
+        return $this->belongsTo(County::class);
+    }
+
     public function getCurrentStudentsAttribute()
     {
         $students = collect();

@@ -17,6 +17,8 @@
 
 {{-- SEND TO INSTRUCTIONS --}}
 {{-- SEND TO --}}
+<div style="margin-bottom: 1rem;">The pages below should be sent to the <b>Registration Manager</b> assigned to your school's county: </div>
+<!-- {{--
 <table>
     <tr>
         <td>The pages below should be sent to: </td>
@@ -38,6 +40,62 @@
         </tr>
     @endif
 </table>
+--}} -->
+<style>
+    #tblCounties td,th{border: 1px solid black;text-align: center; vertical-align: top;padding:0 0.25rem;}
+</style>
+<table id="tblCounties" style="border-collapse: collapse; border: 1px solid black;">
+    <caption style="font-weight: bold;">Registration Managers By County</caption>
+    <tr>
+        <td style="@if( $school->county->name === 'Atlantic')background-color: yellow; @endif">Atlantic</td>
+        <td style="@if( $school->county->name === 'Camden')background-color: yellow; @endif">Camden</td>
+        <td style="@if( $school->county->name === 'Cape May')background-color: yellow; @endif">Cape May</td>
+        <td style="@if( $school->county->name === 'Bergen')background-color: yellow; @endif">Bergen</td>
+    </tr>
+    <tr>
+        <td style="@if( $school->county->name === 'Cumberland')background-color: yellow; @endif">Cumberland</td>
+        <td style="@if( $school->county->name === 'Mercer')background-color: yellow; @endif">Mercer</td>
+        <td style="@if( $school->county->name === 'Gloucester')background-color: yellow; @endif">Gloucester</td>
+        <td style="@if( $school->county->name === 'Burlington')background-color: yellow; @endif">Burlington</td>
+    </tr>
+    <tr>
+        <td style="@if( $school->county->name === 'Essex')background-color: yellow; @endif">Essex</td>
+        <td style="@if( $school->county->name === 'Middlesex')background-color: yellow; @endif">Middlesex</td>
+        <td style="@if( $school->county->name === 'Hunterdon')background-color: yellow; @endif">Hunterdon</td>
+        <td style="@if( $school->county->name === 'Ocean')background-color: yellow; @endif">Ocean</td>
+    </tr>
+    <tr>
+        <td style="@if( $school->county->name === 'Hudson')background-color: yellow; @endif">Hudson</td>
+        <td style="@if( $school->county->name === 'Salem')background-color: yellow; @endif">Salem</td>
+        <td style="@if( $school->county->name === 'Monmouth')background-color: yellow; @endif">Monmouth</td>
+        <td style="@if( $school->county->name === 'Sussex')background-color: yellow; @endif">Sussex</td>
+    </tr>
+    <tr>
+        <td style="@if( $school->county->name === 'Passaic')background-color: yellow; @endif">Passaic</td>
+        <td style="@if( $school->county->name === 'Warren')background-color: yellow; @endif">Warren</td>
+        <td style="@if( $school->county->name === 'Morris')background-color: yellow; @endif">Morris</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td style="@if( $school->county->name === 'Somerset')background-color: yellow; @endif">Somerset</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td style="@if( $school->county->name === 'Union')background-color: yellow; @endif">Union</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><b>BARBARA RETZKO</b><br />45 Dayton Crescent<br />Bernardsville, NJ 07924<br /><a href="mailto:barbararetzko@hotmail.com">BarbaraRetzko@hotmail.com</a></td>
+        <td><b>CHERYL BREITZMAN</b><br />332 N. Leipzig Avenue<br />Egg Harbor City, NJ 08215<br /><a href="mailto:cherylbreitzman@gmail.com">CherylBreitzman@gmail.com</a></td>
+        <td style="padding-bottom: 0.5rem;"><b>KRISTEN MARKOWSKI</b><br />Morris Knolls High School<br />50 Knoll Drive<br />Rockaway, NJ 07866<br /><a href="mailto:kmarkowski@mhrd.org">KMarkowski@mhrd.org</a></td>
+        <td style="padding-bottom: 0.5rem;"><b>VIRAJ LAL</b><br />Newark Academy<br />91 South Orange Avenue<br />Livingston, NJ 07039<br /><a href="mailto:VLal@newarka.edu">VLal@newarka.edu</a></td>
+    </tr>
+</table>
+
 
 {{-- PAGE BREAK --}}
 <div class="page_break"></div>
