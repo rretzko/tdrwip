@@ -61,6 +61,8 @@ class MembershipcardController extends Controller
     {
         $data = $this->validateRequest($request);
 
+        $path = '';
+
         $membership_card_path = '';
         if($request->hasFile('membershipcard')) {
 
@@ -88,6 +90,15 @@ class MembershipcardController extends Controller
                         ]);
                 }
             }
+        }else{
+            $membership->update([
+                    'membershiptype_id' => $data['membershiptype_id'],
+                    'membership_id' => $data['membership_id'],
+                    'expiration' => $data['expiration'],
+                    'grade_levels' => $data['grade_levels'],
+                    'subjects' => $data['subjects'],
+                    'membership_card_path' => $path,
+                ]);
         }
 
         return back();
