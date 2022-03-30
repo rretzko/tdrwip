@@ -135,6 +135,7 @@
                                         <x-inputs.group label="Membership card" for="membershipcard" borderless="true" paddingless="true">
 
                                             <input type="file" name="membershipcard">
+                                            <div style="font-size: 0.8rem; color: red;">Image files ONLY (png,jpg)!</div>
 
                                         </x-inputs.group>
 
