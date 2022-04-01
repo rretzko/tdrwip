@@ -6,11 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Eventversion;
 use App\Models\Obligation;
 use App\Models\Userconfig;
+use App\Traits\ExceptionsTrait;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class RegistrantsController extends Controller
 {
+    use ExceptionsTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -29,7 +32,10 @@ class RegistrantsController extends Controller
 
         }else{
 
-            return view('eventversions.obligations', ['eventversion' => $eventversion]);
+            return view('eventversions.obligations', [
+                'eventversion' => $eventversion,
+                'exception' => $this->exceptions(),
+                ]);
         }
     }
 
@@ -67,7 +73,11 @@ class RegistrantsController extends Controller
         Userconfig::setValue('event',auth()->id(),$eventversion['event']->id);
         Userconfig::setValue('organization',auth()->id(),$eventversion['event']['organization']->id);
 
-        return view('registrants.index');
+        return view('registrants.index',
+            [
+                'exception' => $this->exceptions(),
+            ]
+        );
     }
 
     /**

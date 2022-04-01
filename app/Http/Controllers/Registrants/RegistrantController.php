@@ -66,8 +66,6 @@ class RegistrantController extends Controller
 
         $uploadspermitted = !(($eventversion->id === 66) || ($eventversion->id === 67));
 
-        //$uploadspermitted = true;//(Carbon::now() < $eventversion->eventversiondates->where('datetype_id', \App\Models\Datetype::VIDEOS_CLOSE_MEMBERSHIP)->first()->dt);
-
         return view('registrants.registrant.show', [
             'eventversion' => $eventversion,
             'filename' => $fileserver->buildFilename($registrant),
@@ -178,6 +176,16 @@ class RegistrantController extends Controller
     {
         $exception = false;
 
+        //2022-23 NJ All-State
+        $users = [180,9136,10125]; //John Wilson, Matt Wolf, Blaze Dalio
+        if(in_array(auth()->id(), $users) &&
+            (Carbon::now() > '2022-04-04 00:00:01') &&
+            (Carbon::now() < '2022-04-04 23:59:59')
+        ){
+            $exception = true;
+        }
+
+        //pre-2022-23 NJ All-State
         //Patrick Carpenter
         if((auth()->id() === 8460) &&
             (Carbon::now() > '2021-10-25 00:00:01') &&

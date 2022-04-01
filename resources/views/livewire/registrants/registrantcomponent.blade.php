@@ -310,18 +310,20 @@
                                                 <x-tables.cell>
                                                     @if($registrant->registranttype_id === 18)
                                                         <!-- do nothing -->
+                                                        @elseif($exception)
+
+                                                            <x-buttons.button-link
+                                                                class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
+                                                            >
+                                                                <a href="{{ route('registrant.show',['registrant' => $registrant]) }}">
+                                                                    Edit
+                                                                </a>
+                                                        </x-buttons.button-link>
+
                                                     @else
                                                         <div style="color: red;">Event closed</div>
 
-                                                            <!-- {{--
-                                                            <x-buttons.button-link
-                                                            class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"
-                                                        >
-                                                            <a href="{{ route('registrant.show',['registrant' => $registrant]) }}">
-                                                                Edit
-                                                            </a>
-                                                        </x-buttons.button-link>
-                                                        --}} -->
+
                                                     @endif
                                                 </x-tables.cell>
                                             </x-tables.row>

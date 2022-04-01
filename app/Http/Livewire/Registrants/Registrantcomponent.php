@@ -20,6 +20,7 @@ class Registrantcomponent extends Component
     public $xadjudicator=false;
     public $allowimports = true; //allow user to import ensemble members
     public $confirmingdelete = 0;
+    public $exception = false;
     public $membershipmanagers = [];
     public $perpage = 0; //pagination
     public $population = ''; //ALL members count
