@@ -146,7 +146,7 @@
                                             >
                                                 {{ isset($message) ? $message : ''}}
                                             </div>
-                                            @if($eventversion->isOpenForMembers() || (auth()->id()) === 167)
+                                            @if($eventversion->isOpenForMembers() || (auth()->id()) === 167 || $exception)
                                                 <x-buttons.button type="submit">
                                                     Update {{ $registrant->student->person->first }} </x-buttons.button>
                                             @else
@@ -278,7 +278,7 @@
                                                            class="rounded"
                                                         >
                                                     @endif
-                                                        @if($eventversion->isOpenForMembers() || (auth()->id() === 167))
+                                                        @if($eventversion->isOpenForMembers() || (auth()->id() === 167) || $exception)
                                                             <button class="bg-gray-500 mt-2 py-1 px-2 rounded">
                                                                 @if($registrant->hasSignatures)
                                                                     Remove my signature
