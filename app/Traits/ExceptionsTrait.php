@@ -19,8 +19,8 @@ trait ExceptionsTrait
             [
                 71 => [ //2022-23 NJ All-State;
                     'users' => [180,9136,10125], //John Wilson, Matt Wolf, Blaze Dalio
-                    'start' => '2022-04-01 17:09:01',
-                    'end' => '2022-04-01 17:27:59',
+                    'start' => '2022-04-04 00:00:01',
+                    'end' => '2022-04-04 23:59:59',
                     ],
             ];
 
