@@ -118,14 +118,14 @@
                              <div class="pt-3">
 
                                  @if($adjudicator)
- <!-- {{--
+
                                      <a href="{{ route('registrants.adjudication',['eventversion' => $event]) }}"
                                         class=" bg-black text-white font-bold border border-green-700 rounded px-2 hover:bg-gray-300 hover:text-black"
                                         title="Adjudication page"
                                      >
                                          Judge
                                      </a>
---}} -->
+
                                  @endif
                              </div>
 
