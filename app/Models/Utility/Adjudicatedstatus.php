@@ -25,7 +25,7 @@ class Adjudicatedstatus extends Model
         parent::__construct($attributes);
 
         $this->registrant = $attributes['registrant'];
-        $this->room = $attributes['room'];
+        $this->room = (isset($attributes['room'])) ?: NULL; //$attributes['room'];
         $this->eventversion = $this->registrant->eventversion;
         $this->status = 'unauditioned';
 
@@ -62,7 +62,7 @@ class Adjudicatedstatus extends Model
         $this->countregistrantscores = $this->scores->componentscores()->count();
 
         //Adjudicators registered for $this->registrant
-        $this->adjudicators = $this->room->adjudicators;
+        $this->adjudicators = $this->room ? $this->room->adjudicators : NULL;
     }
 
     private function completed()
@@ -87,19 +87,24 @@ class Adjudicatedstatus extends Model
      */
     private function tolerance()
     {
-        //container for total scores
-        $scores = [];
+        if($this->adjudicators){
 
-        //iterate through each of the room's adjudicators to determine their total ROOM score FOR $this->registrant
-        foreach($this->adjudicators AS $adjudicator){
+            //container for total scores
+            $scores = [];
 
-            $scores[] = \App\Models\Score::where('registrant_id', $this->registrant->id)
-                ->where('user_id', $adjudicator->user_id)
-                ->sum('score');
+            //iterate through each of the room's adjudicators to determine their total ROOM score FOR $this->registrant
+            foreach($this->adjudicators AS $adjudicator){
+
+                $scores[] = \App\Models\Score::where('registrant_id', $this->registrant->id)
+                    ->where('user_id', $adjudicator->user_id)
+                    ->sum('score');
+            }
+
+            //Return true if OUT of tolerance
+            return ((max($scores) - min($scores)) > $this->room->tolerance);
         }
 
-        //Return true if OUT of tolerance
-        return ((max($scores) - min($scores)) > $this->room->tolerance);
+        return false;  //default = no one is out of tolerance
     }
 
     private function unauditioned()

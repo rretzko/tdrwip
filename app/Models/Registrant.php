@@ -31,12 +31,12 @@ class Registrant extends Model
         $min = ($id * 10000);
         $max = ($min + 9999);
         $testid = rand($min, $max);
-        
+
         while(Registrant::find($testid)){
-            
+
             $testid = rand($min,$max);
         }
-        
+
         return $testid;
     }
 
@@ -113,6 +113,29 @@ class Registrant extends Model
         ];
 
         return $colors[$this->adjudicatedStatus($room)];
+    }
+
+    public function auditionStatus(\App\Models\Room $room=NULL)
+    {
+        //initialize a database row if non exists
+        if(! Auditionstatus::where('registrant_id', $this->id)
+            ->where('room_id', ($room) ? $room->id : 0)
+            ->exists())
+        {
+            //use OLD process to set the row for the NEW process
+            $old = $this->adjudicatedStatus($room);
+
+            Auditionstatus::create([
+                'registrant_id' => $this->id,
+                'eventversion_id' => $this->eventversion->id,
+                'room_id' => ($room) ? $room->id : 0,
+                'auditionstatustype_id' => Auditionstatustype::where('descr', $old)->first()->id,
+            ]);
+        }
+
+        return Auditionstatus::where('registrant_id', $this->id)
+            ->where('room_id', ($room) ? $room->id : 0)
+            ->first();
     }
 
     public function getFilesApprovedCountAttribute(): int

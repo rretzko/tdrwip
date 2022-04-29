@@ -145,6 +145,8 @@ class RegistrantAdjudicationController extends Controller
 
         event(new \App\Events\UpdateScoreSummaryEvent($id));
 
+        event(new \App\Events\UpdateAuditionStatusEvent($id));
+
         //auto-advance to next registered registrant
         return $this->show($this->findNextRegistrant($id));//$this->index($eventversion);
     }

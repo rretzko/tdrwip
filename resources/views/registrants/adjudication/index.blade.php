@@ -36,9 +36,11 @@
                         @foreach($registrantsbyinstrumentation->sortBy('id') AS $registrant)
 
                             <div class="border border-gray-700 text-sm mb-1 mr-1">
+                            <!-- {{-- class="text-black {{ $registrant->adjudicationStatusBackgroundColor($room) }} {{ $registrant->judgeScoresEntered(auth()->id()) }}"> --}} -->
                                 @if(config('app.url') === 'http://localhost')
                                     <a href="{{ route('registrants.adjudication.show', ['registrant' => $registrant]) }}"
-                                       class="text-black {{ $registrant->adjudicationStatusBackgroundColor($room) }} {{ $registrant->judgeScoresEntered(auth()->id()) }}">
+                                    style="background:{{ $registrant->auditionStatus($room) ? $registrant->auditionStatus($room)->auditionstatustype->background : 'aliceblue' }}; color:{{ $registrant->auditionStatus($room) ? $registrant->auditionStatus($room)->auditionstatustype->color : 'black' }};"
+                                >
                                         {{ $registrant->id }}
                                     </a>
                                 @else
@@ -164,7 +166,10 @@
                 <table style="margin: auto;">
                     <thead>
                         <tr>
-                            <th style="border-top: 0; border-left: 0;"></th>
+                            <th
+                                style="border-top: 0; border-left: 0; background:{{ $auditioner->auditionStatus($room) ? $auditioner->auditionStatus($room)->auditionstatustype->background : 'aliceblue' }}; color:{{ $auditioner->auditionStatus($room) ? $auditioner->auditionStatus($room)->auditionstatustype->color : 'black' }};">
+                                {{ $auditioner->auditionStatus($room) ? $auditioner->auditionStatus($room)->auditionstatustype->descr : 'no-gots'}}
+                            </th>
                             @foreach($room->filecontenttypes->sortBy('order_by') AS $filecontenttype)
                                 <th colspan="{{ $filecontenttype->scoringcomponents->count() }}">{{ $filecontenttype->descr }}</th>
                             @endforeach

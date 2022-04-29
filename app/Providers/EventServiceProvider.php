@@ -7,11 +7,13 @@ use App\Events\MembershipRequestEvent;
 use App\Events\NewStudentNonRegistrantEvent;
 use App\Events\UpdateScoreSummaryEvent;
 use App\Events\SubscriberPasswordResetEvent;
+use App\Events\UpdateAuditionStatusEvent;
 use App\Events\UpdateRegistrantStatusEvent;
 use App\Listeners\FileuploadRejectionStudentEmailListener;
 use App\Listeners\NewNonStudentNonRegistrantListener;
 use App\Listeners\SendMembershipRequestEmailListener;
 use App\Listeners\SubscriberResetPasswordEmailListener;
+use App\Listeners\UpdateAuditionStatusListener;
 use App\Listeners\UpdateRegistrantStatusListener;
 use App\Listeners\UpdateScoreSummaryListener;
 use Illuminate\Auth\Events\Registered;
@@ -37,7 +39,7 @@ class EventServiceProvider extends ServiceProvider
             FileuploadRejectionStudentEmailListener::class,
         ],
         NewStudentNonRegistrantEvent::class => [
-            NewNonStudentNonRegistrantListener::class,  
+            NewNonStudentNonRegistrantListener::class,
         ],
         UpdateRegistrantStatusEvent::class => [
             UpdateRegistrantStatusListener::class,
@@ -45,8 +47,11 @@ class EventServiceProvider extends ServiceProvider
         SubscriberPasswordResetEvent::class =>[
             SubscriberResetPasswordEmailListener::class,
         ],
+        UpdateAuditionStatusEvent::class => [
+          UpdateAuditionStatusListener::class,
+        ],
         UpdateScoreSummaryEvent::class => [
-          UpdateScoreSummaryListener::class,
+            UpdateScoreSummaryListener::class,
         ],
 
     ];
