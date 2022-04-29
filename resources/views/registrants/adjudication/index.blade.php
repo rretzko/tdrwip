@@ -29,10 +29,12 @@
         {{-- REGISTRANT IDS --}}
         <div class="flex flex-col pb-1 mb-3 border-b border-gray-300">
             @foreach($registrants AS $id => $registrantsbyinstrumentation)
+
                 <div class="flex flex-col">
                     <header class="font-bold">{{ $id }}</header>
                     <div class="flex flex-wrap">
                         @foreach($registrantsbyinstrumentation->sortBy('id') AS $registrant)
+
                             <div class="border border-gray-700 text-sm mb-1 mr-1">
                                 @if(config('app.url') === 'http://localhost')
                                     <a href="{{ route('registrants.adjudication.show', ['registrant' => $registrant]) }}"
@@ -142,6 +144,9 @@
                                 <div class="mt-2 text-center">
                                     <input class="bg-black text-white rounded px-2" type="submit" name="submit" id="submit" value="Submit" />
                                 </div>
+                                    <div style="color: darkred; font-size: 0.8rem;">
+                                        NOTE: This page will auto-advance to the next registrant on the roster.
+                                    </div>
                             </form>
                         </div>
 
