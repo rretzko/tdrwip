@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Registrants;
 
 use App\Http\Controllers\Controller;
 use App\Models\Eventversion;
+use App\Models\Registrant;
+use App\Models\Registranttype;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RegistrantAdjudicationController extends Controller
 {
@@ -142,7 +145,8 @@ class RegistrantAdjudicationController extends Controller
 
         event(new \App\Events\UpdateScoreSummaryEvent($id));
 
-        return $this->index($eventversion);
+        //auto-advance to next registered registrant
+        return $this->show($this->findNextRegistrant($id));//$this->index($eventversion);
     }
 
     /**
@@ -154,6 +158,21 @@ class RegistrantAdjudicationController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function findNextRegistrant($id)
+    {
+        $registrant = Registrant::find($id);
+
+        return DB::table('registrants')
+            ->join('instrumentation_registrant', 'instrumentation_registrant.registrant_id','=','registrants.id')
+            ->where('eventversion_id', '=', $registrant->eventversion_id)
+            ->where('instrumentation_registrant.instrumentation_id', '=',$registrant->instrumentations->first()->id)
+            ->where('registrants.id', '>', $registrant->id)
+            ->where('registrants.registranttype_id', '=', Registranttype::REGISTERED)
+            ->orderBy('registrants.id')
+            ->limit(1)
+            ->value('id');
     }
 
     private function viewers()
