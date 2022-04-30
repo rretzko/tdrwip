@@ -22,23 +22,23 @@
                     Download:
                     @if($eventversion->event->id !== 19){{-- SUPPRESS FOR NJ ALL-SHORE --}}
                         @if($eventversion->id === 65)
-                            <a href="/2021NJASC.pdf" target="_BLANK"
+                            <a href="/assets/pdfs/auditionresults/2021NJASC.pdf" target="_BLANK"
                                 class="text-blue-500"
                             >
                         @elseif($eventversion->id === 66)
-                            <a href="/2021SJCDA_Sr.pdf" target="_BLANK"
+                            <a href="/assets/pdfs/auditionresults/2021SJCDA_Sr.pdf" target="_BLANK"
                                class="text-blue-500"
                             >
                         @elseif($eventversion->id === 67)
-                            <a href="/2021SJCDA_Jr.pdf" target="_BLANK"
+                            <a href="/assets/pdfs/auditionresults//2021SJCDA_Jr.pdf" target="_BLANK"
                                class="text-blue-500"
                             >
                         @elseif($eventversion->id === 70)
-                            <a href="/2022CJMEA.pdf" target="_BLANK"
+                            <a href="/assets/pdfs/auditionresults//2022CJMEA.pdf" target="_BLANK"
                                class="text-blue-500"
                             >
                         @elseif($eventversion->id === 71)
-                            <a href="/assets/pdfs/auditionresults/2021NJASC.pdf" target="_BLANK"
+                            <a href="/assets/pdfs/auditionresults/2022NJASC.pdf" target="_BLANK"
                                class="text-blue-500"
                             >
                         @else
