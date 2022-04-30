@@ -37,6 +37,10 @@
                             <a href="/2022CJMEA.pdf" target="_BLANK"
                                class="text-blue-500"
                             >
+                        @elseif($eventversion->id === 71)
+                            <a href="/assets/pdfs/auditionresults/2021NJASC.pdf" target="_BLANK"
+                               class="text-blue-500"
+                            >
                         @else
                             <a href="" class="tex-blue-500">
                         @endif
