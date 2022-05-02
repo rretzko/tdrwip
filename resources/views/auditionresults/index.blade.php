@@ -38,7 +38,7 @@
                                class="text-blue-500"
                             >
                         @elseif($eventversion->id === 71)
-                            <a href="/assets/pdfs/auditionresults/2022NJASC.pdf" target="_BLANK"
+                            <a href="/assets/pdfs/auditionresults/2022NJASC_1.pdf" target="_BLANK"
                                class="text-blue-500"
                             >
                         @else
