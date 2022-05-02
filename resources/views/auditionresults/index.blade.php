@@ -105,7 +105,7 @@
                 </table>
 
                 <div style="display: flex; justify-content: center; margin-top: 1rem;">
-                    @if(in_array(auth()->id(),[270,425,8527]))
+                    @if(in_array(auth()->id(),[270,425,8527,351,422,152]))
                         <a href="{{ route('registrants.adjudication',['eventversion' => 71]) }}" style="">
                             <button style="background-color: black; padding: 0 0.5rem; border-radius: 0.5rem; ">
                                 Judge
