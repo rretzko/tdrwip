@@ -49,6 +49,7 @@ Route::middleware('auth', 'verified')->group(function() {
     Route::get('sa/', [App\Http\Controllers\Siteadministration\SiteadministratorController::class, 'index'])->name('siteadministrator.index');
     Route::post('impersonation/{user_id}', [App\Http\Controllers\Siteadministration\ImpersonationController::class, 'index'])->name('impersonate.login');
     Route::get('impersonation/destroy', [App\Http\Controllers\Siteadministration\ImpersonationController::class, 'destroy']);
+    Route::get('sa/emails/dump/{offset?}/{length?}', [App\Http\Controllers\Siteadministration\EmailsCsvController::class, 'export'])->name('siteadministrator.emailsdump');
     Route::get('sa/participatingstudents', [App\Http\Controllers\Siteadministration\ParticipatingstudentstableController::class, 'index'])->name('siteadministration.participatingstudentstable.index');
     Route::get('sa/teachertable', [App\Http\Controllers\Siteadministration\TeachertableController::class, 'index'])->name('siteadministration.teachertable.index');
     Route::get('sa/teachertable/email', [App\Http\Controllers\Siteadministration\TeachertablebyemailController::class, 'index'])->name('siteadministration.teachertable.byemail.index');
@@ -153,7 +154,7 @@ Route::middleware('auth', 'verified')->group(function() {
     /** MEDIA UPLOADS */
     Route::post('/registrant/mediaupload/{registrant}/{filecontenttype}', [App\Http\Controllers\Registrants\MediauploadController::class, 'update'])
         ->name('registrant.mediaupload.update');
-    
+
     Route::get('/registrant/payments/{eventversion}', [App\Http\Controllers\Registrants\RegistrantPaymentsController::class,'index'])->name('registrant.payments');
     Route::get('/registrant/payments/for/{registrant}', [App\Http\Controllers\Registrants\RegistrantPaymentsController::class,'show'])->name('registrant.payments.show');
     Route::post('/registrant/payment/new', [App\Http\Controllers\Registrants\RegistrantPaymentsController::class,'store'])->name('registrant.payments.store');
