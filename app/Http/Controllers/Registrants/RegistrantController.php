@@ -65,6 +65,12 @@ class RegistrantController extends Controller
         $sjcdaeapplicationshutdown = (Carbon::now() > '2021-10-19 23:59:59');
 
         $uploadspermitted = !(($eventversion->id === 66) || ($eventversion->id === 67));
+        
+        $instrumentations = ($eventversion->id != 73)
+            ? $eventversion->eventensembles()->first()->eventensembletype()->instrumentations
+            : (($registrant->student->grade < 9)
+                ? $eventversion->eventensembles()[0]->eventensembletype()->instrumentations
+                : $eventversion->eventensembles()[1]->eventensembletype()->instrumentations);
 
         return view('registrants.registrant.show', [
             'eventversion' => $eventversion,
@@ -76,6 +82,7 @@ class RegistrantController extends Controller
             'sjcdaeapplicationshutdown' => $sjcdaeapplicationshutdown,
             'exception' => $this->exceptions(),
             'uploadspermitted' => $uploadspermitted,
+            'instrumentations' => $instrumentations,
         ]);
     }
 
@@ -130,6 +137,12 @@ class RegistrantController extends Controller
 
         //$uploadspermitted = true; //(Carbon::now() < $eventversion->eventversiondates->where('datetype_id', \App\Models\Datetype::VIDEOS_CLOSE_MEMBERSHIP)->first()->dt);
 
+        $instrumentations = ($eventversion->id != 73)
+            ? $eventversion->eventensembles()->first()->eventensembletype()->instrumentations
+            : (($registrant->student->grade < 9)
+                ? $eventversion->eventensembles()[0]->eventensembletype()->instrumentations
+                : $eventversion->eventensembles()[1]->eventensembletype()->instrumentations);
+        
         return view('registrants.registrant.show', [
             'eventversion' => $eventversion,
             'filename' => $fileserver->buildFilename($registrant),
@@ -140,6 +153,7 @@ class RegistrantController extends Controller
             'sjcdaeapplicationshutdown' => $sjcdaeapplicationshutdown,
             'exception' => $this->exceptions(),
             'uploadspermitted' => $uploadspermitted,
+            'instrumentations' => $instrumentations,
         ]);
     }
 
