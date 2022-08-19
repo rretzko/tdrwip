@@ -124,7 +124,7 @@
                                                         borderless="true" paddingless="true">
                                             @for($i=0; $i < $eventversion['eventversionconfigs']->instrumentation_count; $i++)
                                                 <select name="instrumentations[]">
-                                                    @forelse($eventversion->eventensembles->first()->eventensembletype()->instrumentations AS $instrumentation)
+                                                    @forelse($instrumentations AS $instrumentation)
                                                         <option value="{{ $instrumentation->id }}"
                                                                 @if ($registrant->instrumentations->count() &&
                                                                     $registrant->instrumentations[$i]->id == $instrumentation->id)
