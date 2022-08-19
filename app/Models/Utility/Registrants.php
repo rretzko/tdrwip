@@ -137,9 +137,11 @@ class Registrants extends Model
      */
     private static function defaultInstrumentationId(Registrant $registrant)
     {
-        $eventversion = Eventversion::with('eventensembles')->where('id', self::$eventversion_id)->first();
+        $eventversion = (self::$eventversion_id != 73)
+            ? Eventversion::with('eventensembles')->where('id', self::$eventversion_id)->first()
+            : Eventversion::find(Userconfig->getValue('eventversion', auth()->id());
 
-        $eventversioninstrumentations = $eventversion->eventensembles->first()
+        $eventversioninstrumentations = $eventversion->eventensembles()->first()
             ->eventensembletype()->instrumentations;
 
         $eventversionfirstinstrumentid = $eventversioninstrumentations->first()->id;
