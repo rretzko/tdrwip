@@ -36,7 +36,8 @@ class Eventversion extends Model
 
     public function eventensembles()
     {
-        return $this->belongsToMany(Eventensemble::class);
+       // return $this->belongsToMany(Eventensemble::class);
+        return $this->event->eventensembles;
     }
 
     public function eventversionconfigs()
