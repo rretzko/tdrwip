@@ -398,7 +398,10 @@
                                                     </div>
                                                 @endif
 --}} -->
-                                                @if((! $registrant->hasApplication) && (! $eventversion->eventversionconfigs->eapplication))
+                                                @if(
+                                                    (($eventversion->eventversionconfigs->eapplication) && (! $registrant->eapplication)) ||
+                                                    ((! $eventversion->eventversionconfigs->eapplication) && (! $registrant->hasApplication))
+                                                )
 
                                                     <div class="advisory">
                                                         The student's application must be downloaded before
