@@ -215,7 +215,7 @@
                                                 <x-tables.cell>
                                                     {{ $loop->iteration }}
                                                 </x-tables.cell>
-                                                <x-tables.cell>
+                                                <x-tables.cell title="{{ $registrant->id }}" >
                                                     {{ $registrant['student']['person']->fullNameAlpha }}
                                                     ({{ $registrant['student']->grade }})
                                                 </x-tables.cell>
