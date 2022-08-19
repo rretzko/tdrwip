@@ -18,17 +18,20 @@ class ObligationsController extends Controller
      */
     public function create()
     {
-        $link = '<x-obligations.9.71.obligations />';
         $eventversion = Eventversion::find(Userconfig::getValue('eventversion', auth()->id()));
+        $eventversionid = $eventversion->id;
+        $eventid = $eventversion->event->id;
+
+        $link = '<x-obligations.'.$eventid.'.'.$eventversionid.'.obligations />';
 
         Obligation::create([
             'user_id' => auth()->id(),
-            'eventversion_id' => $eventversion->id,
+            'eventversion_id' => $eventversionid,
             'acknowledgment' => 1,
             'link' => $link,
         ]);
 
-        return view('registrants.index');
+        return view('registrants.index',['exception' => false]);
     }
 
     /**
