@@ -139,7 +139,7 @@ class Registrants extends Model
     {
         $eventversion = (self::$eventversion_id != 73) //Morris Area Chorus
             ? Eventversion::with('eventensembles')->where('id', self::$eventversion_id)->first()
-            : Eventversion::find(Userconfig::getValue('eventversion', auth()->id());
+            : Eventversion::find(Userconfig::getValue('eventversion', auth()->id()));
 
         $eventversioninstrumentations = (self::$eventversion_id != 73) //Morris Area Chorus
             ? $eventversion->eventensembles()->first()->eventensembletype()->instrumentations
