@@ -25,9 +25,9 @@ trait ExceptionsTrait
             ];
 
         $eventversionid = \App\Models\Userconfig::getValue('eventversion', auth()->id());
-        $users = $exceptions[$eventversionid]['users'];
-        $start = $exceptions[$eventversionid]['start'];
-        $end = $exceptions[$eventversionid]['end'];
+        $users = array_key_exists($eventversionid, $exceptions) ? $exceptions[$eventversionid]['users'] : [];
+        $start = array_key_exists($eventversionid, $exceptions) ? $exceptions[$eventversionid]['start'] : Carbon::now();
+        $end = array_key_exists($eventversionid, $exceptions) ? $exceptions[$eventversionid]['end'] : Carbon::now();
 
         return (in_array(auth()->id(), $users) &&
             (Carbon::now() > $start) &&
