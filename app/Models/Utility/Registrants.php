@@ -139,7 +139,7 @@ class Registrants extends Model
     {
         $eventversion = (self::$eventversion_id != 73)
             ? Eventversion::with('eventensembles')->where('id', self::$eventversion_id)->first()
-            : Eventversion::find(Userconfig->getValue('eventversion', auth()->id());
+            : Eventversion::find(Userconfig::getValue('eventversion', auth()->id());
 
         $eventversioninstrumentations = $eventversion->eventensembles()->first()
             ->eventensembletype()->instrumentations;
