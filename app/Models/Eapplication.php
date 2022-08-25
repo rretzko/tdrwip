@@ -10,7 +10,8 @@ class Eapplication extends Model
     use HasFactory;
 
     protected $fillable = ['absences', 'courtesy', 'dressrehearsal', 'eligibility', 'eventversion_id', 'imageuse',
-        'lates', 'parentread', 'registrant_id', 'rulesandregs', 'signatureguardian','signaturestudent','videouser'];
+        'lates', 'parentread', 'paymentmethod', 'registrant_id', 'rulesandregs', 'signatureguardian','signaturestudent',
+        'videouser'];
 
     protected $primaryKey = 'registrant_id';
 

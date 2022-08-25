@@ -7,7 +7,9 @@ use App\Models\Application;
 use App\Models\Eapplication;
 use App\Models\Eventversion;
 use App\Models\Registrant;
+use App\Models\School;
 use App\Models\Teacher;
+use App\Models\Userconfig;
 use Barryvdh\DomPDF\Facade AS PDF;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -34,13 +36,15 @@ class RegistrantApplicationController extends Controller
     {
         if($registrant->eventversion->eventversionconfigs->eapplication){ //eventversion is using Eapplications
 
-            return view($this->pathEapplication($registrant), [
-                'eventversion' => $registrant->eventversion,
-                'page_title' => 'PAGE TITLE',
-                'path_update' => 'PATH UPDATE',
-                'registrant' => $registrant,
-                'me' => auth()->user()->person,
-                'eapplication' => $registrant->eapplication,
+            return view($this->pathEapplication($registrant), //ex. applications/25/73/eapplication
+                [
+                    'eventversion' => $registrant->eventversion,
+                    'page_title' => 'PAGE TITLE',
+                    'path_update' => 'PATH UPDATE',
+                    'registrant' => $registrant,
+                    'me' => auth()->user()->person,
+                    'eapplication' => $registrant->eapplication,
+                    'school' => School::find(Userconfig::getValue('school', auth()->id())),
             ]);
         }
 
@@ -63,7 +67,7 @@ class RegistrantApplicationController extends Controller
     {
         //$registrant->auditiondetail->applied();
         $teacher = Teacher::find(auth()->id());
-        $school = $registrant->student->person->user->schools->first();
+        $school = School::find(Userconfig::getValue('school', auth()->id())); //$registrant->student->person->user->schools->first();
 
         $eventversion = $registrant->eventversion;
         $filename = self::build_Filename($eventversion, $registrant); //ex: "2021_NJASC_2021_BhargavaV.pdf"
@@ -73,6 +77,8 @@ class RegistrantApplicationController extends Controller
         $registrantfirstname = $registrant->student->person->first;
         $schoolname = $registrant->student->currentSchool->shortName;
 
+        $eapplication = Eapplication::find($registrant->id) ?: null;
+
         //ex. pages.pdfs.applications.12.64.application
         $pdf = PDF::loadView('pdfs.applications.'//9.65.2021_22_application',
             . $eventversion->event->id
@@ -81,7 +87,7 @@ class RegistrantApplicationController extends Controller
             . '.application',
             //.applicationTest',
             compact('registrant','eventversion', 'teacher', 'school','me',
-            'registrantfullname','registrantfirstname','schoolname'));
+            'registrantfullname','registrantfirstname','schoolname','eapplication'));
 
         //log application printing
         Application::create([
@@ -145,6 +151,7 @@ class RegistrantApplicationController extends Controller
             'signatureguardian' => ['nullable', 'boolean'],
             'signaturestudent' => ['nullable', 'boolean'],
             'videouse' => ['nullable', 'boolean'],
+            'paymentmethod' => ['nullable','string'],
         ]);
 
         Application::create([
@@ -169,6 +176,7 @@ class RegistrantApplicationController extends Controller
                 'signatureguardian' => ($data['signatureguardian'] ?? 0),
                 'signaturestudent' => ($data['signaturestudent'] ?? 0),
                 'videouse' => ($data['videouse'] ?? 0),
+                'paymentmethod' => ($data['paymentmethod'] ?? 'none'),
             ],
         );
 
@@ -194,7 +202,7 @@ class RegistrantApplicationController extends Controller
             $registrant->resetRegistrantType('applied');
         }
 
-        return view('registrants.index');
+        return view('registrants.index',['exception' => false]);
     }
 
     /**
