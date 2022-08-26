@@ -65,7 +65,7 @@ class RegistrantController extends Controller
         $sjcdaeapplicationshutdown = (Carbon::now() > '2021-10-19 23:59:59');
 
         $uploadspermitted = !(($eventversion->id === 66) || ($eventversion->id === 67));
-        
+
         $instrumentations = ($eventversion->id != 73)
             ? $eventversion->eventensembles()->first()->eventensembletype()->instrumentations
             : (($registrant->student->grade < 9)
@@ -142,7 +142,7 @@ class RegistrantController extends Controller
             : (($registrant->student->grade < 9)
                 ? $eventversion->eventensembles()[0]->eventensembletype()->instrumentations
                 : $eventversion->eventensembles()[1]->eventensembletype()->instrumentations);
-        
+
         return view('registrants.registrant.show', [
             'eventversion' => $eventversion,
             'filename' => $fileserver->buildFilename($registrant),

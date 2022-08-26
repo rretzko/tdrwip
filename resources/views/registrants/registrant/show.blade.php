@@ -171,6 +171,16 @@
                                                            class="text-blue-700">
                                                             Click here for the current eApplication
                                                         </a>
+                                                    @elseif(! $registrant->student->guardians->count())
+                                                        <span style="color: darkred;">
+                                                            {{ $registrant->student->person->fullname }} has no parent/guardian.
+                                                        </span>
+                                                        <br />
+                                                        <a href="{{ route('students.index') }}">
+                                                            <button style="background-color: lightgray; color: black; padding: 0.25rem; border-radius: 0.5rem; border: 1px solid black;">
+                                                                Please click here to add a parent/guardian.
+                                                            </button>
+                                                        </a>
                                                     @else {{-- no current record or not eApplication eventversion --}}
                                                         <a href="{{ route('registrant.application.create',['registrant' => $registrant]) }}"
                                                            class="text-blue-700">

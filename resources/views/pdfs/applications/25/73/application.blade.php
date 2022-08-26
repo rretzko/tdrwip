@@ -241,7 +241,7 @@
             Payment Method:
         </td>
         <td class="data">
-            {{ $eapplication->paymentmethod }}
+            {{ $eapplication ? $eapplication->paymentmethod : 'none' }}
         </td>
     </tr>
 </table>
@@ -403,8 +403,8 @@
     </tr>
     <tr>
         <td style="border-bottom: 1px solid black;">Signature</td>
-        <td style="border-bottom: 1px solid black; @if($eapplication->signaturestudent) font-style: italic; font-size: 1rem; font-weight: bold; @else color: darkgrey; @endif">
-            @if($eapplication->signaturestudent){{ $registrant->student->person->fullname }}
+        <td style="border-bottom: 1px solid black; @if($eapplication && $eapplication->signaturestudent) font-style: italic; font-size: 1rem; font-weight: bold; @else color: darkgrey; @endif">
+            @if($eapplication && $eapplication->signaturestudent){{ $registrant->student->person->fullname }}
                 @else Unsigned
             @endif
         </td>
@@ -426,8 +426,8 @@
     </tr>
     <tr>
         <td style="border-bottom: 1px solid black;">Signature</td>
-        <td style="border-bottom: 1px solid black; @if($eapplication->signatureguardian) font-style: italic; font-size: 1rem; font-weight: bold; @else color: darkgrey; @endif">
-            @if($eapplication->signatureguardian){{ $registrant->student->guardians->first()->person->fullname }}
+        <td style="border-bottom: 1px solid black; @if($eapplication && $eapplication->signatureguardian) font-style: italic; font-size: 1rem; font-weight: bold; @else color: darkgrey; @endif">
+            @if($eapplication && $eapplication->signatureguardian){{ $registrant->student->guardians->first()->person->fullname }}
             @else Unsigned
             @endif
         </td>
