@@ -32,7 +32,10 @@ class RegistrantAdjudicationController extends Controller
 
         return view('registrants.adjudication.index', [
             'eventversion' => $eventversion,
-            'room' => \App\Models\Room::with('adjudicators')->where('id', $adjudicator->room_id)->first(),
+            'room' => \App\Models\Room::with([
+                'adjudicators',
+                'filecontenttypes'
+            ])->where('id', $adjudicator->room_id)->first(),
             'registrants' => $registrants,
             'registrantscount' => $registrantscount,
             'auditioner' => null,
@@ -121,8 +124,8 @@ class RegistrantAdjudicationController extends Controller
     public function update(Request $request, $id)
     {
         $inputs = $request->validate([
-           'scoringcomponents' => ['required', 'array'],
-           'scoringcomponents.*' => ['required', 'numeric'],
+            'scoringcomponents' => ['required', 'array'],
+            'scoringcomponents.*' => ['required', 'numeric'],
         ]);
 
         $eventversion = Eventversion::find(\App\Models\Userconfig::getValue('eventversion', auth()->id()));

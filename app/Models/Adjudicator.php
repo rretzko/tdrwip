@@ -16,27 +16,27 @@ class Adjudicator extends Model
     {
         $str = '<div>';
 
-            //name header
-            $str .= '<div class="font-bold">'.$this['user']['person']->fullName.'</div>';
+        //name header
+        $str .= '<div class="font-bold">'.$this['user']['person']->fullName.'</div>';
 
-            //indented communication details
-            $str .= '<div class="text-sm ml-3 flex">';
+        //indented communication details
+        $str .= '<div class="text-sm ml-3 flex">';
 
-                //email block
-                $str .= '<div>';
-                    foreach($this['user']['person']->subscriberemails AS $email){
-                        $str.= '<div><a href="mailto:'.$email->email.'" class="text-blue-700">'.$email->email.'</a></div>';
-                    }
-                $str .= '</div>';
+        //email block
+        $str .= '<div>';
+        foreach($this['user']['person']->subscriberemails AS $email){
+            $str.= '<div><a href="mailto:'.$email->email.'" class="text-blue-700">'.$email->email.'</a></div>';
+        }
+        $str .= '</div>';
 
-                //phone block
-                $str .= '<div class="ml-4">';
-                    foreach($this['user']['person']->subscriberPhoneArray AS $phone){
-                        $str.= '<div>'.$phone.'</div>';
-                    }
-                $str .= '</div>';
+        //phone block
+        $str .= '<div class="ml-4">';
+        foreach($this['user']['person']->subscriberPhoneArray AS $phone){
+            $str.= '<div>'.$phone.'</div>';
+        }
+        $str .= '</div>';
 
-            $str .= '</div>';
+        $str .= '</div>';
 
         $str .= '</div>';
 
@@ -48,39 +48,48 @@ class Adjudicator extends Model
         $rs = [];
         $roominstrumentations = $this['room']->instrumentations->modelKeys();
 
+        /*
         $registrants =  Registrant::where('eventversion_id', Userconfig::getValue('eventversion', auth()->id()))
             ->where('registranttype_id', Registranttype::REGISTERED)
             ->whereHas('instrumentations', function($query) use($roominstrumentations){
                 $query->whereIn('id',$roominstrumentations);
-            })->get();
+            })
+            ->get();
+        */
 
         foreach($roominstrumentations AS $roominstrumentation){
-            $rs[Instrumentation::find($roominstrumentation)->formattedDescr()] = Registrant::where('eventversion_id', Userconfig::getValue('eventversion', auth()->id()))
-                ->where('registranttype_id', Registranttype::REGISTERED)
-                ->whereHas('instrumentations', function($query) use($roominstrumentation){
-                    $query->whereIn('id',[$roominstrumentation]);
-                })->get();
+            $rs[Instrumentation::find($roominstrumentation)->formattedDescr()] =
+                Registrant::where('eventversion_id', Userconfig::getValue('eventversion', auth()->id()))
+                    ->where('registranttype_id', Registranttype::REGISTERED)
+                    ->whereHas('instrumentations', function($query) use($roominstrumentation) {
+                        $query->whereIn('id', [$roominstrumentation]);
+                    })
+                    ->with([
+                        'eventversion'
+                    ])
+                    ->limit(200)
+                    ->get();
         }
 
         return $rs;
 
         //return $registrants;
-/*
+        /*
 
-        $x = Registrant::where('eventversion_id', Userconfig::getValue('eventversion', auth()->id()))
-            ->where('registranttype_id', Registranttype::REGISTERED)
-            ->whereHas('instrumentations', function($query) use($roominstrumentation){
-                $query->whereIn('id',$roominstrumentation);
-            })->get();
+                $x = Registrant::where('eventversion_id', Userconfig::getValue('eventversion', auth()->id()))
+                    ->where('registranttype_id', Registranttype::REGISTERED)
+                    ->whereHas('instrumentations', function($query) use($roominstrumentation){
+                        $query->whereIn('id',$roominstrumentation);
+                    })->get();
 
-        foreach($x AS $y){
-            if($y->id === 656923){
+                foreach($x AS $y){
+                    if($y->id === 656923){
 
-                dd($y->instrumentations);
-            }
-        }
-        return $x;
-*/
+                        dd($y->instrumentations);
+                    }
+                }
+                return $x;
+        */
     }
 
     public function person()
