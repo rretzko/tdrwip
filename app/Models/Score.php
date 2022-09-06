@@ -24,12 +24,12 @@ class Score extends Model
 
         return $this->mapScores($scores);
 
-  //      return array_column($scores,'score');
+        //      return array_column($scores,'score');
     }
 
     public function scoringcomponent()
     {
-        return $this->belongsTo(Scoringcomponent::class);
+        return $this->belongsTo(Scoringcomponent::class,'scoringcomponent_id','id');
     }
 
     public function mapScores($scores)

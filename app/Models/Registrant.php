@@ -112,8 +112,11 @@ class Registrant extends Model
             'unauditioned' => 'bg-white',
         ];
 
-        return $colors[$this->adjudicatedStatus($room)];
+        $status= $this->adjudicatedStatus($room);
+
+        return $colors[$status];
     }
+
 
     public function auditionStatus(\App\Models\Room $room=NULL)
     {
@@ -295,11 +298,12 @@ class Registrant extends Model
      */
     public function judgeScoresEntered($user_id)
     {
-        return (\App\Models\Score::where('registrant_id', $this->id)
-                ->where('user_id', $user_id)
-                ->first())
-                ? 'font-bold'
-                : '';
+        return  ($this->scores()
+            ->where('user_id', $user_id)
+            ->exists())
+            ? 'font-bold'
+            : '';
+
     }
 
     public function paid()
@@ -338,7 +342,7 @@ class Registrant extends Model
                 ){
                     $this->registranttype_id = $newtype->id;
                     $this->save();
-                    }
+                }
                 break;
 
             default:
@@ -349,10 +353,20 @@ class Registrant extends Model
 
     public function scoringcomponentScore(\App\Models\Adjudicator $adjudicator, \App\Models\Scoringcomponent $scoringcomponent)
     {
-        return \App\Models\Score::where('registrant_id', $this->id)
-            ->where('user_id', $adjudicator->user_id)
-            ->where('scoringcomponent_id', $scoringcomponent->id)
-            ->value('score') ?? 0;
+//        return \App\Models\Score::where('registrant_id', $this->id)
+//            ->where('user_id', $adjudicator->user_id)
+//            ->where('scoringcomponent_id', $scoringcomponent->id)
+//            ->value('score') ?? 0;
+
+        return $this->scores()
+                ->where('user_id', $adjudicator->user_id)
+                ->where('scoringcomponent_id', $scoringcomponent->id)
+                ->value('score') ?? 0;
+    }
+
+    public function scores()
+    {
+        return $this->hasMany(Score::class, 'registrant_id');
     }
 
     public function signatures()
