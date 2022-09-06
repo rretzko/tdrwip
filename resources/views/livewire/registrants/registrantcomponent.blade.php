@@ -35,6 +35,20 @@
                 <li><b class='text-yellow-100' >Checkmark:</b> The item is complete and no further action is needed.</li>
                 </ul>Note: Float over the graphics for additional specific information!" />
 
+                @if($event->id > 72)
+                    <section id="obligation_acknowledgement"
+                             style="background-color: white; padding: 0.5rem; margin-top: 1rem;">
+                        <div
+                            style="background-color: lightyellow; padding: 0.5rem; border: 1px solid darkblue; font-size: smaller;">
+                            <header style="text-align: center; font-weight: bold; text-decoration: underline;">
+                                Acknowledged Obligations
+                            </header>
+                            @if($event->id == 73)
+                                <x-obligations.25.73.obligations />
+                            @endif</div>
+                    </section>
+                @endif
+
             </x-slot>
 
             <x-slot name="table">
@@ -312,9 +326,9 @@
 
                                                 <x-tables.cell>
                                                     @if($registrant->registranttype_id === 18)
-                                                        
+
                                                         <span style="color: red;">PROHIBITED</span>
-                                                        
+
                                                         @elseif(
                                                         ($registrant->registranttype_id === 14) || {{-- QUALIFIED --}}
                                                         ($registrant->registranttype_id === 15) || {{-- APPLIED --}}

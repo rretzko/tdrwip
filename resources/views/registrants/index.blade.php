@@ -6,6 +6,8 @@
             @livewire('registrants.registrantcomponent', ['exception' => $exception])
 
         </div>
+
+
     </div>
 
     <x-jet-section-border />
