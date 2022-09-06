@@ -21,13 +21,17 @@
         </ul>
     </li>
     <li>
-        <b>I understand</b> that I may be asked as a SECOND duty to assist (attendance-sign in/sign out, testing,
+        <b>I understand</b> that all teachers must attend two planning meetings per year (fall and mid-winter) in order
+        to remain in good standing with the organization.  These meetings will be offered with in-person and remote options.
+    </li>
+    <li>
+        <b>I understand</b> that I may be asked as a SECOND duty to assist (attendance-sign in/sign out,
         supervising students, sectional rehearsals (either playing parts or conducting) as well as supervising the students
         during rehearsals and/or concerts.
     </li>
 
     <li>
-        <b>Should I need</b> to send a substitute, I understand that my substitute must be a Morris Area Chorus Association Member in good standing.
+        <b>Should I need</b> to send a substitute, I understand that my substitute must be a New Jersey music educator.
     </li>
 
     <li>
