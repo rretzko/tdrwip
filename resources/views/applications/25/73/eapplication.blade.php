@@ -80,10 +80,9 @@
                                                 <span style="color: red; font-weight: bold;">{{ $eventversion->dates('signature_close') }}</span>.<br />
                                                 All audio files must be submitted to your sponsoring Directors.<br />
                                                 <p>
-                                                    PLEASE NOTE: Should you be selected to participate in this Honor Choir,
-                                                    masks will be mandatory for the duration of your experience.
-                                                    Breaks will be provided throughout to ensure our time together is
-                                                    comfortable and safe.
+                                                    PLEASE NOTE: Morris Area Choral Directors Association reserves the
+                                                    right to required masks at any time, based on current health
+                                                    guidelines and host school requirements.
                                                 </p>
                                             </div>
                                         </div>
@@ -208,8 +207,8 @@
                                                 Payment record
                                             </div>
                                             <div class=" justify-self-stretch mx-4 mb-4">
-                                                An audition fee of $10.00 per student will be charged.  In addition, chorus
-                                                students accepted will be assessed a participation fee of $25.00.
+                                                An audition fee of $15.00 per student will be charged.  In addition, chorus
+                                                students accepted will be assessed a participation fee of $30.00.
                                                 The music will be theirs to keep.
                                             </div>
                                             <div class="detail-row" style="margin-left: 1rem;">
@@ -263,53 +262,68 @@
                                                 </div>
                                                 <style>
                                                     .date{width: 12rem;}
-                                                    .time{width: 9rem;}
+                                                    .time{width: 9rem; text-align: center;}
                                                 </style>
                                                 <div class="schedule">
+                                                    <header style="display: flex; flex-direction: row;">
+                                                        <div class="date font-bold">Date</div>
+                                                        <div class="time font-bold">Middle School</div>
+                                                        <div class="time font-bold">High School</div>
+                                                        <div class="type font-bold">Event</div>
+                                                    </header>
                                                     <div style="display: flex; flex-direction: row;">
-                                                        <div class="date">Thursday, January 6th</div>
+                                                        <div class="date">Thursday, January 5th</div>
+                                                        <div class="time">4:00 - 8:00pm</div>
                                                         <div class="time">4:00 - 8:15pm</div>
                                                         <div class="type">Rehearsal</div>
                                                     </div>
                                                     <div style="display: flex; flex-direction: row;">
-                                                        <div class="date">Monday, January 10th</div>
+                                                        <div class="date">Monday, January 9th</div>
+                                                        <div class="time">4:00 - 8:00pm</div>
                                                         <div class="time">4:00 - 8:15pm</div>
                                                         <div class="type">Rehearsal</div>
                                                     </div>
                                                     <div style="display: flex; flex-direction: row;">
-                                                        <div class="date">Tuesday, January 11th</div>
+                                                        <div class="date">Tuesday, January 10th</div>
+                                                        <div class="time">4:00 - 8:00pm</div>
                                                         <div class="time">4:00 - 8:15pm</div>
                                                         <div class="type">SNOW DATE</div>
                                                     </div>
                                                     <div style="display: flex; flex-direction: row;">
-                                                        <div class="date">Wednesday, January 12th</div>
+                                                        <div class="date">Wednesday, January 11th</div>
+                                                        <div class="time">4:00 - 8:00pm</div>
                                                         <div class="time">4:00 - 8:15pm</div>
                                                         <div class="type">Rehearsal</div>
                                                     </div>
                                                     <div style="display: flex; flex-direction: row;">
-                                                        <div class="date">Friday, January 14th</div>
+                                                        <div class="date">Friday, January 13th</div>
+                                                        <div class="time">9:00am - 3:00pm</div>
                                                         <div class="time">9:00am - 3:00pm</div>
                                                         <div class="type">All-Day Rehearsal</div>
                                                     </div>
                                                     <br />
                                                     <div style="display: flex; flex-direction: row;">
-                                                        <div class="date">Saturday, January 15th</div>
+                                                        <div class="date">Saturday, January 14th</div>
+                                                        <div class="time">10:00am - 1:00pm</div>
                                                         <div class="time">10:00am - 1:00pm</div>
                                                         <div class="type">Rehearsal</div>
                                                     </div>
-                                                </div>
+                                                </header>
                                                 <div style="display: flex; flex-direction: row;">
-                                                    <div class="date">Saturday, January 15th</div>
+                                                    <div class="date">Saturday, January 14th</div>
+                                                    <div class="time">1:00 pm</div>
                                                     <div class="time">1:00 pm</div>
                                                     <div class="type">Concert</div>
                                                 </div>
                                                 <div style="display: flex; flex-direction: row;">
-                                                    <div class="date">Sunday, January 16th</div>
+                                                    <div class="date">Sunday, January 15th</div>
+                                                    <div class="time">1:00pm </div>
                                                     <div class="time">1:00pm </div>
                                                     <div class="type">Call</div>
                                                 </div>
                                                 <div style="display: flex; flex-direction: row;">
-                                                    <div class="date">Sunday, January 16th</div>
+                                                    <div class="date">Sunday, January 15th</div>
+                                                    <div class="time">4:00pm</div>
                                                     <div class="time">4:00pm</div>
                                                     <div class="type">SNOW DATE</div>
                                                 </div>
@@ -340,13 +354,13 @@
                                                     </li>
                                                     <li style="margin-bottom: 0.5rem;">
                                                         Any student who misses more than one evening rehearsal for ANY reason,
-                                                        or who misses the all-day rehearsal before the concert (Friday, January 10th)
-                                                        or rehearsal the morning of the concert (Saturday, January 11th) will
+                                                        or who misses the all-day rehearsal before the concert (Friday, January 13th)
+                                                        or rehearsal the morning of the concert (Saturday, January 14th) will
                                                         not be allowed to participate.
                                                     </li>
                                                     <li style="margin-bottom: 0.5rem;">
-                                                        An audition fee of $10.00 per student will be charged.  In addition,
-                                                        chorus students accepted will be assessed a participation fee of $25.00.
+                                                        An audition fee of $15.00 per student will be charged.  In addition,
+                                                        chorus students accepted will be assessed a participation fee of $30.00.
                                                         The music will be theirs to keep.
                                                     </li>
                                                 </ol>
