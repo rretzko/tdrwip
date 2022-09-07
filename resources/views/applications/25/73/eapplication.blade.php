@@ -431,7 +431,7 @@
                                                 </div>
 
                                                 {{-- SUBMIT --}}
-                                                <div class="input-group mt-8" ">
+                                                <div class="input-group mt-8" >
                                                     <input type="submit" name="submit" value="Submit"
                                                            style="background-color: black; color: white; border-radius: .5rem;  padding:.25rem .5rem; margin-left: 8rem;"
                                                     />
