@@ -304,15 +304,15 @@
                                                     <br />
                                                     <div style="display: flex; flex-direction: row;">
                                                         <div class="date">Saturday, January 14th</div>
-                                                        <div class="time">10:00am - 1:00pm</div>
-                                                        <div class="time">10:00am - 1:00pm</div>
+                                                        <div class="time">1:00 - 4:00pm</div>
+                                                        <div class="time">1:00 - 4:00pm</div>
                                                         <div class="type">Rehearsal</div>
                                                     </div>
                                                 </header>
                                                 <div style="display: flex; flex-direction: row;">
                                                     <div class="date">Saturday, January 14th</div>
-                                                    <div class="time">1:00 pm</div>
-                                                    <div class="time">1:00 pm</div>
+                                                    <div class="time">4:00 pm</div>
+                                                    <div class="time">4:00 pm</div>
                                                     <div class="type">Concert</div>
                                                 </div>
                                                 <div style="display: flex; flex-direction: row;">

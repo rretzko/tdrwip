@@ -55,10 +55,8 @@
                 <span style="color: red; font-weight: bold;">{{ $eventversion->dates('signature_close') }}</span>.<br />
                 All audio files must be submitted to your sponsoring Directors.<br />
                 <p>
-                    PLEASE NOTE: Should you be selected to participate in this Honor Choir,
-                    masks will be mandatory for the duration of your experience.
-                    Breaks will be provided throughout to ensure our time together is
-                    comfortable and safe.
+                    PLEASE NOTE: Morris Area Choral Directors Association reserves the right to require masks at any time,
+                    based on current health guidelines and host school requirements.
                 </p>
             </div>
         </td>
@@ -231,8 +229,8 @@
     </tr>
     <tr>
         <td  colspan="2" style="margin-bottom: 0.5rem;">
-            An audition fee of $10.00 per student will be charged.  In addition, chorus
-            students accepted will be assessed a participation fee of $25.00.
+            An audition fee of $15.00 per student will be charged.  In addition, chorus
+            students accepted will be assessed a participation fee of $30.00.
             The music will be theirs to keep.
         </td>
     </tr>
@@ -260,51 +258,66 @@
         <td class="spacer" colspan="3" style="height: 0.5rem;"> </td>
     </tr>
     <tr>
-        <td>Thursday, January 6th</td>
+        <td><b>Date</b></td>
+        <td><b>Middle School</b></td>
+        <td><b>High School</b></td>
+        <td><b>Event</b></td>
+    </tr>
+    <tr>
+        <td>Thursday, January 5th</td>
+        <td>4:00 - 8:00pm</td>
         <td>4:00 - 8:15pm</td>
         <td>Rehearsal</td>
     </tr>
     <tr>
-        <td>Monday, January 10th</td>
+        <td>Monday, January 9th</td>
+        <td>4:00 - 8:00pm</td>
         <td>4:00 - 8:15pm</td>
         <td>Rehearsal</td>
 
     </tr>
     <tr>
-        <td>Tuesday, January 11th</td>
+        <td>Tuesday, January 10th</td>
+        <td>4:00 - 8:00pm</td>
         <td>4:00 - 8:15pm</td>
         <td>SNOW DATE</td>
     </tr>
     <tr>
-        <td>Wednesday, January 12th</td>
+        <td>Wednesday, January 11th</td>
+        <td>4:00 - 8:00pm</td>
         <td>4:00 - 8:15pm</td>
         <td>Rehearsal</td>
     </tr>
     <tr>
-        <td>Friday, January 14th</td>
+        <td>Friday, January 13th</td>
+        <td>9:00am - 3:00pm</td>
         <td>9:00am - 3:00pm</td>
         <td>All-Day Rehearsal</td>
     </tr>
     <tr>
-        <td>Saturday, January 15th</td>
-        <td>10:00am - 1:00pm</td>
+        <td>Saturday, January 14th</td>
+        <td>1:00pm - 4:00pm</td>
+        <td>1:00pm - 4:00pm</td>
         <td>Rehearsal</td>
     </tr>
     <tr>
         <td class="spacer" colspan="3" style="height: 0.5rem;"> </td>
     </tr>
     <tr>
-        <td>Saturday, January 15th</td>
-        <td>1:00 pm</td>
+        <td>Saturday, January 14th</td>
+        <td>4:00 pm</td>
+        <td>4:00 pm</td>
         <td>Concert</td>
     </tr>
     <tr>
-        <td>Sunday, January 16th</td>
+        <td>Sunday, January 15th</td>
+        <td>1:00pm </td>
         <td>1:00pm </td>
         <td>Call</td>
     </tr>
     <tr>
-        <td>Sunday, January 16th</td>
+        <td>Sunday, January 15th</td>
+        <td>4:00pm</td>
         <td>4:00pm</td>
         <td>SNOW DATE</td>
     </tr>
@@ -332,10 +345,8 @@
                 <span style="color: red; font-weight: bold;">{{ $eventversion->dates('signature_close') }}</span>.<br />
                 All audio files must be submitted to your sponsoring Directors.<br />
                 <p>
-                    PLEASE NOTE: Should you be selected to participate in this Honor Choir,
-                    masks will be mandatory for the duration of your experience.
-                    Breaks will be provided throughout to ensure our time together is
-                    comfortable and safe.
+                    PLEASE NOTE: Morris Area Choral Directors Association reserves the right to require masks at any time,
+                    based on current health guidelines and host school requirements.
                 </p>
             </div>
         </td>
@@ -367,13 +378,13 @@
             </li>
             <li style="margin-bottom: 0.5rem;">
                 Any student who misses more than one evening rehearsal for ANY reason,
-                or who misses the all-day rehearsal before the concert (Friday, January 10th)
-                or rehearsal the morning of the concert (Saturday, January 11th) will
+                or who misses the all-day rehearsal before the concert (Friday, January 13th)
+                or rehearsal the morning of the concert (Saturday, January 14th) will
                 not be allowed to participate.
             </li>
             <li style="margin-bottom: 0.5rem;">
-                An audition fee of $10.00 per student will be charged.  In addition,
-                chorus students accepted will be assessed a participation fee of $25.00.
+                An audition fee of $15.00 per student will be charged.  In addition,
+                chorus students accepted will be assessed a participation fee of $30.00.
                 The music will be theirs to keep.
             </li>
         </ol>
