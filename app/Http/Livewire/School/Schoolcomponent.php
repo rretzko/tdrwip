@@ -69,6 +69,21 @@ class Schoolcomponent extends Component
         'grades_found' => ['nullable'],
     ];
 
+    public function mount()
+    {
+        $this->searchresults = [];
+        $this->table_schools = auth()->user()->schools;
+        $this->geostates = $this->buildSimpleArrayFromCollection(Geostate::all(), 'id', 'abbr');
+        $this->gradetypes = $this->buildSimpleArrayFromCollection(Gradetype::orderBy('orderby')->get(), 'id', 'descr');
+        $this->options = $this->geostates;
+        $this->perpage = Userconfig::getValue('pagination', auth()->id());
+        $this->startyears = $this->years();
+        $this->endyears = $this->years(true);
+        $this->setGrades();
+        //initialize select values
+        $this->geostate_id = array_key_first($this->geostates);
+    }
+
     public function add()
     {
         if(! $this->schoolid){
@@ -118,21 +133,6 @@ class Schoolcomponent extends Component
         $schools = new SchoolsExport(School::whereKey($this->selected)->get());
 
         return Excel::download($schools, 'schools.csv');
-    }
-
-    public function mount()
-    {
-        $this->searchresults = [];
-        $this->table_schools = auth()->user()->schools;
-        $this->geostates = $this->buildSimpleArrayFromCollection(Geostate::all(), 'id', 'abbr');
-        $this->gradetypes = $this->buildSimpleArrayFromCollection(Gradetype::orderBy('orderby')->get(), 'id', 'descr');
-        $this->options = $this->geostates;
-        $this->perpage = Userconfig::getValue('pagination', auth()->id());
-        $this->startyears = $this->years();
-        $this->endyears = $this->years(true);
-        $this->setGrades();
-        //initialize select values
-        $this->geostate_id = array_key_first($this->geostates);
     }
 
     public function edit($id)
