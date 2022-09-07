@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Pitchfiles;
 
 use App\Models\Eventversion;
 use App\Models\Userconfig;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Pitchfilecomponent extends Component
@@ -19,7 +20,7 @@ class Pitchfilecomponent extends Component
         $this->eventfiletype_id = 0;
         $this->eventversion = Eventversion::find(Userconfig::getValue('eventversion', auth()->id()));
         $this->instrumentation_id=0;
-        $this->instrumentations = $this->eventversion->instrumentations();
+        $this->instrumentations = $this->instrumentationsArray();
         $this->filecontenttypes = $this->eventversion->filecontenttypes;
     }
 
@@ -37,10 +38,22 @@ class Pitchfilecomponent extends Component
 
     public function updatedInstrumentationId()
     {
-       //$this->pitchfiles();
+       $this->pitchfiles();
     }
 
 /** END OF PUBLIC FUNCTIONS  *************************************************/
+
+    private function instrumentationsArray()
+    {
+        $a = [];
+
+        foreach($this->eventversion->instrumentations() AS $instrumentation){
+
+            $a[$instrumentation->id] = $instrumentation->descr;
+        }
+
+        return $a;
+}
 
     private function pitchfiles()
     {
@@ -48,28 +61,62 @@ class Pitchfilecomponent extends Component
 
         if($this->instrumentation_id && $this->filecontenttype_id){
 
-            return $this->eventversion->pitchfiles
+            //isolate rows without instrumentation_id (ex. all voices, pdfs, etc)
+            $isnull = DB::table('pitchfiles')
+                ->select('id')
+                ->where('eventversion_id', $this->eventversion->id)
+                ->whereNull('instrumentation_id');
+
+            //combine $isnull with instrumentation_id- and filecontenttype-specific rows
+            $all = DB::table('pitchfiles')
+                ->select('id')
+                ->where('eventversion_id',$this->eventversion->id)
+                ->where('instrumentation_id', $this->instrumentation_id)
                 ->where('filecontenttype_id', $this->filecontenttype_id)
-                ->where('instrumentation_id', $this->instrumentation_id);
+                ->union($isnull)
+                ->get();
+
+            $pitchfiles = collect();
+            foreach($all AS $row){
+
+                $pitchfiles->push(\App\Models\Pitchfile::find($row->id));
+            }
+
+            return $pitchfiles->sortBy('order_by');
 
         }elseif($this->filecontenttype_id){
 
             return $this->eventversion->pitchfiles
-                ->where('filecontenttype_id', $this->filecontenttype_id);
+                ->where('filecontenttype_id', $this->filecontenttype_id)
+                ->sortBy('order_by');
 
         }elseif($this->instrumentation_id) {
 
-            return $this->eventversion->pitchfiles->filter(function ($pitchfile) use($instrumentation_id){
+            //isolate rows without instrumentation_id (ex. all voices, pdfs, etc)
+            $isnull = DB::table('pitchfiles')
+                ->select('id')
+                ->where('eventversion_id', $this->eventversion->id)
+                ->whereNull('instrumentation_id');
 
-                return (
-                    ($pitchfile->instrumentation_id == $instrumentation_id) ||
-                    is_null($pitchfile->instrumentation_id)
-                );
-            });
+            //combine $isnull with instrumentation_id-specific rows
+            $all = DB::table('pitchfiles')
+                ->select('id')
+                ->where('eventversion_id',$this->eventversion->id)
+                ->where('instrumentation_id', $this->instrumentation_id)
+                ->union($isnull)
+                ->get();
+
+            $pitchfiles = collect();
+            foreach($all AS $row){
+
+                $pitchfiles->push(\App\Models\Pitchfile::find($row->id));
+            }
+
+            return $pitchfiles->sortBy('order_by');
 
         }else{
 
-            return $this->eventversion->pitchfiles;
+            return $this->eventversion->pitchfiles->sortBy('order_by');
         }
 
     }

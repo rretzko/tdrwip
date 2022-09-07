@@ -13,4 +13,5 @@ class Eventversiontype extends Model
     const OPEN = 21;
 
     protected $fillable = ['id','descr'];
+    
 }

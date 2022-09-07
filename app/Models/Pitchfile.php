@@ -11,7 +11,7 @@ class Pitchfile extends Model
 
     public function getFilecontenttypedescrAttribute()
     {
-        return Filecontenttype::find($this->filecontenttype_id)->descr;
+        return Filecontenttype::find($this->filecontenttype_id)->descr ?? '';
     }
 
     public function getInstrumentationabbrAttribute()

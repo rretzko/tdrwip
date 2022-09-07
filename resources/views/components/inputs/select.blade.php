@@ -8,6 +8,7 @@
 'options',
 'placeholder' => ""
 ])
+
 {{-- @todo determine how to pass a method to displayproperty so that Instrumentation->formattedDescr() can be used in place of Instrumentation->descr --}}
 <div >
     <label for="{{ $for }}" class="block text-sm font-medium text-gray-700"></label>
@@ -16,15 +17,17 @@
         @if($placeholder)
             <option value="0"  >{{ $placeholder }}</option>
         @endif
-
-        @foreach($options AS $key => $value)
+        
+        @forelse($options AS $key => $value)
             <option
                 value="{{ (is_object($value)) ? $value->id : $key }}"
             >
-                {{ is_object($value) ? $value->$displayproperty : $value }}
+                {{ is_object($value) ? $value->$displayproperty : dd($value) }}
 
             </option>
-        @endforeach
+        @empty
+            <option value="0">None found</option>
+        @endforelse
         @error($for)
         <p class="mt-2 text-sm text-red-600" id="{{ $for }}-error">
             {{ $message }}

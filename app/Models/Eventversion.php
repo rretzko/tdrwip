@@ -107,7 +107,21 @@ class Eventversion extends Model
      */
     public function instrumentations()
     {
-        return $this->eventensembles->first()->eventensembletype()->instrumentations;
+        if ($this->eventensembles()->count() < 2){ //single event ensemble
+
+            return $this->eventensembles()->first()->eventensembletype()->instrumentations;
+
+        }else{ //multiple event ensembles
+
+            $instrumentations = collect();
+
+            foreach($this->eventensembles() AS $eventensemble){
+
+                $instrumentations = $instrumentations->merge($eventensemble->eventensembletype()->instrumentations);
+            }
+
+            return $instrumentations;
+        }
     }
 
     public function isOpenForMembers()
