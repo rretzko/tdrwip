@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -53,6 +54,17 @@ class Membereventversion extends Model
                 return in_array($eventversion['event']['organization']->id, $organizations);
             });
 
+        //filter on membership-open date
+        self::$eventversions = self::$eventversions->filter(function($eventversion){
+
+            foreach ($eventversion->eventversiondates as $eventversiondate){
+
+                if($eventversiondate->datetype_id == 3){ //membership open datetype
+
+                    return ($eventversiondate->dt <= Carbon::now());
+                }
+            }
+        });
     }
 
     private static function filterForAdmin()
