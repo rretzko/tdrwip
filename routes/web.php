@@ -82,7 +82,7 @@ Route::middleware('auth', 'verified')->group(function() {
     /** LIBRARY */
     Route::get('/libraries', [App\Http\Controllers\Libraries\LibraryController::class,'index'])
         ->name('library.index');
-    Route::post('libraries/questionnaire', [App\Http\Controllers\LIbraries\LibraryController::class,'questionnaire'])
+    Route::post('libraries/questionnaire', [App\Http\Controllers\Libraries\LibraryController::class,'questionnaire'])
         ->name('library.questionnaire');
 
     /** ENSEMBLES */
