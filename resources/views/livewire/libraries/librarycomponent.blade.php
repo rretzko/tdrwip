@@ -13,140 +13,158 @@
 
         <x-slot name="table">
 
-            {{-- Per Page, Bulk actions and ADD button --}}
-            <div class="flex justify-end pr-6 space-x-2">
-                <x-inputs.dropdowns.perpage />
-                <x-inputs.dropdowns.bulkactions :selected="$selected" />
-                <x-buttons.button-add toggle="showaddmodal" />
-            </div>
+            {{-- error and success messages --}}
+            @if($errors->any())
+                <div style="border: 1px solid darkred; background-color: rgba(255,0,0,0.1); padding: 0.25rem; margin-bottom: 0.5rem;">
+                    {{ implode('', $errors->all('<div>:message</div>')) }}
+                </div>
+            @endif
+
+            @if(session()->has('success'))
+                <div style="border: 1px solid darkgreen; background-color: rgba(0,255,0,0.1); padding: 0.25rem; margin-bottom: 0.5rem;">
+                    {{ session()->get('success') }}
+                </div>
+            @endif
 
             {{-- beginning of tailwindui table --}}
+            <style>p{margin-bottom: 1rem;}</style>
+            <div class="border border-gray-800 bg-gray-200 p-4">
+                <p>
+                    <b>Background</b>: I've been telling myself a story that Directors like you need a standardized
+                    system for maintaining their Choral libraries.
+                </p>
+                <p>In my head, you (or your student librarians) would be able to input your choral literature and then
+                    <b><i>quickly</i></b> and <b><i>easily</i></b> search that library by any criteria necessary.
+                </p>
+                <p>
+                    <ol class="ml-8" style="list-style-type: disc">
+                        <li>Maybe you're trying to remember what music you performed five year ago ... by ensemble ... in the
+                            Spring concert.</li>
+                        <li>Or maybe you're looking for pieces you have by Jim Papoulis, or Emily Crocker, or John Rutter.</li>
+                        <li>Or maybe you're looking for an a cappella Winter SSA piece.</li>
+                    </ol>
+                </p>
+                <p>
+                    My story is that it would be helpful to <b><i>quickly</i></b> and <b><i>easily</i></b>
+                    find these pieces in your library: Open a page, tic some checkboxes, select some options and
+                    <b><i>Voila! Here's what's in your library!</i></b>
+                </p>
+                <p>
+                    If you agree, would you take 45 seconds to tell me what's important for you to have at your fingertips?
+                    <form method="post" action="{{ route('library.questionnaire') }}">
+                    @csrf
+                    <div class="flex flex-row">
+                        <div id="input">
+                            <style>
+                                input{margin-top: 0.25rem;}
+                                label{margin-left: 0.5rem;}
+                                .hint{font-size: 0.66rem;}
+                            </style>
+                            <header class="italic">"To work for me, the library has to contain...":</header>
+                            <div class="ml-6">
+                                <div class="flex flex-row">
+                                    <input type="checkbox" name="title" value="1"
+                                        @if(old('title') || $questionnaire->title) checked @endif
+                                    />
+                                    <label for="title">Title</label>
+                                </div>
+                                <div class="flex flex-row">
+                                    <input type="checkbox" name="subtitle" value="1"
+                                           @if(old('subtitle') || $questionnaire->subtitle) checked @endif
+                                    />
+                                    <label for="subtitle">SubTitle</label>
+                                </div>
+                                <div class="flex flex-row">
+                                    <input type="checkbox" name="composer" value="1"
+                                           @if(old('composer') || $questionnaire->composer) checked @endif
+                                    />
+                                    <label for="composer">Composer(s)</label>
+                                </div>
+                                <div class="flex flex-row">
+                                    <input type="checkbox" name="arranger" value="1"
+                                           @if(old('arranger') || $questionnaire->arranger) checked @endif
+                                    />
+                                    <label for="arranger">Arranger(s)</label>
+                                </div>
+                                <div class="flex flex-row">
+                                    <input type="checkbox" name="publisher" value="1"
+                                           @if(old('publisher') || $questionnaire->publisher) checked @endif
+                                    />
+                                    <label for="publisher">Publisher</label>
+                                </div>
+                                <div class="flex flex-row">
+                                    <input type="checkbox" name="arrangement" value="1"
+                                           @if(old('arrangement') || $questionnaire->arrangement) checked @endif
+                                    />
+                                    <label for="arranger">Arrangement <span class="hint">(SATB, SSA, etc.)</span></label>
+                                </div>
+                                <div class="flex flex-row">
+                                    <input type="checkbox" name="accompaniment" value="1"
+                                           @if(old('accompaniment') || $questionnaire->accompaniment) checked @endif
+                                    />
+                                    <label for="accompaniment">Accompaniment <span class="hint">(none, piano, harp, etc.)</span></label>
+                                </div>
+                                <div class="flex flex-row">
+                                    <input type="checkbox" name="language" value="1"
+                                           @if(old('language') || $questionnaire->language) checked @endif
+                                    />
+                                    <label for="language">Language</label>
+                                </div>
+                                <div class="flex flex-row">
+                                    <input type="checkbox" name="tempo" value="1"
+                                           @if(old('tempo') || $questionnaire->tempo) checked @endif
+                                    />
+                                    <label for="tempo">Tempo <span class="hint">(meter markings or words)</span></label>
+                                </div>
+                                <div class="flex flex-row">
+                                    <input type="checkbox" name="year" value="1"
+                                           @if(old('year') || $questionnaire->year) checked @endif
+                                    />
+                                    <label for="year">Year Performed</label>
+                                </div>
+                                <div class="flex flex-row">
+                                    <input type="checkbox" name="ensemble" value="1"
+                                           @if(old('ensemble') || $questionnaire->ensemble) checked @endif
+                                    />
+                                    <label for="ensemble">Performed By <span class="hint">(ex. Ensemble name)</span></label>
+                                </div>
+                                <div class="flex flex-row">
+                                    <input type="checkbox" name="concert" value="1"
+                                           @if(old('concert') || $questionnaire->concert) checked @endif
+                                    />
+                                    <label for="concert">Performed At <span class="hint">(ex. Spring Concert, Graduation, etc.)</span></label>
+                                </div>
+                                <div class="flex flex-row">
+                                    <input type="checkbox" name="comments" value="1"
+                                           @if(old('comments') || $questionnaire->comments) checked @endif
+                                    />
+                                    <label for="comments">Comments <span class="hint">(Free form comments)</span></label>
+                                </div>
+                                <div>
+                                    <textarea cols="40" name="must_haves" placeholder="Other items the library MUST have...">{{ (old('must_haves') ?: ($questionnaire->must_haves ?: '')) }}</textarea>
+                                </div>
+                                <div>
+                                    <textarea cols="40" name="nice_haves" placeholder="Other items that would be optional or nice to have...">{{ (old('nice_haves') ?: ($questionnaire->nice_haves ?: '')) }}</textarea>
+                                </div>
+                                <div>
+                                    <input class="bg-black text-white p-2 rounded-full shadow-lg" type="submit" name="submit" value="Thank You!" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                </p>
+            </div>
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 ">
                 <div class="py-2 align-middle inline-block min-w sm:px-6 lg:px-8">
                     <div class="space-y-4 overflow-hidden border-b border-gray-200 sm:rounded-lg">
 
-                        <div class="flex space-x-4">
-                            <div class="flex">
-                                <x-inputs.text wire:model.debounce.1s="search"
-                                               for="search"
-                                               label=""
-                                               placeholder="Search ensemble name..."/>
-                            </div>
-                        <!-- {{-- SUPPRESS ADVANCED FILTERS
-                            <div class="flex text-sm text-gray-600">
-                                <x-buttons.button-link wire:click="$toggle('showfilters')">
-                                    @if($showfilters) Hide @endif Advanced Filters @if(strlen($filterstring)) (current: "{{ $filterstring }}") @endif
-                                </x-buttons.button-link>
-                            </div>
---}} -->
-                        </div>
 
-                        <div>
-<!-- {{--
-                            @if($showfilters)
-                                <div class="bg-gray-300 p-4 rounded shadow-inner flex relative">
 
-                                    <div class="2-1/2 pr-2 space-y-4">
-                                        <div class=" border border-black p-2 bg-gray-200 text-sm" id="advisory">
-                                            Please note: Filters are applied against the selected population
-                                            (Current/Alum/All) and will temporarily remove pagination.
-                                        </div>
 
-                                        <x-inputs.group inline for="filter-first" label="First Name">
-
-                                            <x-inputs.text id="filter-first" for="filters.first" label="" placeholder="Seach by first name..."/>
-                                        </x-inputs.group>
-
-                                        <x-inputs.group inline for="filter-instrumentations" label="Voice Parts">
-                                            <x-inputs.select id="filter-instrumentations"
-                                                             for="filters.instrumentation_id"
-                                                             label=""
-                                                             :options="$sortedinstrumentations"
-                                                             placeholder="Select Voice Part..."
-                                                             immediate
-                                            >
-
-                                            </x-inputs.select>
-                                        </x-inputs.group>
-
-                                        <x-inputs.group inline for="filter-classofs" label="Classes">
-                                            <x-inputs.select id="filter-classofs"
-                                                             for="filters.classof" label=""
-                                                             :options="$sortedclassofs"
-                                                             placeholder="Select Class..."
-                                                             immediate
-                                            >
-
-                                            </x-inputs.select>
-                                        </x-inputs.group>
-
-                                        <x-buttons.button-link wire:click="resetFilters" class="absolute right-0 bottom-0 p-4">Reset Filters</x-buttons.button-link>
-                                    </div>
-
-                                </div>
-                            @endif
---}} -->
-                        </div>
-
-                        <x-tables.surgetable class="w-11/12 ">
-                            <x-slot name="head" >
-                                <th class="w-2/12">Title</th>
-                                <th class="w-2/12">Composer</th>
-                                <th class="w-2/12">Arranger</th>
-                                <th class="w-2/12">Style</th>
-                                <th class="w-2/12">Count</th>
-
-                            </x-slot>
-
-                            <x-slot name="body" >
-
-                                <tr>
-                                    <th colspan="5" class="font-bold text-center" style="width:30rem;">Under Development but coming soon!!</th>
-                                </tr>
-                            <!-- {{-- SUPPRESS PAGINATION
-                                <div class="mb-2">
-                                    {{$ensembles->count() ? $ensembles->links() : ''}}
-                                </div>
---}} -->
-                            </x-slot>
-
-                        </x-tables.surgetable>
-
-                    <!-- {{-- SUPPRESS PAGINATION
-                        <div class="mb-2">
-                            @if($ensembles->count() > 5)
-                                {{$ensembles->count() ? '$ensembles->links()' : ''}}
-                            @endif
-                        </div>
---}} -->
                     </div>
                 </div>
             </div>
-
-            {{-- MODALS --}}
-            {{-- ADD/EDIT STUDENT --}}
-            <div>
-                @if($showeditmodal)
-                    <x-modals.composition
-                        showpublisherform="{{ $showpublisherform }}"
-                        publisherselected="{{ $publisherselected }}"
-                        :compositioncollectiontypes="$compositioncollectiontypes"
-                        :compositiontypes="$compositiontypes"
-                        :editcomposition="$editcomposition"
-                        :geostates="$geostates"
-                        :publisherslist="$publisherslist"
-                    />
-                @endif
-            </div>
-
-            {{-- DELETE ENSEMBLE --}}
-            <div>
-                @if($showDeleteModal)
-                    <x-modals.delete :selected="$selected" objectname="ensemble" />
-                @endif
-            </div>
-
-
 
         </x-slot>
 

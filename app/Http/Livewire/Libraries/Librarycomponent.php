@@ -19,6 +19,7 @@ class Librarycomponent extends Component
     public $confirmingdelete = 0;
     public $perpage = 0; //pagination
     public $population = 0; //ALL members count
+    public $questionnaire = null;  //incoming parameter
     public $search = '';
     public $selectall = false;
     public $selected = [];

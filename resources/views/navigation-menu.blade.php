@@ -47,6 +47,9 @@
                   d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/>
         </svg>
     </a>
+
+    {{-- ENSEMBLES --}}
+    <!-- {{--
     <a href="{{ route('ensembles.index') }}"
        class="border border-gray-500 rounded px-2 py-1 ml-0.5
             {{ (
@@ -68,6 +71,9 @@
                   d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
         </svg>
     </a>
+    --}} -->
+
+    {{-- LIBRARIES --}}
     <a href="{{ route('library.index') }}"
        class="border border-gray-500 rounded px-2 py-1 ml-0.5
         {{ (strpos(Route::currentRouteName(), 'library')) === 0 ? 'active' : ''  }} "
@@ -258,6 +264,7 @@
     </a>
 
     <!-- ENSEMBLES -->
+    <!-- {{--
     <a href="{{ route('ensembles.index') }}"
        class="flex flex-row border border-blue-300 rounded px-2 py-1 ml-0.5
         {{ (
@@ -277,6 +284,7 @@
         </svg>
         <div class="ml-1">Ensembles</div>
     </a>
+    --}} -->
     <a href="{{ route('library.index') }}"
        class="flex flex-row border border-blue-300 rounded px-2 py-1 ml-0.5
         {{ (strpos(Route::currentRouteName(), 'library')) === 0 ? 'active' : ''  }}">
