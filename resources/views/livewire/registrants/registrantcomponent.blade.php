@@ -35,7 +35,7 @@
                 <li><b class='text-yellow-100' >Checkmark:</b> The item is complete and no further action is needed.</li>
                 </ul>Note: Float over the graphics for additional specific information!" />
 
-                @if($event->id > 72)
+                @if($event->id > 71)
                     <section id="obligation_acknowledgement"
                              style="background-color: white; padding: 0.5rem; margin-top: 1rem;">
                         <div
@@ -43,9 +43,16 @@
                             <header style="text-align: center; font-weight: bold; text-decoration: underline;">
                                 Acknowledged Obligations
                             </header>
+                            {{-- ALL-SHORE CHORUS --}}
+                            @if($event->id == 72)
+                                <x-obligations.19.72.obligations />
+                            @endif
+
+                            {{-- MORRIS AREA HONOR CHOIRS --}}
                             @if($event->id == 73)
                                 <x-obligations.25.73.obligations />
-                            @endif</div>
+                            @endif
+                        </div>
                     </section>
                 @endif
 
