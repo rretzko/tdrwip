@@ -38,9 +38,7 @@
                             @if($eventversion->id === 68)
                                     <x-obligations.23.68.obligations />
                             @endif
-                            @if($eventversion->id === 69)
-                                <x-obligations.19.69.obligations />
-                            @endif
+
                             @if($eventversion->id === 70)
                                 <x-obligations.1.70.obligations />
                             @endif
@@ -49,6 +47,14 @@
                             @endif
                             @if($eventversion->id === 73)
                                 <x-obligations.25.73.obligations :eventversion=$eventversion />
+                            @endif
+
+                            {{-- ALL-SHORE CHORUS --}}
+                            @if($eventversion->id === 69)
+                                <x-obligations.19.69.obligations />
+                            @endif
+                            @if($eventversion->id === 72)
+                                <x-obligations.19.72.obligations />
                             @endif
 
                             <!-- {{--
