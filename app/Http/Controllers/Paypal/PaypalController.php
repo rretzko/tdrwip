@@ -9,8 +9,11 @@ use Illuminate\Support\Facades\Log;
 
 class PaypalController extends Controller
 {
-    public function update($request)
+    public function update(Request $request)
     {
         Log::info(Carbon::now().': paypal transaction received');
+        Log::info(serialize($request->all()));
+
+        dd($request->all());
     }
 }

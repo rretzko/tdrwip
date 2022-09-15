@@ -166,7 +166,7 @@ Route::middleware('auth', 'verified')->group(function() {
     /** PAYPAL */
     Route::get('/paypal/registrants', [App\Http\Controllers\Registrants\PaypalController::class,'index'])->name('registrant.paypal');
     //incoming api from PayPal
-    Route::get('/update_account', [App\Http\Controllers\Paypal\PaypalController::class,'index']);
+    Route::get('/update_account', [App\Http\Controllers\Paypal\PaypalController::class,'update']);
     
     /** SCHOOLS */
     Route::get('/schools', [App\Http\Controllers\Schools\SchoolController::class, 'index'])->name('schools');
