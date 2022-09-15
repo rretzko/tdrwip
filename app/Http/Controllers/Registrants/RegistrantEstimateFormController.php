@@ -144,11 +144,16 @@ class RegistrantEstimateFormController extends Controller
             ? false
             : ($uppervoicecount > $eventversion->eventversionconfigs->max_uppervoice_count);
 
-        $membership = Membership::where('user_id', auth()->id())
-            ->where('organization_id', Userconfig::getValue('organization', auth()->id()))
-            ->first() ?? false;
+        //MEMBERSHIP CARD
+        $membership = false;
+        $membership_card_url = '';
+        if($eventversion->membershipcard) {
+            $membership = Membership::where('user_id', auth()->id())
+                    ->where('organization_id', Userconfig::getValue('organization', auth()->id()))
+                    ->first() ?? false;
 
-        $membership_card_url = $this->membershipcardurl($membership);
+            $membership_card_url = $this->membershipcardurl($membership);
+        }
 
         return view('registrants.estimateforms.'.$eventversion->event->id.'.'.$eventversion->id.'.show',
             [
