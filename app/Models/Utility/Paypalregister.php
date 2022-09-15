@@ -32,6 +32,29 @@ class Paypalregister extends Model
             ->sum('amount');
     }
 
+    public function registrantsPaidBySchool($school)
+    {
+        $payments = Payment::where('eventversion_id', $this->eventversion->id)
+            ->where('school_id', $school->id)
+            ->get();
+        
+        $a = [];
+        $uniques = $payments->filter(function($payment) use($a){
+            
+            if(! in_array($payment->registrant_id, $a)){
+                
+                //increment array
+                $a[] = $payment->registrant_id;
+                
+                return true;
+            }
+            
+            return false;
+        });
+        
+        return count($uniques);
+    }
+
     public function registrationfeeDueByRegistrant($registrant)
     {
         $payments = $this->collected($registrant);

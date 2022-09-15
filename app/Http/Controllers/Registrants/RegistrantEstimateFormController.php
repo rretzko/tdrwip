@@ -122,7 +122,9 @@ class RegistrantEstimateFormController extends Controller
         $paypalregister = new Paypalregister;
         $paypalregister->setEventversion($eventversion);
         $paypalcollected = $paypalregister->paymentsBySchool($school);
-
+        $registrantspaid = $paypalregister->registrantsPaidBySchool($school);
+        $registrantsdue = ($registrants->count() - $registrantspaid);
+        
         $amountduegross = ($registrants->count() * $eventversion->eventversionconfigs->registrationfee);
         $amountduenet = ($paypalcollected < $amountduegross) ? ($amountduegross - $paypalcollected) : 0;
 
@@ -171,6 +173,7 @@ class RegistrantEstimateFormController extends Controller
                 'maxcount' => $eventversion->eventversionconfigs->max_count ?: array_sum($registrantsbyinstrumentationarray),
                 'membership' => $membership,
                 'membership_card_url' => $membership_card_url,
+                'registrantsdue' => $registrantsdue,
             ]);
     }
 

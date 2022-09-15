@@ -27,7 +27,7 @@ class PaypalController extends Controller
 
         $paypalregister = new Paypalregister;
         $paypalregister->setEventversion($eventversion);
-        
+
         $amountduegross = ($registrants->count() * $registrationfee);
         $paypalcollected = $paypalregister->paymentsBySchool($school);
         //account for the possibility of overpayments
