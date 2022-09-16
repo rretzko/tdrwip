@@ -246,8 +246,6 @@
                                                     <!-- Specify a subscribe button -->
                                                     <input type="hidden" name="cmd" value="_xclick" >
                                                     <!-- Identify the registrant -->
-                                                    <input type="hidden" name="quantity" value="{{ $registrantsdue }}" />
-                                                    <input type="hidden" name="per_item" value="15.00" />
                                                     <input type="hidden" name="item_name" value="{{ $eventversion->name }}" >
                                                     <input type="hidden" name="item_number" value="{{ $eventversion->id.'.'.auth()->id().'.'.$amountduenet }}" >
                                                     <input type="hidden" name="on0" value="{{ auth()->user()->name }}" >
