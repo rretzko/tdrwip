@@ -26,10 +26,10 @@ class PaypalIPN
     {
         $this->use_sandbox = true;
     }
-    
+
     public function sendLog()
     {
-        \Illuminate\Support\Facades\Log::info(__FILE__.': '.date('Y-m-d G:i:s'));
+        return true;
     }
 
     /**
