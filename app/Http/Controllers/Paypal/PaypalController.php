@@ -41,7 +41,7 @@ class PaypalController extends Controller
         $this->save_log_file = true;
     }
     public function update()
-    {
+    {header("HTTP/1.1 200 OK");
         //enable Sandbox or not
         if($this->enable_sandbox){ $this->ppipn->useSandbox();}
 
