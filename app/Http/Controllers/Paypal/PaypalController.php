@@ -41,7 +41,8 @@ class PaypalController extends Controller
         $this->save_log_file = true;
     }
     public function update()
-    {Log::info('Got to controller! @ '.__METHOD__);
+    {return header("HTTP/1.1 200 OK");
+        Log::info('Got to controller! @ '.__METHOD__);
         //enable Sandbox or not
         if($this->enable_sandbox){ $this->ppipn->useSandbox();}
 
