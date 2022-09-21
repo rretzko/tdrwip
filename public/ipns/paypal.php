@@ -1,6 +1,9 @@
 <?php namespace Listener;
 
-//use App\Http\Controllers\Paypal\PayPalController;
-//use \Illuminate\Support\Facades\Log;
+require('PaypalIPN.php');
+
+use PaypalIPN;
+
+$ipn = new PaypalIPN();
 
 header("HTTP/1.1 200 OK");
