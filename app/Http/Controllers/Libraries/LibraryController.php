@@ -111,6 +111,7 @@ class LibraryController extends Controller
                 "comments" => ['nullable','numeric','min:0','max:1'],
                 "must_haves" => ['nullable','string'],
                 "nice_haves" => ['nullable','string'],
+                "fee" => ['required'],
             ]
         );
 
@@ -134,6 +135,7 @@ class LibraryController extends Controller
                 "comments" => array_key_exists('comments',$inputs) ? $inputs['comments'] : 0,
                 "must_haves" => array_key_exists('must_haves',$inputs) ? $inputs['must_haves'] : 0,
                 "nice_haves" => array_key_exists('nice_haves',$inputs) ? $inputs['nice_haves'] : 0,
+                "fee" => array_key_exists('fee',$inputs) ? $inputs['fee'] : 0,
             ]
         );
 

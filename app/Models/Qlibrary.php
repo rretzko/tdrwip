@@ -14,6 +14,6 @@ class Qlibrary extends Model
 
     protected $primaryKey='user_id';
 
-    protected $fillable=['accompaniment','arranger','arrangement','comments','composer','concert','ensemble','language',
-        'must_haves','nice_haves','publisher','subtitle','tempo','title','user_id','year'];
+    protected $fillable=['accompaniment','arranger','arrangement','comments','composer','concert','ensemble','fee',
+        'language','must_haves','nice_haves','publisher','subtitle','tempo','title','user_id','year'];
 }

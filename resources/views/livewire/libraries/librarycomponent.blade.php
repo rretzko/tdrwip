@@ -144,7 +144,23 @@
                                     <textarea cols="40" name="must_haves" placeholder="Other items the library MUST have...">{{ (old('must_haves') ?: ($questionnaire->must_haves ?: '')) }}</textarea>
                                 </div>
                                 <div>
-                                    <textarea cols="40" name="nice_haves" placeholder="Other items that would be optional or nice to have...">{{ (old('nice_haves') ?: ($questionnaire->nice_haves ?: '')) }}</textarea>
+                                    <textarea cols="40" name="nice_haves" placeholder="Other items that would be OPTIONAL or nice to have...">{{ (old('nice_haves') ?: ($questionnaire->nice_haves ?: '')) }}</textarea>
+                                </div>
+                                <div>
+                                    <label>
+                                        If the library met your needs, would you be willing to pay a
+                                        fee of $6.71/month or $60/year to help me continue to build for you?
+                                        <span class="hint">($6.71 is the price of a famous breakfast
+                                            sandwich and medium coffee...)</span>
+                                    </label>
+                                    <div>
+                                        <input style="margin-top: -0.25rem;" type="radio" name="fee" value="1" {{ ((old('fee') && (old('fee') == 1)) || ($questionnaire->fee == 1)) ? 'checked' : '' }}>
+                                        <label>Yes</label>
+                                    </div>
+                                    <div>
+                                        <input style="margin-top: -0.25rem;" type="radio" name="fee" value="0" {{ ((old('fee') && (old('fee') == 0)) || ($questionnaire->fee == 0)) ? 'checked' : '' }}>
+                                        <label>No</label>
+                                    </div>
                                 </div>
                                 <div>
                                     <input class="bg-black text-white p-2 rounded-full shadow-lg" type="submit" name="submit" value="Thank You!" />
