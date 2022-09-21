@@ -40,7 +40,7 @@ class PaypalController extends Controller
         //create a log of the transaction
         $this->save_log_file = true;
     }
-    public function update(Request $request)
+    public function update()
     {
         //enable Sandbox or not
         if($this->enable_sandbox){ $this->ppipn->useSandbox();}
@@ -88,7 +88,7 @@ class PaypalController extends Controller
 
         Log::info(Carbon::now().': paypal transaction received');
 
-        Log::info(serialize($request->all()));
+        Log::info(serialize($_POST));
 
     }
 }
