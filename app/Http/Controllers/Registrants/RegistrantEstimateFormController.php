@@ -124,7 +124,7 @@ class RegistrantEstimateFormController extends Controller
         $paypalcollected = $paypalregister->paymentsBySchool($school);
         $registrantspaid = $paypalregister->registrantsPaidBySchool($school);
         $registrantsdue = ($registrants->count() - $registrantspaid);
-        
+
         $amountduegross = ($registrants->count() * $eventversion->eventversionconfigs->registrationfee);
         $amountduenet = ($paypalcollected < $amountduegross) ? ($amountduegross - $paypalcollected) : 0;
 
@@ -159,7 +159,7 @@ class RegistrantEstimateFormController extends Controller
 
         return view('registrants.estimateforms.'.$eventversion->event->id.'.'.$eventversion->id.'.show',
             [
-                'amountduenet' => $amountduenet,
+                'amountduenet' => 127,//$amountduenet,
                 'eventversion' => $eventversion,
                 'registrants' => $registrants,
                 'registrantsbyinstrumentation' => $registrantsbyinstrumentationarray,
