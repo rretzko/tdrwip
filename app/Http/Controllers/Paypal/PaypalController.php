@@ -18,11 +18,11 @@ class PaypalController extends Controller
     private $save_log_file;
 
     public function __construct()
-    {
+    {Log::info('Got to controller! @ '.__METHOD__);
         $this->ppipn = new \App\Models\Paypal\PaypalIPN();
 
         //set sandbox to true
-        $ensable_sandbox = true;
+        $enable_sandbox = true;
         $this->ppipn->useSandbox();
 
         //valid email addresses for business
@@ -41,7 +41,7 @@ class PaypalController extends Controller
         $this->save_log_file = true;
     }
     public function update()
-    {header("HTTP/1.1 200 OK");
+    {Log::info('Got to controller! @ '.__METHOD__);
         //enable Sandbox or not
         if($this->enable_sandbox){ $this->ppipn->useSandbox();}
 

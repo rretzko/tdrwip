@@ -18,6 +18,7 @@ class PaypalIPN
     const VALID = 'VERIFIED';
     /** Response from PayPal indicating validation failed */
     const INVALID = 'INVALID';
+    private $curl_setopt;
 
     /**
      * Sets the IPN verification to sandbox mode (for use when testing,
@@ -113,10 +114,11 @@ class PaypalIPN
         }
         curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        $this->curl_setopt = curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             'User-Agent: PHP-IPN-Verification-Script',
             'Connection: Close',
         ));
+        $this->curl_setopt;
         $res = curl_exec($ch);
         if (!($res)) {
             $errno = curl_errno($ch);

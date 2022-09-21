@@ -2,9 +2,12 @@
 
 require('PaypalIPN.php');
 
+//require('../../App/Models/Payment.php');
+
 use PaypalIPN;
 
 $ipn = new PaypalIPN();
+
 
 //$ipn->sendLog();
 
@@ -17,6 +20,7 @@ if ($verified) {
      * A list of variables is available here:
      * https://developer.paypal.com/webapps/developer/docs/classic/ipn/integration-guide/IPNandPDTVariables/
      */
+
 }
 
 

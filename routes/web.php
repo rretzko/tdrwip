@@ -44,7 +44,7 @@ Route::get('fileserver/confirmation/{registrant}/{filecontenttype}/{person}/{fol
 Route::get('pitchfiles/{eventversion}', [App\Http\Controllers\Pitchfiles\PitchfilesController::class, 'index'])->name('pitchfiles');
 
 /** PAYPAL IPN ACCESS */
-Route::post('/update_account', [App\Http\Controllers\Paypal\PaypalController::class,'update']);
+Route::post('update_account', [App\Http\Controllers\Paypal\PaypalController::class,'update'])->name('paypal.ipn');
 
 //Route::middleware(['auth:sanctum', 'verified'])->group(function() {
 Route::middleware('auth', 'verified')->group(function() {
