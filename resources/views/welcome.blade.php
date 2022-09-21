@@ -242,14 +242,6 @@
                       </div>
                   @endguest
 
-                  <div>
-                      <form method="post" action="{{ route('paypal.ipn') }}">
-                          @csrf
-                          <input type="text" name="first" value="Rick" />
-                          <input type="submit" name="submit" value="Submit" />
-                      </form>
-                  </div>
-
               <div id="welcome-footer" class="">
                 <div id="copyright">
                     &copy; 2020-{{ date('Y') }}
