@@ -26,6 +26,11 @@ class PaypalIPN
     {
         $this->use_sandbox = true;
     }
+    
+    public function sendLog()
+    {
+        \Illuminate\Support\Facades\Log::info(__FILE__.': '.date('Y-m-d G:i:s'));
+    }
 
     /**
      * Sets curl to use php curl's built in certs (may be required in some
