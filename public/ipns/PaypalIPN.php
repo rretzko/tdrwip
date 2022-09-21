@@ -29,7 +29,8 @@ class PaypalIPN
 
     public function sendLog()
     {
-        return true;
+        return info(__FILE__.': '.date('Y-m-d G:i:s'));
+
     }
 
     /**
