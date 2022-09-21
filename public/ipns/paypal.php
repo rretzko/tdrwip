@@ -1,8 +1,6 @@
 <?php namespace Listener;
 
 //use App\Http\Controllers\Paypal\PayPalController;
-use \Illuminate\Support\Facades\Log;
-
-Log::info(__FILE__.':'.date('Y-m-d G:i:s'));
+//use \Illuminate\Support\Facades\Log;
 
 header("HTTP/1.1 200 OK");
