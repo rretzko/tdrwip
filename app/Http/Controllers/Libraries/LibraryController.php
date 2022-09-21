@@ -23,7 +23,9 @@ class LibraryController extends Controller
             ]
         );
 
-        return view('libraries.index', compact('questionnaire'));
+        $view = $questionnaire->saved ? 'libraries.index' : 'libraries.questionnaire';
+
+        return view($view, compact('questionnaire'));
     }
 
     /**
@@ -33,7 +35,7 @@ class LibraryController extends Controller
      */
     public function create()
     {
-        //
+        return __FUNCTION__;
     }
 
     /**

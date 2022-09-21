@@ -16,4 +16,9 @@ class Qlibrary extends Model
 
     protected $fillable=['accompaniment','arranger','arrangement','comments','composer','concert','ensemble','fee',
         'language','must_haves','nice_haves','publisher','subtitle','tempo','title','user_id','year'];
+
+    public function getSavedAttribute()
+    {
+        return ($this->updated_at > $this->created_at);
+    }
 }
