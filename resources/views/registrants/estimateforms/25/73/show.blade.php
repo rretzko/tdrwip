@@ -251,7 +251,7 @@
                                                     <input type="hidden" name="on0" value="{{ auth()->user()->name }}" >
                                                     <input type="hidden" name="email" value="{{ auth()->user()->email }}" >
                                                     <input type="hidden" name="currency_code" value="USD" >
-                                                    <input type="hidden" name="amount" value="9" >{{-- $amountduenet --}}
+                                                    <input type="hidden" name="amount" value="{{ $amountduenet }}" >
                                                     <!-- display the payment button -->
                                                     <input class="rounded-full" type="image" name="submit" src="/assets/images/pp.png">
 
