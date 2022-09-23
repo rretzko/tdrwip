@@ -40,16 +40,16 @@ class PaypalController extends Controller
         //create a log of the transaction
         $this->save_log_file = true;
     }
-    public function update()
+    public function update(Request $request)
     {
         //enable Sandbox or not
         if($this->enable_sandbox){ $this->ppipn->useSandbox();}
-Log::info('*** $_POST count = '.count($_POST));
+Log::info('*** $_POST count = '.$request->count());
 return header("HTTP/1.1 200 OK");        
         $verified = $this->ppipn->verifyIPN();
 Log::info('*** PayPal IPN Testing: $verified = '.$verified);
 return header("HTTP/1.1 200 OK");
-        
+
 
         //create string of data
         $data_text = "";
