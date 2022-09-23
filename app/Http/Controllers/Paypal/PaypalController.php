@@ -41,67 +41,89 @@ class PaypalController extends Controller
         $this->save_log_file = true;
     }
     public function update()
-    {if(isset($_POST)){
-        Log::info('*** PayPal IPN Testing: $_POSTs found: '.count($_POST));
-        $str = '';
-        foreach($_POST AS $key => $value){
-            $str .= $key.' => '.$value."\n\r";
+    {
+        if(isset($_POST) && count($_POST)){
+
+            $dto = $this->makeDto();
+
+            $this->logPostInfo($dto);
+
+        }else{
+            Log::info('*** PayPal IPN Testing: $_POST NOT found');
         }
-        Log::info('*** PayPal IPN Testing: $_POSTs '.$str);
-    }else{
-        Log::info('*** PayPal IPN Testing: $_POST NOT found');
+
+        return header("HTTP/1.1 200 OK");
     }
-        //enable Sandbox or not
-        //if($this->enable_sandbox){ $this->ppipn->useSandbox();}
-//Log::info('*** $_POST count = '.$request->count());
-return header("HTTP/1.1 200 OK");
-        $verified = $this->ppipn->verifyIPN();
-Log::info('*** PayPal IPN Testing: $verified = '.$verified);
-return header("HTTP/1.1 200 OK");
 
+    private function logPostInfo(array $dto)
+    {
+        $str = '*** START PayPal dto: '."/n/r";
 
-        //create string of data
-        $data_text = "";
-        foreach($_POST as $key => $value){
-            $data_text .= $key.' = '.$value."\r\n";
+        foreach($dto AS $key => $value){
+
+            $str .= $key.' => '.$value."/n/r";
         }
 
-        //???
-        $test_text = "";
-        if($_POST['text_ipn'] === 1){
-            $test_text = "Test";
-        }
+        $str .= '*** END PayPal dto ***';
 
-        //confirm that verified business email is sent
-        $receiver_email_found = false;
-        foreach($this->my_email_addresses AS $email){
-            if(strtolower($_POST["receiver_email"] === $email)){
+        Log::info($str);
 
-                $receiver_email_found = true;
-                break;
-            }
-        }
+    }
 
-        date_default_timezone_set("America/New_York");
-        list($year,$month,$day,$hour,$minute,$second,$timezone) = explode(":",date("Y:m:d:H:i:s:"));
-        $date = $year."-".$month."_".$day;
-        $timestamp = $date." ".$hour.":".$minute.":".$second." ".$timezone;
-        //$dated_log_file_dir = $log_file_dir."/".$year."/".$month;
-        $paypal_ipn_status = "VERIFICATION FAILED";
+    private function makeDto(): array
+    {
+        /**
+         * $parts contains the values for:
+         * [
+         *  0 => user_id,
+         *  1 => registrant_id,
+         *  2 => school_id,
+         *  3 => vendor_id
+         * ]
+         */
+        $parts = explode('*',$_POST['custom']);
 
-        if($verified){
-            $paypal_ipn_status = "RECEIVER EMAIL MISMATCH";
-            if($receiver_email_found){
-                $paypal_ipn_status = "Completed Successfully";
-                //Process IPN
-                //A list of variables are available here;
-                //https://developer.paypal.com/webapps/developer/docs/classic/ipn/integuide/IPNandPDTVariables/
-            }
-        }
+        $a = [
+            'payment_date' => $_POST['payment_date'],
+            'payer' => $_POST['first_name'].' '.$_POST['last_name'],
+            'payer_email' => $_POST['payer_email'],
+            'payer_id' => $_POST['payer_id'],
+            'address_name' => $_POST['address_name'],
+            'address_street' => $_POST['address_street'],
+            'address_city' => $_POST['address_city'],
+            'address_state' => $_POST['address_state'],
+            'address_zip' => $_POST['address_zip'],
+            'item_name' => $_POST['item_name'],
+            'item_number' => $_POST['item_number'],
+            'amount' => $_POST['mc_gross'],
+            'user_id' => $this->userId($parts),
+            'registrant_id' => $this->registrantId($parts),
+            'eventversion_id' => $this->eventversionId($parts),
+            'paymenttype_id' => 3, //Paymenttypes::PAYPAL
+            'school_id' => $this->schoolId($parts),
+            'vendor_id' => $_POST['item_number'],
+        ];
 
-        Log::info(Carbon::now().': paypal transaction received');
+        return $a;
+    }
 
-        Log::info(serialize($_POST));
+    private function eventversionId(array $parts)
+    {
+        return $parts[2];
+    }
 
+    private function registrantId(array $parts)
+    {
+        return $parts[1];
+    }
+
+    private function schoolId(array $parts)
+    {
+        return $parts[3];
+    }
+
+    private function userId(array $parts)
+    {
+        return $parts[0];
     }
 }
