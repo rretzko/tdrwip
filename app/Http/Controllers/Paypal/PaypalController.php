@@ -42,7 +42,12 @@ class PaypalController extends Controller
     }
     public function update()
     {if(isset($_POST)){
-        Log::info('*** PayPal IPN Testing: $_POST found');
+        Log::info('*** PayPal IPN Testing: $_POSTs found: '.count($_POST));
+        $str = '';
+        foreach($_POST AS $key => $value){
+            $str .= $key.' => '.$value."\n\r";
+        }
+        Log::info('*** PayPal IPN Testing: $_POSTs '.$str);
     }else{
         Log::info('*** PayPal IPN Testing: $_POST NOT found');
     }
