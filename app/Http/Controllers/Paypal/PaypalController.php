@@ -43,9 +43,9 @@ class PaypalController extends Controller
     public function update(Request $request)
     {
         //enable Sandbox or not
-        if($this->enable_sandbox){ $this->ppipn->useSandbox();}
-Log::info('*** $_POST count = '.$request->count());
-return header("HTTP/1.1 200 OK");        
+        //if($this->enable_sandbox){ $this->ppipn->useSandbox();}
+//Log::info('*** $_POST count = '.$request->count());
+return header("HTTP/1.1 200 OK");
         $verified = $this->ppipn->verifyIPN();
 Log::info('*** PayPal IPN Testing: $verified = '.$verified);
 return header("HTTP/1.1 200 OK");
