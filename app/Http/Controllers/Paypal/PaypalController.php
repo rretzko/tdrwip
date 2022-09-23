@@ -22,8 +22,8 @@ class PaypalController extends Controller
         $this->ppipn = new \App\Models\Paypal\PaypalIPN();
 
         //set sandbox to true
-        $enable_sandbox = true;
-        $this->ppipn->useSandbox();
+        $enable_sandbox = false;
+        //$this->ppipn->useSandbox();
 
         //valid email addresses for business
         $my_email_addresses =
@@ -41,13 +41,14 @@ class PaypalController extends Controller
         $this->save_log_file = true;
     }
     public function update()
-    {return header("HTTP/1.1 200 OK");
-        Log::info('Got to controller! @ '.__METHOD__);
+    {
+
         //enable Sandbox or not
         if($this->enable_sandbox){ $this->ppipn->useSandbox();}
 
         $verified = $this->ppipn->verifyIPN();
-
+Log::info('*** PayPal IPN Testing: $verified = '.$verified);
+return header("HTTP/1.1 200 OK");
         //create string of data
         $data_text = "";
         foreach($_POST as $key => $value){
