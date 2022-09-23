@@ -243,7 +243,7 @@
                                                     <!-- Identify your business so that you can collect the payments. -->
                                                     <input type="hidden" name="business" value="morrisareahonorchoir@gmail.com" >
                                                     <input type="hidden" name="notify_url" value="https://thedirectorsroom.com/update_account" >
-                                                    <input type="hidden" name="custom" value="{{ auth()->id().'*teacher*'.$eventversion->id.'*'.$school->id.'*'$amountduenet }}" >
+                                                    <input type="hidden" name="custom" value="{{ auth()->id().'*teacher*'.$eventversion->id.'*'.$school->id.'*'.$amountduenet }}" >
                                                     <!-- Specify a subscribe button -->
                                                     <input type="hidden" name="cmd" value="_xclick" >
                                                     <!-- Identify the registrant -->
