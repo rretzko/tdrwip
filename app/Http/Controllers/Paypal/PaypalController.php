@@ -42,13 +42,13 @@ class PaypalController extends Controller
     }
     public function update()
     {
-
+        return header("HTTP/1.1 200 OK");
         //enable Sandbox or not
         if($this->enable_sandbox){ $this->ppipn->useSandbox();}
 
         $verified = $this->ppipn->verifyIPN();
 Log::info('*** PayPal IPN Testing: $verified = '.$verified);
-return header("HTTP/1.1 200 OK");
+
         //create string of data
         $data_text = "";
         foreach($_POST as $key => $value){
