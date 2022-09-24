@@ -336,11 +336,11 @@
 
                                                         <span style="color: red;">PROHIBITED</span>
 
-                                                        @elseif(
+                                                    @elseif(
                                                         ($registrant->registranttype_id === 14) || {{-- QUALIFIED --}}
                                                         ($registrant->registranttype_id === 15) || {{-- APPLIED --}}
                                                         ($registrant->registranttype_id === 16) || {{-- REGISTERED --}}
-                                                        $exception)
+                                                       $exception)
 
                                                             <x-buttons.button-link
                                                                 class="border border-blue-500 rounded px-2 bg-blue-400 text-white hover:bg-blue-600"

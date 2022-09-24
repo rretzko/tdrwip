@@ -7,11 +7,14 @@ use App\Models\Event;
 use App\Models\Eventversion;
 use App\Models\Membereventversion;
 use App\Models\Userconfig;
+use App\Traits\ExceptionsTrait;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class EventversionsController extends Controller
 {
+    use ExceptionsTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -85,7 +88,7 @@ class EventversionsController extends Controller
         Userconfig::setValue('event',auth()->id(),$eventversion['event']->id);
         Userconfig::setValue('organization',auth()->id(),$eventversion['event']['organization']->id);
 
-        return view('registrants.index');
+        return view('registrants.index', ['exception' => $this->exceptions()]);
     }
 
     /**
