@@ -40,12 +40,13 @@ class PaypalController extends Controller
         //create a log of the transaction
         $this->save_log_file = true;
     }
+
     public function update()
     {
         if(isset($_POST) && count($_POST)){
-
+Log::info('***** MAKE DTO *****');
             $dto = $this->makeDto();
-
+Log::info('***** LOG POST INFO *****');
             $this->logPostInfo($dto);
 
         }else{
@@ -72,6 +73,9 @@ class PaypalController extends Controller
 
     private function makeDto(): array
     {
+        foreach($_POST AS $key => $value){
+            Log::info($key.' => '.$value);
+        }
         /**
          * $parts contains the values for:
          * [
@@ -93,8 +97,8 @@ class PaypalController extends Controller
             'address_city' => $_POST['address_city'],
             'address_state' => $_POST['address_state'],
             'address_zip' => $_POST['address_zip'],
-            'item_name' => $_POST['item_name'],
-            'item_number' => $_POST['item_number'],
+            'item_name' => arrya_key_exists('item_name', $_POST) ? $_POST['item_name'] : 'item_name',
+            //'item_number' => $_POST['item_number'],
             'amount' => $_POST['mc_gross'],
             'user_id' => $this->userId($parts),
             'registrant_id' => $this->registrantId($parts),
