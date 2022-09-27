@@ -48,6 +48,9 @@ Log::info('***** MAKE DTO *****');
             $dto = $this->makeDto();
 Log::info('***** LOG POST INFO *****');
             $this->logPostInfo($dto);
+            
+            $payment = new App\Models\Payment;
+            $payment->recordIPNPayment($dto);
 
         }else{
             Log::info('*** PayPal IPN Testing: $_POST NOT found');
@@ -107,7 +110,7 @@ Log::info('***** LOG POST INFO *****');
             'eventversion_id' => $this->eventversionId($parts),
             'paymenttype_id' => 3, //Paymenttypes::PAYPAL
             'school_id' => $this->schoolId($parts),
-            'verify_sign' => $_POST['verify_sign'],
+            'vendor_id' => $_POST['verify_sign'],
         ];
 
         return $a;
