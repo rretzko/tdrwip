@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\Payment;
 
 class PaypalController extends Controller
 {
@@ -48,8 +49,8 @@ Log::info('***** MAKE DTO *****');
             $dto = $this->makeDto();
 Log::info('***** LOG POST INFO *****');
             $this->logPostInfo($dto);
-            
-            $payment = new App\Models\Payment;
+
+            $payment = new Payment;
             $payment->recordIPNPayment($dto);
 
         }else{
@@ -73,12 +74,12 @@ Log::info('***** LOG POST INFO *****');
 
     private function makeDto(): array
     {
-        Log::info('***** START SERIALIZATION *****');
-        Log::info(serialize($_POST));
-        Log::info('***** END SERIALIZATION *****');
-        //foreach($_POST AS $key => $value){
-        //    Log::info($key.' => '.$value);
-        //}
+        Log::info('***** START RAW LOGGING *****');
+        foreach($_POST AS $key => $value){
+            Log::info($key.' => '.$value);
+        }
+        Log::info('***** END RAW LOGGING *****');
+
         /**
          * $parts contains the values for:
          * [
