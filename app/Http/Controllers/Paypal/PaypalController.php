@@ -97,15 +97,17 @@ Log::info('***** LOG POST INFO *****');
             'address_city' => $_POST['address_city'],
             'address_state' => $_POST['address_state'],
             'address_zip' => $_POST['address_zip'],
-            //'item_name' => array_key_exists('item_name', $_POST) ? $_POST['item_name'] : 'item_name',
-            //'item_number' => array_key_exists('item_number', $_POST) ? $_POST['item_number'] : 'item_number',
+            'item_name' => array_key_exists('item_name', $_POST) ? $_POST['item_name'] : 'item_name',
+            'item_number' => array_key_exists('item_number', $_POST) ? $_POST['item_number'] : 'item_number',
+            'item_name1' => array_key_exists('item_name1', $_POST) ? $_POST['item_name1'] : 'item_name1',
+            'item_number1' => array_key_exists('item_number1', $_POST) ? $_POST['item_number1'] : 'item_number1',
             'amount' => $_POST['mc_gross'],
             'user_id' => $this->userId($parts),
             'registrant_id' => $this->registrantId($parts),
             'eventversion_id' => $this->eventversionId($parts),
             'paymenttype_id' => 3, //Paymenttypes::PAYPAL
             'school_id' => $this->schoolId($parts),
-            'vendor_id' => $_POST['item_number'],
+            'verify_sign' => $_POST['verify_sign'],
         ];
 
         return $a;
