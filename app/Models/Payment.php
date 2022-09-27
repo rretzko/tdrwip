@@ -22,7 +22,7 @@ class Payment extends Model
         Payment::create(
             [
                 'user_id' => $dto['user_id'],
-                'registrant_id' => $dto['registrant_id'],
+                'registrant_id' => null,
                 'eventversion_id' => $dto['eventversion_id'],
                 'paymenttype_id' => $dto['paymenttype_id'],
                 'school_id' => $dto['school_id'],

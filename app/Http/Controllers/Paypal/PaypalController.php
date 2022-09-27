@@ -107,7 +107,7 @@ Log::info('***** LOG POST INFO *****');
             'item_number1' => array_key_exists('item_number1', $_POST) ? $_POST['item_number1'] : 'item_number1',
             'amount' => $_POST['mc_gross'],
             'user_id' => $this->userId($parts),
-            'registrant_id' => $this->registrantId($parts),
+            //'registrant_id' => '', //director payments have no registrant_id
             'eventversion_id' => $this->eventversionId($parts),
             'paymenttype_id' => 3, //Paymenttypes::PAYPAL
             'school_id' => $this->schoolId($parts),
@@ -120,11 +120,6 @@ Log::info('***** LOG POST INFO *****');
     private function eventversionId(array $parts)
     {
         return $parts[2];
-    }
-
-    private function registrantId(array $parts)
-    {
-        return $parts[1];
     }
 
     private function schoolId(array $parts)
