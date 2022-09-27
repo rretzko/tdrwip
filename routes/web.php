@@ -82,11 +82,13 @@ Route::middleware('auth', 'verified')->group(function() {
     Route::get('/students', [App\Http\Controllers\Students\StudentController::class, 'index'])->name('students.index');
     Route::get('/xstudents', [App\Http\Controllers\Students\StudentTabbedController::class, 'show'])->name('xstudents');
 
-    /** LIBRARY */
+    /** LIBRARIES */
     Route::get('/libraries', [App\Http\Controllers\Libraries\LibraryController::class,'index'])
         ->name('library.index');
     Route::post('libraries/questionnaire', [App\Http\Controllers\Libraries\LibraryController::class,'questionnaire'])
         ->name('library.questionnaire');
+    Route::post('libraries/comments/{page}', [App\Http\Controllers\Libraries\CommentsController::class, 'update'])
+        ->name('library.comments');
 
     /** ENSEMBLES */
     Route::get('/ensembles', [App\Http\Controllers\Ensembles\EnsembleController::class,'index'])->name('ensembles.index');
@@ -118,7 +120,7 @@ Route::middleware('auth', 'verified')->group(function() {
     Route::get('/events', [App\Http\Controllers\Eventversions\EventversionsController::class, 'index'])->name('eventversions.index');
     Route::get('/event/{eventversion}', [App\Http\Controllers\Eventversions\EventversionsController::class, 'show'])->name('eventversion.show');
     Route::get('/event/obligations/update', [App\Http\Controllers\Eventversions\ObligationsController::class, 'create'])->name('eventversion.obligations.update');
-
+    
     /** ORGANIZATIONS */
     Route::get('/organizations', [App\Http\Controllers\Organizations\OrganizationController::class, 'index'])->name('organizations.index');
     Route::get('/organization/membershipcard/{organization}', [App\Http\Controllers\Organizations\MembershipcardController::class,'show'])
