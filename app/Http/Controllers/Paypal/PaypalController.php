@@ -61,21 +61,21 @@ Log::info('***** LOG POST INFO *****');
         $str = '*** START PayPal dto: '."/n/r";
 
         foreach($dto AS $key => $value){
-
-            $str .= $key.' => '.$value."/n/r";
+            //$str .= $key.' => '.$value."/n/r";
+            Log::info($key.' => '.$value);
         }
 
         $str .= '*** END PayPal dto ***';
-
-        Log::info($str);
-
     }
 
     private function makeDto(): array
     {
-        foreach($_POST AS $key => $value){
-            Log::info($key.' => '.$value);
-        }
+        Log::info('***** START SERIALIZATION *****');
+        Log::info(serialize($_POST));
+        Log::info('***** END SERIALIZATION *****');
+        //foreach($_POST AS $key => $value){
+        //    Log::info($key.' => '.$value);
+        //}
         /**
          * $parts contains the values for:
          * [
