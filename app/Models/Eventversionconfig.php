@@ -10,7 +10,7 @@ class Eventversionconfig extends Model
     use HasFactory;
 
     protected $fillable = ['bestscore','eapplication','epaymentsurcharge','eventversion_id','grades','judge_count',
-        'membershipcard','missing_judge_average','paypalstudent','paypalteacher','registrationfee',
+        'membershipcard','missing_judge_average','paypalstudent','paypalteacher','registrationfee','signature_count',
         ];
 
     protected $primaryKey = 'eventversion_id';

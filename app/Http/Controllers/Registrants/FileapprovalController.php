@@ -10,6 +10,7 @@ use App\Models\Fileupload;
 use App\Models\Registrant;
 use App\Models\Userconfig;
 use App\Traits\UpdateRegistrantStatusTrait;
+use App\Models\Utility\RegistrantTypeId;
 use Carbon\Carbon;
 
 class FileapprovalController extends Controller
@@ -25,7 +26,16 @@ class FileapprovalController extends Controller
                 'approved_by' => auth()->id()
             ]);
 
-        $this->updateRegistrantStatus($registrant);
+        if($registrant->eventversion_id > 72){
+
+            /** @since 2022-09-28 */
+            $this->updateRegistrantTypeId($registrant);
+
+        }else {
+
+            /** @deprecated */
+            $this->updateRegistrantStatus($registrant);
+        }
 
         return back();
     }
@@ -37,8 +47,17 @@ class FileapprovalController extends Controller
             ->first();
 
         $fileupload->delete();
-  
-        $this->updateRegistrantStatus($registrant);
+
+        if($registrant->eventversion_id > 72){
+
+            /** @since 2022-09-28 */
+            $this->updateRegistrantTypeId($registrant);
+
+        }else {
+
+            /** @deprecated */
+            $this->updateRegistrantStatus($registrant);
+        }
 
         event(new FileuploadRejectionEvent(
             Eventversion::find(Userconfig::getValue('eventversion', auth()->id())),
@@ -46,5 +65,16 @@ class FileapprovalController extends Controller
             $registrant ));
 
         return back();
+    }
+
+    private function updateRegistrantTypeId(Registrant $registrant)
+    {
+        $registrant_type_id = new RegistrantTypeId($registrant);
+
+        $registrant->update(
+            [
+                'registranttype_id' => $registrant_type_id->registrantTypeId(),
+            ]
+        );
     }
 }

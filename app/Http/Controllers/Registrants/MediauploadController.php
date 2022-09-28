@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Registrants;
 
 use App\Http\Controllers\Controller;
 use App\Models\Userconfig;
+use App\Models\Utility\RegistrantTypeId;
 use Illuminate\Http\Request;
 use function PHPUnit\Framework\directoryExists;
 
@@ -100,7 +101,16 @@ class MediauploadController extends Controller
                 );
             }
 
-            return back();
+            //update registranttype_id
+            $registrant_type_id = new RegistrantTypeId($registrant);
+            $registrant->update(
+                [
+                    'registrant_type_id' => $registrant_type_id->registrantTypeId(),
+                ]
+            );
+
+            return redirect()->route('registrant.show',['registrant' => $registrant]);
+
         }else{
 
             echo 'Error: File type: "'.$filecontenttype->descr.'" not found, OR <br />';

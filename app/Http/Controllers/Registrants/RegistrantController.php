@@ -10,6 +10,7 @@ use App\Models\Fileuploadfolder;
 use App\Models\Registrant;
 use App\Models\Userconfig;
 use App\Traits\UpdateRegistrantStatusTrait;
+use App\Models\Utility\RegistrantTypeId;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Carbon\Carbon;
@@ -142,6 +143,21 @@ class RegistrantController extends Controller
             : (($registrant->student->grade < 9)
                 ? $eventversion->eventensembles()[0]->eventensembletype()->instrumentations
                 : $eventversion->eventensembles()[1]->eventensembletype()->instrumentations);
+
+        /**
+         * New direction on Registrant Status
+         * @since 2022-09-28
+         */
+        if($eventversion->id > 72){
+
+            $registrant_type_id = new RegistrantTypeId($registrant);
+
+            $registrant->update(
+                [
+                    'registranttype_id' => $registrant_type_id->registrantTypeId()
+                ]
+            );
+        }
 
         return view('registrants.registrant.show', [
             'eventversion' => $eventversion,

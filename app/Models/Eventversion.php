@@ -94,7 +94,7 @@ class Eventversion extends Model
      */
     public function getRequiredSignaturesCountAttribute()
     {
-        if(($this->id === 66) || ($this->id === 67) || ($this->id === 69)){ //SJCDA 2021
+        if(($this->id === 66) || ($this->id === 67) || ($this->id === 69) || ($this->id === 73)){ //SJCDA 2021
 
             return 2; //signatureguardian and signaturestudent
         }
