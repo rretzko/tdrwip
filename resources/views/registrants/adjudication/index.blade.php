@@ -67,13 +67,13 @@
 
         {{-- VIEWPORT & SCORING --}}
         <div id="viewport-scoring" class=" space-x-2 mb-4 m-auto border-b border-gray-300 pb-3">
-            <div id="viewport">
+            <div id="viewport" class="flex flex-row flex-wrap justify-center space-x-4" >
                 <div class="flex justify-center">
                     @if($auditioner)
 
                         @if($eventversion->eventversionconfigs->virtualaudition)
-                            <div class="flex flex-col">
-                                <div class="text-center bg-indigo-100 border border-indigo-700">
+                            <div class="flex flex-col ">
+                                <div class="text-center bg-indigo-100 border border-indigo-700 mb-2">
                                     Now adjudicating: {{ $auditioner->id }}: {{ strtoupper($auditioner->instrumentations->first()->abbr) }}
                                 </div>
                                 <div class=" mb-1">
@@ -123,7 +123,7 @@
                             </div>
                         </div>
                         @endif
-                        <div id="scoring" class="my-4">
+                        <div id="scoring" class="border border-gray-300 p-2" >
                             @if(! $eventversion->eventversionconfigs->virtualaudition)
                                 <div class="text-center bg-indigo-100 border border-indigo-700">
                                     Now adjudicating: <b>{{ $auditioner->id }}</b>: {{ strtoupper($auditioner->instrumentations->first()->abbr) }}
@@ -136,20 +136,23 @@
                                 <form method="post" action="https://thedirectorsroom.com/registrants/adjudication/registrant/update/{{ $auditioner->id }}" >
                             @endif
 --}} -->
-                            <form method="post" action="{{ route('registrants.adjudication.update', ['registrant' => $auditioner->id]) }}" >
+                            <form method="post" action="{{ route('registrants.adjudication.update', ['registrant' => $auditioner->id]) }}"
+                                  style=""
+                            >
                                 @csrf
 
                                 <x-adjudication.scoresheets.index
-                                    :useradjudicator="$useradjudicator"
-                                    :auditioner="$auditioner"
-                                    :eventversion="$eventversion"
-                                    :room="$room"
-                                    :scoringcomponents="$scoringcomponents"
-                                />
+                                        :useradjudicator="$useradjudicator"
+                                        :auditioner="$auditioner"
+                                        :eventversion="$eventversion"
+                                        :room="$room"
+                                        :scoringcomponents="$scoringcomponents"
+                                    />
+
                                 <div class="mt-2 text-center">
-                                    <!--
+
                                     <input class="bg-black text-white rounded px-2" type="submit" name="submit" id="submit" value="Submit" />
-                                    -->
+
                                 </div>
                                     <div style="color: darkred; font-size: 0.8rem;">
                                         NOTE: This page will auto-advance to the next registrant on the roster.
@@ -160,52 +163,52 @@
                     @endif
                 </div>
             </div>
-        </div>
 
-        {{-- ADJUDICATOR RESULTS TABLE --}}
-        <div id="adjudicators-table" style="">
-            @if($auditioner)
-                <style>
-                    td,th{border: 1px solid black; padding:0 .25rem;}
-                </style>
-                <table style="margin: auto;">
-                    <thead>
-                        <tr>
-                            <th
-                                style="border-top: 0; border-left: 0; background:{{ $auditioner->auditionStatus($room) ? $auditioner->auditionStatus($room)->auditionstatustype->background : 'aliceblue' }}; color:{{ $auditioner->auditionStatus($room) ? $auditioner->auditionStatus($room)->auditionstatustype->color : 'black' }};">
-                                {{ $auditioner->auditionStatus($room) ? $auditioner->auditionStatus($room)->auditionstatustype->descr : 'no-gots'}}
-                            </th>
-                            @foreach($room->filecontenttypes->sortBy('order_by') AS $filecontenttype)
-                                <th colspan="{{ $filecontenttype->scoringcomponents->count() }}">{{ $filecontenttype->descr }}</th>
-                            @endforeach
-                            <th style="border-top: 0; border-right: 0;"></th>
-                        </tr>
-                        <tr>
-                            <th>Adjudicator</th>
-                            @foreach($room->filecontenttypes->sortBy('order_by') AS $filecontenttype)
-                                @foreach($filecontenttype->scoringcomponents->sortBY('order_by') AS $scoringcomponent)
-                                    <td>{{ $scoringcomponent->abbr }}</td>
-                                @endforeach
-                            @endforeach
-                            <td>Total</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($room->adjudicators AS $adjudicator)
+            {{-- ADJUDICATOR RESULTS TABLE --}}
+            <div id="adjudicators-table" style="">
+                @if($auditioner)
+                    <style>
+                        td,th{border: 1px solid black; padding:0 .25rem;}
+                    </style>
+                    <table style="margin: auto;">
+                        <thead>
                             <tr>
-                                <td>{{ $adjudicator->person->fullnameAlpha }}</td>
+                                <th
+                                    style="border-top: 0; border-left: 0; background:{{ $auditioner->auditionStatus($room) ? $auditioner->auditionStatus($room)->auditionstatustype->background : 'aliceblue' }}; color:{{ $auditioner->auditionStatus($room) ? $auditioner->auditionStatus($room)->auditionstatustype->color : 'black' }};">
+                                    {{ $auditioner->auditionStatus($room) ? $auditioner->auditionStatus($room)->auditionstatustype->descr : 'no-gots'}}
+                                </th>
                                 @foreach($room->filecontenttypes->sortBy('order_by') AS $filecontenttype)
-                                    @foreach($filecontenttype->scoringcomponents->sortBy('order_by') AS $scoringcomponent)
-                                        <td>{{ $auditioner->scoringcomponentScore($adjudicator, $scoringcomponent) }}</td>
+                                    <th colspan="{{ $filecontenttype->scoringcomponents->count() }}">{{ $filecontenttype->descr }}</th>
+                                @endforeach
+                                <th style="border-top: 0; border-right: 0;"></th>
+                            </tr>
+                            <tr>
+                                <th>Adjudicator</th>
+                                @foreach($room->filecontenttypes->sortBy('order_by') AS $filecontenttype)
+                                    @foreach($filecontenttype->scoringcomponents->sortBY('order_by') AS $scoringcomponent)
+                                        <td>{{ $scoringcomponent->abbr }}</td>
                                     @endforeach
                                 @endforeach
-                                <td>{{$adjudicator->registrantScore($auditioner)}}</td>
+                                <td>Total</td>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            @endif
+                        </thead>
+                        <tbody>
+                            @foreach($room->adjudicators AS $adjudicator)
+                                <tr>
+                                    <td>{{ $adjudicator->person->fullnameAlpha }}</td>
+                                    @foreach($room->filecontenttypes->sortBy('order_by') AS $filecontenttype)
+                                        @foreach($filecontenttype->scoringcomponents->sortBy('order_by') AS $scoringcomponent)
+                                            <td>{{ $auditioner->scoringcomponentScore($adjudicator, $scoringcomponent) }}</td>
+                                        @endforeach
+                                    @endforeach
+                                    <td>{{$adjudicator->registrantScore($auditioner)}}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endif
 
+            </div>
         </div>
     </div>
 
