@@ -39,9 +39,6 @@
                                     <x-obligations.23.68.obligations />
                             @endif
 
-                            @if($eventversion->id === 70)
-                                <x-obligations.1.70.obligations />
-                            @endif
                             @if($eventversion->id === 71)
                                 <x-obligations.9.71.obligations :eventversion=$eventversion />
                             @endif
@@ -57,7 +54,15 @@
                                 <x-obligations.19.72.obligations />
                             @endif
 
-                            <!-- {{--
+                            {{-- CJMEA REGION II CHORUS --}}
+                            @if($eventversion->id === 70)
+                                <x-obligations.1.70.obligations />
+                            @endif
+                            @if($eventversion->id === 74)
+                                <x-obligations.1.74.obligations />
+                            @endif
+
+                                <!-- {{--
                             <ul>
                                 <li>
                                     <b>I understand</b> that I must serve as an Adjudicator at least once every

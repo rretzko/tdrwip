@@ -48,6 +48,11 @@
                                 <x-obligations.19.72.obligations />
                             @endif
 
+                            {{-- CJMEA REGION II CHORUS --}}
+                            @if($event->id == 74)
+                                <x-obligations.1.74.obligations />
+                            @endif
+
                             {{-- MORRIS AREA HONOR CHOIRS --}}
                             @if($event->id == 73)
                                 <x-obligations.25.73.obligations />
