@@ -135,6 +135,12 @@
                                     <label for="concert">Performed At <span class="hint">(ex. Spring Concert, Graduation, etc.)</span></label>
                                 </div>
                                 <div class="flex flex-row">
+                                    <input type="checkbox" name="difficulty" value="1"
+                                           @if(old('difficulty') || $questionnaire->difficulty) checked @endif
+                                    />
+                                    <label for="difficulty">Difficulty Level <span class="hint">(ex. Collegiate, High, Middle, Elem, etc.)</span></label>
+                                </div>
+                                <div class="flex flex-row">
                                     <input type="checkbox" name="comments" value="1"
                                            @if(old('comments') || $questionnaire->comments) checked @endif
                                     />
