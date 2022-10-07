@@ -13,10 +13,17 @@
         </div>
     </div>
 
+
     <div id="footer" class="bg-white m-auto border w-11/12 rounded">
-        <form method="post" action="{{ route('library.comments') }}" class="m-1 flex flex-col space-y-1">
+        <form method="post" action="{{ route('library.comments',['page' => Route::currentRouteName()]) }}" class="m-1 flex flex-col space-y-1">
+            @csrf
             <textarea name="comments" placeholder="Questions, Comments, Concerns..." class="w-11/12"></textarea>
             <input type="submit" name="submit" value="Submit" class="w-1/12 bg-black text-white rounded-full" >
+            @if(session()->has('thanks'))
+                <span style="background-color: rgba(0,255,0,0.1); padding: 0 0.5rem; max-width: 20rem;" class="rounded">
+                    {{ session()->get('thanks') }}
+                </span>
+            @endif
         </form>
     </div>
 
