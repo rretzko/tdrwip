@@ -13,6 +13,7 @@
         @isset($year)<li>Year Performed</li>@endif
         @isset($ensemble)<li>Performed BY</li>@endif
         @isset($concert)<li>Performed At</li>@endif
+        @isset($difficulty)<li>Difficulty</li>@endif
         @isset($comments)<li>Comments</li>@endif
         @isset($must_haves)<li>Must Haves: {{ $must_haves }}</li>@endif
         @isset($nice_haves)<li>Nice to haves: {{ $nice_haves }}</li>@endif
