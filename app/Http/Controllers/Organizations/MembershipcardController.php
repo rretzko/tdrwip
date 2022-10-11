@@ -73,12 +73,12 @@ class MembershipcardController extends Controller
                 $directory = 'membershipcards/';
                 $path = $directory.$hashname;
 
-                $file->storePublicly($path,'spaces');
+                $stored = $file->storePublicly($path,'spaces');
 
                 foreach(Organization::find(Userconfig::getValue('organization',auth()->id()))
                             ->ancestors([],true) AS $organization) {
 
-                    Membership::where('user_id', auth()->id())
+                    dd(Membership::where('user_id', auth()->id())
                         ->where('organization_id', $organization->id)
                         ->update([
                             'membershiptype_id' => $data['membershiptype_id'],
@@ -87,7 +87,7 @@ class MembershipcardController extends Controller
                             'grade_levels' => $data['grade_levels'],
                             'subjects' => $data['subjects'],
                             'membership_card_path' => $path,
-                        ]);
+                        ])->toSql());
                 }
             }
         }else{
