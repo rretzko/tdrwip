@@ -64,7 +64,7 @@ class User extends Authenticatable
 
     public function address()
     {
-        return $this->hasOne(Address::class);
+        return $this->hasOne(Address::class) ?? new Address;
     }
 
     public function ensembles()

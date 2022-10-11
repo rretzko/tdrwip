@@ -83,7 +83,7 @@
             Address:
         </td>
         <td class="data">
-            {{ $registrant->student->person->user->address->addressCSv }}
+            {{ is_null($registrant->student->person->user->address) ? '' : $registrant->student->person->user->address->addressCsv }}
         </td>
     </tr>
     <tr>
