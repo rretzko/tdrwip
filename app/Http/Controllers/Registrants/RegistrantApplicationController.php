@@ -10,7 +10,7 @@ use App\Models\Registrant;
 use App\Models\School;
 use App\Models\Teacher;
 use App\Models\Userconfig;
-use Barryvdh\DomPDF\Facade AS PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -80,7 +80,7 @@ class RegistrantApplicationController extends Controller
         $eapplication = Eapplication::find($registrant->id) ?: null;
 
         //ex. pages.pdfs.applications.12.64.application
-        $pdf = PDF::loadView('pdfs.applications.'//9.65.2021_22_application',
+        $pdf = Pdf::loadView('pdfs.applications.'//9.65.2021_22_application',
             . $eventversion->event->id
             .'.'
             . $eventversion->id
