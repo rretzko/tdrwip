@@ -78,7 +78,7 @@ class MembershipcardController extends Controller
                 foreach(Organization::find(Userconfig::getValue('organization',auth()->id()))
                             ->ancestors([],true) AS $organization) {
 
-                    dd(Membership::where('user_id', auth()->id())
+                    Membership::where('user_id', auth()->id())
                         ->where('organization_id', $organization->id)
                         ->update([
                             'membershiptype_id' => $data['membershiptype_id'],
@@ -87,7 +87,7 @@ class MembershipcardController extends Controller
                             'grade_levels' => $data['grade_levels'],
                             'subjects' => $data['subjects'],
                             'membership_card_path' => $path,
-                        ])->toSql());
+                        ]);
                 }
             }
         }else{
