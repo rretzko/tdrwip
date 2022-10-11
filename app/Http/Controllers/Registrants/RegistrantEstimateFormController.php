@@ -85,7 +85,7 @@ class RegistrantEstimateFormController extends Controller
         $membership_card_url = $this->membershipcardurl($membership);
 
         //ex. pages.pdfs.applications.12.64.application
-        $pdf = PDF::loadView('pdfs.estimateforms.'//9.65.2021_22_application',
+        $pdf = PDF\Pdf::loadView('pdfs.estimateforms.'//9.65.2021_22_application',
             . $eventversion->event->id
             .'.'
             . $eventversion->id
