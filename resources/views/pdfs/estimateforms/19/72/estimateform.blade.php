@@ -25,18 +25,18 @@
 {{-- SEND TO --}}
 <table style="text-align: center; border-bottom: 1px solid darkgrey;">
     <tr>
-        <td>Sent to: Emily Kneuer, Treasurer</td>
+        <td>Sent to: Beth Moore, Treasurer</td>
     </tr>
     <tr>
         <td>
-            <b>Raritan High School</b>
+            <b>Central Regional High School</b>
         </td>
     </tr>
     <tr>
-        <td>419 Middle Road</td>
+        <td>509 Forest Hills Parkway</td>
     </tr>
     <tr>
-        <td>Hazlet, NJ 07730</td>
+        <td>Bayville, NJ 08721</td>
     </tr>
 </table>
 

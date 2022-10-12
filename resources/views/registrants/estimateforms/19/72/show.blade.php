@@ -55,16 +55,16 @@
                                 </div>
                                 <div class="text-sm">
                                     <div class="uppercase text-center">
-                                        Mail to: Emily Kneuer, Treasurer
+                                        Mail to: Beth Moore, Treasurer
                                     </div>
                                     <div class="uppercase text-center">
-                                        Raritan High School
+                                        Central Regional High School
                                     </div>
                                     <div class="uppercase text-center">
-                                        419 Middle Road
+                                        509 Forest Hills Parkway
                                     </div>
                                     <div class="uppercase text-center">
-                                        Hazlet, NJ 07730
+                                        Bayville, NJ 08721
                                     </div>
                                 </div>
                             </div>
