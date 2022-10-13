@@ -23,8 +23,6 @@ class Schoolregistrationstatus extends Model
         $counts['registered'] = [self::calcStatus(Registranttype::REGISTERED),Registranttype::REGISTERED];
         $total = array_sum(array_column($counts, 0));
 
-
-
         $str =  '<div class="flex bg-gray-200 w-full">';
 
             $str .= '<label class="w-3/12 pl-2 pt-1 text-xs">Registration Progress: </label>';
