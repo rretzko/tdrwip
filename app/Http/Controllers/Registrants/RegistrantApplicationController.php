@@ -195,7 +195,7 @@ class RegistrantApplicationController extends Controller
 
         }elseif($registrant->eventversion->event->id === 19) {
 
-            $registrant->resetRegistrantType($this->allshoreRules($data));
+            $registrant->resetRegistrantType($this->allshoreRules($data, $registrant));
 
         }else {
 
@@ -216,8 +216,9 @@ class RegistrantApplicationController extends Controller
         //
     }
 
-    private function allshoreRules(array $data)
+    private function allshoreRules(array $data, Registrant $registrant)
     {
+        $virtualaudition = Eventversion::find($registrant->eventversion_id)->eventversionconfigs->virtualaudition;
         $status = 'eligible';
 
         $tests = ['absences', 'eligibility','imageuse', 'lates', 'rulesandregs', 'signatureguardian', 'signaturestudent'];
@@ -231,7 +232,7 @@ class RegistrantApplicationController extends Controller
         }
 
         //passed all tests
-        return 'applied';
+        return $virtualaudition ? 'applied' : 'registered' ;
     }
 
     /**

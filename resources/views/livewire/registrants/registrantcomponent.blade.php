@@ -213,11 +213,13 @@
                                     <th class="px-1" title="Event voice part">Voice</th>
                                     <th class="px-1" title="Emergency Contact Check">EC</th>
                                     <th class="px-1" title="Application downloaded">App</th>
-                                    @foreach($event->filecontenttypes AS $filecontenttype)
-                                        <th class="px-1" title="{{ ucwords($filecontenttype->descr) }} mp3 status">
-                                            {{ ucwords(substr($filecontenttype->descr,0,2)) }}
-                                        </th>
-                                    @endforeach
+                                    @if($event->eventversionconfigs->virtualaudition)
+                                        @foreach($event->filecontenttypes AS $filecontenttype)
+                                            <th class="px-1" title="{{ ucwords($filecontenttype->descr) }} mp3 status">
+                                                {{ ucwords(substr($filecontenttype->descr,0,2)) }}
+                                            </th>
+                                        @endforeach
+                                    @endif
                                     <th class="px-1" title="Registration status">Status</th>
                                     <th class="px-1 cursor-pointer text-blue-700" title="Status"
                                             wire:click='status'>
@@ -300,33 +302,36 @@
                                                 </x-tables.cell>
 
                                                 {{-- FILE CONTENT TYPES --}}
-                                                @foreach($event->filecontenttypes AS $filecontenttype)
+                                                @if($event->eventversionconfigs->virtualaudition)
 
-                                                    <x-tables.cell class="text-center uppercase">
-                                                        @if($registrant->fileuploadapproved($filecontenttype))
-                                                            {{-- HEROICONS check --}}
-                                                            <span title="{{ ucwords($filecontenttype->descr) }} file uploaded and approved">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                                                </svg>
-                                                            </span>
-                                                        @elseif($registrant->hasFileUploaded($filecontenttype))
-                                                            {{-- HEROICONS plus --}}
-                                                            <span title="{{ ucwords($filecontenttype->descr) }} file uploaded but NOT approved">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
-                                                                     fill="none" viewBox="0 0 24 24"
-                                                                     stroke="currentColor">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                                          stroke-width="2" d="M12 4v16m8-8H4"/>
-                                                                </svg>
-                                                            </span>
-                                                        @else
-                                                            <span title="No {{ $filecontenttype->descr }} file found">-</span>
-                                                        @endif
+                                                    @foreach($event->filecontenttypes AS $filecontenttype)
 
-                                                    </x-tables.cell>
+                                                        <x-tables.cell class="text-center uppercase">
+                                                            @if($registrant->fileuploadapproved($filecontenttype))
+                                                                {{-- HEROICONS check --}}
+                                                                <span title="{{ ucwords($filecontenttype->descr) }} file uploaded and approved">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                                    </svg>
+                                                                </span>
+                                                            @elseif($registrant->hasFileUploaded($filecontenttype))
+                                                                {{-- HEROICONS plus --}}
+                                                                <span title="{{ ucwords($filecontenttype->descr) }} file uploaded but NOT approved">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                                         fill="none" viewBox="0 0 24 24"
+                                                                         stroke="currentColor">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                                              stroke-width="2" d="M12 4v16m8-8H4"/>
+                                                                    </svg>
+                                                                </span>
+                                                            @else
+                                                                <span title="No {{ $filecontenttype->descr }} file found">-</span>
+                                                            @endif
 
-                                                @endforeach
+                                                        </x-tables.cell>
+
+                                                    @endforeach
+                                                @endif
 
                                                 <x-tables.cell >
                                                     <div class="{{ $registrant->registranttypeDescrBackground }} p-1 text-center text-xs border border-gray-400 rounded">
