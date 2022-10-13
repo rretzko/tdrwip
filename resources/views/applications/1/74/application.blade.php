@@ -78,7 +78,7 @@
                                     </div>
 
                                     {{-- ON-SITE APPLICATION ADVISORY --}}
-                                    {{-- to do: Make this conditional to application close AND on-site registration option 
+                                    {{-- to do: Make this conditional to application close AND on-site registration option
                                     <div style="text-align: center; border: 1px solid red; color: darkred; margin-bottom: 1rem;">
                                         ***** ON-SITE APPLICATION *****
                                     </div>
@@ -92,7 +92,7 @@
                                     </div>
 
                                     <div class="text-center">
-                                        GIVE THE SIGNED ENDORSEMENT TO YOUR TEACHER.
+                                        GIVE THE SIGNED ENDORSEMENT TO YOUR DIRECTOR.
                                     </div>
 
                                     {{-- STUDENT DETAIL DECLARATION --}}
@@ -122,7 +122,7 @@
                                                 <tr class="bg-gray-200">
                                                     <td>Home Phone</td>
                                                     <td>Student Cell Phone</td>
-                                                    <td>Parent Phone</td>
+                                                    <td>Parent/Guardian Phone</td>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -187,7 +187,7 @@
                                     {{-- PARENT ENDORSEMENT --}}
                                     <div>
                                         <header class="upper underline font-bold mt-6">
-                                            PARENT ENDORSEMENT
+                                            PARENT/GUARDIAN ENDORSEMENT
                                         </header>
                                         <div class="text">
                                             <p>
@@ -204,15 +204,15 @@
                                             photograph for publicity publication in print and online.
                                             </p>
                                             <p>
-                                                I have read and acknowledged the rehearsal and concert schedule and I will make
+                                                I have read and acknowledged the rehearsal and concert schedule and <b>I will make
                                             arrangements to pick up {{ $registrant->student->person->first }} on or within twenty-minutes
-                                            after posted rehearsal dismissal time.
+                                                    after posted rehearsal dismissal time</b>.
                                             </p>
                                         </div>
 
                                         <div class="signatureline flex flex-row justify-between mt-8">
                                             <div>
-                                                Parent Signature ______________________________________
+                                                Parent/Guardian Signature ______________________________________
                                             </div>
                                             <div>
                                                 Date: _________________
@@ -240,7 +240,7 @@
                                                     auditioning for chorus must be a member of the
                                                     {{$registrant->student->currentSchool->shortName}} choral program,
                                                     and a student auditioning for band or orchestra must be a member of
-                                                    {{$registrant->student->currentSchool->shortName}} instrumental program.<br />
+                                                    {{$registrant->student->currentSchool->shortName}}'s instrumental program.<br />
                                             OR
                                                 </li>
                                                 <li> does not have a corresponding school musical performing organzation
@@ -250,9 +250,9 @@
                                             </ol>
                                             <p>
                                             A CJMEA Region II Chorus member must remain an active member, in good standing,
-                                            of the school performing organization throughout the CJMEA Region I Chorus
-                                            experience.  We understand that {{$registrant->student->currentTeachername}}
-                                            sponsoring this student is a paid member of NAfME and will be present on the
+                                            of the school performing organization throughout the CJMEA Region II Chorus
+                                            experience.  We understand that Director {{$registrant->student->currentTeachername}}
+                                            sponsoring this student is a current member of NAfME and will be present on the
                                             day of auditions and will serve and complete the assignment given to them by
                                             the audition chairperson.  We also understand that we will review this
                                             application to be sure that all parts are completed correctly.  In the event
@@ -290,12 +290,11 @@
                                             </p>
 
                                             <p>
-                                                All students who successfully audition will be charged a
-                                                $20 acceptance
-                                                fee which must be paid in full at or before the first rehearsal.  This
-                                                fee will cover the cost involved in the purchase of music.  All fees must
+                                                Upon acceptance, students will be charged a $20 acceptance
+                                                fee which must be paid in full at the first rehearsal.  This
+                                                fee will cover the purchase cost of music.  This fee must
                                                 be paid in cash or by a School or Director's check only.  No
-                                                parent/guardian checkes will be accepted.
+                                                parent/guardian checks will be accepted.
                                             </p>
                                         </div>
                                     </div>
@@ -308,7 +307,7 @@
                                         <div class="text">
                                             <p>
                                                 Please read the special Home School Instructions included in the
-                                                information section of the Director's Packet BEFORE you complete this form.
+                                                information section of the Director's Packet BEFORE you complete this application.
                                             </p>
                                         </div>
                                     </div>
