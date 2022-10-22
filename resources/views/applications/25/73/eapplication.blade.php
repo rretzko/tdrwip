@@ -163,7 +163,7 @@
                                         </div>
                                         <div class="detail-row">
                                             <label>School:</label>
-                                            <div class="data">{{ $school->name }}</div>
+                                            <div class="data">{{ $school ? $school->name : 'NO SCHOOL FOUND' }}</div>
                                         </div>
                                         <div class="detail-row">
                                             <label>Choral Director:</label>
@@ -408,7 +408,7 @@
                                                             As parent or legal guardian of <b>{{ $registrant->student->person->fullname }}</b>,
                                                             I give my permission for {{ $registrant->student->person->pronoun->possessive }}
                                                             to be an applicant for this organization.  I understand that neither
-                                                            {{ $school->name }} nor {{ $eventversion->event->organization->name }} assumes responsibility
+                                                            {{ $school ? $school->name : 'NO SCHOOL FOUND'}} nor {{ $eventversion->event->organization->name }} assumes responsibility
                                                             for illness or accident.  I further attest the statement signed by
                                                             <b>{{ $registrant->student->person->fullname }}</b> and will assist
                                                             {{ $registrant->student->person->pronoun->possessive }} in fulfilling

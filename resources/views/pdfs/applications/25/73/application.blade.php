@@ -170,7 +170,7 @@
             School:
         </td>
         <td class="data">
-            {{ $school->name }}
+            {{ $school ? $school->name : 'NO SCHOOL FOUND'}}
         </td>
     </tr>
     <tr>
@@ -428,7 +428,7 @@
             As parent or legal guardian of <b>{{ $registrant->student->person->fullname }}</b>,
             I give my permission for {{ $registrant->student->person->pronoun->possessive }}
             to be an applicant for this organization.  I understand that neither
-            {{ $school->name }} nor {{ $eventversion->event->organization->name }} assumes responsibility
+            {{ $school ? $school->name : 'NO SCHOOL FOUND'}} nor {{ $eventversion->event->organization->name }} assumes responsibility
             for illness or accident.  I further attest the statement signed by
             <b>{{ $registrant->student->person->fullname }}</b> and will assist
             {{ $registrant->student->person->pronoun->possessive }} in fulfilling
