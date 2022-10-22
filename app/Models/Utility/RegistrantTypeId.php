@@ -85,7 +85,7 @@ class RegistrantTypeId
     private function hasFileUploads(): void
     {
         $this->has_file_uploads = (! $this->eventversion->eventversionconfigs->virtualaudition)
-dd(__LINE__);
+
             ? true //eventversion does not include file uploads
 
             : Fileupload::where('registrant_id',$this->registrant->id)
