@@ -22,7 +22,7 @@ class Payment extends Model
         Payment::create(
             [
                 'user_id' => $dto['user_id'],
-                'registrant_id' => null,
+                'registrant_id' => array_key_exists('registrant_id', $dto) ? $dto['registrant_id'] : null,
                 'eventversion_id' => $dto['eventversion_id'],
                 'paymenttype_id' => $dto['paymenttype_id'],
                 'school_id' => $dto['school_id'],

@@ -111,13 +111,18 @@ Log::info('***** LOG POST INFO *****');
             'paymenttype_id' => 3, //Paymenttypes::PAYPAL
             'school_id' => $this->schoolId($parts),
             'vendor_id' => $_POST['verify_sign'],
+            'custom' => $_POST['custom'],
         ];
 
         //only paypal payments from studentfolder.info contain a valid registrant_id
+        Log::info('custom => '.$_POST['custom']);
+        Log::info('parts[1] => '.$parts[1]);
         if($parts[1] !== 'teacher'){
 
             $a['registrant_id'] = $this->registrantId($parts);
+            Log::info('a[registrant_id] => '.$a['registrant_id']);
         }
+
 
         return $a;
     }
