@@ -96,7 +96,10 @@
 
         <div id="reassign-school" style="border-top: 1px solid darkgrey; padding: 1rem; margin-top: 1rem;">
             <h4>Reassign School</h4>
-            <form method="post" action="" >
+            <form method="post" action="{{ route('school.reassignment.update',['user' => $user]) }}" >
+
+                @csrf
+
                 @foreach(auth()->user()->schools AS $school)
                     @if(! strstr($school->name, 'Studio'))
                         <div class="input-group">

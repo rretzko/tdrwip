@@ -120,7 +120,7 @@ Route::middleware('auth', 'verified')->group(function() {
     Route::get('/events', [App\Http\Controllers\Eventversions\EventversionsController::class, 'index'])->name('eventversions.index');
     Route::get('/event/{eventversion}', [App\Http\Controllers\Eventversions\EventversionsController::class, 'show'])->name('eventversion.show');
     Route::get('/event/obligations/update', [App\Http\Controllers\Eventversions\ObligationsController::class, 'create'])->name('eventversion.obligations.update');
-    
+
     /** ORGANIZATIONS */
     Route::get('/organizations', [App\Http\Controllers\Organizations\OrganizationController::class, 'index'])->name('organizations.index');
     Route::get('/organization/membershipcard/{organization}', [App\Http\Controllers\Organizations\MembershipcardController::class,'show'])
@@ -176,6 +176,10 @@ Route::middleware('auth', 'verified')->group(function() {
     /** SCHOOLS */
     Route::get('/schools', [App\Http\Controllers\Schools\SchoolController::class, 'index'])->name('schools');
     Route::get('/schools/remove/{school}', [App\Http\Controllers\Schools\SchoolController::class, 'destroy'])->name('schools.destroy');
+
+    /** SCHOOL REASSIGNMENT */
+    Route::post('/school/reassign/{user}',[App\Http\Controllers\Schools\SchoolReassignmentController::class, 'update'])
+        ->name('school.reassignment.update');
 
     /** TEACHER EVENTVERSION CONFIGURATIONS */
     Route::get('/registrants/configs/{eventversion}',[App\Http\Controllers\Eventversions\EventversionteacherconfigsController::class,'update'])->name('eventversionteacherconfig.update');
