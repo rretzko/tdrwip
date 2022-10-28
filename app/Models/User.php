@@ -126,6 +126,7 @@ class User extends Authenticatable
 
     public function schoolsNotStudio()
     {
+        /** @var  $collection */
         $collection = collect();
 
         foreach($this->schools AS $school){
