@@ -92,7 +92,7 @@
     </div>
 
     {{-- REASSIGN SCHOOL --}}
-    @if( auth()->user()->schools->count() > 2)
+    @if( auth()->user()->schoolsNotStudio()->count() > 1)
 
         <div id="reassign-school" style="border-top: 1px solid darkgrey; padding: 1rem; margin-top: 1rem;">
             <h4>Reassign School</h4>

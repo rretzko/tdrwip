@@ -124,6 +124,21 @@ class User extends Authenticatable
         return $this->belongsToMany(School::class);
     }
 
+    public function schoolsNotStudio()
+    {
+        $collection = collect();
+
+        foreach($this->schools AS $school){
+
+            if(! strstr($school->name, 'Studio')){
+
+                $collection->push($school);
+            }
+        }
+
+        return $collection;
+    }
+
     public function tenures()
     {
         return $this->hasMany(Tenure::class);
