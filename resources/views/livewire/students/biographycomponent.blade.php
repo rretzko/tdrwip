@@ -91,4 +91,33 @@
         </div>
     </div>
 
+    {{-- REASSIGN SCHOOL --}}
+    @if( auth()->user()->schools->count() > 2)
+
+        <div id="reassign-school" style="border-top: 1px solid darkgrey; padding: 1rem; margin-top: 1rem;">
+            <h4>Reassign School</h4>
+            <form method="post" action="" >
+                @foreach(auth()->user()->schools AS $school)
+                    @if(! strstr($school->name, 'Studio'))
+                        <div class="input-group">
+                            <input type="radio"
+                                   name="school_id"
+                                   value="{{ $school->id }}"
+                                   @if(\App\Models\Userconfig::getValue('school', auth()->id()) == $school->id)
+                                       checked
+                                   @endif
+                            >
+                            <label for="">{{ $school->name }}</label>
+                        </div>
+                    @endif
+                @endforeach
+                <div class="input-group" style="margin-top: 1rem;">
+                    <input type="submit" name="submit" value="Reassign School"
+                        style="padding: 0.5rem; border: 1px solid black; border-radius: 1rem;"
+                    >
+                </div>
+            </form>
+        </div>
+
+    @endif
 </div>
