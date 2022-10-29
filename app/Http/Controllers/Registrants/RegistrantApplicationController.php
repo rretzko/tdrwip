@@ -116,6 +116,7 @@ class RegistrantApplicationController extends Controller
             'registrant' => $registrant,
             'me' => auth()->user()->person,
             'eapplication' => $registrant->eapplication,
+            'school' => School::find(Userconfig::getValue('school',auth()->id())),
         ]);
     }
 
