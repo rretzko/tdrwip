@@ -7,6 +7,7 @@ use App\Traits\RegistranttypeBackgroundColorsTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Registrant extends Model
 {
@@ -249,10 +250,21 @@ class Registrant extends Model
      */
     public function getSignatureconfirmationAttribute()
     {
+        /*Log::info(__METHOD__.': '.Carbon::parse(Signature::where('registrant_id', $this->id)
+            ->where('signaturetype_id', Signaturetype::TEACHER)
+            ->first()->confirmed)
+            ->format('M d, Y g:i a'));
+
         return Carbon::parse(Signature::where('registrant_id', $this->id)
             ->where('signaturetype_id', Signaturetype::TEACHER)
             ->first()->confirmed)
             ->format('M d, Y g:i a');
+        */
+
+        //confirm that teacher signaturetype_id is NOT null
+        return (! is_null(Signature::where('registrant_id', $this->id)
+            ->where('signaturetype_id', Signaturetype::TEACHER)
+            ->first()->confirmed));
     }
 
     /**

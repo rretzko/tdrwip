@@ -28,6 +28,7 @@ trait UpdateRegistrantStatusTrait
             ($eventversion->requiredSignaturesCount == $signature->countForRegistrant($registrant)) &&
             $registrant->hasFileuploads
         ){
+
             $registranttype_id = Registranttype::REGISTERED;
 
         }elseif( //SJCDA
