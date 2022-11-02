@@ -44,7 +44,7 @@ trait UpdateRegistrantStatusTrait
                 $registranttype_id = Registranttype::REGISTERED;
 
         }elseif(//CJMEA
-            ($eventversion->id === 70) &&
+            (($eventversion->id === 70) || ($eventversion->id === 74)) &&
             $registrant->hasApplication &&
             $registrant->signatureConfirmation
             ){
