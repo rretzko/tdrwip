@@ -79,6 +79,7 @@
 
     @endfor
     --}} -->
+    {{-- FORCE REBUILD OF DEPLOY --}}
     @forelse($registrants AS $registrant)
         <tr>
             <td class="text-center">{{ $loop->iteration }}</td>
