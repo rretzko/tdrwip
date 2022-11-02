@@ -62,7 +62,7 @@
                             {{-- BANNER --}}
                             <header class="flex justify-between">
                                 <div>
-                                    <img src="\assets\images\njmea_logo_state.jpg" alt="NJMEA logo"/>
+                                   <!-- <img src="\assets\images\njmea_logo_state.jpg" alt="NJMEA logo"/> -->
                                 </div>
 
                                 <div class="flex flex-col">
@@ -116,9 +116,11 @@
                             <div class="flex flex-col">
 
                                 {{-- HEADER --}}
+                                <!-- {{--
                                 <h2 class="text-center w-full border-b">
                                     {{ $eventversion->eventversionconfigs->max_count }} STUDENTS MAXIMUM
                                 </h2>
+                                --}} -->
 
                                 <h3 class="text-center w-full border-b" style="color: darkred; font-weight: bold;">
                                    YOUR REGISTERED STUDENTS WILL BE AUTOMATICALLY DISPLAYED BELOW.<br />
@@ -141,6 +143,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    <!-- {{--
                                     @for($i=0;$i<$eventversion->eventversionconfigs->max_count;$i++)
                                         @if(isset($registrants[$i]))
                                             <tr>
@@ -161,6 +164,20 @@
                                         @endif
 
                                     @endfor
+                                    --}} -->
+                                    @forelse($registrants AS $registrant)
+                                            <tr>
+                                                <td class="text-center">{{ $loop->iteration }}</td>
+                                                <td class="">{{ $registrant->student->person->fullNameAlpha }}</td>
+                                                <td class="text-center">{{ $registrant->instrumentations->first()->descr }}</td>
+                                                <td class="text-center">{{ $registrant->student->grade }}</td>
+                                                <td class="text-center">${{ $eventversion->eventversionconfigs->registrationfee * ($loop->iteration) }}</td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="5" style="text-align: center">No registrants found</td>
+                                            </tr>
+                                    @endforelse
                                     </tbody>
                                 </table>
 
@@ -172,7 +189,7 @@
                                         @foreach($eventversion->instrumentations() AS $instrumentation)
                                             <th class="uppercase">{{ $instrumentation->abbr }}</th>
                                         @endforeach
-                                        <th>Total Enclosed</th>
+                                        <th>Total Fees</th>
                                     </tr>
                                     </thead>
                                     <tbody>

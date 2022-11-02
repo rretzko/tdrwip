@@ -37,12 +37,13 @@
         </td>
     </tr>
 </table>
-
+<!-- {{--
 <table>
     <tr>
         <th style="text-align: center; border-bottom: 1px solid darkgrey;">{{ $eventversion->eventversionconfigs->max_count }} STUDENTS MAXIMUM</th>
     </tr>
 </table>
+--}} -->
 
 <style>#roster{font-size: .9rem;} #roster td,#roster th{border: 1px solid black; text-align: center;}</style>
 <table style="border-collapse: collapse;" id="roster">
@@ -56,6 +57,7 @@
     </tr>
     </thead>
     <tbody>
+    <!-- {{--
     @for($i=0;$i<$eventversion->eventversionconfigs->max_count;$i++)
         @if(isset($registrants[$i]))
             <tr>
@@ -76,6 +78,20 @@
         @endif
 
     @endfor
+    --}} -->
+    @forelse($registrants AS $registrant)
+        <tr>
+            <td class="text-center">{{ $loop->iteration }}</td>
+            <td class="">{{ $registrant->student->person->fullNameAlpha }}</td>
+            <td class="text-center">{{ $registrant->instrumentations->first()->descr }}</td>
+            <td class="text-center">{{ $registrant->student->grade }}</td>
+            <td class="text-center">${{ $eventversion->eventversionconfigs->registrationfee * ($loop->iteration) }}</td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="5" style="text-align: center">No registrants found</td>
+        </tr>
+    @endforelse
     </tbody>
 </table>
 
@@ -91,7 +107,7 @@
         @foreach($eventversion->instrumentations() AS $instrumentation)
             <th >{{ strtoupper($instrumentation->abbr) }}</th>
         @endforeach
-        <th>Total Enclosed</th>
+        <th>Total Fees</th>
     </tr>
     </thead>
     <tbody>
