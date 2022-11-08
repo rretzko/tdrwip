@@ -132,6 +132,13 @@ class Registrantcomponent extends Component
 
     public function status()
     {
+        /*
+         * Workaround to solve production error when $this->population === 'hidden'
+         */
+        $this->population = ($this->population === 'hidden')
+            ? 'eligible'
+            : $this->population;
+
         $populations = [
             'eligible' => 'applied',
             'applied' => 'registered',
