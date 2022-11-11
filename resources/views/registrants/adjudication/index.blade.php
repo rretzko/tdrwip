@@ -193,7 +193,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($room->adjudicators AS $adjudicator)
+                            @foreach($room->alphaNameSortedAdjudicators() AS $adjudicator)
                                 <tr>
                                     <td>{{ $adjudicator->person->fullnameAlpha }}</td>
                                     @foreach($room->filecontenttypes->sortBy('order_by') AS $filecontenttype)

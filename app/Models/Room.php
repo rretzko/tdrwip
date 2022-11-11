@@ -11,9 +11,18 @@ class Room extends Model
 
     protected $with = ['adjudicators'];
 
+    /**
+     * Returns adjudicators by id, i.e. first assigned, second assigned, etc.
+     * @return mixed
+     */
     public function adjudicators()
     {
         return $this->hasMany(\App\Models\Adjudicator::class);
+    }
+
+    public function alphaNameSortedAdjudicators()
+    {
+        return $this->adjudicators->sortBy('user.person.last');
     }
 
     public function filecontenttypes()
