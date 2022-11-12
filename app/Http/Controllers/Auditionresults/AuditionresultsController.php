@@ -7,6 +7,7 @@ use App\Models\Userconfig;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 
+
 class AuditionresultsController extends Controller
 {
     /**
@@ -133,7 +134,7 @@ class AuditionresultsController extends Controller
         $scoresummary = new \App\Models\Scoresummary;
 
         //ex. pages.pdfs.applications.12.64.application
-        $pdf = PDF::loadView('pdfs.auditionresults.'//9.65.2021_22_application',
+        $pdf = PDF\PDF::loadView('pdfs.auditionresults.'//9.65.2021_22_application',
             . $eventversion->event->id
             .'.'
             . $eventversion->id
