@@ -48,7 +48,7 @@
         </td>
         <td style="width: 72%;text-align: right;">
             <div style="font-weight: bold; text-align: right; ">{{ strtoupper($eventversion->name) }}</div>
-            <div style="text-align: right"><span style="border-top: 1px solid darkgrey;">2021-2022 TEACHER ESTIMATE FORM</span></div>
+            <div style="text-align: right"><span style="border-top: 1px solid darkgrey;">2022-2023 TEACHER ESTIMATE FORM</span></div>
             <div style="text-align: right; font-size: 1rem;">
                 {{ $me->person->fullName }}
             </div>
@@ -159,7 +159,7 @@
     <tr>
         <td style="font-size: 1.5rem; font-weight: bold; text-align: center">
             Please attach a copy of your current NAfME card here.<br />
-            Membership must be current through December 2021.
+            Membership must be current through December 2022.
         </td>
     </tr>
     <tr>
