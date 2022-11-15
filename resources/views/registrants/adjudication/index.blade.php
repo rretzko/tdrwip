@@ -154,9 +154,19 @@
                                     <input class="bg-black text-white rounded px-2" type="submit" name="submit" id="submit" value="Submit" />
 
                                 </div>
-                                    <div style="color: darkred; font-size: 0.8rem;">
-                                        NOTE: This page will auto-advance to the next registrant on the roster.
-                                    </div>
+
+                                <div style="color: darkred; font-size: 0.8rem;">
+                                    NOTE: This page will auto-advance to the next registrant on the roster.
+                                </div>
+
+                                {{-- No-Show Button --}}
+                                <div style="text-align: center; font-size: smaller; margin-top: 1rem;">
+                                    @if(! $eventversion->eventversionconfigs->virtualaudition)
+                                        <a href="{{ route('registrants.adjudication.noshow', ['room' => $room, 'registrant' => $auditioner]) }}" style="border: 1px solid blue; padding: 0 0.5rem; border-radius: 0.5rem; margin-top: 0.5rem; color: blue;">
+                                                Mark this registrant ({{ $auditioner->id }}) as a "No Show"
+                                        </a>
+                                    @endif
+                                </div>
                             </form>
                         </div>
 
@@ -165,7 +175,7 @@
             </div>
 
             {{-- ADJUDICATOR RESULTS TABLE --}}
-            <div id="adjudicators-table" style="">
+            <div id="adjudicators-table" style="margin-top: 1rem;">
                 @if($auditioner)
                     <style>
                         td,th{border: 1px solid black; padding:0 .25rem;}

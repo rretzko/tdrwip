@@ -148,6 +148,8 @@ Route::middleware('auth', 'verified')->group(function() {
         ->name('registrants.adjudication.show');
     Route::post('registrants/adjudication/registrant/update/{registrant}',[App\Http\Controllers\Registrants\RegistrantAdjudicationController::class, 'update'])
         ->name('registrants.adjudication.update');
+    Route::get('/registrants/adjudication/noshow/{room}/{registrant}',[App\Http\Controllers\Registrants\RegistrantAdjudicationController::class, 'noshow'])
+        ->name('registrants.adjudication.noshow');
 
 
     Route::get('/registrant/approve/{registrant}/{filecontenttype}', [FileapprovalController::class,'approve'])->name('fileupload.approve');

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Eventversion;
 use App\Models\Registrant;
 use App\Models\Registranttype;
+use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -44,27 +45,6 @@ class RegistrantAdjudicationController extends Controller
             'useradjudicator' => \App\Models\Adjudicator::find(auth()->id()),
             'viewers' => $this->viewers(),
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -115,17 +95,6 @@ class RegistrantAdjudicationController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -134,7 +103,6 @@ class RegistrantAdjudicationController extends Controller
      */
     public function update(Request $request, $id)
     {
-
         $inputs = $request->validate([
             'scoringcomponents' => ['required', 'array'],
             'scoringcomponents.*' => ['required', 'numeric'],
@@ -168,14 +136,17 @@ class RegistrantAdjudicationController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Mark $registrant as a no-show
      *
-     * @param  int  $id
+     * @param Room $room
+     * @param  Registrant $registrant
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function noshow(Room $room, Registrant $registrant)
     {
-        //
+        $room->logNoShow($registrant);
+
+        return redirect()->route('registrants.adjudication',['eventversion' => Eventversion::find($registrant->eventversion_id)]);
     }
 
     private function findNextRegistrant($id)
