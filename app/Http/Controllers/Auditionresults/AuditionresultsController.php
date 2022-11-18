@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auditionresults;
 
 use App\Http\Controllers\Controller;
 use App\Models\Userconfig;
-use Barryvdh\DomPDF\Facade as PDF;
+use Barryvdh\DomPDF\Facade\Pdf AS PDF;
 use Illuminate\Http\Request;
 
 
@@ -37,27 +37,6 @@ class AuditionresultsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -85,40 +64,6 @@ class AuditionresultsController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-    /**
      * @param \App\Models\Eventversion $eventversion
      */
     public function pdf(\App\Models\Eventversion $eventversion)
@@ -134,7 +79,7 @@ class AuditionresultsController extends Controller
         $scoresummary = new \App\Models\Scoresummary;
 
         //ex. pages.pdfs.applications.12.64.application
-        $pdf = PDF\PDF::loadView('pdfs.auditionresults.'//9.65.2021_22_application',
+        $pdf = PDF::loadView('pdfs.auditionresults.'//9.65.2021_22_application',
             . $eventversion->event->id
             .'.'
             . $eventversion->id
