@@ -53,7 +53,7 @@
                     @endif
 
                     @if($eventversion->id > 68)
-                        Or
+                        @if(! $eventversion->event->id == 19)Or @endif
                         @if(config('app.url') === 'http://localhost')
                             <a href="{{ route('auditionresults.mydetails.pdf',['eventversion' => $eventversion]) }}"
                                 style="color: blue;"
