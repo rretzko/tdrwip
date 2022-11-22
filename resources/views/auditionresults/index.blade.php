@@ -18,6 +18,34 @@
                     Your {{ $eventversion->name }} Audition Results
                 </h4>
 
+                {{-- PAYPAL PARTICIPATION FEE ENGAGEMENT --}}
+                <div style="text-align: center; margin: 1rem 0;">
+                    {{-- if the eventversion permits participation fee payment through PayPal --}}
+                    @if($eventversion->eventversionconfigs->participation_fee)
+                        <a href="{{ route('participationfees.index',['eventversion' => $eventversion]) }}" style="color: darkred;">
+                            Participation Fee Payments
+                        </a>
+<!-- {{--
+                        @if(isset($paypal_participation_fee) &&  ($paypal_participation_fee === 1))
+                            <a href="{{ route('registrationfee.paypal',['fee' => 0]) }}" style="">
+                                <button style="background-color: darkred; border-radius: 0.5rem; padding: 0 0.5rem; color: white;">
+                                    DISALLOW accepted students from paying their Participation Fee
+                                    (${{ $eventversion->eventversionconfigs->participation_fee_amount }}) via PayPal
+                                </button>
+                            </a>
+                        @elseif(isset($paypal_participation_fee) &&  ($paypal_participation_fee === 0))
+                            <a href="{{ route('registrationfee.paypal',['fee' => 1]) }}" style="">
+                                <button style="background-color: navy; border-radius: 0.5rem; padding: 0 0.5rem; color: lightyellow;">
+                                    Allow accepted students to pay their Participation Fee (${{ $eventversion->eventversionconfigs->participation_fee_amount }}) via PayPal
+                                </button>
+                            </a>
+                        @else
+
+                        @endif
+--}} -->
+                    @endif
+                </div>
+
                 <div style="text-align: center;">
                     Download:
                     @if($eventversion->event->id !== 19){{-- SUPPRESS FOR NJ ALL-SHORE --}}

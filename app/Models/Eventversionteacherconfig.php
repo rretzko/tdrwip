@@ -9,7 +9,7 @@ class Eventversionteacherconfig extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['eventversion_id', 'paypalstudent', 'school_id', 'user_id'];
+    protected $fillable = ['eventversion_id', 'paypalstudent', 'paypal_participation_fee', 'school_id', 'user_id'];
 
     public function eventversion()
     {

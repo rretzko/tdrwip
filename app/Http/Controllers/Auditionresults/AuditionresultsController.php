@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auditionresults;
 
 use App\Http\Controllers\Controller;
 use App\Models\Userconfig;
+use App\Models\Eventversionteacherconfig;
 use Barryvdh\DomPDF\Facade\Pdf AS PDF;
 use Illuminate\Http\Request;
 
@@ -27,9 +28,17 @@ class AuditionresultsController extends Controller
             ->get()
             ->sortBy('student.person.last');
 
+        $paypal_participation_fee = ($eventversion->eventversionconfigs->participation_fee === 1)
+            ? Eventversionteacherconfig::where('user_id', auth()->id())
+                ->where('school_id', Userconfig::getValue('school', auth()->id()))
+                ->where('eventversion_id', $eventversion->id)
+                ->value('paypal_participation_fee')
+            : 0;
+
         return view('auditionresults.index',
         [
             'eventversion' => $eventversion,
+            'paypal_participation_fee' => $paypal_participation_fee,
             'registrants' => $registrants,
             'scoresummary' => new \App\Models\Scoresummary,
             'scorestable' => NULL,
@@ -54,9 +63,17 @@ class AuditionresultsController extends Controller
 
         $scorestable = $this->buildScoresTable($eventversion,$registrant);
 
+        $paypal_participation_fee = ($eventversion->eventversionconfigs->participation_fee === 1)
+            ? Eventversionteacherconfig::where('user_id', auth()->id())
+                ->where('school_id', Userconfig::getValue('school', auth()->id()))
+                ->where('eventversion_id', $eventversion->id)
+                ->value('paypal_participation_fee')
+            : 0;
+
         return view('auditionresults.index',
             [
                 'eventversion' => $eventversion,
+                'paypal_participation_fee' => $paypal_participation_fee,
                 'registrants' => $registrants,
                 'scoresummary' => new \App\Models\Scoresummary,
                 'scorestable' => $scorestable,

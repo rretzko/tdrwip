@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Registrant;
+use App\Models\Registranttype;
 use App\Traits\MailingAddressTrait;
 use App\Traits\SenioryearTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,6 +17,20 @@ class School extends Model
     use HasFactory,MailingAddressTrait,SenioryearTrait, SoftDeletes;
 
     protected $fillable = ['name', 'address01', 'address02', 'city', 'county_id', 'geostate_id', 'postalcode'];
+
+    public function acceptedRegistrants(Eventversion $eventversion)
+    {
+        $unsuccessfuls = ['na','n/a','inc'];
+
+        $ids =  DB::table('registrants')
+            ->join('scoresummaries','registrants.id','=','scoresummaries.registrant_id')
+            ->where('registrants.eventversion_id', $eventversion->id)
+            ->where('registrants.school_id', $this->id)
+            ->whereNotIn('scoresummaries.result', $unsuccessfuls)
+            ->pluck('registrants.id');
+
+        return Registrant::find($ids)->sortBy('student.person.last');
+    }
 
     public function ensembles()
     {
