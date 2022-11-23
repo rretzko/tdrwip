@@ -324,7 +324,7 @@
                                                         >
                                                     @endif
                                                         @if($eventversion->isOpenForMembers() || (auth()->id() === 167) || $exception)
-                                                            <button class="bg-gray-500 mt-2 py-1 px-2 rounded">
+                                                            <button class="bg-gray-500 mt-2 py-1 px-2 rounded-full mx-2">
                                                                 @if($registrant->hasSignatures)
                                                                     Remove my signature
                                                                 @else
