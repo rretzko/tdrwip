@@ -6,6 +6,17 @@
             <section id="left" class="w-3/12 ">
                 <div class="text-blue-100">
                     Participation Fee Roster
+                    <ul>
+                        <li>
+                            <span style="color: gold;">PayPal</span>: Participation fees collected through PayPal.
+                        </li>
+                        <li>
+                            <span style="color: gold;">Other</span>: Participation fees collected by you excluding PayPal payments.
+                        </li>
+                        <li>
+                            <span style="color: gold;">Due</span>: Total amount due <i>minus</i> amount collected through PayPal.
+                        </li>
+                    </ul>
                 </div>
 
             </section>
