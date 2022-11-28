@@ -124,6 +124,50 @@ class School extends Model
         return $str;
     }
 
+    public function paymentsParticipationXPaypalBalanceDue(): float
+    {
+        $eventversion = Eventversion::find(UserConfig::getValue('eventversion', auth()->id()));
+        $participation_fee = $eventversion->eventversionconfigs->participation_fee_amount;
+        $accepted_count = $this->acceptedRegistrants($eventversion)->count();
+        $paypal_payments = $this->paymentsParticipationPaypal();
+        $total_due = ($accepted_count * $participation_fee);
+
+        return ($total_due - $paypal_payments);
+    }
+
+    public function paymentsParticipationXPaypalBalanceDueFormatted() : string
+    {
+        return '$'.number_format($this->paymentsParticipationXPaypalBalanceDue(), 2);
+    }
+
+    public function paymentsParticipationXPaypal(): float
+    {
+        return Payment::where('school_id', $this->id)
+            ->where('paymentcategory_id', PaymentCategory::PARTICIPATION)
+            ->where('paymenttype_id', '!=',Paymenttype::PAYPAL)
+            ->whereNotNull('registrant_id')
+            ->sum('amount') ?: 0;
+    }
+
+    public function paymentsParticipationXPaypalFormatted() : string
+    {
+        return '$'.number_format($this->paymentsParticipationXPaypal(), 2);
+    }
+
+    public function paymentsParticipationPaypal(): float
+    {
+        return Payment::where('school_id', $this->id)
+            ->where('paymentcategory_id', PaymentCategory::PARTICIPATION)
+            ->where('paymenttype_id', Paymenttype::PAYPAL)
+            ->whereNotNull('registrant_id')
+            ->sum('amount') ?: 0;
+    }
+
+    public function paymentsParticipationPaypalFormatted() : string
+    {
+        return '$'.number_format($this->paymentsParticipationPaypal(), 2);
+    }
+
     public function students()
     {
         return $this->users->filter(function($user){

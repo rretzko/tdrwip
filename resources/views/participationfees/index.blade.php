@@ -32,9 +32,21 @@
                             <th>Reg.Id</th>
                             <th>Name</th>
                             <th>Voice</th>
-                            <th>PayPal</th>
-                            <th>Other</th>
-                            <th>Due</th>
+                            <th>
+                                <span title="Amount paid through PayPal" style="color:green">
+                                    PayPal
+                                </span>
+                            </th>
+                            <th>
+                                <span title="Amount collected NOT PayPal" style="color:green">
+                                    Other
+                                </span>
+                            </th>
+                            <th>
+                                <span title="Total Due - Amount paid through PayPal" style="color:green">
+                                    Due
+                                </span>
+                            </th>
                             <!-- <th>Detail</th> -->
                         </tr>
                     </thead>
@@ -45,16 +57,26 @@
                             <td>{{ $registrant->id }}</td>
                             <td class="text-left">{{ $registrant->student->person->fullnameAlpha }}</td>
                             <td>{{ strtoupper($registrant->instrumentations->first()->abbr) }}</td>
-                            <td>PP</td>
-                            <td>Oth</td>
-                            <td style="background-color: rgba(0,0,0,0.1);">Due</td>
+                            <td>{{ $registrant->paymentsParticipationPaypalFormatted() }}</td>
+                            <td>{{ $registrant->paymentsParticipationXPaypalFormatted() }}</td>
+                            <td style="background-color: rgba(0,0,0,0.1);">{{ $registrant->paymentsParticipationXPaypalBalanceDueFormatted() }}</td>
                         </tr>
                     @endforeach
-                    {{-- BALANCE DUE --}}
-                    <tr style="background-color: rgba(0,0,0,0.1);">
-                        <td colspan="6" style="text-align: right; font-weight: bold;">Balance Due</td>
-                        <td style="font-weight: bold;">$</td>
+
+                    {{-- TOTALS --}}
+                    <tr style="background-color: rgba(0,0,0,0.1); font-weight: bold;">
+                        <td colspan="4" style="text-align: right;">Totals</td>
+                        <td>
+                            {{ auth()->user()->currentSchool()->paymentsParticipationPaypalFormatted() }}
+                        </td>
+                        <td>
+                            {{ auth()->user()->currentSchool()->paymentsParticipationXPaypalFormatted() }}
+                        </td>
+                        <td >
+                            {{ auth()->user()->currentSchool()->paymentsParticipationXPaypalBalanceDueFormatted() }}
+                        </td>
                     </tr>
+
                     </tbody>
                 </table>
 

@@ -335,6 +335,68 @@ class Registrant extends Model
         return $this->hasMany(Payment::class);
     }
 
+    /**
+     * @return float
+     */
+    public function paymentsParticipationPaypal() : float
+    {
+        $eventversion_id = UserConfig::getValue('eventversion', auth()->id());
+
+        $amount = Payment::where('registrant_id', $this->id)
+            ->where('eventversion_id', UserConfig::getValue('eventversion', auth()->id()))
+            ->where('paymentcategory_id', PaymentCategory::PARTICIPATION)
+            ->where('paymenttype_id', Paymenttype::PAYPAL)
+            ->sum('amount');
+
+        return $amount ?: 0;
+    }
+
+    /**
+     * @return string //$#,###.##
+     */
+    public function paymentsParticipationPaypalFormatted() : string
+    {
+        return '$'.number_format($this->paymentsParticipationPaypal(), 2);
+    }
+
+    /**
+     * @return float
+     */
+    public function paymentsParticipationXPaypal() : float
+    {
+        $eventversion_id = UserConfig::getValue('eventversion', auth()->id());
+
+        $amount = Payment::where('registrant_id', $this->id)
+            ->where('eventversion_id', UserConfig::getValue('eventversion', auth()->id()))
+            ->where('paymentcategory_id', PaymentCategory::PARTICIPATION)
+            ->where('paymenttype_id', '!=', Paymenttype::PAYPAL)
+            ->sum('amount');
+
+        return $amount ?: 0;
+    }
+
+    /**
+     * @return string //$#,###.##
+     */
+    public function paymentsParticipationXPaypalFormatted() : string
+    {
+        return '$'.number_format($this->paymentsParticipationXPaypal(), 2);
+    }
+
+    public function paymentsParticipationXPaypalBalanceDue(): float
+    {
+        $eventversion = Eventversion::find(UserConfig::getValue('eventversion', auth()->id()));
+        $participation_fee = $eventversion->eventversionconfigs->participation_fee_amount;
+        $paypal_payments = $this->paymentsParticipationPaypal();
+
+        return ($participation_fee - $paypal_payments);
+    }
+
+    public function paymentsParticipationXPaypalBalanceDueFormatted() : string
+    {
+        return '$'.number_format($this->paymentsParticipationXPaypalBalanceDue(), 2);
+    }
+
     public function registranttype()
     {
         return $this->belongsTo(Registranttype::class);
