@@ -24,6 +24,7 @@ class Payment extends Model
                 'user_id' => $dto['user_id'],
                 'registrant_id' => array_key_exists('registrant_id', $dto) ? $dto['registrant_id'] : null,
                 'eventversion_id' => $dto['eventversion_id'],
+                'paymentcategory_id' => $dto['paymentcategory_id'],
                 'paymenttype_id' => $dto['paymenttype_id'],
                 'school_id' => $dto['school_id'],
                 'vendor_id' => $dto['vendor_id'],

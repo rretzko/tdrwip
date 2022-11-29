@@ -28,8 +28,9 @@
 
                 {{-- RETURN TO AUDITION RESULTS PAGE --}}
                 <div style="text-align: center; margin: 1rem 0;">
-                    <a href="{{ route('auditionresults.index',['eventversion' => $eventversion]) }}" style="color: darkred;">
-                        Back to Audition Results
+                    <a href="{{ route('auditionresults.index',['eventversion' => $eventversion]) }}"
+                       style="color: darkred; background-color: lemonchiffon; padding: 0 1rem; border: 1px solid darkred; border-radius: 1rem;">
+                        Return to Audition Results
                     </a>
                 </div>
 
@@ -93,8 +94,13 @@
 
                 {{-- PAYPAL LINK --}}
                 <div style="text-align: center;">
-                    PayPal Link Here...
+                    <x-paypals.25.73.paypal_button
+                        amountduenet="{{ auth()->user()->currentSchool()->paymentsParticipationXPaypalBalanceDue() }}"
+                        :eventversion="$eventversion"
+                        :school="$school"
+                    />
                 </div>
+
             </section>
 
         </div>

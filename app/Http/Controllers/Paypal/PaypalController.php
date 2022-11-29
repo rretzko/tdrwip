@@ -85,11 +85,15 @@ Log::info('***** LOG POST INFO *****');
          * [
          *  0 => user_id,
          *  1 => registrant_id,
-         *  2 => school_id,
-         *  3 => vendor_id
+         *  2 => eventversion_id
+         *  3 => school_id,
+         *  4 => amount
+         *  5 => payment_category_id
+         *  6 => vendor_id
          * ]
          */
         $parts = explode('*',$_POST['custom']);
+        $parts[] = $_POST['verify_sign'];
 
         $a = [
             'payment_date' => $_POST['payment_date'],
@@ -112,6 +116,7 @@ Log::info('***** LOG POST INFO *****');
             'school_id' => $this->schoolId($parts),
             'vendor_id' => $_POST['verify_sign'],
             'custom' => $_POST['custom'],
+            'paymentcategory_id' => $this->paymentCategoryId($parts),
         ];
 
         //only paypal payments from studentfolder.info contain a valid registrant_id
@@ -123,13 +128,17 @@ Log::info('***** LOG POST INFO *****');
             Log::info('a[registrant_id] => '.$a['registrant_id']);
         }
 
-
         return $a;
     }
 
     private function eventversionId(array $parts)
     {
         return $parts[2];
+    }
+
+    private function paymentCategoryId(array $parts)
+    {
+        return $parts[5];
     }
 
     private function registrantId(array $parts)

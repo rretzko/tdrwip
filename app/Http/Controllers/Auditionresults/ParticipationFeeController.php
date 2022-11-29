@@ -23,6 +23,6 @@ class ParticipationFeeController extends Controller
 
         $registrants = $school->acceptedRegistrants($eventversion);
 
-        return view('participationfees.index', compact('eventversion','registrants', 'teacher_configs'));
+        return view('participationfees.index', compact('eventversion','registrants', 'school', 'teacher_configs'));
     }
 }
