@@ -11,6 +11,7 @@ class Datetype extends Model
 
     const MEMBERSHIP_OPEN=3;
     const MEMBERSHIP_CLOSE=4;
+    const MEMBERSHIP_SIGNATURE_CLOSE=10;
     const SCORE_OPEN=11;
     const SCORE_CLOSE=12;
     const VIDEOS_CLOSE_MEMBERSHIP=18;

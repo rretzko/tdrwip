@@ -127,7 +127,7 @@ class Eventversion extends Model
     public function isOpenForMembers()
     {//dd($this->eventversiondates()->where('datetype_id', 4)->first()->dt);
         //datetype_id of 4 = membership_close
-        return Carbon::now() < $this->eventversiondates()->where('datetype_id', 4)->first()->dt ;
+        return Carbon::now() < $this->eventversiondates()->where('datetype_id', Datetype::MEMBERSHIP_SIGNATURE_CLOSE)->first()->dt ;
     }
 
     public function isQualifiedStudent(User $user) : array
