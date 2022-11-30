@@ -9,8 +9,8 @@ class Payment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['amount', 'eventversion_id', 'paymenttype_id', 'registrant_id', 'school_id', 'vendor_id',
-        'updated_by','user_id',];
+    protected $fillable = ['amount', 'eventversion_id', 'paymenttype_id', 'paymentcategory_id', 'registrant_id',
+        'school_id', 'vendor_id', 'updated_by','user_id',];
 
     public function paymenttype()
     {
@@ -24,6 +24,7 @@ class Payment extends Model
                 'user_id' => $dto['user_id'],
                 'registrant_id' => array_key_exists('registrant_id', $dto) ? $dto['registrant_id'] : null,
                 'eventversion_id' => $dto['eventversion_id'],
+                'paymentcategory_id' => $dto['paymentcategory_id'],
                 'paymenttype_id' => $dto['paymenttype_id'],
                 'school_id' => $dto['school_id'],
                 'vendor_id' => $dto['vendor_id'],

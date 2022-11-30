@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Registrant;
+use App\Models\Registranttype;
 use App\Traits\MailingAddressTrait;
 use App\Traits\SenioryearTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,6 +17,20 @@ class School extends Model
     use HasFactory,MailingAddressTrait,SenioryearTrait, SoftDeletes;
 
     protected $fillable = ['name', 'address01', 'address02', 'city', 'county_id', 'geostate_id', 'postalcode'];
+
+    public function acceptedRegistrants(Eventversion $eventversion)
+    {
+        $unsuccessfuls = ['na','n/a','inc'];
+
+        $ids =  DB::table('registrants')
+            ->join('scoresummaries','registrants.id','=','scoresummaries.registrant_id')
+            ->where('registrants.eventversion_id', $eventversion->id)
+            ->where('registrants.school_id', $this->id)
+            ->whereNotIn('scoresummaries.result', $unsuccessfuls)
+            ->pluck('registrants.id');
+
+        return Registrant::find($ids)->sortBy('student.person.last');
+    }
 
     public function ensembles()
     {
@@ -106,6 +122,50 @@ class School extends Model
         }
 
         return $str;
+    }
+
+    public function paymentsParticipationXPaypalBalanceDue(): float
+    {
+        $eventversion = Eventversion::find(UserConfig::getValue('eventversion', auth()->id()));
+        $participation_fee = $eventversion->eventversionconfigs->participation_fee_amount;
+        $accepted_count = $this->acceptedRegistrants($eventversion)->count();
+        $paypal_payments = $this->paymentsParticipationPaypal();
+        $total_due = ($accepted_count * $participation_fee);
+
+        return ($total_due - $paypal_payments);
+    }
+
+    public function paymentsParticipationXPaypalBalanceDueFormatted() : string
+    {
+        return '$'.number_format($this->paymentsParticipationXPaypalBalanceDue(), 2);
+    }
+
+    public function paymentsParticipationXPaypal(): float
+    {
+        return Payment::where('school_id', $this->id)
+            ->where('paymentcategory_id', PaymentCategory::PARTICIPATION)
+            ->where('paymenttype_id', '!=',Paymenttype::PAYPAL)
+            ->whereNotNull('registrant_id')
+            ->sum('amount') ?: 0;
+    }
+
+    public function paymentsParticipationXPaypalFormatted() : string
+    {
+        return '$'.number_format($this->paymentsParticipationXPaypal(), 2);
+    }
+
+    public function paymentsParticipationPaypal(): float
+    {
+        return Payment::where('school_id', $this->id)
+            ->where('paymentcategory_id', PaymentCategory::PARTICIPATION)
+            ->where('paymenttype_id', Paymenttype::PAYPAL)
+            ->whereNotNull('registrant_id')
+            ->sum('amount') ?: 0;
+    }
+
+    public function paymentsParticipationPaypalFormatted() : string
+    {
+        return '$'.number_format($this->paymentsParticipationPaypal(), 2);
     }
 
     public function students()

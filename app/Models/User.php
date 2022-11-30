@@ -67,6 +67,14 @@ class User extends Authenticatable
         return $this->hasOne(Address::class) ?? new Address;
     }
 
+    public function currentSchool(): School
+    {
+        if($this->isTeacher()){
+
+            return School::find(UserConfig::getValue('school', $this->id));
+        }
+    }
+
     public function ensembles()
     {
         return $this->hasMany(Ensemble::class);

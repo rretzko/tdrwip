@@ -65,6 +65,14 @@ Route::middleware('auth', 'verified')->group(function() {
     Route::get('auditionresults/mydetails/pdf/{eventversion}', [App\Http\Controllers\Auditionresults\AuditionresultsController::class, 'pdf'])
         ->name('auditionresults.mydetails.pdf');
 
+    /** PARTICIPATION FEES */
+    Route::get('participationfees/export', [App\Http\Controllers\Auditionresults\ParticipationFeeController::class, 'export'])
+        ->name('participationfees.export');
+    Route::get('participationfees/{eventversion}', [App\Http\Controllers\Auditionresults\ParticipationFeeController::class, 'index'])
+        ->name('participationfees.index');
+    Route::post('participationfees/payment', [App\Http\Controllers\Auditionresults\ParticipationFeeController::class, 'update'])
+        ->name('participationfees.payment');
+
     /** DASHBOARD */
     Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'show'])->name('dashboard');
     Route::get('dashboard/gettingstarted', [App\Http\Controllers\DashboardController::class, 'update'])
@@ -171,7 +179,8 @@ Route::middleware('auth', 'verified')->group(function() {
     Route::post('/registrant/payment/update/{payment}', [App\Http\Controllers\Registrants\RegistrantPaymentsController::class,'update'])->name('registrant.payments.update');
 
     /** PAYPAL */
-    Route::get('/paypal/registrants', [App\Http\Controllers\Registrants\PaypalController::class,'index'])->name('registrant.paypal');
+    Route::get('/paypal/registrants/fee', [App\Http\Controllers\Registrants\PaypalController::class,'index'])->name('registrant.paypal');
+    Route::get('/paypal/registrationfee', [App\Http\Controllers\Registrants\PaypalRegistrationFeeController::class,'update'])->name('registrationfee.paypal');
     //incoming api from PayPal
     //Route::post('/update_account', [App\Http\Controllers\Paypal\PaypalController::class,'update']);
 
