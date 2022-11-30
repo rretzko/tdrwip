@@ -92,7 +92,35 @@
                     </tbody>
                 </table>
 
+                <div>
+                    <form method="post" action="">
+                        @csrf
+                        <div class="input-group" style="display: flex; flex-direction: column;">
+                            <label for="registrant_id">Select Student</label>
+                            <select name="registrant_id" style="max-width: 16rem;">
+                                @forelse($registrants AS $registrant)
+                                    <option value="{{ $registrant->id }}">{{ $registrant->programname }}</option>
+                                @empty
+                                    <option value="0">No students found</option>
+                                @endforelse
+                            </select>
+                        </div>
+                        <div class="input-group" style="display: flex; flex-direction: column;">
+                            <label for="paymenttype_id">Payment Type</label>
+                            <select name="paymenttype_id" style="max-width: 16rem;">
+                                    <option value="1"`>Cash</option>
+                                    <option value="3">Check</option>
+                            </select>
+                        </div>
+                        <div class="input-group" style="display: flex; flex-direction: column;">
+                            <label for="amount">Amount</label>
+                            <input type="stext" name="amount" value="25" />
+                        </div>
+                    </form>
+                </div>888-280-4331
+
                 {{-- PAYPAL LINK --}}
+@if((auth()->id() === 368) || (auth()->id() === 348))
                 <div style="text-align: center;">
                     <x-paypals.25.73.paypal_button
                         amountduenet="{{ auth()->user()->currentSchool()->paymentsParticipationXPaypalBalanceDue() }}"
@@ -100,7 +128,7 @@
                         :school="$school"
                     />
                 </div>
-
+@endif
             </section>
 
         </div>
