@@ -105,6 +105,15 @@
                         </td>
                     </tr>
 
+                    {{-- SCHOOL PAYMENTS --}}
+                    <tr style="background-color: black; color: white; font-weight: bold;">
+                        <td colspan="4" style="text-align: right; padding-right: 1rem; border: 1px solid lightgray;">School PayPal Payment</td>
+                        <td style="border: 1px solid lightgray;">
+                            {{ auth()->user()->currentSchool()->paymentsParticipationPaypalSchoolFormatted() }}
+                        </td>
+                        <td colspan="2" style="border: 1px solid lightgray;"></td>
+                    </tr>
+
                     </tbody>
                 </table>
 
@@ -116,11 +125,15 @@
                 {{-- PAYPAL LINK --}}
 @if((auth()->id() === 368) || (auth()->id() === 348))
                 <div style="text-align: center;">
-                    <x-paypals.25.73.paypal_button
-                        amountduenet="{{ auth()->user()->currentSchool()->paymentsParticipationXPaypalBalanceDue() }}"
-                        :eventversion="$eventversion"
-                        :school="$school"
-                    />
+                    @if(auth()->user()->currentSchool()->paymentsParticipationBalanceDue())
+                        <x-paypals.25.73.paypal_button
+                            amountduenet="{{ auth()->user()->currentSchool()->paymentsParticipationBalanceDue() }}"
+                            :eventversion="$eventversion"
+                            :school="$school"
+                        />
+                    @else
+                        <h4 class="font-bold mb-4 px-4" style="background-color: rgba(0,0,0,0.1); margin-top: 1rem;">PayPal Payment Amount Due: {{ auth()->user()->currentSchool()->paymentsParticipationBalanceDueFormatted() }}</h4>
+                    @endif
                 </div>
 @endif
             </section>
