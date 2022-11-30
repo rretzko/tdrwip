@@ -34,11 +34,27 @@
                     </a>
                 </div>
 
+                {{-- SUCCESS MESSAGE --}}
+                @if(session('success'))
+                    <div style="display: flex; flex-direction: row;">
+                        <div style="background-color: rgba(0,255,0,0.2); color: darkgreen; margin:auto; margin-bottom: 1rem; text-align: center; padding: 0 1rem;">
+                            {{ session()->get('success')  }}
+                        </div>
+                    </div>
+                @endif
+
                 <style>
                     td,th{border: 1px solid black; text-align: center; padding:0 .25rem;}
                 </style>
                 <table style="margin: auto;">
                     <thead>
+                        <tr>
+                            <td colspan="7" style="text-align: right; padding-right: 1rem; border-top: 1px solid white; border-right: 1px solid white; border-left: 1px solid white;">
+                                <a href="{{ route('participationfees.export') }}" style="color: blue; font-size: small;">
+                                    Download csv
+                                </a>
+                            </td>
+                        </tr>
                         <tr>
                             <th>###</th>
                             <th>Reg.Id</th>
@@ -92,32 +108,10 @@
                     </tbody>
                 </table>
 
-                <div>
-                    <form method="post" action="">
-                        @csrf
-                        <div class="input-group" style="display: flex; flex-direction: column;">
-                            <label for="registrant_id">Select Student</label>
-                            <select name="registrant_id" style="max-width: 16rem;">
-                                @forelse($registrants AS $registrant)
-                                    <option value="{{ $registrant->id }}">{{ $registrant->programname }}</option>
-                                @empty
-                                    <option value="0">No students found</option>
-                                @endforelse
-                            </select>
-                        </div>
-                        <div class="input-group" style="display: flex; flex-direction: column;">
-                            <label for="paymenttype_id">Payment Type</label>
-                            <select name="paymenttype_id" style="max-width: 16rem;">
-                                    <option value="1"`>Cash</option>
-                                    <option value="3">Check</option>
-                            </select>
-                        </div>
-                        <div class="input-group" style="display: flex; flex-direction: column;">
-                            <label for="amount">Amount</label>
-                            <input type="stext" name="amount" value="25" />
-                        </div>
-                    </form>
-                </div>888-280-4331
+                {{-- STUDENT PAYMENT FORM --}}
+                <div style="display: flex; flex-direction: row; justify-content: space-around; margin-top: 1rem;">
+                    <x-forms.studentPaymentForm :registrants="$registrants" />
+                </div>
 
                 {{-- PAYPAL LINK --}}
 @if((auth()->id() === 368) || (auth()->id() === 348))

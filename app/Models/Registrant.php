@@ -387,9 +387,9 @@ class Registrant extends Model
     {
         $eventversion = Eventversion::find(UserConfig::getValue('eventversion', auth()->id()));
         $participation_fee = $eventversion->eventversionconfigs->participation_fee_amount;
-        $paypal_payments = $this->paymentsParticipationPaypal();
+        $payments = Payment::where('registrant_id', $this->id)->where('paymentcategory_id', PaymentCategory::PARTICIPATION)->sum('amount');
 
-        return ($participation_fee - $paypal_payments);
+        return ($participation_fee - $payments);
     }
 
     public function paymentsParticipationXPaypalBalanceDueFormatted() : string

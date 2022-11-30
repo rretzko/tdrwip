@@ -84,7 +84,6 @@ class RegistrantController extends Controller
             'exception' => $this->exceptions(),
             'uploadspermitted' => $uploadspermitted,
             'instrumentations' => $instrumentations,
-            'director_can_update' => $director_can_update,
         ]);
     }
 

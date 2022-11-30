@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\PaymentCategory;
 use Illuminate\Database\Seeder;
 
 class PaymentCategorySeeder extends Seeder
@@ -19,5 +20,15 @@ class PaymentCategorySeeder extends Seeder
           3 => 'housing',
           4 => 'other',
         ];
+
+        foreach($seeds AS $key => $value){
+
+            PaymentCategory::create(
+                [
+                    'id' => $key,
+                    'descr' => $value,
+                ]
+            );
+        }
     }
 }
