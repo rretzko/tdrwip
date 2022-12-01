@@ -68,6 +68,8 @@ Route::middleware('auth', 'verified')->group(function() {
     /** PARTICIPATION FEES */
     Route::get('participationfees/export', [App\Http\Controllers\Auditionresults\ParticipationFeeController::class, 'export'])
         ->name('participationfees.export');
+    Route::get('participationfees/allow', [App\Http\Controllers\Auditionresults\ParticipationFeeController::class, 'teacherToggle'])
+        ->name('participationfees.allow');
     Route::get('participationfees/{eventversion}', [App\Http\Controllers\Auditionresults\ParticipationFeeController::class, 'index'])
         ->name('participationfees.index');
     Route::post('participationfees/payment', [App\Http\Controllers\Auditionresults\ParticipationFeeController::class, 'update'])

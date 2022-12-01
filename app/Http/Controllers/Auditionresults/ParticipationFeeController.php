@@ -73,4 +73,26 @@ class ParticipationFeeController extends Controller
 
         return Excel::download(new ParticipationFeeRosterExport($registrants), $filename);
     }
+
+    /**
+     * Switch teacher decision to allow or deny functionality for student use of PayPal for participation fees
+     * @return void
+     */
+    public function teacherToggle()
+    {
+        $eventversion = Eventversion::find(Userconfig::getValue('eventversion', auth()->id()));
+
+        $teacher_configs = Eventversionteacherconfig::where('user_id', auth()->id())
+            ->where('eventversion_id', $eventversion->id)
+            ->where('school_id', Userconfig::getValue('school', auth()->id()))
+            ->first();
+
+        $teacher_configs->update(
+            [
+                'paypal_participation_fee' => (! $teacher_configs->paypal_participation_fee),
+            ]
+        );
+
+        return redirect()->route('participationfees.index', ['eventversion' => $eventversion]);
+    }
 }

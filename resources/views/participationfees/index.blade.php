@@ -3,6 +3,7 @@
     <div>
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8 flex flex-row w-12/12">
 
+            {{-- SIDE BAR --}}
             <section id="left" class="w-3/12 ">
                 <div class="text-blue-100">
                     Participation Fee Roster
@@ -21,6 +22,7 @@
 
             </section>
 
+            {{-- MAIN SECTION --}}
             <section id="right" class="w-8/12 bg-white p-4">
                 <h4 class="mb-3" style="font-size: 2rem;">
                     {{ $eventversion->name }} Participation Fee Roster
@@ -31,6 +33,22 @@
                     <a href="{{ route('auditionresults.index',['eventversion' => $eventversion]) }}"
                        style="color: darkred; background-color: lemonchiffon; padding: 0 1rem; border: 1px solid darkred; border-radius: 1rem;">
                         Return to Audition Results
+                    </a>
+                </div>
+
+                {{-- TEACHER APPROVAL FOR STUDENTS --}}
+                <div style="text-align: center;">
+                    <a href="{{ route('participationfees.allow') }}"
+                       style="background-color: @if($teacher_configs->where('user_id', auth()->id())->first()->paypal_participation_fee) darkred @else green @endif; color: white; padding: 0 1rem; margin: auto;border-radius: 1rem;"
+                    >
+                        Click to
+                        @if($teacher_configs->where('user_id', auth()->id())->first()->paypal_participation_fee)
+                          DISALLOW
+                        @else
+                            ALLOW
+                        @endif
+                         Student PayPal Payments For The ${{ $eventversion->eventversionconfigs->participation_fee_amount }}
+                        Participation Fee
                     </a>
                 </div>
 
