@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Payment extends Model
 {
@@ -19,7 +20,7 @@ class Payment extends Model
 
     public function recordIPNPayment(array $dto)
     {
-        Payment::create(
+        $payment = Payment::create(
             [
                 'user_id' => $dto['user_id'],
                 'registrant_id' => array_key_exists('registrant_id', $dto) ? $dto['registrant_id'] : null,
@@ -32,6 +33,12 @@ class Payment extends Model
                 'updated_by' => 368,
             ],
         );
+
+        if($payment->id){
+            Log::info('***** Payment made for: '.$payment->registrant_id);
+        }else{
+            Log::info('@@@@@ Payment NOT made for: '.$payment->registrant_id);
+        }
     }
 
 }

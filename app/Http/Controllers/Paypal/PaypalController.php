@@ -123,7 +123,7 @@ Log::info('***** LOG POST INFO *****');
         Log::info('custom => '.$_POST['custom']);
         Log::info('parts[1] => '.$parts[1]);
         if($parts[1] !== 'teacher'){
-
+Log::info('***** registrant payment for: '.$this->registrantId($parts));
             $a['registrant_id'] = $this->registrantId($parts);
             Log::info('a[registrant_id] => '.$a['registrant_id']);
         }
