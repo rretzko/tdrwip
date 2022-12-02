@@ -15,7 +15,8 @@
                             <span style="color: gold;">Other</span>: Participation fees collected by you excluding PayPal payments.
                         </li>
                         <li>
-                            <span style="color: gold;">Due</span>: Total amount due <i>minus</i> amount collected through PayPal.
+                            <span style="color: gold;">Due</span>: Total amount due <i>minus</i> amount collected through PayPal
+                            and paid by check or cash.
                         </li>
                     </ul>
                 </div>

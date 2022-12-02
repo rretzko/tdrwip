@@ -28,6 +28,20 @@ class ParticipationFeeController extends Controller
 
         $registrants = $school->acceptedRegistrants($eventversion);
 
+        /** Create a eventversionteacherconfigs row if none exists and one or more accepted registrants */
+        if(is_null($teacher_configs) && $registrants->count()){
+
+            $teacher_configs = Eventversionteacherconfig::create(
+                [
+                    'user_id' => auth()->id(),
+                    'school_id' => $school->id,
+                    'eventversion_id' => $eventversion->id,
+                    'paypalstudent' => 0,
+                    'paypal_participation_fee' => 0,
+                ],
+            );
+        }
+
         return view('participationfees.index', compact('eventversion','registrants', 'school', 'teacher_configs'));
     }
 
