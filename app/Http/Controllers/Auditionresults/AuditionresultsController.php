@@ -35,8 +35,11 @@ class AuditionresultsController extends Controller
                 ->value('paypal_participation_fee')
             : 0;
 
+        $accepted_registrants = \App\Models\School::find(Userconfig::getValue('school', auth()->id()))->acceptedRegistrants($eventversion)->count();
+
         return view('auditionresults.index',
         [
+            'accepted_registrants' => $accepted_registrants,
             'eventversion' => $eventversion,
             'paypal_participation_fee' => $paypal_participation_fee,
             'registrants' => $registrants,

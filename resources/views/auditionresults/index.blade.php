@@ -21,7 +21,7 @@
                 {{-- PAYPAL PARTICIPATION FEE ENGAGEMENT --}}
                 <div style="text-align: center; margin: 1rem 0;">
                     {{-- if the eventversion permits participation fee payment through PayPal --}}
-                    @if($eventversion->eventversionconfigs->participation_fee)
+                    @if($eventversion->eventversionconfigs->participation_fee && $accepted_registrants)
                         <a href="{{ route('participationfees.index',['eventversion' => $eventversion]) }}"
                            style="color: darkred; background-color: lemonchiffon; padding: 0 1rem; border: 1px solid darkred; border-radius: 1rem;">
                             Participation Fee Payments
