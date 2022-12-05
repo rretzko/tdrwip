@@ -143,6 +143,8 @@ Route::middleware('auth', 'verified')->group(function() {
     /** REGISTRANTS */
     Route::get('/registrant/{registrant}/application/show',[App\Http\Controllers\Registrants\RegistrantApplicationController::class, 'show'])->name('registrant.application.show');
     Route::get('/registrant/{registrant}/application',[App\Http\Controllers\Registrants\RegistrantApplicationController::class, 'create'])->name('registrant.application.create');
+    Route::get('/registrant/{registrant}/walk_in/application',[App\Http\Controllers\Registrants\RegistrantApplicationController::class, 'walkIn'])
+        ->name('registrant.application.walk_in.create');
     Route::get('/registrant/{registrant}/download',[App\Http\Controllers\Registrants\RegistrantApplicationController::class, 'download'])->name('registrant.application.download');
     Route::post('/registrant/{registrant}/eapplication',[App\Http\Controllers\Registrants\RegistrantApplicationController::class,'update'])->name('registrant.eapplication');
     Route::get('registrant/profile/{eventversion}/{registrant}/inperson', [App\Http\Controllers\Registrants\InpersonauditionController::class, 'update'])->name('registrant.profile.store.inperson');

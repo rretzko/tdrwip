@@ -73,6 +73,10 @@ class RegistrantController extends Controller
                 ? $eventversion->eventensembles()[0]->eventensembletype()->instrumentations
                 : $eventversion->eventensembles()[1]->eventensembletype()->instrumentations);
 
+        $walk_in_registration = ($eventversion->event->id === 1)
+            ? true
+            : false;
+
         return view('registrants.registrant.show', [
             'eventversion' => $eventversion,
             'filename' => $fileserver->buildFilename($registrant),
@@ -84,6 +88,7 @@ class RegistrantController extends Controller
             'exception' => $this->exceptions(),
             'uploadspermitted' => $uploadspermitted,
             'instrumentations' => $instrumentations,
+            'walk_in_registration' => $walk_in_registration,
         ]);
     }
 

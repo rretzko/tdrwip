@@ -340,6 +340,21 @@
                                                 Application has {{ $countsignatures }} signature(s)
                                             @endif
 
+                                            @if($walk_in_registration)
+                                                <div>
+                                                    <a href="{{ route('registrant.application.walk_in.create',['registrant' => $registrant]) }}"
+                                                        style="background-color: green; color: white; padding: 0 1rem; border-radius: 1rem;"
+                                                    >
+                                                        Click here for WALK-IN registration application
+                                                    </a>
+                                                </div>
+                                                <div style="background-color: rgba(255,0,0,0.2); color: darkred; margin: 0.5rem 1rem; border-radius: 0.5rem; ">
+                                                    @if(session('status'))
+                                                        {{ session('status') }}
+                                                    @endif
+                                                </div>
+                                            @endif
+
                                         </div>
 
                                     </div>

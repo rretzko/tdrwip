@@ -217,6 +217,50 @@ class RegistrantApplicationController extends Controller
         //
     }
 
+    public function walkIn(Registrant $registrant)
+    {
+        //$registrant->auditiondetail->applied();
+        $teacher = Teacher::find(auth()->id());
+        $eventversion = $registrant->eventversion;
+
+        //early exit
+        if($eventversion->eventversionconfigs->onsiteregistrationfee === '0.00'){
+            return back()->with('status', 'This event does not have on-site registration.');
+        }
+
+        $school = School::find(Userconfig::getValue('school', auth()->id())); //$registrant->student->person->user->schools->first();
+
+        $filename = self::build_Filename($eventversion, $registrant); //ex: "2021_NJASC_2021_BhargavaV.pdf"
+        $me = auth()->user();
+
+        $registrantfullname = $registrant->student->person->fullName;
+        $registrantfirstname = $registrant->student->person->first;
+        $schoolname = $registrant->student->currentSchool->shortName;
+
+        $eapplication = Eapplication::find($registrant->id) ?: null;
+
+        //ex. pages.pdfs.applications.12.64.application
+        $pdf = Pdf::loadView('pdfs.applications.'//9.65.2021_22_application',
+            . $eventversion->event->id
+            .'.'
+            . $eventversion->id
+            . '.walk_ins.application',
+            //.applicationTest',
+            compact('registrant','eventversion', 'teacher', 'school','me',
+                'registrantfullname','registrantfirstname','schoolname','eapplication'));
+
+        //log application printing
+        Application::create([
+            'registrant_id' => $registrant->id,
+            'updated_by' => auth()->id(),
+        ]);
+
+        //update registrant status
+        $registrant->resetRegistrantType('applied');
+
+        return $pdf->download($filename);
+    }
+
     private function allshoreRules(array $data, Registrant $registrant)
     {
         $virtualaudition = Eventversion::find($registrant->eventversion_id)->eventversionconfigs->virtualaudition;
