@@ -45,7 +45,25 @@ class Score extends Model
             case 1: //CJMEA
                 $scores =
                     [
+                        $scoringcomponents[75][0], //scales quality
+                        $scoringcomponents[76][0], //scales diatonic intonation
+                        $scoringcomponents[77][0], //scales chromatic intonation
+                        $scoringcomponents[78][0], //solo quality
+                        $scoringcomponents[79][0], //solo intonation
+                        $scoringcomponents[80][0], //solo musicanship
+                        $scoringcomponents[81][0], //swan quality
+                        $scoringcomponents[82][0], //swan intonation
+                        $scoringcomponents[83][0], //swan musicianship
 
+                        $scoringcomponents[75][1],
+                        $scoringcomponents[76][1],
+                        $scoringcomponents[77][1],
+                        $scoringcomponents[78][1],
+                        $scoringcomponents[79][1],
+                        $scoringcomponents[80][1],
+                        $scoringcomponents[81][1],
+                        $scoringcomponents[82][1],
+                        $scoringcomponents[83][1],
                     ];
                 break;
             case 19: //All-Shore

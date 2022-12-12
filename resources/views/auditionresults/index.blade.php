@@ -74,6 +74,10 @@
                             <a href="/assets/pdfs/auditionresults/2023MAHC.pdf" target="_BLANK"
                                class="text-blue-500"
                             >
+                        @elseif($eventversion->id === 74)
+                            <a href="/assets/pdfs/auditionresults/2023CJMEA.pdf" target="_BLANK"
+                               class="text-blue-500"
+                            >
                         @else
                             <a href="" class="tex-blue-500">
                         @endif
