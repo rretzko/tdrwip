@@ -42,8 +42,10 @@ class Score extends Model
         }
 
         if($scores) {
+
             switch ($this->eventversion->event->id) {
                 case 1: //CJMEA
+                    
                     $scores =
                         [
                             $scoringcomponents[75][0], //scales quality
@@ -51,7 +53,7 @@ class Score extends Model
                             $scoringcomponents[77][0], //scales chromatic intonation
                             $scoringcomponents[78][0], //solo quality
                             $scoringcomponents[79][0], //solo intonation
-                            $scoringcomponents[80][0], //solo musicanship
+                            $scoringcomponents[80][0], //solo musicianship
                             $scoringcomponents[81][0], //swan quality
                             $scoringcomponents[82][0], //swan intonation
                             $scoringcomponents[83][0], //swan musicianship
