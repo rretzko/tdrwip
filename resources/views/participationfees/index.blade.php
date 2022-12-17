@@ -40,10 +40,11 @@
                 {{-- TEACHER APPROVAL FOR STUDENTS --}}
                 <div style="text-align: center;">
                     <a href="{{ route('participationfees.allow') }}"
-                       style="background-color: @if($teacher_configs->where('user_id', auth()->id())->first()->paypal_participation_fee) darkred @else green @endif; color: white; padding: 0 1rem; margin: auto;border-radius: 1rem;"
+                       style="background-color: @if($teacher_configs->paypal_participation_fee) darkred @else green @endif; color: white; padding: 0 1rem; margin: auto;border-radius: 1rem;"
                     >
                         Click to
-                        @if($teacher_configs->where('user_id', auth()->id())->first()->paypal_participation_fee)
+                        {{-- @if($teacher_configs->where('user_id', auth()->id())->first()->paypal_participation_fee) --}}
+                        @if($teacher_configs->paypal_participation_fee)
                           DISALLOW
                         @else
                             ALLOW
