@@ -26,9 +26,6 @@
                             ul{list-style-type: disc; margin-left: 2rem;}
                         </style>
                         <div class="overflow-x-auto ">
-                            @if($eventversion->id === 65)
-                                <x-obligations.9.65.obligations />
-                            @endif
                             @if($eventversion->id === 66)
                                 <x-obligations.12.66.obligations />
                             @endif
@@ -39,9 +36,6 @@
                                     <x-obligations.23.68.obligations />
                             @endif
 
-                            @if($eventversion->id === 71)
-                                <x-obligations.9.71.obligations :eventversion=$eventversion />
-                            @endif
                             @if($eventversion->id === 73)
                                 <x-obligations.25.73.obligations :eventversion=$eventversion />
                             @endif
@@ -54,7 +48,23 @@
                                 <x-obligations.19.72.obligations />
                             @endif
 
-                            {{-- CJMEA REGION II CHORUS --}}
+                            {{-- NJ ALL-STATE CHORUS --}}
+                            {{-- 2021-22 --}}
+                            @if($eventversion->id === 65)
+                                <x-obligations.9.65.obligations />
+                            @endif
+
+                            {{-- 2022-23 --}}
+                            @if($eventversion->id === 71)
+                                <x-obligations.9.71.obligations :eventversion=$eventversion />
+                            @endif
+
+                            {{-- 2023-24 --}}
+                            @if($eventversion->id === 75)
+                                <x-obligations.9.75.obligations :eventversion=$eventversion />
+                            @endif
+
+                                {{-- CJMEA REGION II CHORUS --}}
                             @if($eventversion->id === 70)
                                 <x-obligations.1.70.obligations />
                             @endif
