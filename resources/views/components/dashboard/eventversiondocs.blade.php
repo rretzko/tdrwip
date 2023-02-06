@@ -17,8 +17,8 @@
             </li>
             --}}
             <li>
-                <a href="../assets/docs/pdfs/9/75/DirectorsPacket" class="text-blue-700" target="_BLANK">
-                    Directors Packet
+                <a href="../assets/docs/pdfs/9/75/DirectorPacket.pdf" class="text-blue-700" target="_BLANK">
+                    Director's Packet
                 </a>
             </li>
             {{--
