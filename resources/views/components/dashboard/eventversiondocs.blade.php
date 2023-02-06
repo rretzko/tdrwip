@@ -7,26 +7,40 @@
     </header>
 
     <div class="dashboardbody">
-        <subheader>2022-23 NJ All-State Chorus</subheader>
+        <subheader>2023-24 NJ All-State Chorus</subheader>
         <ul class="ml-8 list-disc">
+            {{--
             <li>
                 <a class="text-blue-700" href="/assets/docs/pdfs/9/71/WelcomeLetter_20220207.pdf" target="_BLANK">
                     Welcome email
                 </a>
             </li>
+            --}}
             <li>
-                <a href="../assets/docs/pdfs/9/71/DirectorsPacket_20220214.pdf" class="text-blue-700" target="_BLANK">
-                    Directors Packet (updated)
+                <a href="../assets/docs/pdfs/9/75/DirectorsPacket" class="text-blue-700" target="_BLANK">
+                    Directors Packet
                 </a>
             </li>
+            {{--
             <li>
-                <a class="text-blue-700" href="/assets/docs/pdfs/9/71/pitchFileNavigation.pdf" target="_BLANK">
+                <a class="text-blue-700" href="/assets/docs/pdfs/9/75/pitchFileNavigation.pdf" target="_BLANK">
                     Pitch Files
                 </a>
             </li>
+            --}}
             <li>
-                <a href="../assets/docs/pdfs/9/71/StudentAuditionRequirements_20220201.pdf" class="text-blue-700" target="_BLANK">
+                <a class="text-blue-700" href="/assets/docs/pdfs/9/75/DirectorAgreement.pdf" target="_BLANK">
+                    Director Agreement
+                </a>
+            </li>
+            <li>
+                <a href="../assets/docs/pdfs/9/75/StudentAuditionRequirements.pdf" class="text-blue-700" target="_BLANK">
                     Student Audition Requirements
+                </a>
+            </li>
+            <li>
+                <a href="../assets/docs/pdfs/9/75/TeQuieroRubric_SilverSwan_YouTubeClips.pdf" class="text-blue-700" target="_BLANK">
+                    Te Quiero Rubric, Silver Swan, YouTube clips
                 </a>
             </li>
         </ul>
