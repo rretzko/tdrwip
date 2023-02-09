@@ -14,7 +14,7 @@
                 </a>
             </li>
             <li>
-                <a class="text-blue-700" href="/assets/docs/TheDirectorsRoomOrientation_20230209.pdf" target="_BLANK">
+                <a class="text-blue-700" href="/assets/docs/TheDirectorsRoom_Orientation_20230209.pdf" target="_BLANK">
                     TheDirectorsRoom.com
                 </a>
             </li>
