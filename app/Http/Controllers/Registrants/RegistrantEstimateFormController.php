@@ -115,7 +115,7 @@ class RegistrantEstimateFormController extends Controller
         $registrantsbyinstrumentation = new RegistrantsByInstrumentation;
         $registrantsbyinstrumentationarray = $registrantsbyinstrumentation->getArray();
 
-        $counties = ($eventversion->id === 65) ? County::all() : collect();
+        $counties = ($eventversion->event->id === 9) ? County::all() : collect();
 
         $school = School::find(Userconfig::getValue('school', auth()->id()));
 
@@ -178,17 +178,17 @@ class RegistrantEstimateFormController extends Controller
             ]);
     }
 
-    //This line added solely to FORCE REBUILD OF DEPLOY
-
     public function update(Request $request)
     {
-        $registrantsbyinstrumentation = new RegistrantsByInstrumentation;
-
         $school = School::find(Userconfig::getValue('school', auth()->id()));
         $school->county_id = $request['county_id'];
         $school->save();
 
         $eventversion = Eventversion::find(Userconfig::getValue('eventversion', auth()->id()));
+
+        return $this->show($eventversion);
+        /*
+        $registrantsbyinstrumentation = new RegistrantsByInstrumentation;
         $counties = ($eventversion->id === 65) ? County::all() : collect();
 
         return view('registrants.estimateforms.'.$eventversion->event->id.'.'.$eventversion->id.'.show',
@@ -201,6 +201,7 @@ class RegistrantEstimateFormController extends Controller
                 'updated' => true,
                 'sendto' => $this->sendTo($school->county_id),
             ]);
+        */
     }
 
 
