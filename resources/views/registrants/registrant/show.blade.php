@@ -472,6 +472,12 @@
 
                                                     @foreach($eventversion->filecontenttypes AS $filecontenttype)
 
+                                                        @if(session()->has('fileExtensionError') && (session()->has('fileContentType') && (session()->get('fileContentType') == $filecontenttype->descr)))
+                                                            <div style="background-color: rgba(255,0,0,0.1); color: darkred; border: 1px solid darkred; padding: 0 0.25rem;margin: 0.5rem 0;">
+                                                                {!! session()->get('fileExtensionError') !!}
+                                                            </div>
+                                                        @endif
+
                                                         <div class="shadow-lg rounded border-2 mb-4">
                                                             <h3 class="pl-2 pt-1">
                                                                 {{ ucwords($filecontenttype->descr) }}
@@ -525,11 +531,11 @@
                                                                                     </a>
                                                                                 @endif
                                                                             @endif
-                                                                            @if(config('app.url') === 'http://localhost')
+                                                                            {{-- @if(config('app.url') === 'http://localhost') --}}
                                                                                 <a href="{{ route('fileupload.reject',['registrant' => $registrant, 'filecontenttype' => $filecontenttype]) }}">
-                                                                            @else
-                                                                                <a href="https://thedirectorsroom.com/registrant/reject/{{ $registrant->id }}/{{ $filecontenttype->id }}">
-                                                                            @endif
+                                                                                    {{-- @else
+                                                                                        <a href="https://thedirectorsroom.com/registrant/reject/{{ $registrant->id }}/{{ $filecontenttype->id }}">
+                                                                                    @endif --}}
 
                                                                             @if($eventversion->isOpenForMembers() || (auth()->id() === 167) || $exception)
                                                                                 <button

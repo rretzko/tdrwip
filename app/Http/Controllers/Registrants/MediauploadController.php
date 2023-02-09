@@ -11,59 +11,6 @@ use function PHPUnit\Framework\directoryExists;
 class MediauploadController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -99,6 +46,10 @@ class MediauploadController extends Controller
                         'uploaded_by' => auth()->id(),
                     ]
                 );
+            }else{
+
+                session()->flash('fileContentType', $filecontenttype->descr);
+                session()->flash('fileExtensionError', 'This ' .$filecontenttype->descr . ' file appears to be in ' . $request->{$filecontenttype->descr}->guessExtension() . ' format.<br />Please re-record or try a conversion site like: <a href="https://www.freeconvert.com/" target="_NEW" style="color: darkred; text-decoration: underline;">https://www.freeconvert.com/</a>');
             }
 
             //update registranttype_id

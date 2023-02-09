@@ -65,7 +65,11 @@ class RegistrantController extends Controller
 
         $sjcdaeapplicationshutdown = (Carbon::now() > '2021-10-19 23:59:59');
 
-        $uploadspermitted = !(($eventversion->id === 66) || ($eventversion->id === 67));
+        $uploadspermitted = (
+        ($eventversion->eventversiondates->where('datetype_id','=',17)->first()->dt < Carbon::now()) && //membership video upload open
+        ($eventversion->eventversiondates->where('datetype_id','=',18)->first()->dt > Carbon::now()) && //membership video upload closed
+            (!(($eventversion->id === 66) || ($eventversion->id === 67)))
+        );
 
         $instrumentations = ($eventversion->id != 73)
             ? $eventversion->eventensembles()->first()->eventensembletype()->instrumentations
@@ -164,6 +168,10 @@ class RegistrantController extends Controller
             );
         }
 
+        $walk_in_registration = ($eventversion->event->id === 1)
+            ? true
+            : false;
+
         return view('registrants.registrant.show', [
             'eventversion' => $eventversion,
             'filename' => $fileserver->buildFilename($registrant),
@@ -175,6 +183,7 @@ class RegistrantController extends Controller
             'exception' => $this->exceptions(),
             'uploadspermitted' => $uploadspermitted,
             'instrumentations' => $instrumentations,
+            'walk_in_registration' => $walk_in_registration,
         ]);
     }
 
