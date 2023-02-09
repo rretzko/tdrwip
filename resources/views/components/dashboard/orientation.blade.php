@@ -9,12 +9,12 @@
     <div class="dashboardbody">
         <ul class="ml-8 list-disc">
             <li>
-                <a class="text-blue-700" href="/assets/docs/GettingStarted.pdf" target="_BLANK">
+                <a class="text-blue-700" href="/assets/docs/GettingStarted_20230209.pdf" target="_BLANK">
                     Getting Started
                 </a>
             </li>
             <li>
-                <a class="text-blue-700" href="/assets/docs/TheDirectorsRoomOrientation.pdf" target="_BLANK">
+                <a class="text-blue-700" href="/assets/docs/TheDirectorsRoomOrientation_20230209.pdf" target="_BLANK">
                     TheDirectorsRoom.com
                 </a>
             </li>
