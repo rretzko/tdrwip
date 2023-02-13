@@ -99,16 +99,17 @@
                                                 <li>
                                                     I, <b>{{ $registrant->student->person->fullName }}</b>, agree to accept the decision of the
                                                     judges as binding.  If selected, I will accept membership in the {{ $eventversion->name }}
-                                                    for which I have auditioned.  I also agree to pay the $25.00 participation fee.  I understand that membership in this organization may be
-                                                    terminated by the endorsers of my application if I fail to comply with the rules set forth or if
+                                                    for which I have auditioned.  I also agree to pay the $35 (subject to change) participation fee.
+                                                    I understand that membership in this organization may be terminated
+                                                    by the endorsers of my application if I fail to comply with the rules set forth or if
                                                     I fail to learn my music.
                                                 </li>
                                                 <li>
                                                     I understand that NJ All-State Mixed Chorus members are expected to attend all rehearsals from
-                                                    June through November.  NJ All-State Treble Chorus rehearsals continue until February.  One
+                                                    October through November.  NJ All-State Treble Chorus rehearsals are held in February.  One
                                                     absence will result in testing at the following rehearsal.  An absence is defined as missing any
-                                                    scheduled rehearsal or any part thereof.  I further understand that all activities must be attended in their entirety.  I understand
-                                                    that it is not possible for me to be a member of the NJ All-State Chorus and participate in fall
+                                                    scheduled rehearsal or any part thereof.  I further understand that all activities must be attended in their entirety.
+                                                    I understand that it is not possible for me to be a member of the NJ All-State Chorus and participate in fall
                                                     activities including Conference/NJSIAA tournament games that may take place before/during the
                                                     completion of my NJ All-State obligations.  Failure to fulfill my NJ All-State obligations will
                                                     result in disqualification from any NJMEA sponsored event for the period of one year, up to and
@@ -205,7 +206,7 @@
                                                 </div>
                                             </div>
                                             <div class="font-bold">
-                                                PARENT/LEGAL GUARDIAN CELL: {{ $registrant->student->guardians->first() ? $registrant->student->guardians->first()->person->phoneMobile() : 'No number found'}}
+                                                PARENT/LEGAL GUARDIAN CELL: {{ ($registrant->student->guardians->first() && strlen($registrant->student->guardians->first()->person->phoneMobile())) ? $registrant->student->guaridans->first()->person->phoneMobile() : 'No number found' }}
                                             </div>
                                         </div>
                                     </div>
@@ -224,10 +225,10 @@
                                             enrolled in grade {{ $registrant->student->gradeClassof }} at {{ $registrant->student->person->user->schools->first()->name }}.
                                             We understand that <b>{{ $me->fullname }}</b>, who is sponsoring <b>{{ $registrant->student->person->fullName }}</b>,
                                             is a current (paid) member of the National Association for Music Educators (NAfME), and is required to
-                                            participate as a JUDGE FOR ONLINE AUDITIONS, as described in the Directors's Packet, from April 28-30, 2022.
+                                            participate as a JUDGE FOR ONLINE AUDITIONS, as described in the Directors's Packet, from April 27-29, 2023.
 
                                             We will review this application to ensure that all parts are complete and accurate.  This application
-                                            will be mailed to the Registration Manager postmarked by the application deadline of <b>April 1st, 2022</b>.
+                                            will be mailed to the Registration Manager postmarked by the application deadline of <b>Friday, March 31, 2023</b>.
                                             LATE APPLICATIONS WILL NOT BE ACCEPTED.  If <b>{{ $registrant->student->person->fullName }}</b> is accepted,
                                             we will ensure that <b>{{ $registrant->student->person->first }}</b> is prepared and adheres to
                                             the rules and regulations set forth by the NJMEA.

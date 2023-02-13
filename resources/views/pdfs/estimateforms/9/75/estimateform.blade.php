@@ -205,7 +205,7 @@
     <tr>
         <td colspan="2" style="font-size: 1.5rem; font-weight: bold; text-align: center">
             Please attach a copy of your current NAfME card here.<br />
-        Membership must be current through April 30, 2022.
+        Membership must be current through April 30, {{ date('Y') }}.
         </td>
     </tr>
 
