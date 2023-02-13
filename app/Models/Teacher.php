@@ -108,6 +108,48 @@ class Teacher extends Model
         ->sortBy(['person.last','person.first']);
     }
 
+    /**
+     * @return Students of $this
+     */
+    public function myStudentsCurrent($search = '', $first='', $instrumentation_id=0, $classof=0, $school=false)
+    {
+        $query = Student::with('person', 'person.user.instrumentations','person.ensembles')
+            ->whereHas('teachers', function($query){
+                return $query->where('user_id', '=', $this->user_id);
+            })
+            ->whereHas('person', function($query) use ($search){
+                return $query->where('last', 'LIKE', '%'.$search.'%');
+            })
+            ->whereHas('person', function($query) use ($first){
+                return $query->where('first', 'LIKE', '%'.$first.'%');
+            })
+            ->where('classof', '>=', $this->seniorYear());
+
+        if($instrumentation_id){
+
+            $query->whereHas('person.user.instrumentations', function ($query) use ($instrumentation_id) {
+
+                return $query->where('instrumentation_id', '=', $instrumentation_id);
+            });
+        }
+
+        if($classof){
+
+            $query->where('classof', '=', $classof);
+        }
+
+        if($school){
+            $school_id = Userconfig::getValue('school', auth()->id());
+
+            $query->whereHas('person.user.schools', function($query) use ($school_id){
+                return $query->where('school_id', '=', $school_id);
+            });
+        }
+
+        return $query->get()
+            ->sortBy(['person.last','person.first']);
+    }
+
     public function removeStudents(array $ids)
     {
         DB::table('student_teacher')

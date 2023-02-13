@@ -56,7 +56,8 @@ Route::middleware('auth', 'verified')->group(function() {
     Route::get('sa/participatingstudents', [App\Http\Controllers\Siteadministration\ParticipatingstudentstableController::class, 'index'])->name('siteadministration.participatingstudentstable.index');
     Route::get('sa/teachertable', [App\Http\Controllers\Siteadministration\TeachertableController::class, 'index'])->name('siteadministration.teachertable.index');
     Route::get('sa/teachertable/email', [App\Http\Controllers\Siteadministration\TeachertablebyemailController::class, 'index'])->name('siteadministration.teachertable.byemail.index');
-
+    Route::post('sa/coteacherassignment/', [App\Http\Controllers\Siteadministration\CoTeacherAssignmentController::class, 'store'])->name('siteadministration.coteacherassignment.store');
+    
     /** AUDITION RESULTS */
     Route::get('auditionresults/{eventversion}', [App\Http\Controllers\Auditionresults\AuditionresultsController::class, 'index'])
         ->name('auditionresults.index');

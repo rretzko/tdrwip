@@ -29,6 +29,58 @@
                         </div>
 
                         <div>
+
+                            <div name="coTeacherAssignment" style="margin: 0.5rem; border: 1px solid black;">
+
+                                <form method="post" action="{{ route('siteadministration.coteacherassignment.store') }}" style="padding: 0.5rem;">
+
+                                    @csrf
+
+                                    @if(session()->has('coteacherassignments'))
+                                        <div style="background-color: rgba(0,255,0,0.1); color: black; border: 1px solid darkgreen;">
+                                            {{ session()->get('coteacherassignments') }}
+                                        </div>
+                                    @endif
+                                    <h3 style="font-weight: bold;">
+                                        Co-Teacher Assignment
+                                    </h3>
+                                    <h4>
+                                        CoAssign current students of Teacher 1 to Teacher 2
+                                    </h4>
+
+                                    {{-- Teacher 1 --}}
+                                    <style>
+                                        .input-group{margin-bottom: 1rem;}
+                                    </style>
+                                    <div class="input-group">
+                                        <label>Teacher 1</label>
+                                        <select name="user_ids[]" style="width: 25rem;">
+                                            <option value="0">Select</option>
+                                            @foreach($teachers AS $teacher)
+                                                <option value="{{ $teacher->user_id }}">{{ $teacher->last.', '.$teacher->first.' '.$teacher->middle }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    {{-- Teacher 2 --}}
+                                    <div class="input-group">
+                                        <label>Teacher 2</label>
+                                        <select name="user_ids[]" style="width: 25rem;">
+                                            <option value="0">Select</option>
+                                            @foreach($teachers AS $teacher)
+                                                <option value="{{ $teacher->user_id }}">{{ $teacher->last.', '.$teacher->first.' '.$teacher->middle }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="input-group">
+                                        <label></label>
+                                        <input type="submit" name="submit" value="Submit">
+                                    </div>
+
+                                </form>
+                            </div>
+
                             <a href="{{ route('siteadministrator.emailsdump') }}">
                                 <button style="background-color: yellow; color: darkblue; padding: 0 0.5rem;">
                                     Subscriber Email dumps
