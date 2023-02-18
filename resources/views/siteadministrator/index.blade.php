@@ -57,7 +57,7 @@
                                         <select name="user_ids[]" style="width: 25rem;">
                                             <option value="0">Select</option>
                                             @foreach($teachers AS $teacher)
-                                                <option value="{{ $teacher->user_id }}">{{ $teacher->last.', '.$teacher->first.' '.$teacher->middle }}</option>
+                                                <option value="{{ $teacher->user_id }}">{{ $teacher->last.', '.$teacher->first.' '.$teacher->middle.' ('.$teacher->user_id.')' }}</option>
                                             @endforeach
                                         </select>
                                     </div>
