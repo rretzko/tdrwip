@@ -46,7 +46,7 @@
             </li>
             --}}
             <li>
-                <a href="../assets/docs/pdfs/9/75/TeQuieroRubric_SilverSwan_YouTubeClips-2.pdf" class="text-blue-700" target="_BLANK">
+                <a href="../assets/docs/pdfs/9/75/TeQuieroRubric_SilverSwan_YouTubeClips-3.pdf" class="text-blue-700" target="_BLANK">
                     Te Quiero Rubric, Silver Swan, YouTube clips
                 </a>
             </li>
