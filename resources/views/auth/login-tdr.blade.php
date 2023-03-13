@@ -242,6 +242,23 @@
             @endguest
 
             <div style="position:relative; top:240px; left:25%; background-color:lightgray; border-radius: 1rem; width: 50%; padding-top: .25rem;">
+                <style>
+                    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+                        color: rgba(0,0,0,0.25);
+                        font-size: 0.8rem;
+                        opacity: 1; /* Firefox */
+                    }
+
+                    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+                        color: rgba(0,0,0,0.25);
+                        font-size: 0.8rem;
+                    }
+
+                    ::-ms-input-placeholder { /* Microsoft Edge */
+                        color: rgba(0,0,0,0.25);
+                        font-size: 0.8rem;
+                    }
+                </style>
                 <h2 style="text-align: center; ">Welcome!  Please log in!</h2>
                 @if(config('app.url') === 'http://localhost')
                     {{-- USE THE local http:// ENVIRONMENT --}}
@@ -256,7 +273,7 @@
                     <div id="input-group">
                         <div class="input-row" style="display:flex; margin-bottom: .25rem;">
                             <label for="username" style="min-width: 25%; margin-right: 4px;">Username</label>
-                            <input type="text" name="username" id="username" value="" style="font-size: 1.25rem;" placeholder="NB: Username NOT email address...">
+                            <input type="text" name="username" id="username" value="" style="font-size: 1.25rem;" placeholder="Username NOT email address...">
                         </div>
 
                         <div class="input-row" style="display:flex; margin-bottom: .5rem;">
