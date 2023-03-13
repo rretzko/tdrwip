@@ -256,7 +256,7 @@
                     <div id="input-group">
                         <div class="input-row" style="display:flex; margin-bottom: .25rem;">
                             <label for="username" style="min-width: 25%; margin-right: 4px;">Username</label>
-                            <input type="text" name="username" id="username" value="" style="font-size: 1.25rem;">
+                            <input type="text" name="username" id="username" value="" style="font-size: 1.25rem;" placeholder="NB: Username NOT email address...">
                         </div>
 
                         <div class="input-row" style="display:flex; margin-bottom: .5rem;">
