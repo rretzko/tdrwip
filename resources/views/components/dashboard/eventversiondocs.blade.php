@@ -34,7 +34,7 @@
                 </a>
             </li>
             <li>
-                <a href="../assets/docs/pdfs/9/75/StudentAuditionRequirements.pdf" class="text-blue-700" target="_BLANK">
+                <a href="../assets/docs/pdfs/9/75/Student Audition Requirements-20230317.pdf" class="text-blue-700" target="_BLANK">
                     Student Audition Requirements
                 </a>
             </li>
