@@ -71,9 +71,16 @@ class FileapprovalController extends Controller
     {
         $registrant_type_id = new RegistrantTypeId($registrant);
 
+        $hasApplication = $registrant->hasApplication;
+        $hasFilesUploads = $registrant->hasFileuploads;
+
+        $registrantTypeId = ($hasApplication && $hasFilesUploads)
+            ? $registrantTypeId = 16 //registered
+            : $registrant_type_id->registrantTypeId();
+
         $registrant->update(
             [
-                'registranttype_id' => $registrant_type_id->registrantTypeId(),
+                'registranttype_id' => $registrantTypeId,
             ]
         );
     }

@@ -42,6 +42,7 @@ trait UpdateRegistrantStatusTrait
             ($eventversion->requiredSignaturesCount == $eapplication->countSignatures($registrant)) &&
             $registrant->hasFileuploads
         ){
+
                 $registranttype_id = Registranttype::REGISTERED;
 
         }elseif(//CJMEA
