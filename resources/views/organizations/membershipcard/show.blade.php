@@ -43,7 +43,7 @@
                             <section class="w-9/12" id="inputs">
                                 {{-- MEMBERSHIP CARD FORM --}}
                                 <div class="overflow-x-auto lg:w-6/12 md:w-8/12 w-11/12 ">
-
+{{--
                                     @if(config('app.url') === 'http://localhost')
                                         <form method="post" action="{{ ($membership && $membership->id)
                                             ? route('organization.membershipcard.update', ['membership' => $membership])
@@ -51,12 +51,15 @@
                                               enctype="multipart/form-data"
                                         >
                                     @else
+--}}
                                         <form method="post" action="{{ ($membership && $membership->id)
                                             ? 'https://thedirectorsroom.com/organization/membershipcard/'.$membership->id.'/update'
                                             : 'https://thedirectorsroom.com/organization/membershipcard/create' }}"
                                               enctype="multipart/form-data"
                                         >
+{{--
                                     @endif
+--}}
 
                                         @csrf
 
@@ -131,6 +134,12 @@
                                         </x-inputs.group>
 
                                         {{-- MEMBERSHIP CARD --}}
+
+                                            <div style="font-size: smaller; background-color:rgba(0,0,0,0.1); padding: 0.25rem; margin-bottom: 0.5rem; border: 1px solid black;">
+                                                IMPORTANT NOTE: If you are adding your membership information <u>for the
+                                                    first time</u>, please click the Save button to save the fields above.<br />
+                                                After those values are saved, find your Membership Card image, and Save again!
+                                            </div>
 
                                         <x-inputs.group label="Membership card" for="membershipcard" borderless="true" paddingless="true">
 
