@@ -149,7 +149,7 @@ class Registrants extends Model
             : (($registrant->student->grade < 9)
                 ? $eventversion->eventensembles()[0]->eventensembletype()->instrumentations //Middle School
                 : $eventversion->eventensembles()[1]->eventensembletype()->instrumentations); //High School
-                                 
+
         $eventversionfirstinstrumentid = $eventversioninstrumentations->first()->id;
 
         $registrantinstrumentations = $registrant->student->person->user->instrumentations ?? null;
@@ -268,7 +268,9 @@ class Registrants extends Model
         foreach($registereds AS $student) {
 
             $registrants->push($student->registrants
-                ->where('eventversion_id', self::$eventversion_id)->first());
+                ->where('eventversion_id', self::$eventversion_id)
+                ->where('school_id', $school_id) //added 27-Mar-23 to correct error of multiple registrant_ids in a single eventversion
+                ->first());
         }
 
         return $registrants;
