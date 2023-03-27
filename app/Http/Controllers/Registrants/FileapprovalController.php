@@ -12,6 +12,7 @@ use App\Models\Userconfig;
 use App\Traits\UpdateRegistrantStatusTrait;
 use App\Models\Utility\RegistrantTypeId;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class FileapprovalController extends Controller
 {
@@ -69,19 +70,22 @@ class FileapprovalController extends Controller
 
     private function updateRegistrantTypeId(Registrant $registrant)
     {
-        $registrant_type_id = new RegistrantTypeId($registrant);
-
-        $hasApplication = $registrant->hasApplication;
+        $hasApplicationConfirmed = $registrant->hasApplicationConfirmed;
         $hasFilesUploads = $registrant->hasFileuploads;
 
-        $registrantTypeId = ($hasApplication && $hasFilesUploads)
-            ? $registrantTypeId = 16 //registered
-            : $registrant_type_id->registrantTypeId();
+//Log::info('hasApplication: '.$hasApplicationConfirmed);
+//Log::info('hasFileUploads: '.$hasFilesUploads);
+
+        $registrantTypeId = ($hasApplicationConfirmed && $hasFilesUploads)
+            ? 16 //registered
+            : $registrant->registranttype_id;
 
         $registrant->update(
             [
                 'registranttype_id' => $registrantTypeId,
             ]
         );
+
+//Log::info('registranttype_id: '.$registrant->registranttype_id);
     }
 }

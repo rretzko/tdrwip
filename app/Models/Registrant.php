@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Signature;
 use App\Models\Utility\Fileviewport;
 use App\Traits\RegistranttypeBackgroundColorsTrait;
 use Carbon\Carbon;
@@ -174,6 +175,21 @@ class Registrant extends Model
     public function getHasApplicationAttribute(): bool
     {
         return (bool)Application::where('registrant_id', $this->id)->first();
+    }
+
+    public function getHasApplicationConfirmedAttribute(): bool
+    {
+        $has = false;
+
+        //check that an application is available
+        if($this->getHasApplicationAttribute()){
+
+            //confirm all signatures are available
+            $signature = new Signature;
+            $has = ($signature->countForRegistrant($this) == 4);
+        }
+
+        return $has;
     }
 
     public function getHasFileuploadsAttribute(): bool
