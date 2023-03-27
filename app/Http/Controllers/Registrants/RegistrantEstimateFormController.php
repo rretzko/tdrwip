@@ -242,9 +242,9 @@ class RegistrantEstimateFormController extends Controller
             ],
             [
                 'name' => 'KRISTEN MARKOWSKI',
-                'address01' => '562 Parsippany Blvd',
-                'address02' => 'Booton, NJ 07005',
-                'address03' => '',
+                'address01' => 'Morris Knolls High School',
+                'address02' => '50 Knoll Drive',
+                'address03' => 'Rockaway, NJ 07866',
                 'email' => '<a href="mailto:kmarkowski@mhrd.org" class="text-blue-600">KMarkowski@mhrd.org</a>',
             ],
             [
