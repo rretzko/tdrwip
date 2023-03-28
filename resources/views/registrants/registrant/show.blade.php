@@ -433,6 +433,17 @@
                                                 </div>
 
                                         @else --}} -->
+                                        {{-- ADVISORY --}}
+                                        <div class="advisory" style="background-color: green; color: white; font-weight: bold;padding: 0.5rem; margin-bottom: 1rem;">
+                                            <p>Please note: I'm hunting down an elusive bug!</p>
+                                            <p>If all mp3 files have been accepted AND the signatures are confirmed BUT
+                                                the status does not change to REGISTERED, please un-confirm and then
+                                                re-confirm the application signature above ("Remove my signature" button). </p>
+                                            <p>If this does not correct the problem, please let me know using the Chat
+                                            button at the bottom-right-hand corner of the page!</p>
+                                        </div>
+
+
                                             @if($eventversion->eventversionconfigs->virtualaudition)
                                                 <h2 class="font-bold">File Uploads and Reviews</h2>
 <!-- {{--
