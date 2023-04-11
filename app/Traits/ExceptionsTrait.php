@@ -22,6 +22,11 @@ trait ExceptionsTrait
                     'start' => '2022-04-04 00:00:01',
                     'end' => '2022-04-04 23:59:59',
                     ],
+                75 => [
+                    'users' => [14703], //Ryan Manni
+                    'start' => '2023-04-11 12:00:00',
+                    'end' => '2023-04-12 12:00:00',
+                ]
             ];
 
         $eventversionid = \App\Models\Userconfig::getValue('eventversion', auth()->id());
