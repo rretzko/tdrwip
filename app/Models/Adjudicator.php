@@ -17,7 +17,7 @@ class Adjudicator extends Model
         $str = '<div>';
 
         //name header
-        $str .= '<div class="font-bold">'.$this['user']['person']->fullName.'</div>';
+        $str .= '<div class="font-bold">'.$this['user']['person']->fullName.' (' . $this->RankDescr .')</div>';
 
         //indented communication details
         $str .= '<div class="text-sm ml-3 flex">';
@@ -41,6 +41,18 @@ class Adjudicator extends Model
         $str .= '</div>';
 
         return $str;
+    }
+
+    public function getRankDescrAttribute(): string
+    {
+        $descrs = [
+            1 => 'Head Judge',
+            2 => 'Judge 2',
+            3 => 'Judge 3',
+            4 => 'Judge 4',
+        ];
+
+        return $descrs[$this->rank];
     }
 
     public function getRegistrantsAttribute()

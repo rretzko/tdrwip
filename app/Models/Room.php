@@ -19,7 +19,8 @@ class Room extends Model
      */
     public function adjudicators()
     {
-        return $this->hasMany(\App\Models\Adjudicator::class);
+        return $this->hasMany(\App\Models\Adjudicator::class)
+            ->orderBy('rank');
     }
 
     public function alphaNameSortedAdjudicators()
