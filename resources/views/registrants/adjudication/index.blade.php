@@ -151,7 +151,7 @@
 
                                 <div class="mt-2 text-center">
 
-                                    <input class="bg-black text-white rounded px-2" type="submit" name="submit" id="submit" value="Submit" />
+                                    <input class="bg-black text-white rounded px-2 cursor-pointer" type="submit" name="submit" id="submit" value="Submit" />
 
                                 </div>
 
