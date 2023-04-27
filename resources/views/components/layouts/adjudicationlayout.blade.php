@@ -37,7 +37,9 @@
     <main>
         {{ $slot }}
     </main>
-
+{{-- REMOVED TO RESOLVE THE PROBLEM OF FOOTER SLIDING TO THE MIDDLE OF A PAGE AND OVERRIDING THE INPUT FORM
+    <x-site-footer />
+--}}
 </div>
 
 @stack('modals')
