@@ -26,7 +26,7 @@
         <tr>
             <th colspan="3" style="border-top: 0; border-left: 0;"></th>
             @for($i = 1; $i<=$eventversion->eventversionconfigs->judge_count; $i++)
-                @foreach($eventversion->filecontenttypes AS $filecontenttype)
+                @foreach($eventversion->filecontenttypes->sortBy('orderBy') AS $filecontenttype)
                     <th colspan="{{ $filecontenttype->scoringcomponents->where('eventversion_id', $eventversion->id)->count() }}">
                         {{ ucwords(substr($filecontenttype->descr,0,5)) }}
                     </th>
